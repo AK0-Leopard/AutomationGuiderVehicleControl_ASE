@@ -1,0 +1,90 @@
+﻿using com.mirle.ibg3k0.bcf.App;
+using com.mirle.ibg3k0.bcf.Common;
+using com.mirle.ibg3k0.bcf.Data.ValueDefMapAction;
+using com.mirle.ibg3k0.bcf.Data.VO;
+using com.mirle.ibg3k0.sc.App;
+using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Data.VO;
+using com.mirle.ibg3k0.sc.Data.VO.Interface;
+using com.mirle.ibg3k0.sc.ObjectRelay;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace com.mirle.ibg3k0.sc
+{
+    public partial class VTRANSFER
+    { 
+
+        public ACMD ConvertToCmd(BLL.PortStationBLL portStationBLL, BLL.SequenceBLL sequenceBLL, AVEHICLE assignVehicle)
+        {
+            var source_port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTSOURCE);
+            var desc_port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTDESTINATION);
+            //如果HostSource port是與車子一樣的話，代表是要去進行Unload的動作
+            bool source_is_a_port = portStationBLL.OperateCatch.IsExist(this.HOSTSOURCE);
+
+            string host_source = source_is_a_port ? this.HOSTSOURCE : "";
+            E_CMD_TYPE cmd_type = source_is_a_port ? E_CMD_TYPE.LoadUnload : E_CMD_TYPE.Unload; //如果Source不是Port的話，則代表是在車上
+
+            string from_adr = source_port_station == null ? string.Empty : source_port_station.ADR_ID;
+            string to_adr = desc_port_station == null ? string.Empty : desc_port_station.ADR_ID;
+            return new ACMD()
+            {
+                ID = sequenceBLL.getCommandID(SCAppConstants.GenOHxCCommandType.Auto),
+                TRANSFER_ID = this.ID,
+                VH_ID = assignVehicle.VEHICLE_ID,
+                CARRIER_ID = this.CARRIER_ID,
+                CMD_TYPE = cmd_type,
+                SOURCE = from_adr,
+                DESTINATION = to_adr,
+                PRIORITY = this.PRIORITY_SUM,
+                CMD_INSER_TIME = DateTime.Now,
+                CMD_STATUS = E_CMD_STATUS.Queue,
+                SOURCE_PORT = host_source,
+                DESTINATION_PORT = this.HOSTDESTINATION,
+                COMPLETE_STATUS = ProtocolFormat.OHTMessage.CompleteStatus.Move
+            };
+        }
+
+        public string getSourcePortGroupID(BLL.PortStationBLL portStationBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTSOURCE);
+            if (port_station == null) return "";
+            return SCUtility.Trim(port_station.GROUP_ID, true);
+        }
+        public string getSourcePortEQID(BLL.PortStationBLL portStationBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTSOURCE);
+            if (port_station == null) return "";
+            return SCUtility.Trim(port_station.EQPT_ID, true);
+        }
+        public string getTragetPortEQID(BLL.PortStationBLL portStationBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTDESTINATION);
+            if (port_station == null) return "";
+            return SCUtility.Trim(port_station.EQPT_ID, true);
+        }
+
+        public AEQPT getTragetPortEQ(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTDESTINATION);
+            if (port_station == null) return null;
+            return port_station.GetEqpt(eqptBLL);
+        }
+
+        public bool IsTargetPortAGVStation(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTDESTINATION);
+            if (port_station == null) return false;
+            return port_station.GetEqptType(eqptBLL) == SCAppConstants.EqptType.AGVStation;
+        }
+        public override string ToString()
+        {
+            return $"Command:{this.ID},source:{this.HOSTSOURCE},desc:{this.HOSTDESTINATION},inser time:{CMD_INSER_TIME.ToString()}";
+        }
+
+    }
+
+}
