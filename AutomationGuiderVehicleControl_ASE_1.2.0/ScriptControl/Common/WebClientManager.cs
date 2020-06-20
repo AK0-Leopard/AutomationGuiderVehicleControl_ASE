@@ -53,6 +53,7 @@ namespace com.mirle.ibg3k0.sc.Common
             string result = string.Empty;
             string action_target = string.Join("/", action_targets);
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create($"{uri}/{action_target}/{param}");
+            httpWebRequest.Timeout = 5000;
             httpWebRequest.Method = HTTP_METHOD.GET.ToString();
             //指定 request 的 content type
             httpWebRequest.ContentType = "application/x-www-form-urlencoded";
