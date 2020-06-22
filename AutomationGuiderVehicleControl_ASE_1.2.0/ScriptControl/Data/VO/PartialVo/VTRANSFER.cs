@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace com.mirle.ibg3k0.sc
 {
     public partial class VTRANSFER
-    { 
+    {
 
         public ACMD ConvertToCmd(BLL.PortStationBLL portStationBLL, BLL.SequenceBLL sequenceBLL, AVEHICLE assignVehicle)
         {
@@ -67,11 +67,30 @@ namespace com.mirle.ibg3k0.sc
             return SCUtility.Trim(port_station.EQPT_ID, true);
         }
 
+        public string getSourcePortAdrID(BLL.PortStationBLL portStationBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTSOURCE);
+            if (port_station == null) return "";
+            return SCUtility.Trim(port_station.ADR_ID, true);
+        }
+        public string getTragetPortAdrID(BLL.PortStationBLL portStationBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTDESTINATION);
+            if (port_station == null) return "";
+            return SCUtility.Trim(port_station.ADR_ID, true);
+        }
+
         public AEQPT getTragetPortEQ(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
         {
             var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTDESTINATION);
             if (port_station == null) return null;
             return port_station.GetEqpt(eqptBLL);
+        }
+        public AEQPT getTragetPortEQ(BLL.EqptBLL eqptBLL)
+        {
+            var eq = eqptBLL.OperateCatch.GetEqpt(this.HOSTDESTINATION);
+            if (eq == null) return null;
+            return eq;
         }
 
         public bool IsTargetPortAGVStation(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
@@ -79,6 +98,12 @@ namespace com.mirle.ibg3k0.sc
             var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTDESTINATION);
             if (port_station == null) return false;
             return port_station.GetEqptType(eqptBLL) == SCAppConstants.EqptType.AGVStation;
+        }
+        public bool IsTargetPortAGVStation(BLL.EqptBLL eqptBLL)
+        {
+            var eq = eqptBLL.OperateCatch.GetEqpt(this.HOSTDESTINATION);
+            if (eq == null) return false;
+            return eq is IAGVStationType;
         }
         public override string ToString()
         {

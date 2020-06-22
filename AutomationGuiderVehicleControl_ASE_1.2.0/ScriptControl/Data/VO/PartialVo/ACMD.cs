@@ -25,6 +25,34 @@ namespace com.mirle.ibg3k0.sc
                        CMD_TYPE == E_CMD_TYPE.Move_Charger;
             }
         }
+
+        public bool IsTargetPortAGVStation(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.DESTINATION_PORT);
+            if (port_station == null) return false;
+            return port_station.GetEqptType(eqptBLL) == SCAppConstants.EqptType.AGVStation;
+        }
+        public AEQPT getTragetPortEQ(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.DESTINATION_PORT);
+            if (port_station == null) return null;
+            return port_station.GetEqpt(eqptBLL);
+        }
+        public bool IsTargetPortAGVStation(BLL.EqptBLL eqptBLL)
+        {
+            var eq = eqptBLL.OperateCatch.GetEqpt(this.DESTINATION_PORT);
+            if (eq == null) return false;
+            return eq is IAGVStationType;
+        }
+
+        public AEQPT getTragetPortEQ(BLL.EqptBLL eqptBLL)
+        {
+            var eq = eqptBLL.OperateCatch.GetEqpt(this.DESTINATION_PORT);
+            if (eq == null) return null;
+            return eq;
+        }
+
+
         public HCMD ToHCMD()
         {
             return new HCMD()

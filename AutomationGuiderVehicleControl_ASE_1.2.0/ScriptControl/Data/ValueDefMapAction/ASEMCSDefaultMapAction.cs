@@ -673,8 +673,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         }
                         if (is_process_success && check_result.isSuccess)
                         {
-                            //scApp.CMDBLL.checkMCSTransferCommand_New();
                             scApp.TransferService.Scan();
+                            scApp.TransferBLL.web.receiveMCSCommandNotify();
                         }
                         else
                         {

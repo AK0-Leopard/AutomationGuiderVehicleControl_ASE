@@ -41,7 +41,7 @@ option csharp_namespace = "com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortIn
   }
 
   message PORT_INFO{
-  	   Timestamp Timestamp = 1;
+  	   string Timestamp = 1;
        bool OpAutoMode = 2;         //D6401.0
        bool OpManualMode = 3;       //D6401.1 
        bool OpError = 4;

@@ -178,7 +178,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                             bool isSuccess = true;
                             if (scApp.GuideBLL.IsRoadWalkable(vh.CUR_ADR_ID, p.ADR_ID))
                             {
-                                isSuccess &= scApp.VehicleService.Command.Move(vh.VEHICLE_ID, p.ADR_ID);
+                                isSuccess &= scApp.VehicleService.Command.Move(vh.VEHICLE_ID, p.ADR_ID).isSuccess;
                             }
                             agvStations.Remove(p);
                         }
@@ -572,7 +572,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     bool isSuccess = true;
                     if (scApp.GuideBLL.IsRoadWalkable(vh.CUR_ADR_ID, p.ADR_ID))
                     {
-                        isSuccess &= scApp.VehicleService.Command.Move(vh.VEHICLE_ID, p.ADR_ID);
+                        isSuccess &= scApp.VehicleService.Command.Move(vh.VEHICLE_ID, p.ADR_ID).isSuccess;
                     }
                     agvStations.Remove(p);
                 }

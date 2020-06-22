@@ -97,6 +97,7 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler<string> LongTimeInaction;
         public event EventHandler LongTimeDisconnection;
         public event EventHandler<VHModeStatus> ModeStatusChange;
+        public event EventHandler<VhStopSingle> ErrorStatusChange;
         public void onExcuteCommandStatusChange()
         {
             ExcuteCommandStatusChange?.Invoke(this, EventArgs.Empty);
@@ -140,6 +141,10 @@ namespace com.mirle.ibg3k0.sc
         public void onModeStatusChange(VHModeStatus modeStatus)
         {
             ModeStatusChange?.Invoke(this, modeStatus);
+        }
+        public void onErrorStatusChange(VhStopSingle vhStopSingle)
+        {
+            ErrorStatusChange?.Invoke(this, vhStopSingle);
         }
         #endregion Event
 

@@ -24,6 +24,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         public DB db { get; private set; }
         public Cache cache { get; private set; }
         public Redis redis { get; private set; }
+        public Web web { get; private set; }
 
 
         VehicleDao vehicleDAO = null;
@@ -42,6 +43,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             cache = new Cache(scApp.getEQObjCacheManager());
             db = new DB(scApp);
             redis = new Redis(scApp.getRedisCacheManager());
+            web = new Web(scApp.webClientManager);
         }
         public void startMapAction()
         {
@@ -1209,6 +1211,13 @@ namespace com.mirle.ibg3k0.sc.BLL
                            Count() != 0;
             }
 
+            public bool hasVhOnAddresses(List<string> addresses)
+            {
+                List<AVEHICLE> vhs = eqObjCacheManager.getAllVehicle();
+                return vhs.Where(vh => vh.ACT_STATUS == VHActionStatus.NoCommand &&
+                                       addresses.Contains(SCUtility.Trim(vh.ToAdr, true))).
+                           Count() != 0;
+            }
 
         }
 
@@ -1227,6 +1236,69 @@ namespace com.mirle.ibg3k0.sc.BLL
                 report_obj.WriteTo(new Google.Protobuf.CodedOutputStream(arrayByte));
                 redisCache.Obj2ByteArraySetAsync(key_word_position, arrayByte, POSITION_TIMEOUT);
             }
+        }
+
+        public class Web
+        {
+            WebClientManager webClientManager = null;
+            List<string> notify_urls = new List<string>()
+            {
+                "http://stk01.asek21.mirle.com.tw:15000",
+                 "http://agvc.asek21.mirle.com.tw:15000"
+            };
+            const string ERROR_HAPPEND_CONST = "99";
+
+            public Web(WebClientManager _webClient)
+            {
+                webClientManager = _webClient;
+            }
+            public void errorHappendNotify()
+            {
+                try
+                {
+                    string[] action_targets = new string[]
+                    {
+                    "weatherforecast"
+                    };
+                    string[] param = new string[]
+                    {
+                    ERROR_HAPPEND_CONST,
+                    };
+                    foreach (string notify_url in notify_urls)
+                    {
+                        string result = webClientManager.GetInfoFromServer(notify_url, action_targets, param);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
+            public void commandSendCompleteNotify(string vhID)
+            {
+                try
+                {
+                    string assign_vh_id = vhID;
+                    string vh_no = vhID.Length > 0 ? vhID.Last().ToString() : "";
+                    string[] action_targets = new string[]
+                    {
+                    "weatherforecast"
+                    };
+                    string[] param = new string[]
+                    {
+                    vh_no,
+                    };
+                    foreach (string notify_url in notify_urls)
+                    {
+                        string result = webClientManager.GetInfoFromServer(notify_url, action_targets, param);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
+
         }
 
     }

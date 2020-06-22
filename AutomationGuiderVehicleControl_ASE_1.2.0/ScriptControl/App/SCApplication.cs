@@ -488,6 +488,7 @@ namespace com.mirle.ibg3k0.sc.App
 
 
             dataCollectionCss = (DataCollectionConfigSections)ConfigurationManager.GetSection(SCAppConstants.CONFIG_DATA_COLLECTION_SETTING);
+            webClientManager = WebClientManager.getInstance();
 
             initialReserveSectionAPI();
 
@@ -543,7 +544,6 @@ namespace com.mirle.ibg3k0.sc.App
 
             initialRestfulServer();
 
-            webClientManager = WebClientManager.getInstance();
             //
             //loadECDataToSystem();
             //bdTableWatcher = new DBTableWatcher(this);
@@ -1644,7 +1644,7 @@ namespace com.mirle.ibg3k0.sc.App
         Logger logger = NLog.LogManager.GetCurrentClassLogger();
         public HAProxyConnectionTest(SCApplication app)
         {
-            tcpIpServer = new iibg3k0.ttc.Common.TCPIP.TcpIpServer(5000, true, iibg3k0.ttc.Common.AppConstants.FrameBuilderType.PC_TYPE_MIRLE);
+            tcpIpServer = new iibg3k0.ttc.Common.TCPIP.TcpIpServer(5001, true, iibg3k0.ttc.Common.AppConstants.FrameBuilderType.PC_TYPE_MIRLE);
             tcpIpServer.SessionCreat += TcpIpServer_SessionCreat;
         }
 

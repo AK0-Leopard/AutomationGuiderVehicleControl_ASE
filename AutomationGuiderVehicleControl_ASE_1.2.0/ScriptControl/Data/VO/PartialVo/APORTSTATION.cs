@@ -12,6 +12,7 @@ using com.mirle.ibg3k0.sc.ObjectRelay;
 using com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,6 +72,15 @@ namespace com.mirle.ibg3k0.sc
     public partial class APORTSTATION
     {
         PORT_INFO PortInfo = new PORT_INFO();
+        public DateTime Timestamp
+        {
+            get
+            {
+                DateTime dateTime = DateTime.MinValue;
+                DateTime.TryParseExact(PortInfo.Timestamp, SCAppConstants.TimestampFormat_17, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime);
+                return dateTime;
+            }
+        }
         public bool IsInPutMode { get { return PortInfo.IsInputMode; } }
         public bool IsOutPutMode { get { return PortInfo.IsOutputMode; } }
         public bool PortReady { get { return PortInfo.AGVPortReady; } }
@@ -81,6 +91,7 @@ namespace com.mirle.ibg3k0.sc
         public string CassetteID { get { return SCUtility.Trim(PortInfo.CassetteID, true); } }
         public void SetPortInfo(PORT_INFO newPortInfo)
         {
+            PortInfo.Timestamp = newPortInfo.Timestamp;
             PortInfo.IsInputMode = newPortInfo.IsInputMode;
             PortInfo.IsOutputMode = newPortInfo.IsOutputMode;
             PortInfo.AGVPortReady = newPortInfo.AGVPortReady;

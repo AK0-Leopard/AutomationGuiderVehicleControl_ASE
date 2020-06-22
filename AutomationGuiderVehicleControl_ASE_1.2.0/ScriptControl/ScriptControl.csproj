@@ -517,6 +517,7 @@
     <Compile Include="Data\ValueDefMapAction\FireDoorDefaultValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\FireDoorInfoDefaultValueDefMapAction.cs" />
     <Compile Include="Data\VO\PartialVo\ACMD.cs" />
+    <Compile Include="Data\VO\PartialVo\gpb\PORT_INFO.cs" />
     <Compile Include="Data\VO\PartialVo\VTRANSFER.cs" />
     <Compile Include="Data\VO\PartialVo\ATRANSFER.cs" />
     <Compile Include="Data\VO\TrafficControlInfo.cs" />

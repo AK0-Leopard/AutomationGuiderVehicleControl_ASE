@@ -207,6 +207,16 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             return query.Count();
         }
 
+        public int getAddressesExcuteCMDConut(DBConnection_EF con, List<string> addresses)
+        {
+            var query = from cmd in con.ACMD
+                        where (addresses.Contains(cmd.SOURCE.Trim()) || addresses.Contains(cmd.DESTINATION.Trim())) &&
+                              cmd.CMD_STATUS < E_CMD_STATUS.NormalEnd
+
+                        select cmd;
+            return query.Count();
+        }
+
 
 
 

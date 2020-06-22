@@ -1204,7 +1204,15 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
 
-
+        public bool HasCmdIsGoing(List<string> addresses)
+        {
+            int count = 0;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                count = cmd_ohtcDAO.getAddressesExcuteCMDConut(con, addresses);
+            }
+            return count > 0;
+        }
 
         public (bool hasAssign, List<string> assignCmdIDs) hasAssignCmd(AVEHICLE vh)
         {

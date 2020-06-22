@@ -30,6 +30,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             redis = new Redis(_app.getRedisCacheManager());
         }
 
+        const double PORT_INFO_TIME_OUT_SEC = 10;
         public void updatePortStatusByRedis()
         {
             var ports_plc_info = redis.getCurrentPortsInfo();
@@ -40,7 +41,15 @@ namespace com.mirle.ibg3k0.sc.BLL
                                                    FirstOrDefault();
                 if (port_plc_info != null)
                 {
-                    port_station.SetPortInfo(port_plc_info);
+                    //如果現在時間還沒超過該筆資料上次更新的時間10秒鐘，才可以進行更新
+                    if (DateTime.Now < port_plc_info.dTimeStamp.AddSeconds(PORT_INFO_TIME_OUT_SEC))
+                    {
+                        port_station.SetPortInfo(port_plc_info);
+                    }
+                    else
+                    {
+                        port_station.ResetPortInfo();
+                    }
                 }
                 else
                 {

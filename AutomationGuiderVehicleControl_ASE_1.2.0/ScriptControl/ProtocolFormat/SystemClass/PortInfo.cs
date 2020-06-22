@@ -23,27 +23,27 @@ namespace com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cg5Qb3J0SW5mby5wcm90bxIIdHV0b3JpYWwiKwoJVGltZXN0YW1wEg8KB3Nl",
-            "Y29uZHMYASABKAMSDQoFbmFub3MYAiABKAUi5gUKCVBPUlRfSU5GTxImCglU",
-            "aW1lc3RhbXAYASABKAsyEy50dXRvcmlhbC5UaW1lc3RhbXASEgoKT3BBdXRv",
-            "TW9kZRgCIAEoCBIUCgxPcE1hbnVhbE1vZGUYAyABKAgSDwoHT3BFcnJvchgE",
-            "IAEoCBITCgtJc0lucHV0TW9kZRgFIAEoCBIUCgxJc091dHB1dE1vZGUYBiAB",
-            "KAgSFwoPSXNNb2RlQ2hhbmdhYmxlGAcgASgIEhEKCUlzQUdWTW9kZRgIIAEo",
-            "CBIRCglJc01HVk1vZGUYCSABKAgSEgoKUG9ydFdhaXRJbhgKIAEoCBITCgtQ",
-            "b3J0V2FpdE91dBgLIAEoCBISCgpJc0F1dG9Nb2RlGAwgASgIEhUKDUlzUmVh",
-            "ZHlUb0xvYWQYDSABKAgSFwoPSXNSZWFkeVRvVW5sb2FkGA4gASgIEhUKDUxv",
-            "YWRQb3NpdGlvbjEYDyABKAgSFQoNTG9hZFBvc2l0aW9uMhgQIAEoCBIVCg1M",
-            "b2FkUG9zaXRpb24zGBEgASgIEhUKDUxvYWRQb3NpdGlvbjQYEiABKAgSFQoN",
-            "TG9hZFBvc2l0aW9uNRgTIAEoCBIVCg1Mb2FkUG9zaXRpb243GBQgASgIEhUK",
-            "DUxvYWRQb3NpdGlvbjYYFSABKAgSFQoNSXNDU1RQcmVzZW5jZRgWIAEoCBIU",
-            "CgxBR1ZQb3J0UmVhZHkYFyABKAgSEgoKQ2FuT3BlbkJveBgYIAEoCBIRCglJ",
-            "c0JveE9wZW4YGSABKAgSEwoLQkNSUmVhZERvbmUYGiABKAgSGwoTQ1NUUHJl",
-            "c2VuY2VNaXNtYXRjaBgbIAEoCBIaChJJc1RyYW5zZmVyQ29tcGxldGUYHCAB",
-            "KAgSFgoOQ3N0UmVtb3ZlQ2hlY2sYHSABKAgSEQoJRXJyb3JDb2RlGB4gASgF",
-            "Eg0KBUJveElEGB8gASgJEhIKCkNhc3NldHRlSUQYICABKAkSDgoGUG9ydElE",
-            "GCEgASgJQpsBChRjb20uZXhhbXBsZS50dXRvcmlhbEIRQWRkcmVzc0Jvb2tQ",
-            "cm90b3NQAVorZ2l0aHViLmNvbS9nb2xhbmcvcHJvdG9idWYvcHR5cGVzL3Rp",
-            "bWVzdGFtcPgBAaICA0dQQqoCN2NvbS5taXJsZS5pYmczazAuc2MuUHJvdG9j",
-            "b2xGb3JtYXQuU3lzdGVtQ2xhc3MuUG9ydEluZm9iBnByb3RvMw=="));
+            "Y29uZHMYASABKAMSDQoFbmFub3MYAiABKAUi0QUKCVBPUlRfSU5GTxIRCglU",
+            "aW1lc3RhbXAYASABKAkSEgoKT3BBdXRvTW9kZRgCIAEoCBIUCgxPcE1hbnVh",
+            "bE1vZGUYAyABKAgSDwoHT3BFcnJvchgEIAEoCBITCgtJc0lucHV0TW9kZRgF",
+            "IAEoCBIUCgxJc091dHB1dE1vZGUYBiABKAgSFwoPSXNNb2RlQ2hhbmdhYmxl",
+            "GAcgASgIEhEKCUlzQUdWTW9kZRgIIAEoCBIRCglJc01HVk1vZGUYCSABKAgS",
+            "EgoKUG9ydFdhaXRJbhgKIAEoCBITCgtQb3J0V2FpdE91dBgLIAEoCBISCgpJ",
+            "c0F1dG9Nb2RlGAwgASgIEhUKDUlzUmVhZHlUb0xvYWQYDSABKAgSFwoPSXNS",
+            "ZWFkeVRvVW5sb2FkGA4gASgIEhUKDUxvYWRQb3NpdGlvbjEYDyABKAgSFQoN",
+            "TG9hZFBvc2l0aW9uMhgQIAEoCBIVCg1Mb2FkUG9zaXRpb24zGBEgASgIEhUK",
+            "DUxvYWRQb3NpdGlvbjQYEiABKAgSFQoNTG9hZFBvc2l0aW9uNRgTIAEoCBIV",
+            "Cg1Mb2FkUG9zaXRpb243GBQgASgIEhUKDUxvYWRQb3NpdGlvbjYYFSABKAgS",
+            "FQoNSXNDU1RQcmVzZW5jZRgWIAEoCBIUCgxBR1ZQb3J0UmVhZHkYFyABKAgS",
+            "EgoKQ2FuT3BlbkJveBgYIAEoCBIRCglJc0JveE9wZW4YGSABKAgSEwoLQkNS",
+            "UmVhZERvbmUYGiABKAgSGwoTQ1NUUHJlc2VuY2VNaXNtYXRjaBgbIAEoCBIa",
+            "ChJJc1RyYW5zZmVyQ29tcGxldGUYHCABKAgSFgoOQ3N0UmVtb3ZlQ2hlY2sY",
+            "HSABKAgSEQoJRXJyb3JDb2RlGB4gASgFEg0KBUJveElEGB8gASgJEhIKCkNh",
+            "c3NldHRlSUQYICABKAkSDgoGUG9ydElEGCEgASgJQpsBChRjb20uZXhhbXBs",
+            "ZS50dXRvcmlhbEIRQWRkcmVzc0Jvb2tQcm90b3NQAVorZ2l0aHViLmNvbS9n",
+            "b2xhbmcvcHJvdG9idWYvcHR5cGVzL3RpbWVzdGFtcPgBAaICA0dQQqoCN2Nv",
+            "bS5taXJsZS5pYmczazAuc2MuUHJvdG9jb2xGb3JtYXQuU3lzdGVtQ2xhc3Mu",
+            "UG9ydEluZm9iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -238,7 +238,7 @@ namespace com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public PORT_INFO(PORT_INFO other) : this() {
-      Timestamp = other.timestamp_ != null ? other.Timestamp.Clone() : null;
+      timestamp_ = other.timestamp_;
       opAutoMode_ = other.opAutoMode_;
       opManualMode_ = other.opManualMode_;
       opError_ = other.opError_;
@@ -280,12 +280,12 @@ namespace com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo {
 
     /// <summary>Field number for the "Timestamp" field.</summary>
     public const int TimestampFieldNumber = 1;
-    private global::com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo.Timestamp timestamp_;
+    private string timestamp_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo.Timestamp Timestamp {
+    public string Timestamp {
       get { return timestamp_; }
       set {
-        timestamp_ = value;
+        timestamp_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -711,7 +711,7 @@ namespace com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(Timestamp, other.Timestamp)) return false;
+      if (Timestamp != other.Timestamp) return false;
       if (OpAutoMode != other.OpAutoMode) return false;
       if (OpManualMode != other.OpManualMode) return false;
       if (OpError != other.OpError) return false;
@@ -750,7 +750,7 @@ namespace com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (timestamp_ != null) hash ^= Timestamp.GetHashCode();
+      if (Timestamp.Length != 0) hash ^= Timestamp.GetHashCode();
       if (OpAutoMode != false) hash ^= OpAutoMode.GetHashCode();
       if (OpManualMode != false) hash ^= OpManualMode.GetHashCode();
       if (OpError != false) hash ^= OpError.GetHashCode();
@@ -793,9 +793,9 @@ namespace com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (timestamp_ != null) {
+      if (Timestamp.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteMessage(Timestamp);
+        output.WriteString(Timestamp);
       }
       if (OpAutoMode != false) {
         output.WriteRawTag(16);
@@ -930,8 +930,8 @@ namespace com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (timestamp_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Timestamp);
+      if (Timestamp.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Timestamp);
       }
       if (OpAutoMode != false) {
         size += 1 + 1;
@@ -1037,11 +1037,8 @@ namespace com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo {
       if (other == null) {
         return;
       }
-      if (other.timestamp_ != null) {
-        if (timestamp_ == null) {
-          timestamp_ = new global::com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo.Timestamp();
-        }
-        Timestamp.MergeFrom(other.Timestamp);
+      if (other.Timestamp.Length != 0) {
+        Timestamp = other.Timestamp;
       }
       if (other.OpAutoMode != false) {
         OpAutoMode = other.OpAutoMode;
@@ -1150,10 +1147,7 @@ namespace com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo {
             input.SkipLastField();
             break;
           case 10: {
-            if (timestamp_ == null) {
-              timestamp_ = new global::com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo.Timestamp();
-            }
-            input.ReadMessage(timestamp_);
+            Timestamp = input.ReadString();
             break;
           }
           case 16: {

@@ -3,6 +3,7 @@ using com.mirle.ibg3k0.bcf.Common;
 using com.mirle.ibg3k0.bcf.Data.ValueDefMapAction;
 using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
+using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data.SECS;
 using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.Data.VO.Interface;
@@ -147,6 +148,7 @@ namespace com.mirle.ibg3k0.sc
             return this.EQPT_ID;
         }
         public bool IsReservation { get; set; }
+        public bool IsTransferUnloadExcuting { get; set; }
         public bool IsReadyDoubleUnload
         {
             get
@@ -165,6 +167,15 @@ namespace com.mirle.ibg3k0.sc
                    ToList();
         }
 
+        public List<APORTSTATION> loadReadyAGVStationPort()
+        {
+            if (portStationList == null)
+            { return new List<APORTSTATION>(); }
+            return portStationList.
+                   Where(port_station => port_station.IsInPutMode && port_station.PortReady).
+                   OrderBy(port_station => port_station.PORT_ID).
+                   ToList();
+        }
     }
 
 
@@ -172,7 +183,9 @@ namespace com.mirle.ibg3k0.sc
     {
         string RemoveURI { get; set; }
         string getAGVStationID();
+        List<APORTSTATION> loadReadyAGVStationPort();
         bool IsReservation { get; set; }
+        bool IsTransferUnloadExcuting { get; set; }
         bool IsReadyDoubleUnload { get; }
         List<APORTSTATION> getAGVStationPorts();
     }

@@ -2,6 +2,7 @@
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.Data.DAO;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 {
     public class TransferBLL
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public DB db = null;
         public Web web = null;
         public TransferBLL()
@@ -202,35 +204,75 @@ namespace com.mirle.ibg3k0.sc.BLL
         public class Web
         {
             const string UNLOAD_CHECK_RESULT_OK = "OK";
+            const string TRANSFER_RECEIVE_CONST = "0";
 
             WebClientManager webClientManager;
             public Web(WebClientManager webClientManager)
             {
                 this.webClientManager = webClientManager;
             }
-
             public void notifyNoUnloadTransferToAGVStation(IAGVStationType agvStation)
             {
-                canExcuteUnloadTransferToAGVStation(agvStation, 0);
+                canExcuteUnloadTransferToAGVStation(agvStation, 0, false);
             }
-            public bool canExcuteUnloadTransferToAGVStation(IAGVStationType agvStation, int queueCount)
+            public bool canExcuteUnloadTransferToAGVStation(IAGVStationType agvStation, int unfinishCmdCount, bool isEmergency)
             {
-                string agv_url = agvStation.RemoveURI;
-                string agv_station_id = agvStation.getAGVStationID();
-                string[] action_targets = new string[]
+                string result = "";
+                try
                 {
-                    "AGVStation",
+                    string agv_url = agvStation.RemoveURI;
+                    string agv_station_id = agvStation.getAGVStationID();
+                    string[] action_targets = new string[]
+                    {
+                    "TransferManagement",
                     "TransferCheck",
-                };
-                string[] param = new string[]
-                {
-                    "agv_station_id",
-                    $"?{nameof(queueCount)}={queueCount}",
-                };
-                string result = webClientManager.GetInfoFromServer(agv_url, action_targets, param);
+                    "AGVStation"
+                    };
+                    string[] param = new string[]
+                    {
+                    agv_station_id,
+                    $"?{nameof(unfinishCmdCount)}={unfinishCmdCount}",
+                    $"?{nameof(isEmergency)}={isEmergency}",
+                    };
+                    result = webClientManager.GetInfoFromServer(agv_url, action_targets, param);
 
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
                 return SCUtility.isMatche(result, UNLOAD_CHECK_RESULT_OK);
             }
+
+            List<string> notify_urls = new List<string>()
+            {
+                "http://stk01.asek21.mirle.com.tw:15000",
+                 "http://agvc.asek21.mirle.com.tw:15000"
+            };
+            public void receiveMCSCommandNotify()
+            {
+                try
+                {
+                    string[] action_targets = new string[]
+                    {
+                    "weatherforecast"
+                    };
+                    string[] param = new string[]
+                    {
+                    TRANSFER_RECEIVE_CONST,
+                    };
+                    foreach (string notify_url in notify_urls)
+                    {
+                        string result = webClientManager.GetInfoFromServer(notify_url, action_targets, param);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
+
+
 
         }
     }

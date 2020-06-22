@@ -69,6 +69,10 @@ namespace com.mirle.ibg3k0.sc.Service
             public bool Command(AVEHICLE assignVH, ACMD cmd)
             {
                 bool isSuccess = ProcSendTransferCommandToVh(assignVH, cmd);
+                if (isSuccess)
+                {
+                    Task.Run(() => vehicleBLL.web.commandSendCompleteNotify(assignVH.VEHICLE_ID));
+                }
                 return isSuccess;
             }
             public bool CommandHome(string vhID, string cmdID)
@@ -283,11 +287,6 @@ namespace com.mirle.ibg3k0.sc.Service
                                     !SCUtility.isMatche(vh.PredictSections, will_pass_section_id)
                                     ;
 
-                if (modeStat != vh.MODE_STATUS)
-                {
-                    vh.onModeStatusChange(modeStat);
-                }
-
                 if (hasdifferent)
                 {
                     scApp.VehicleBLL.cache.updateVehicleStatus(scApp.CMDBLL, vh.VEHICLE_ID,
@@ -296,6 +295,15 @@ namespace com.mirle.ibg3k0.sc.Service
                                                          has_cst_l, has_cst_r,
                                                          cmd_id_1, cmd_id_2,
                                                          batteryCapacity, will_pass_section_id);
+                }
+
+                if (modeStat != vh.MODE_STATUS)
+                {
+                    vh.onModeStatusChange(modeStat);
+                }
+                if (errorStat != vh.ERROR)
+                {
+                    vh.onErrorStatusChange(errorStat);
                 }
 
                 return isSuccess;
@@ -859,8 +867,23 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else
                 {
-                    scApp.CarrierBLL.db.updateLocationAndState
-                        (cmd.CARRIER_ID, "", E_CARRIER_STATE.Installed);
+                    string location_id_r = vh.LocationRealID_R;
+                    string location_id_l = vh.LocationRealID_L;
+                    //在找不到在哪個CST時，要找自己的Table是否有該Vh carrier如果有就上報另一個沒carrier的
+                    var check_has_carrier_on_location_result = scApp.CarrierBLL.db.hasCarrierOnVhLocation(location_id_l);
+                    if (check_has_carrier_on_location_result.has)
+                    {
+                        scApp.CarrierBLL.db.updateLocationAndState
+                            (cmd.CARRIER_ID, location_id_r, E_CARRIER_STATE.Installed);
+                    }
+                    else
+                    {
+                        scApp.CarrierBLL.db.updateLocationAndState
+                            (cmd.CARRIER_ID, location_id_l, E_CARRIER_STATE.Installed);
+                    }
+
+                    //scApp.CarrierBLL.db.updateLocationAndState
+                    //    (cmd.CARRIER_ID, "", E_CARRIER_STATE.Installed);
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                        Data: $"vh:{vh.VEHICLE_ID} report load complete cst id:{SCUtility.Trim(cmd.CARRIER_ID, true)}, " +
                              $"but no find carrier in vh. location r cst id:{vh.CST_ID_R},location l cst id:{vh.CST_ID_L}",
@@ -1046,7 +1069,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         return;
                     }
                 }
-                updateCarrierInVehicleLocation(vh, cmd, readCarrierID);
+                //updateCarrierInVehicleLocation(vh, cmd, readCarrierID);
                 bool is_tran_cmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 switch (bCRReadResult)
                 {
@@ -1562,10 +1585,6 @@ namespace com.mirle.ibg3k0.sc.Service
                                     vh.HAS_CST_R != has_cst_r ||
                                     !SCUtility.isMatche(vh.PredictSections, will_pass_section_id)
                                     ;
-                if (modeStat != vh.MODE_STATUS)
-                {
-                    vh.onModeStatusChange(modeStat);
-                }
                 if (hasdifferent)
                 {
                     scApp.VehicleBLL.cache.updateVehicleStatus(scApp.CMDBLL, vh.VEHICLE_ID,
@@ -1575,6 +1594,15 @@ namespace com.mirle.ibg3k0.sc.Service
                                                          cmd_id_1, cmd_id_2,
                                                          batteryCapacity, will_pass_section_id);
                 }
+                if (modeStat != vh.MODE_STATUS)
+                {
+                    vh.onModeStatusChange(modeStat);
+                }
+                if (errorStat != vh.ERROR)
+                {
+                    vh.onErrorStatusChange(errorStat);
+                }
+
                 //  reply_status_event_report(bcfApp, eqpt, seq_num);
             }
             private bool reply_status_event_report(BCFApplication bcfApp, AVEHICLE vh, int seq_num)
@@ -1714,9 +1742,14 @@ namespace com.mirle.ibg3k0.sc.Service
                 service = _service;
             }
 
-            public bool Move(string vhID, string destination)
+            //public bool Move(string vhID, string destination)
+            public (bool isSuccess, ACMD moveCmd) Move(string vhID, string destination)
             {
-                return scApp.CMDBLL.doCreatCommand(vhID, cmd_type: E_CMD_TYPE.Move, destination: destination);
+                bool is_success = false;
+                ACMD cmd_obj = null;
+                is_success = scApp.CMDBLL.doCreatCommand(vhID, out cmd_obj, cmd_type: E_CMD_TYPE.Move, destination: destination);
+                //return scApp.CMDBLL.doCreatCommand(vhID, cmd_type: E_CMD_TYPE.Move, destination: destination);
+                return (is_success, cmd_obj);
             }
             public bool MoveToCharge(string vhID, string destination)
             {
@@ -1876,6 +1909,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             {
                                 continue;
                             }
+
                             bool is_success = service.Send.Command(assignVH, cmd);
                             if (!is_success)
                             {
@@ -1892,6 +1926,84 @@ namespace com.mirle.ibg3k0.sc.Service
                     finally
                     {
                         System.Threading.Interlocked.Exchange(ref cmd_SyncPoint, 0);
+                    }
+                }
+            }
+            public void Scan_V2()
+            {
+                if (System.Threading.Interlocked.Exchange(ref cmd_SyncPoint, 1) == 0)
+                {
+                    try
+                    {
+                        if (scApp.getEQObjCacheManager().getLine().ServiceMode
+                            != SCAppConstants.AppServiceMode.Active)
+                            return;
+                        List<ACMD> CMD_OHTC_Queues = scApp.CMDBLL.loadCMD_OHTCMDStatusIsQueue();
+                        if (CMD_OHTC_Queues == null || CMD_OHTC_Queues.Count == 0)
+                            return;
+                        foreach (ACMD cmd in CMD_OHTC_Queues)
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(CMDBLL), Device: string.Empty,
+                               Data: $"Start process command ,id:{SCUtility.Trim(cmd.ID)},vh id:{SCUtility.Trim(cmd.VH_ID)},from:{SCUtility.Trim(cmd.SOURCE)},to:{SCUtility.Trim(cmd.DESTINATION)}");
+
+                            string vehicle_id = cmd.VH_ID.Trim();
+                            AVEHICLE assignVH = scApp.VehicleBLL.cache.getVehicle(vehicle_id);
+                            if (!assignVH.isTcpIpConnect ||
+                                !scApp.CMDBLL.canSendCmd(vehicle_id)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
+                            {
+                                continue;
+                            }
+                            //1.如果目的地是AGV Station，則需要去看目的地的Port是否已經準備好了
+                            //  如果還沒好，則需要先把這台AGV派至該命令的EQ端等待接收命令
+                            bool is_agv_station_target_port = cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
+                            if (is_agv_station_target_port)
+                            {
+                                var target_port_agv_station = cmd.getTragetPortEQ(scApp.PortStationBLL, scApp.EqptBLL) as AGVStation;
+                                if (!target_port_agv_station.IsReadyDoubleUnload)
+                                {
+                                    preMoveToSourcePort(assignVH, cmd);
+                                    continue;
+                                }
+                            }
+
+                            bool is_success = service.Send.Command(assignVH, cmd);
+                            if (!is_success)
+                            {
+                                //Finish(cmd.ID, CompleteStatus.Cancel);
+                                //Finish(cmd.ID, CompleteStatus.VehicleAbort);
+                                CommandInitialFail(cmd);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, "Exection:");
+                    }
+                    finally
+                    {
+                        System.Threading.Interlocked.Exchange(ref cmd_SyncPoint, 0);
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 確認vh是否已經在準備要他去的Address上，如果還沒且
+            /// </summary>
+            /// <param name="assignVH"></param>
+            /// <param name="cmd"></param>
+            private void preMoveToSourcePort(AVEHICLE assignVH, ACMD cmd)
+            {
+                string vh_current_adr = assignVH.CUR_ADR_ID;
+                string cmd_source_adr = cmd.SOURCE;
+                //如果一樣 則代表已經在待命位上
+                if (SCUtility.isMatche(vh_current_adr, cmd_source_adr)) return;
+                var creat_result = service.Command.Move(assignVH.VEHICLE_ID, cmd.SOURCE);
+                if (creat_result.isSuccess)
+                {
+                    bool is_success = service.Send.Command(assignVH, creat_result.moveCmd);
+                    if (!is_success)
+                    {
+                        CommandInitialFail(cmd);
                     }
                 }
             }
@@ -1954,7 +2066,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                 //                                    E_CMD_TYPE.Move,
                                 //                                    string.Empty,
                                 //                                    avoid_address);
-                                bool is_success = service.Command.Move(reserved_vh.VEHICLE_ID, avoid_address);
+                                bool is_success = service.Command.Move(reserved_vh.VEHICLE_ID, avoid_address).isSuccess;
                                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                                    Data: $"Try to notify vh avoid,requestVh:{requestVhID} reservedVh:{reservedVhID}, is success :{is_success}.",
                                    VehicleID: requestVhID);
@@ -2341,6 +2453,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.ExcuteCommandStatusChange += (s1, e1) => PublishVhInfo(s1, e1);
                 vh.VehicleStatusChange += (s1, e1) => PublishVhInfo(s1, e1);
                 vh.VehiclePositionChange += (s1, e1) => PublishVhInfo(s1, e1);
+                vh.ErrorStatusChange += (s1, e1) => Vh_ErrorStatusChange(s1, e1);
 
 
                 vh.addEventHandler(nameof(VehicleService), nameof(vh.isTcpIpConnect), PublishVhInfo);
@@ -2360,6 +2473,26 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         #region Vh Event Handler
+        private void Vh_ErrorStatusChange(object sender, VhStopSingle vhStopSingle)
+        {
+            AVEHICLE vh = sender as AVEHICLE;
+            if (vh == null) return;
+            try
+            {
+                if (vhStopSingle == VhStopSingle.On)
+                {
+                    scApp.VehicleBLL.web.errorHappendNotify();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: ex,
+                   VehicleID: vh.VEHICLE_ID,
+                   CST_ID_L: vh.CST_ID_L,
+                   CST_ID_R: vh.CST_ID_R);
+            }
+        }
         private void Vh_ModeStatusChange(object sender, VHModeStatus e)
         {
             AVEHICLE vh = sender as AVEHICLE;
