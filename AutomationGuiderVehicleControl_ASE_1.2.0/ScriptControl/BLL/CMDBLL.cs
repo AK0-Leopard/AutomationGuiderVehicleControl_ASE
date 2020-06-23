@@ -28,10 +28,16 @@ namespace com.mirle.ibg3k0.sc.BLL
         TestTranTaskDao testTranTaskDao = null;
         ReturnCodeMapDao return_code_mapDao = null;
 
+        public Cache cache { get; private set; }
+
+
         protected static Logger logger_VhRouteLog = LogManager.GetLogger("VhRoute");
         private string[] ByPassSegment = null;
         ParkZoneTypeDao parkZoneTypeDao = null;
         private SCApplication scApp = null;
+
+
+
         public CMDBLL()
         {
 
@@ -48,6 +54,8 @@ namespace com.mirle.ibg3k0.sc.BLL
             parkZoneTypeDao = scApp.ParkZoneTypeDao;
             testTranTaskDao = scApp.TestTranTaskDao;
             return_code_mapDao = scApp.ReturnCodeMapDao;
+
+            cache = new Cache(app);
         }
 
 
@@ -1961,5 +1969,35 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
         #endregion HCMD
+
+        public class Cache
+        {
+            SCApplication app = null;
+            //public Cache(ALINE _line)
+            public Cache(SCApplication _app)
+            {
+                app = _app;
+            }
+            public bool hasCmdExcute(string vhID)
+            {
+                try
+                {
+                    ALINE line = app.getEQObjCacheManager().getLine();
+                    var current_unfinish_cmd = line.CurrentExcuteCommand;
+                    if (current_unfinish_cmd == null || current_unfinish_cmd.Count == 0)
+                        return false;
+                    var has_unfinish_cmd_by_vh = current_unfinish_cmd.Where(cmd => SCUtility.isMatche(cmd.VH_ID, vhID))
+                                                                         .Count() > 0;
+                    return has_unfinish_cmd_by_vh;
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    return false;
+                }
+            }
+        }
+
+
     }
 }

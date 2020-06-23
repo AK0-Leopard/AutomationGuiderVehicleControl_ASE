@@ -1728,6 +1728,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean testRetryVhunloading = false;
         public static Boolean testRetryBcrread = false;
         public static Boolean CommandCheckForcePass = false;
+        public static Boolean CanUnloadToAGVStationTest = false;
         public static int CommandCompleteWaitTime = 0;
 
         public static int NumberOfAvoidanceSegment = 3;

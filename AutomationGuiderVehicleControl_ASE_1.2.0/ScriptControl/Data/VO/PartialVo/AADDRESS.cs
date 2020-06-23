@@ -9,6 +9,7 @@ using com.mirle.ibg3k0.sc.BLL;
 using System.Collections;
 using Newtonsoft.Json;
 using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.App;
 
 namespace com.mirle.ibg3k0.sc
 {
@@ -131,6 +132,28 @@ namespace com.mirle.ibg3k0.sc
             }
         }
 
+        public bool IsWork(UnitBLL unitBLL)
+        {
+            return true;
+            AUNIT charger = unitBLL.OperateCatch.getUnit(ChargerID);
+            if (charger != null)
+            {
+                switch (CouplerNum)
+                {
+                    case CouplerNum.NumberOne:
+                        return charger.coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                               charger.coupler1Status == SCAppConstants.CouplerStatus.Charging;
+                    case CouplerNum.NumberTwo:
+                        return charger.coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                               charger.coupler1Status == SCAppConstants.CouplerStatus.Charging;
+                    case CouplerNum.NumberThree:
+                        return charger.coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                               charger.coupler1Status == SCAppConstants.CouplerStatus.Charging;
+                }
+            }
+            return false;
+        }
+
         public int DistanceWithTargetAdr { get; private set; } = 0;
         public int CompareTo(CouplerAddress other)
         {
@@ -182,6 +205,29 @@ namespace com.mirle.ibg3k0.sc
         {
             return vehicleBLL.cache.hasVhGoingAdr(ADR_ID);
         }
+
+        public bool IsWork(UnitBLL unitBLL)
+        {
+            return true;
+            AUNIT charger = unitBLL.OperateCatch.getUnit(ChargerID);
+            if (charger != null)
+            {
+                switch (CouplerNum)
+                {
+                    case CouplerNum.NumberOne:
+                        return charger.coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                               charger.coupler1Status == SCAppConstants.CouplerStatus.Charging;
+                    case CouplerNum.NumberTwo:
+                        return charger.coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                               charger.coupler1Status == SCAppConstants.CouplerStatus.Charging;
+                    case CouplerNum.NumberThree:
+                        return charger.coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                               charger.coupler1Status == SCAppConstants.CouplerStatus.Charging;
+                }
+            }
+            return false;
+        }
+
         public string[] EnhanceControlAddress { get; set; }
         public List<Data.VO.ReserveEnhanceInfo> infos { get; set; }
     }
@@ -202,6 +248,8 @@ namespace com.mirle.ibg3k0.sc
         string[] TrafficControlSegment { get; set; }
         bool hasVh(VehicleBLL vehicleBLL);
         bool hasVhGoing(VehicleBLL vehicleBLL);
+        bool IsWork(UnitBLL unitBLL);
+
     }
 
     public interface IReserveEnhance

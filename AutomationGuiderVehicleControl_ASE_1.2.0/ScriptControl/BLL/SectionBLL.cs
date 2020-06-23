@@ -76,10 +76,20 @@ namespace com.mirle.ibg3k0.sc.BLL
                                                  ToList();
                 return result_sections;
             }
+            public List<ASECTION> GetSectionsByFromToAddress(string adr)
+            {
+                List<ASECTION> result_sections = CommObjCacheManager.getSections().
+                                                 //Where(sec => sec.FROM_ADR_ID.Trim() == adr.Trim()).
+                                                 Where(sec => SCUtility.isMatche(sec.REAL_FROM_ADR_ID, adr) ||
+                                                              SCUtility.isMatche(sec.REAL_TO_ADR_ID, adr)).
+                                                 ToList();
+                return result_sections;
+            }
             public List<ASECTION> GetSectionsByFromAddress(string adr)
             {
                 List<ASECTION> result_sections = CommObjCacheManager.getSections().
-                                                 Where(sec => sec.FROM_ADR_ID.Trim() == adr.Trim()).
+                                                 //Where(sec => sec.FROM_ADR_ID.Trim() == adr.Trim()).
+                                                 Where(sec => sec.REAL_FROM_ADR_ID.Trim() == adr.Trim()).
                                                  ToList();
                 return result_sections;
             }

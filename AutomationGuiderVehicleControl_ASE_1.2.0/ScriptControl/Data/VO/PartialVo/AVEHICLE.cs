@@ -72,6 +72,7 @@ namespace com.mirle.ibg3k0.sc
         VehicleTimerAction vehicleTimer = null;
         public VehicleStateMachine vhStateMachine;
         private Stopwatch CurrentCommandExcuteTime;
+        public Stopwatch IdleTime;
         public AVEHICLE()
         {
             eqptObjectCate = SCAppConstants.EQPT_OBJECT_CATE_EQPT;
@@ -79,6 +80,7 @@ namespace com.mirle.ibg3k0.sc
             vhStateMachine.OnTransitioned(TransitionedHandler);
             vhStateMachine.OnUnhandledTrigger(UnhandledTriggerHandler);
             CurrentCommandExcuteTime = new Stopwatch();
+            IdleTime = new Stopwatch();
         }
 
 
@@ -219,7 +221,8 @@ namespace com.mirle.ibg3k0.sc
             {
                 current_adr = current_adr.Remove(0, 1);
                 current_adr = "1" + current_adr;
-                var sections = sectionBLL.cache.GetSectionsByFromAddress(current_adr);
+                //var sections = sectionBLL.cache.GetSectionsByFromAddress(current_adr);
+                var sections = sectionBLL.cache.GetSectionsByFromToAddress(current_adr);
                 //濾掉9開頭的路段
                 sections = sections.
                            Where(sec => !sec.SEC_ID.StartsWith("9")).
@@ -1292,6 +1295,8 @@ namespace com.mirle.ibg3k0.sc
                         //{
                         //    vh.onLongTimeInaction(vh.OHTC_CMD);
                         //}
+
+
                     }
                     catch (Exception ex)
                     {
@@ -1309,6 +1314,23 @@ namespace com.mirle.ibg3k0.sc
                 }
             }
 
+            private void IdleTimeCheck()
+            {
+                if (vh.ACT_STATUS == VHActionStatus.NoCommand)
+                {
+                    if (!vh.IdleTime.IsRunning)
+                    {
+                        vh.IdleTime.Restart();
+                    }
+                }
+                else
+                {
+                    if (vh.IdleTime.IsRunning)
+                    {
+                        vh.IdleTime.Reset();
+                    }
+                }
+            }
         }
         public class ReserveUnsuccessInfo
         {

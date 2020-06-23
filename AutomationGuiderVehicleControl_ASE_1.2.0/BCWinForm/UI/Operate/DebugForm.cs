@@ -1416,5 +1416,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             DebugParameter.CommandCompleteWaitTime = (int)numer_commandWaitTime.Value;
         }
 
+        private void cb_canUnloadToAGVStation_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.CanUnloadToAGVStationTest = cb_canUnloadToAGVStation.Checked;
+        }
     }
 }

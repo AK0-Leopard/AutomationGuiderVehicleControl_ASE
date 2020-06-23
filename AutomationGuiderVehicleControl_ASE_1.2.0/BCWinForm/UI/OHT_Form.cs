@@ -367,7 +367,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             SetHostControlState(line.Host_Control_State);
             //updateDGVTransferCommandAsync();
             updateDGVVTransferCommand(line);
-            updateDGVCommandAsync();
+            //updateDGVCommandAsync();
+            updateDGVCommand(line);
         }
         private async void updateDGVTransferCommandAsync()
         {
@@ -395,6 +396,16 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             List<ACMD> cmd_mcs_lst = null;
             await Task.Run(() => cmd_mcs_lst = scApp.CMDBLL.loadUnfinishCmd());
             cmd_obj_to_show = cmd_mcs_lst.
+                Select(cmd => new CMDObjToShow(cmd)).
+                ToList();
+            cmd_bindingSource.DataSource = cmd_obj_to_show;
+            dgv_TaskCommand.Refresh();
+        }
+        private void updateDGVCommand(ALINE line)
+        {
+            List<ACMD> cmd_lst = line.CurrentExcuteCommand;
+            if (cmd_lst == null) return;
+            cmd_obj_to_show = cmd_lst.
                 Select(cmd => new CMDObjToShow(cmd)).
                 ToList();
             cmd_bindingSource.DataSource = cmd_obj_to_show;

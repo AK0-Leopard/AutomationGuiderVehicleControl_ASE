@@ -145,6 +145,18 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dgv_cache_object_data_portstation = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.adrID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isinput_mode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.isOutPutMode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.portReady = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.waitOut = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.waitIn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.isCSTPresence = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.cSTPresenceMismatch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.cstID_PLC = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btn_refresf_portsation_info = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
@@ -314,18 +326,7 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.adrID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isinput_mode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.isOutPutMode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.portReady = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.waitOut = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.waitIn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.isCSTPresence = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.cSTPresenceMismatch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.cstID_PLC = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.cb_canUnloadToAGVStation = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1630,7 +1631,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(210, 8);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(210, 3);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -1709,6 +1710,94 @@
             this.dgv_cache_object_data_portstation.Size = new System.Drawing.Size(1355, 824);
             this.dgv_cache_object_data_portstation.TabIndex = 0;
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "PORT_ID";
+            this.dataGridViewTextBoxColumn1.FillWeight = 500F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 250;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "CST_ID";
+            this.dataGridViewTextBoxColumn2.FillWeight = 200F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "CST ID";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 100;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // adrID
+            // 
+            this.adrID.DataPropertyName = "ADR_ID";
+            this.adrID.HeaderText = "Adr ID";
+            this.adrID.Name = "adrID";
+            this.adrID.ReadOnly = true;
+            // 
+            // isinput_mode
+            // 
+            this.isinput_mode.DataPropertyName = "IsInPutMode";
+            this.isinput_mode.HeaderText = "In Put Mode";
+            this.isinput_mode.Name = "isinput_mode";
+            this.isinput_mode.ReadOnly = true;
+            // 
+            // isOutPutMode
+            // 
+            this.isOutPutMode.DataPropertyName = "IsOutPutMode";
+            this.isOutPutMode.HeaderText = "Out Put Mode";
+            this.isOutPutMode.Name = "isOutPutMode";
+            this.isOutPutMode.ReadOnly = true;
+            // 
+            // portReady
+            // 
+            this.portReady.DataPropertyName = "PortReady";
+            this.portReady.HeaderText = "Port Ready";
+            this.portReady.Name = "portReady";
+            this.portReady.ReadOnly = true;
+            // 
+            // waitOut
+            // 
+            this.waitOut.DataPropertyName = "PortWaitOut";
+            this.waitOut.HeaderText = "Wait Out";
+            this.waitOut.Name = "waitOut";
+            this.waitOut.ReadOnly = true;
+            // 
+            // waitIn
+            // 
+            this.waitIn.DataPropertyName = "PortWaitIn";
+            this.waitIn.HeaderText = "Wait In";
+            this.waitIn.Name = "waitIn";
+            this.waitIn.ReadOnly = true;
+            // 
+            // isCSTPresence
+            // 
+            this.isCSTPresence.DataPropertyName = "IsCSTPresence";
+            this.isCSTPresence.HeaderText = "Is CST Presence";
+            this.isCSTPresence.Name = "isCSTPresence";
+            this.isCSTPresence.ReadOnly = true;
+            // 
+            // cSTPresenceMismatch
+            // 
+            this.cSTPresenceMismatch.DataPropertyName = "CSTPresenceMismatch";
+            this.cSTPresenceMismatch.HeaderText = "CST Presence Mismatch";
+            this.cSTPresenceMismatch.Name = "cSTPresenceMismatch";
+            this.cSTPresenceMismatch.ReadOnly = true;
+            // 
+            // cstID_PLC
+            // 
+            this.cstID_PLC.DataPropertyName = "CassetteID";
+            this.cstID_PLC.HeaderText = "CST ID(PLC)";
+            this.cstID_PLC.Name = "cstID_PLC";
+            this.cstID_PLC.ReadOnly = true;
+            // 
+            // includeCycleTest
+            // 
+            this.includeCycleTest.DataPropertyName = "IncludeCycleTest";
+            this.includeCycleTest.FalseValue = "False";
+            this.includeCycleTest.HeaderText = "Cycle Run";
+            this.includeCycleTest.Name = "includeCycleTest";
+            this.includeCycleTest.TrueValue = "True";
+            // 
             // btn_refresf_portsation_info
             // 
             this.btn_refresf_portsation_info.Location = new System.Drawing.Point(1364, 3);
@@ -1721,6 +1810,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.cb_canUnloadToAGVStation);
             this.tabPage3.Controls.Add(this.groupBox18);
             this.tabPage3.Controls.Add(this.numer_num_of_avoid_seg);
             this.tabPage3.Controls.Add(this.lbl_num_of_avoid_seg);
@@ -3416,93 +3506,16 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // dataGridViewTextBoxColumn1
+            // cb_canUnloadToAGVStation
             // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "PORT_ID";
-            this.dataGridViewTextBoxColumn1.FillWeight = 500F;
-            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Width = 250;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "CST_ID";
-            this.dataGridViewTextBoxColumn2.FillWeight = 200F;
-            this.dataGridViewTextBoxColumn2.HeaderText = "CST ID";
-            this.dataGridViewTextBoxColumn2.MinimumWidth = 100;
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
-            // adrID
-            // 
-            this.adrID.DataPropertyName = "ADR_ID";
-            this.adrID.HeaderText = "Adr ID";
-            this.adrID.Name = "adrID";
-            this.adrID.ReadOnly = true;
-            // 
-            // isinput_mode
-            // 
-            this.isinput_mode.DataPropertyName = "IsInPutMode";
-            this.isinput_mode.HeaderText = "In Put Mode";
-            this.isinput_mode.Name = "isinput_mode";
-            this.isinput_mode.ReadOnly = true;
-            // 
-            // isOutPutMode
-            // 
-            this.isOutPutMode.DataPropertyName = "IsOutPutMode";
-            this.isOutPutMode.HeaderText = "Out Put Mode";
-            this.isOutPutMode.Name = "isOutPutMode";
-            this.isOutPutMode.ReadOnly = true;
-            // 
-            // portReady
-            // 
-            this.portReady.DataPropertyName = "PortReady";
-            this.portReady.HeaderText = "Port Ready";
-            this.portReady.Name = "portReady";
-            this.portReady.ReadOnly = true;
-            // 
-            // waitOut
-            // 
-            this.waitOut.DataPropertyName = "PortWaitOut";
-            this.waitOut.HeaderText = "Wait Out";
-            this.waitOut.Name = "waitOut";
-            this.waitOut.ReadOnly = true;
-            // 
-            // waitIn
-            // 
-            this.waitIn.DataPropertyName = "PortWaitIn";
-            this.waitIn.HeaderText = "Wait In";
-            this.waitIn.Name = "waitIn";
-            this.waitIn.ReadOnly = true;
-            // 
-            // isCSTPresence
-            // 
-            this.isCSTPresence.DataPropertyName = "IsCSTPresence";
-            this.isCSTPresence.HeaderText = "Is CST Presence";
-            this.isCSTPresence.Name = "isCSTPresence";
-            this.isCSTPresence.ReadOnly = true;
-            // 
-            // cSTPresenceMismatch
-            // 
-            this.cSTPresenceMismatch.DataPropertyName = "CSTPresenceMismatch";
-            this.cSTPresenceMismatch.HeaderText = "CST Presence Mismatch";
-            this.cSTPresenceMismatch.Name = "cSTPresenceMismatch";
-            this.cSTPresenceMismatch.ReadOnly = true;
-            // 
-            // cstID_PLC
-            // 
-            this.cstID_PLC.DataPropertyName = "CassetteID";
-            this.cstID_PLC.HeaderText = "CST ID(PLC)";
-            this.cstID_PLC.Name = "cstID_PLC";
-            this.cstID_PLC.ReadOnly = true;
-            // 
-            // includeCycleTest
-            // 
-            this.includeCycleTest.DataPropertyName = "IncludeCycleTest";
-            this.includeCycleTest.FalseValue = "False";
-            this.includeCycleTest.HeaderText = "Cycle Run";
-            this.includeCycleTest.Name = "includeCycleTest";
-            this.includeCycleTest.TrueValue = "True";
+            this.cb_canUnloadToAGVStation.AutoSize = true;
+            this.cb_canUnloadToAGVStation.Location = new System.Drawing.Point(12, 504);
+            this.cb_canUnloadToAGVStation.Name = "cb_canUnloadToAGVStation";
+            this.cb_canUnloadToAGVStation.Size = new System.Drawing.Size(269, 26);
+            this.cb_canUnloadToAGVStation.TabIndex = 38;
+            this.cb_canUnloadToAGVStation.Text = "Can Unload To AGVStation";
+            this.cb_canUnloadToAGVStation.UseVisualStyleBackColor = true;
+            this.cb_canUnloadToAGVStation.CheckedChanged += new System.EventHandler(this.cb_canUnloadToAGVStation_CheckedChanged);
             // 
             // DebugForm
             // 
@@ -3891,5 +3904,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn cSTPresenceMismatch;
         private System.Windows.Forms.DataGridViewTextBoxColumn cstID_PLC;
         private System.Windows.Forms.DataGridViewCheckBoxColumn includeCycleTest;
+        private System.Windows.Forms.CheckBox cb_canUnloadToAGVStation;
     }
 }

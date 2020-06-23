@@ -176,6 +176,16 @@ namespace com.mirle.ibg3k0.sc.Module
         private void askVhToCharging(AVEHICLE vh)
         {
             string vh_current_address = vh.CUR_ADR_ID;
+            AADDRESS current_adr = addressesBLL.cache.GetAddress(vh.CUR_ADR_ID);
+            if (current_adr != null &&
+                current_adr is CouplerAddress && (current_adr as CouplerAddress).IsWork(unitBLL))
+            {
+                ICpuplerType cpupler = (current_adr as CouplerAddress);
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                         Data: $"ask vh:{vh.VEHICLE_ID} to charging. but it is already in charger:{cpupler.ChargerID} ,cpupler num:{cpupler.CouplerNum}",
+                         VehicleID: vh.VEHICLE_ID);
+                return;
+            }
             bool is_need_to_long_charge = vh.IsNeedToLongCharge();
             string best_coupler_adr = findBestCoupler(vh_current_address, is_need_to_long_charge);
             LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
@@ -183,25 +193,15 @@ namespace com.mirle.ibg3k0.sc.Module
                      VehicleID: vh.VEHICLE_ID);
             if (!SCUtility.isEmpty(best_coupler_adr))
             {
-                //cmdBLL.doCreatCommand(vh.VEHICLE_ID, string.Empty, string.Empty,
-                //                                 E_CMD_TYPE.Move_Charger,
-                //                                string.Empty,
-                //                                best_coupler_adr, 0, 0);
                 vehicleService.Command.MoveToCharge(vh.VEHICLE_ID, best_coupler_adr);
             }
         }
         public void askVhToChargerForWait(AVEHICLE vh)
         {
-            string vh_current_address = vh.CUR_ADR_ID;
-            bool is_need_to_long_charge = vh.IsNeedToLongCharge();
-            string best_coupler_adr = findBestCoupler(vh_current_address, is_need_to_long_charge);
             LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                     Data: $"ask vh:{vh.VEHICLE_ID} to charging. coupler adr:{best_coupler_adr} ",
+                     Data: $"ask vh:{vh.VEHICLE_ID} to charger idle.",
                      VehicleID: vh.VEHICLE_ID);
-            if (!SCUtility.isEmpty(best_coupler_adr))
-            {
-                vehicleService.Command.Move(vh.VEHICLE_ID, best_coupler_adr);
-            }
+            askVhToCharging(vh);
         }
 
 

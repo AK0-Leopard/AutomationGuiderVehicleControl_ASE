@@ -217,6 +217,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             public bool canExcuteUnloadTransferToAGVStation(IAGVStationType agvStation, int unfinishCmdCount, bool isEmergency)
             {
+                if (DebugParameter.CanUnloadToAGVStationTest)
+                    return true;
+                else
+                    return false;
                 string result = "";
                 try
                 {

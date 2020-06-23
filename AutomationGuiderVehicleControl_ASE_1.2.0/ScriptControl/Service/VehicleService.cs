@@ -573,7 +573,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
                 vh.VhAvoidInfo = null;
 
-                tryAskVh2ChargerIdle(vh);
                 if (scApp.getEQObjCacheManager().getLine().SCStats == ALINE.TSCState.PAUSING)
                 {
                     List<ATRANSFER> cmd_mcs_lst = scApp.CMDBLL.loadUnfinishedTransfer();
@@ -582,19 +581,27 @@ namespace com.mirle.ibg3k0.sc.Service
                         scApp.LineService.TSCStateToPause();
                     }
                 }
+                tryAskVh2ChargerIdle(vh);
             }
 
             /// <summary>
-            ///-確認是否有該Zone的命令要執行
-            ///-確認該Vh已經沒有在執行命令
-            ///-確認該vh不是在充電站上
-            /// 如果都沒有的話才叫這台結束的VH去充電
+            /// 如果等待時間超過了"MAX_WAIT_COMMAND_TIME"，
+            /// 就可以讓車子回去充電站待命了。
             /// </summary>
             /// <param name="vh"></param>
+            const int MAX_WAIT_COMMAND_TIME = 10000;
             private void tryAskVh2ChargerIdle(AVEHICLE vh)
             {
-
+                string vh_id = vh.VEHICLE_ID;
+                SpinWait.SpinUntil(() => false, 3000);
+                bool has_cmd_excute = SpinWait.SpinUntil(() => scApp.CMDBLL.cache.hasCmdExcute(vh_id), MAX_WAIT_COMMAND_TIME);
+                if (!has_cmd_excute)
+                {
+                    scApp.VehicleChargerModule.askVhToChargerForWait(vh);
+                }
             }
+
+
 
             private bool reply_ID_32_TRANS_COMPLETE_RESPONSE(AVEHICLE vh, int seq_num, string finish_cmd_id, string finish_fransfer_cmd_id)
             {
@@ -1736,10 +1743,12 @@ namespace com.mirle.ibg3k0.sc.Service
         }
         public class CommandProcessor
         {
+            private ALINE line = null;
             VehicleService service;
-            public CommandProcessor(VehicleService _service)
+            public CommandProcessor(VehicleService _service, ALINE _line)
             {
                 service = _service;
+                line = _line;
             }
 
             //public bool Move(string vhID, string destination)
@@ -1885,7 +1894,8 @@ namespace com.mirle.ibg3k0.sc.Service
             }
 
             private long cmd_SyncPoint = 0;
-            public void Scan()
+            //public void Scan()
+            public void Scan_backup()
             {
                 if (System.Threading.Interlocked.Exchange(ref cmd_SyncPoint, 1) == 0)
                 {
@@ -1929,6 +1939,56 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                 }
             }
+            public void Scan()
+            {
+                if (System.Threading.Interlocked.Exchange(ref cmd_SyncPoint, 1) == 0)
+                {
+                    try
+                    {
+                        if (scApp.getEQObjCacheManager().getLine().ServiceMode
+                            != SCAppConstants.AppServiceMode.Active)
+                            return;
+                        //List<ACMD> CMD_OHTC_Queues = scApp.CMDBLL.loadCMD_OHTCMDStatusIsQueue();
+                        List<ACMD> unfinish_cmd = scApp.CMDBLL.loadUnfinishCmd();
+                        line.CurrentExcuteCommand = unfinish_cmd;
+                        if (unfinish_cmd == null || unfinish_cmd.Count == 0)
+                            return;
+                        List<ACMD> CMD_OHTC_Queues = unfinish_cmd.Where(cmd => cmd.CMD_STATUS == E_CMD_STATUS.Queue).ToList();
+                        if (CMD_OHTC_Queues == null || CMD_OHTC_Queues.Count == 0)
+                            return;
+                        foreach (ACMD cmd in CMD_OHTC_Queues)
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(CMDBLL), Device: string.Empty,
+                               Data: $"Start process command ,id:{SCUtility.Trim(cmd.ID)},vh id:{SCUtility.Trim(cmd.VH_ID)},from:{SCUtility.Trim(cmd.SOURCE)},to:{SCUtility.Trim(cmd.DESTINATION)}");
+
+                            string vehicle_id = cmd.VH_ID.Trim();
+                            AVEHICLE assignVH = scApp.VehicleBLL.cache.getVehicle(vehicle_id);
+                            if (!assignVH.isTcpIpConnect ||
+                                !scApp.CMDBLL.canSendCmd(vehicle_id)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
+                            {
+                                continue;
+                            }
+
+                            bool is_success = service.Send.Command(assignVH, cmd);
+                            if (!is_success)
+                            {
+                                //Finish(cmd.ID, CompleteStatus.Cancel);
+                                //Finish(cmd.ID, CompleteStatus.VehicleAbort);
+                                CommandInitialFail(cmd);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, "Exection:");
+                    }
+                    finally
+                    {
+                        System.Threading.Interlocked.Exchange(ref cmd_SyncPoint, 0);
+                    }
+                }
+            }
+
             public void Scan_V2()
             {
                 if (System.Threading.Interlocked.Exchange(ref cmd_SyncPoint, 1) == 0)
@@ -2443,7 +2503,7 @@ namespace com.mirle.ibg3k0.sc.Service
             scApp = app;
             Send = new SendProcessor(scApp);
             Receive = new ReceiveProcessor(this);
-            Command = new CommandProcessor(this);
+            Command = new CommandProcessor(this, scApp.getEQObjCacheManager().getLine());
             Avoid = new AvoidProcessor(this);
             List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
 

@@ -249,6 +249,7 @@ namespace com.mirle.ibg3k0.sc
         }
 
         public List<VTRANSFER> CurrentExcuteTransferCommand = null;
+        public List<ACMD> CurrentExcuteCommand = null;
 
         private TSCState scstate = TSCState.NONE;
         public virtual TSCState SCStats
