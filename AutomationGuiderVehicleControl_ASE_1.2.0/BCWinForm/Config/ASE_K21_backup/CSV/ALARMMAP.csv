@@ -1,2 +1,69 @@
 OBJECT_ID,ALARM_ID,ALARM_LVL,ALARM_DESC
-AGV_NODE,40,2,Vehicle Error
+AGV_NODE,100000,2,EMO on
+AGV_NODE,100002,2,Robot error.
+AGV_NODE,100003,2,AGV recieved charge command when charge position sensor return false .
+AGV_NODE,100005,2,Error occured while handshaking with charge station.
+AGV_NODE,100006,2,Fail to turn on charger.
+AGV_NODE,100007,2,Fail to turn off charger.
+AGV_NODE,100008,2,Docking NG.
+AGV_NODE,100009,2,Fail to complete load/unload command.
+AGV_NODE,14,2,Charging is ON after send stop charge command to plc.
+AGV_NODE,27,2,Fork not home reject transfer command.
+AGV_NODE,37,2,Get EMS from AGVC.
+AGV_NODE,38,2,Agvc maybe disconnected.
+AGV_NODE,43,2,Please check agvl try auto fail reason in agvm.
+AGV_NODE,44,2,Agvm can not find section in manual.
+AGV_NODE,45,2,Agvm can not find address in manual.
+AGV_NODE,46,2,MoveState is not idle or block can not switch to auto.
+AGV_NODE,47,2,RobotState is not idle can not switch to auto.
+AGV_NODE,48,2,Robot is not home can not switch to auto.
+AGV_NODE,49,2,InterlockError.
+AGV_NODE,50,2,Visit Step Precheck Exception.
+AGV_NODE,51,2,Agvl report cst position error.
+AGV_NODE,52,2,Agvl report robot command end but not in robot step.
+AGV_NODE,53,2,Agvl report robot state not ready to load or unlaod.
+AGV_NODE,100040,1,AgvlError
+AGV_NODE,100001,1,Receive move command when robot not home.
+AGV_NODE,100004,1,Error occured while handshaking with charge station.
+AGV_NODE,100010,1,Receive move command when coupler not home.
+AGV_NODE,100012,1,Battery full.
+AGV_NODE,100013,1,Battery temperature over normal level.
+AGV_NODE,100014,1,Battery voltage over normal level.
+AGV_NODE,100015,1,Battery current over normal level.
+AGV_NODE,100016,1,Macro error.
+AGV_NODE,100017,1,Interlock error during load/unload command.
+AGV_NODE,1,1,Agv already have a transfer command on middler get new transfer command.
+AGV_NODE,2,1,Watch low power thread is charging can't do new transfer command.
+AGV_NODE,3,1,Loading is off after load finished.
+AGV_NODE,4,1,Carrier ID is EMPTY after load finished.
+AGV_NODE,5,1,Carrier ID is ERROR after load finished.
+AGV_NODE,6,1,Move finish fail.
+AGV_NODE,7,1,Loading is ON after unload finished.
+AGV_NODE,8,1,Fork command is exist before unload.
+AGV_NODE,9,1,Vehicle is not in unload position and cannot unload.
+AGV_NODE,10,1,Fork command is exist before load.
+AGV_NODE,11,1,Vehicle is not in guide sections.
+AGV_NODE,12,1,This address is a couple but no charge direction.
+AGV_NODE,13,1,Charging is OFF after send start charge command to plc.
+AGV_NODE,15,1,Vehicle is not in load position and cannot load.
+AGV_NODE,16,1,Vehicle already have cassette cannot load.
+AGV_NODE,17,1,Vehicle has no cassette to unload.
+AGV_NODE,18,1,AgvcMoveCommand is not match the map to move.
+AGV_NODE,19,1,Vehicle is not in transfer reject override.
+AGV_NODE,20,1,Vehicle is not in moving-step reject override.
+AGV_NODE,21,1,Vehicle is not pause by reserve reject override.
+AGV_NODE,22,1,Unload address unmatch current command unload address.
+AGV_NODE,23,1,Load address unmatch current command load address.
+AGV_NODE,24,1,ToUnloadSections is empty.
+AGV_NODE,25,1,ToLoadSections is empty.
+AGV_NODE,26,1,Exception happened in override-check.
+AGV_NODE,28,1,Carrier ID is mismatch after load finished.
+AGV_NODE,29,1,Carrier ID read reply is timeout
+AGV_NODE,30,1,Vehicle has alarm cannot do transfer command.
+AGV_NODE,31,1,MoveControl status is not idle cannot switch to auto mode.
+AGV_NODE,32,1,Real position is null cannot switch to auto mode.
+AGV_NODE,33,1,Vehicle is not in transfer reject avoid.
+AGV_NODE,34,1,Vehicle is not in moving-step reject avoid.
+AGV_NODE,35,1,Vehicle is not pause by reserve reject avoid.
+AGV_NODE,36,1,Exception happened in avoid-check.
+AGV_NODE,42,1,Nearly address in no section.
