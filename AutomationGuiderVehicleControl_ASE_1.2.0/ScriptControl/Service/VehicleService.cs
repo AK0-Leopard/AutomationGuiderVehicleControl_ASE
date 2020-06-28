@@ -2523,14 +2523,11 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.LongTimeInaction += Vh_LongTimeInaction;
                 vh.LongTimeDisconnection += Vh_LongTimeDisconnection;
                 vh.ModeStatusChange += Vh_ModeStatusChange;
+                vh.Idling += Vh_Idling;
                 vh.SetupTimerAction();
             }
         }
 
-        private void Vh_ExcuteCommandStatusChange(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
         #region Vh Event Handler
         private void Vh_ErrorStatusChange(object sender, VhStopSingle vhStopSingle)
@@ -2730,7 +2727,7 @@ namespace com.mirle.ibg3k0.sc.Service
             try
             {
                 AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
-                if (sender == null) return;
+                if (vh == null) return;
                 byte[] vh_Serialize = BLL.VehicleBLL.Convert2GPB_VehicleInfo(vh);
                 RecoderVehicleObjInfoLog(vhID, vh_Serialize);
 
@@ -2757,6 +2754,26 @@ namespace com.mirle.ibg3k0.sc.Service
             json = json.Replace("RPT_TIME", "@timestamp");
             LogManager.GetLogger("ObjectHistoricalInfo").Info(json);
         }
+
+        private void Vh_Idling(object sender, EventArgs e)
+        {
+            try
+            {
+                AVEHICLE vh = sender as AVEHICLE;
+                if (vh == null) return;
+                bool has_cmd_excute = scApp.CMDBLL.cache.hasCmdExcute(vh.VEHICLE_ID);
+                if (!has_cmd_excute)
+                {
+                    scApp.VehicleChargerModule.askVhToChargerForWait(vh);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
         #endregion Vh Event Handler
         #region Send Message To Vehicle
         #region Data syne

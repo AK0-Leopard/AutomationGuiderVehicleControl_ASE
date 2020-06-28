@@ -75,14 +75,16 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             if (scApp.getEQObjCacheManager().getLine().ServiceMode
                 != SCAppConstants.AppServiceMode.Active)
                 return;
-            if (DebugParameter.CanAutoRandomGeneratesCommand ||
-                (scApp.getEQObjCacheManager().getLine().SCStats == ALINE.TSCState.AUTO && scApp.getEQObjCacheManager().getLine().MCSCommandAutoAssign))
+            if (System.Threading.Interlocked.Exchange(ref syncPoint, 1) == 0)
             {
-                if (System.Threading.Interlocked.Exchange(ref syncPoint, 1) == 0)
+                try
                 {
-                    try
+                    scApp.PortStationBLL.updatePortStatusByRedis();
+
+                    if (DebugParameter.CanAutoRandomGeneratesCommand ||
+                    (scApp.getEQObjCacheManager().getLine().SCStats == ALINE.TSCState.AUTO && scApp.getEQObjCacheManager().getLine().MCSCommandAutoAssign))
                     {
-                        scApp.PortStationBLL.updatePortStatusByRedis();
+
                         //1.確認是否有要回AGV Station的命令
                         //2-1.有的話開始透過Web API跟對應的OHBC詢問是否可以開始搬送
                         //2-2.沒有，則持續跟OHBC通報目前沒有Queue的命令要過去
@@ -156,14 +158,15 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                             }
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        logger.Error(ex, "Exception");
-                    }
-                    finally
-                    {
-                        System.Threading.Interlocked.Exchange(ref syncPoint, 0);
-                    }
+
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    System.Threading.Interlocked.Exchange(ref syncPoint, 0);
                 }
             }
         }

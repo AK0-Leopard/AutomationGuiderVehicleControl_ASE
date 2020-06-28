@@ -1690,6 +1690,11 @@ namespace com.mirle.ibg3k0.sc.App
             OnlyMove,
             MoveBySelectPort
         }
+        public enum TransferModeType
+        {
+            Normal,
+            Double
+        }
 
         public static Boolean IsTestEAPMode = false;
         public static Boolean DisableSyncTime = false;
@@ -1732,6 +1737,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static int CommandCompleteWaitTime = 0;
 
         public static int NumberOfAvoidanceSegment = 3;
+        public static TransferModeType TransferMode = TransferModeType.Normal;
 
     }
 }

@@ -71,6 +71,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cmb_pauseType.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.PauseType));
             cb_Abort_Type.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.CancelActionType));
             cmb_cycle_run_type.DataSource = Enum.GetValues(typeof(DebugParameter.CycleRunTestType));
+            cbTranMode.DataSource = Enum.GetValues(typeof(DebugParameter.TransferModeType));
 
 
             mcsMapAction = SCApplication.getInstance().getEQObjCacheManager().getLine().getMapActionByIdentityKey(typeof(ASEMCSDefaultMapAction).Name) as ASEMCSDefaultMapAction;
@@ -118,7 +119,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             }
 
             cmb_cycle_run_type.SelectedItem = DebugParameter.CycleRunType;
-
+            cbTranMode.SelectedItem = DebugParameter.TransferMode;
             num_BatteryLowBoundaryValue.Value = AVEHICLE.BATTERYLEVELVALUE_LOW;
             num_BatteryHighBoundaryValue.Value = AVEHICLE.BATTERYLEVELVALUE_HIGH;
 
@@ -1419,6 +1420,12 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_canUnloadToAGVStation_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.CanUnloadToAGVStationTest = cb_canUnloadToAGVStation.Checked;
+        }
+
+        private void cbTranMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Enum.TryParse(cbTranMode.SelectedValue.ToString(), out DebugParameter.TransferModeType transferModeType);
+            DebugParameter.TransferMode = transferModeType;
         }
     }
 }

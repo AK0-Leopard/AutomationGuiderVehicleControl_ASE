@@ -68,6 +68,10 @@ namespace com.mirle.ibg3k0.sc
         /// 最大允許斷線時間
         /// </summary>
         public static UInt16 MAX_ALLOW_NO_CONNECTION_TIME_SECOND { get; private set; } = 30;
+        /// <summary>
+        /// 最大允許斷線時間Milliseconds
+        /// </summary>
+        public static UInt16 MAX_ALLOW_IDLE_TIME_MILLISECOND { get; private set; } = 10000;
 
         VehicleTimerAction vehicleTimer = null;
         public VehicleStateMachine vhStateMachine;
@@ -100,6 +104,8 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler LongTimeDisconnection;
         public event EventHandler<VHModeStatus> ModeStatusChange;
         public event EventHandler<VhStopSingle> ErrorStatusChange;
+        public event EventHandler Idling;
+
         public void onExcuteCommandStatusChange()
         {
             ExcuteCommandStatusChange?.Invoke(this, EventArgs.Empty);
@@ -147,6 +153,11 @@ namespace com.mirle.ibg3k0.sc
         public void onErrorStatusChange(VhStopSingle vhStopSingle)
         {
             ErrorStatusChange?.Invoke(this, vhStopSingle);
+        }
+        public void onVehicleIdle()
+        {
+            isIdling = true;
+            Idling?.Invoke(this, EventArgs.Empty);
         }
         #endregion Event
 
@@ -398,6 +409,7 @@ namespace com.mirle.ibg3k0.sc
         public virtual E_CMD_TYPE CmdType { get; set; } = default(E_CMD_TYPE);
         [JsonIgnore]
         public virtual E_CMD_STATUS vh_CMD_Status { get; set; }
+        public virtual bool isIdling { get; private set; }
         public virtual bool isAuto
         {
             get
@@ -438,6 +450,7 @@ namespace com.mirle.ibg3k0.sc
         public virtual ReserveUnsuccessInfo CanNotReserveInfo { get; set; }
         [JsonIgnore]
         public virtual AvoidInfo VhAvoidInfo { get; set; }
+        [JsonIgnore]
         public virtual List<string> WillPassSectionID { get; set; }
         public virtual List<string> WillPassAddressID { get; set; }
 
@@ -1295,8 +1308,11 @@ namespace com.mirle.ibg3k0.sc
                         //{
                         //    vh.onLongTimeInaction(vh.OHTC_CMD);
                         //}
-
-
+                        IdleTimeCheck();
+                        if (!vh.isIdling && vh.IdleTime.ElapsedMilliseconds > AVEHICLE.MAX_ALLOW_IDLE_TIME_MILLISECOND)
+                        {
+                            vh.onVehicleIdle();
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -1329,6 +1345,7 @@ namespace com.mirle.ibg3k0.sc
                     {
                         vh.IdleTime.Reset();
                     }
+                    vh.isIdling = false;
                 }
             }
         }

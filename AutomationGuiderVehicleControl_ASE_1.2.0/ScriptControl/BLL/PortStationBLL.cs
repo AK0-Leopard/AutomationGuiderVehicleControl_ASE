@@ -3,6 +3,7 @@ using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.Data.DAO;
 using com.mirle.ibg3k0.sc.ProtocolFormat.SystemClass.PortInfo;
+using NLog;
 using STAN.Client;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,11 @@ namespace com.mirle.ibg3k0.sc.BLL
         public void updatePortStatusByRedis()
         {
             var ports_plc_info = redis.getCurrentPortsInfo();
+            var sb = new StringBuilder();
+            ports_plc_info.ForEach(info => sb.AppendLine(info.ToString()));
+            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(PortStationBLL), Device: "AGVC",
+               Data: $"port infos:{sb}");
+
             var port_stations = OperateCatch.loadAGVPortStation();
             foreach (var port_station in port_stations)
             {
@@ -42,14 +48,16 @@ namespace com.mirle.ibg3k0.sc.BLL
                 if (port_plc_info != null)
                 {
                     //如果現在時間還沒超過該筆資料上次更新的時間10秒鐘，才可以進行更新
-                    if (DateTime.Now < port_plc_info.dTimeStamp.AddSeconds(PORT_INFO_TIME_OUT_SEC))
-                    {
-                        port_station.SetPortInfo(port_plc_info);
-                    }
-                    else
-                    {
-                        port_station.ResetPortInfo();
-                    }
+                    port_station.SetPortInfo(port_plc_info);
+
+                    //if (DateTime.Now < port_plc_info.dTimeStamp.AddSeconds(PORT_INFO_TIME_OUT_SEC))
+                    //{
+                    //    port_station.SetPortInfo(port_plc_info);
+                    //}
+                    //else
+                    //{
+                    //    //port_station.ResetPortInfo();
+                    //}
                 }
                 else
                 {
