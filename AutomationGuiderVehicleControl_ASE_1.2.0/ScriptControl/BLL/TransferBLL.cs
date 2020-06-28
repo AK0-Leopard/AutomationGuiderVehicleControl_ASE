@@ -217,10 +217,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             public bool canExcuteUnloadTransferToAGVStation(IAGVStationType agvStation, int unfinishCmdCount, bool isEmergency)
             {
-                if (DebugParameter.CanUnloadToAGVStationTest)
-                    return true;
-                else
-                    return false;
+                //if (DebugParameter.CanUnloadToAGVStationTest)
+                //    return true;
+                //else
+                //    return false;
                 string result = "";
                 try
                 {
@@ -236,10 +236,13 @@ namespace com.mirle.ibg3k0.sc.BLL
                     {
                     agv_station_id,
                     $"?{nameof(unfinishCmdCount)}={unfinishCmdCount}",
-                    $"?{nameof(isEmergency)}={isEmergency}",
+                    $"&{nameof(isEmergency)}={isEmergency}",
                     };
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
+                       Data: $"Try to reserve agv station to unload,uri:{agv_url} station id:{agv_station_id}...");
                     result = webClientManager.GetInfoFromServer(agv_url, action_targets, param);
-
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
+                       Data: $"Try to reserve agv station to unload,uri:{agv_url} station id:{agv_station_id},result:{result}");
                 }
                 catch (Exception ex)
                 {

@@ -381,7 +381,7 @@ namespace com.mirle.ibg3k0.sc.Common
                         string svDataFormat = eqptConfig.SV_Data_Format;                    //A0.02
                         string recipeParameterFormat = eqptConfig.Recipe_Parameter_Format;                    //A0.03
                         string ecidFormat = eqptConfig.ECID_Format;                    //A0.04
-                        int eqptType = eqptConfig.EQPT_Type;
+                        SCAppConstants.EqptType eqptType = (SCAppConstants.EqptType)eqptConfig.EQPT_Type;
                         foreach (UnitConfigSection unitConfig in eqptConfig.UnitConfigList)
                         {
                             string unit_id = unitConfig.Unit_ID.Trim();
@@ -400,29 +400,45 @@ namespace com.mirle.ibg3k0.sc.Common
                             });
                         }
                         unitList.AddRange(unit_lsit_temp);
-                        AEQPT eqTemp = new AEQPT()
-                        {
-                            EQPT_ID = eqpt_id,
-                            CIM_MODE = "",
-                            OPER_MODE = "",
-                            INLINE_MODE = "",
-                            EQPT_STAT = "",
-                            EQPT_PROC_STAT = "",
-                            Real_ID = "",
-                            NODE_ID = node_id,
-                            MAX_SHT_CNT = max_sht_cnt,
-                            MIN_SHT_CNT = min_sht_cnt,
-                            //Alarm_List_File = alarmListFile,
-                            //Process_Data_Format = procDataFormat,
-                            //SV_Data_Format = svDataFormat,                    //A0.02
-                            //Recipe_Parameter_Format = recipeParameterFormat,                    //A0.03
-                            //ECID_Format = ecidFormat,                    //A0.04
-                            SECSAgentName = eqptConfig.SECSAgentName,         //A0.01
-                            TcpIpAgentName = eqptConfig.TcpIpAgentName,
-                            //CommunicationType = eqptConfig.CommunicationType,
-                            UnitList = unit_lsit_temp,
-                            Type = (SCAppConstants.EqptType)eqptType
-                        };
+                        AEQPT eqTemp = getEquipmentInitialObj(eqptType);
+                        eqTemp.EQPT_ID = eqpt_id;
+                        eqTemp.CIM_MODE = "";
+                        eqTemp.OPER_MODE = "";
+                        eqTemp.INLINE_MODE = "";
+                        eqTemp.EQPT_STAT = "";
+                        eqTemp.EQPT_PROC_STAT = "";
+                        eqTemp.Real_ID = "";
+                        eqTemp.NODE_ID = node_id;
+                        eqTemp.MAX_SHT_CNT = max_sht_cnt;
+                        eqTemp.MIN_SHT_CNT = min_sht_cnt;
+                        eqTemp.SECSAgentName = eqptConfig.SECSAgentName;
+                        eqTemp.TcpIpAgentName = eqptConfig.TcpIpAgentName;
+                        eqTemp.UnitList = unit_lsit_temp;
+                        eqTemp.Type = eqptType;
+
+                        //AEQPT eqTemp = new AEQPT()
+                        //{
+                        //    EQPT_ID = eqpt_id,
+                        //    CIM_MODE = "",
+                        //    OPER_MODE = "",
+                        //    INLINE_MODE = "",
+                        //    EQPT_STAT = "",
+                        //    EQPT_PROC_STAT = "",
+                        //    Real_ID = "",
+                        //    NODE_ID = node_id,
+                        //    MAX_SHT_CNT = max_sht_cnt,
+                        //    MIN_SHT_CNT = min_sht_cnt,
+                        //    //Alarm_List_File = alarmListFile,
+                        //    //Process_Data_Format = procDataFormat,
+                        //    //SV_Data_Format = svDataFormat,                    //A0.02
+                        //    //Recipe_Parameter_Format = recipeParameterFormat,                    //A0.03
+                        //    //ECID_Format = ecidFormat,                    //A0.04
+                        //    SECSAgentName = eqptConfig.SECSAgentName,         //A0.01
+                        //    TcpIpAgentName = eqptConfig.TcpIpAgentName,
+                        //    //CommunicationType = eqptConfig.CommunicationType,
+                        //    UnitList = unit_lsit_temp,
+                        //    Type = eqptType
+                        //};
                         //eqTemp.startStateMachine();
                         eqptList.Add(eqTemp);
 
@@ -476,7 +492,7 @@ namespace com.mirle.ibg3k0.sc.Common
                                 ADR_ID = adr_id,
                                 LD_VH_TYPE = load_vh_type,
                                 ULD_VH_TYPE = unload_vh_type,
-                                PORT_TYPE = eqptType
+                                PORT_TYPE = 0
                             });
                         }
                     }
@@ -500,6 +516,17 @@ namespace com.mirle.ibg3k0.sc.Common
                         vhList.Add(vhTemp);
                     }
                 }
+            }
+        }
+
+        private AEQPT getEquipmentInitialObj(SCAppConstants.EqptType eqptType)
+        {
+            switch (eqptType)
+            {
+                case SCAppConstants.EqptType.AGVStation:
+                    return new AGVStation();
+                default:
+                    return new AEQPT();
             }
         }
 

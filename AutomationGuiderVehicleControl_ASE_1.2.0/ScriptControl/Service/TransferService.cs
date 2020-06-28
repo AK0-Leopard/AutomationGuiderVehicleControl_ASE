@@ -514,7 +514,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                     var find_result = FindNearestVhAndCommand(tran_queue_in_group);
                                     if (find_result.isFind)
                                     {
-                                        bool is_success = AssignTransferToVehicle(find_result.nearestTransfer,
+                                        bool is_success = AssignTransferToVehicle_V2(find_result.nearestTransfer,
                                                                                   find_result.nearestVh);
                                         if (is_success)
                                             return;
@@ -525,24 +525,11 @@ namespace com.mirle.ibg3k0.sc.Service
                         }
 
 
-                        //1.確認Source port是否有其他可以接收命令的vh正在準備前往Load相同Group的port，如果有的話就優先將該命令派給該vh
-                        (bool isFind, AVEHICLE bestSuitableVh, VTRANSFER bestSuitabletransfer) before_on_the_way_cehck_result =
-                            checkBeforeOnTheWay_V2(in_queue_transfer, excuting_transfer);
-                        if (before_on_the_way_cehck_result.isFind)
-                        {
-                            if (AssignTransferToVehicle(before_on_the_way_cehck_result.bestSuitabletransfer,
-                                                        before_on_the_way_cehck_result.bestSuitableVh))
-                            {
-                                scApp.VehicleService.Command.Scan();
-                                return;
-                            }
-                        }
-
                         (bool isFind, AVEHICLE bestSuitableVh, VTRANSFER bestSuitabletransfer) after_on_the_way_cehck_result =
                             checkAfterOnTheWay_V2(in_queue_transfer, excuting_transfer);
                         if (after_on_the_way_cehck_result.isFind)
                         {
-                            if (AssignTransferToVehicle(after_on_the_way_cehck_result.bestSuitabletransfer,
+                            if (AssignTransferToVehicle_V2(after_on_the_way_cehck_result.bestSuitabletransfer,
                                                         after_on_the_way_cehck_result.bestSuitableVh))
                             {
                                 scApp.VehicleService.Command.Scan();
@@ -550,7 +537,21 @@ namespace com.mirle.ibg3k0.sc.Service
                             }
                         }
 
-                        in_queue_transfer = in_queue_transfer.Where(tran => !(tran.getTragetPortEQ(scApp.PortStationBLL, scApp.EqptBLL) is IAGVStationType))
+                        //1.確認Source port是否有其他可以接收命令的vh正在準備前往Load相同Group的port，如果有的話就優先將該命令派給該vh
+                        (bool isFind, AVEHICLE bestSuitableVh, VTRANSFER bestSuitabletransfer) before_on_the_way_cehck_result =
+                            checkBeforeOnTheWay_V2(in_queue_transfer, excuting_transfer);
+                        if (before_on_the_way_cehck_result.isFind)
+                        {
+                            if (AssignTransferToVehicle_V2(before_on_the_way_cehck_result.bestSuitabletransfer,
+                                                        before_on_the_way_cehck_result.bestSuitableVh))
+                            {
+                                scApp.VehicleService.Command.Scan();
+                                return;
+                            }
+                        }
+
+
+                        in_queue_transfer = in_queue_transfer.Where(tran => !(tran.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType))
                                                              .ToList();
 
                         foreach (VTRANSFER first_waitting_excute_mcs_cmd in in_queue_transfer)
@@ -587,7 +588,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                             if (bestSuitableVh != null)
                             {
-                                if (AssignTransferToVehicle(first_waitting_excute_mcs_cmd, bestSuitableVh))
+                                if (AssignTransferToVehicle_V2(first_waitting_excute_mcs_cmd, bestSuitableVh))
                                 {
                                     scApp.VehicleService.Command.Scan();
                                     return;
@@ -900,13 +901,13 @@ namespace com.mirle.ibg3k0.sc.Service
             //List<VTRANSFER> can_excute_before_on_the_way_tran = excutingTransfers.
             //                                                    Where(tr => tr.COMMANDSTATE < ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_ARRIVE).
             //                                                    ToList();
-
             List<VTRANSFER> can_excute_before_on_the_way_tran = excutingTransfers;
-
+            var in_queue_transfers_traget_not_agvstation =
+                inQueueTransfers.Where(tran => !(tran.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType));
             foreach (var tran in can_excute_before_on_the_way_tran)
             {
                 string excute_tran_eq_id = SCUtility.Trim(tran.getSourcePortEQID(scApp.PortStationBLL));
-                var same_eq_ports = inQueueTransfers.
+                var same_eq_ports = in_queue_transfers_traget_not_agvstation.
                                     Where(in_queue_tran => SCUtility.isMatche(in_queue_tran.getSourcePortEQID(scApp.PortStationBLL),
                                                                               excute_tran_eq_id)).
                                     ToList();
@@ -1005,6 +1006,14 @@ namespace com.mirle.ibg3k0.sc.Service
                     continue;
                 }
 
+                var excute_tran_eq = tran.getTragetPortEQ(scApp.EqptBLL);
+                if (excute_tran_eq is IAGVStationType)
+                {
+                    if (!(excute_tran_eq as IAGVStationType).IsReservation)
+                    {
+                        continue;
+                    }
+                }
                 string excute_tran_eq_id = SCUtility.Trim(tran.getTragetPortEQID(scApp.PortStationBLL));
                 var same_eq_ports = inQueueTransfers.
                                     Where(in_queue_tran => SCUtility.isMatche(in_queue_tran.getTragetPortEQID(scApp.PortStationBLL),
@@ -1091,6 +1100,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             else
             {
+                scApp.VehicleService.Command.preMoveToSourcePort(bestSuitableVh, assign_cmd);
                 //todo log...
                 return false;
             }
@@ -1123,6 +1133,11 @@ namespace com.mirle.ibg3k0.sc.Service
             if (assignCmd.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType)
             {
                 IAGVStationType unload_agv_station = assignCmd.getTragetPortEQ(scApp.EqptBLL) as IAGVStationType;
+                bool is_ready_double_port = unload_agv_station.IsReadyDoubleUnload;
+                if (!is_ready_double_port)
+                {
+                    return (false, "", "");
+                }
                 var ready_agv_station_port = unload_agv_station.loadReadyAGVStationPort();
                 foreach (var port in ready_agv_station_port)
                 {
@@ -1137,7 +1152,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             else
             {
-                return (true, assignCmd.DESTINATION, assignCmd.DESTINATION_PORT);
+                return (true, assignCmd.DESTINATION_PORT, assignCmd.DESTINATION);
             }
         }
 

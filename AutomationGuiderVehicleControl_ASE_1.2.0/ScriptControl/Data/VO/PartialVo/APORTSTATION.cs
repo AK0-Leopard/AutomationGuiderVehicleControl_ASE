@@ -81,9 +81,10 @@ namespace com.mirle.ibg3k0.sc
                 return dateTime;
             }
         }
-        public bool IsInPutMode { get { return PortInfo.IsInputMode; } }
+        //public bool IsInPutMode { get { return PortInfo.IsInputMode; } }
+        public bool IsInPutMode { set { PortInfo.IsInputMode = value; } get { return PortInfo.IsInputMode; } }
         public bool IsOutPutMode { get { return PortInfo.IsOutputMode; } }
-        public bool PortReady { get { return PortInfo.AGVPortReady; } }
+        public bool PortReady { set { PortInfo.AGVPortReady = value; } get { return PortInfo.AGVPortReady; } }
         public bool PortWaitOut { get { return PortInfo.PortWaitOut; } }
         public bool PortWaitIn { get { return PortInfo.PortWaitIn; } }
         public bool IsCSTPresence { get { return PortInfo.IsCSTPresence; } }

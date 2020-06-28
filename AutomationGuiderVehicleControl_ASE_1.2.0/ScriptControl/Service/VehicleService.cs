@@ -581,7 +581,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         scApp.LineService.TSCStateToPause();
                     }
                 }
-                tryAskVh2ChargerIdle(vh);
+                //tryAskVh2ChargerIdle(vh);
             }
 
             /// <summary>
@@ -2051,7 +2051,7 @@ namespace com.mirle.ibg3k0.sc.Service
             /// </summary>
             /// <param name="assignVH"></param>
             /// <param name="cmd"></param>
-            private void preMoveToSourcePort(AVEHICLE assignVH, ACMD cmd)
+            public void preMoveToSourcePort(AVEHICLE assignVH, ACMD cmd)
             {
                 string vh_current_adr = assignVH.CUR_ADR_ID;
                 string cmd_source_adr = cmd.SOURCE;

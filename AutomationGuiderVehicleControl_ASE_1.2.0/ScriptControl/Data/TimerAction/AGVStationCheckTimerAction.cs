@@ -65,70 +65,105 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             line = scApp.getEQObjCacheManager().getLine();
         }
 
+        private long syncPoint = 0;
         /// <summary>
         /// Timer Action的執行動作
         /// </summary>
         /// <param name="obj">The object.</param>
         public override void doProcess(object obj)
         {
-            scApp.PortStationBLL.updatePortStatusByRedis();
-            //1.確認是否有要回AGV Station的命令
-            //2-1.有的話開始透過Web API跟對應的OHBC詢問是否可以開始搬送
-            //2-2.沒有，則持續跟OHBC通報目前沒有Queue的命令要過去
-            //3.如果有預約成功，則將該Station的is reservation = true
-            var v_trans = line.CurrentExcuteTransferCommand;
-            var agv_stations = scApp.EqptBLL.OperateCatch.loadAllAGVStation();
-            foreach (var agv_station in agv_stations)
+            if (scApp.getEQObjCacheManager().getLine().ServiceMode
+                != SCAppConstants.AppServiceMode.Active)
+                return;
+            if (DebugParameter.CanAutoRandomGeneratesCommand ||
+                (scApp.getEQObjCacheManager().getLine().SCStats == ALINE.TSCState.AUTO && scApp.getEQObjCacheManager().getLine().MCSCommandAutoAssign))
             {
-                var unfinish_target_port_command = v_trans.
-                                                   Where(tran => tran.getTragetPortEQ(scApp.EqptBLL) == agv_station).
-                                                   ToList();
-
-                var excute_target_port_tran = unfinish_target_port_command.Where(tran => tran.TRANSFERSTATE >= E_TRAN_STATUS.PreInitial).ToList();
-                if (excute_target_port_tran.Count() > 0)
+                if (System.Threading.Interlocked.Exchange(ref syncPoint, 1) == 0)
                 {
-                    agv_station.IsTransferUnloadExcuting = true;
-                    continue;
-                }
-                else
-                {
-                    if (agv_station.IsTransferUnloadExcuting)
+                    try
                     {
-                        agv_station.IsTransferUnloadExcuting = false;
-                        agv_station.IsReservation = false;
-                    }
-                }
-
-                var queue_target_port_tran = unfinish_target_port_command.Where(tran => tran.TRANSFERSTATE == E_TRAN_STATUS.Queue).ToList();
-                if (queue_target_port_tran.Count() > 0)
-                {
-                    if (agv_station.IsReservation)
-                    {
-                        //not thing...
-                    }
-                    else
-                    {
-                        var cehck_has_vh_go_tran_reault = scApp.TransferService.FindNearestVhAndCommand(queue_target_port_tran);
-                        //如果有命令還在Queue的話，則嘗試找看看能不能有車子來服務，有的話就可以去詢問看看
-                        if (cehck_has_vh_go_tran_reault.isFind)
+                        scApp.PortStationBLL.updatePortStatusByRedis();
+                        //1.確認是否有要回AGV Station的命令
+                        //2-1.有的話開始透過Web API跟對應的OHBC詢問是否可以開始搬送
+                        //2-2.沒有，則持續跟OHBC通報目前沒有Queue的命令要過去
+                        //3.如果有預約成功，則將該Station的is reservation = true
+                        var v_trans = line.CurrentExcuteTransferCommand;
+                        var agv_stations = scApp.EqptBLL.OperateCatch.loadAllAGVStation();
+                        foreach (var agv_station in agv_stations)
                         {
-                            bool is_reserve_success = scApp.TransferBLL.web.canExcuteUnloadTransferToAGVStation(agv_station, unfinish_target_port_command.Count(), false);
-                            if (is_reserve_success)
+                            if (v_trans != null)
                             {
-                                agv_station.IsReservation = true;
-                                scApp.TransferService.ScanByVTransfer_v2();
+                                var unfinish_target_port_command = v_trans.
+                                                                   Where(tran => tran.getTragetPortEQ(scApp.EqptBLL) == agv_station).
+                                                                   ToList();
+
+                                var excute_target_port_tran = unfinish_target_port_command.Where(tran => tran.TRANSFERSTATE >= E_TRAN_STATUS.PreInitial).ToList();
+                                int excute_target_pott_count = excute_target_port_tran.Count();
+                                if (excute_target_pott_count > 0)
+                                {
+                                    agv_station.IsTransferUnloadExcuting = true;
+                                    if (excute_target_pott_count >= 2)
+                                    {
+                                        agv_station.IsReservation = false;
+                                    }
+                                    continue;
+                                }
+                                else
+                                {
+                                    if (agv_station.IsTransferUnloadExcuting)
+                                    {
+                                        agv_station.IsTransferUnloadExcuting = false;
+                                        agv_station.IsReservation = false;
+                                    }
+                                }
+
+                                var queue_target_port_tran = unfinish_target_port_command.Where(tran => tran.TRANSFERSTATE == E_TRAN_STATUS.Queue).ToList();
+                                if (queue_target_port_tran.Count() > 0)
+                                {
+                                    if (agv_station.IsReservation)
+                                    {
+                                        //not thing...
+                                    }
+                                    else
+                                    {
+                                        var cehck_has_vh_go_tran_reault = scApp.TransferService.FindNearestVhAndCommand(queue_target_port_tran);
+                                        //如果有命令還在Queue的話，則嘗試找看看能不能有車子來服務，有的話就可以去詢問看看
+                                        if (cehck_has_vh_go_tran_reault.isFind)
+                                        {
+                                            bool is_reserve_success = scApp.TransferBLL.web.canExcuteUnloadTransferToAGVStation(agv_station, unfinish_target_port_command.Count(), false);
+                                            if (is_reserve_success)
+                                            {
+                                                agv_station.IsReservation = true;
+                                                scApp.TransferService.ScanByVTransfer_v2();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //todo log...
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    //scApp.TransferBLL.web.notifyNoUnloadTransferToAGVStation(agv_station);
+                                    agv_station.IsReservation = false;
+                                }
+                            }
+                            else
+                            {
+                                //scApp.TransferBLL.web.notifyNoUnloadTransferToAGVStation(agv_station);
+                                agv_station.IsReservation = false;
                             }
                         }
-                        else
-                        {
-                            //todo log...
-                        }
                     }
-                }
-                else
-                {
-                    scApp.TransferBLL.web.notifyNoUnloadTransferToAGVStation(agv_station);
-                    agv_station.IsReservation = false;
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, "Exception");
+                    }
+                    finally
+                    {
+                        System.Threading.Interlocked.Exchange(ref syncPoint, 0);
+                    }
                 }
             }
         }

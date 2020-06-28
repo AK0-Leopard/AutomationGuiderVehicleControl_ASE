@@ -142,7 +142,7 @@ namespace com.mirle.ibg3k0.sc
 
     public class AGVStation : AEQPT, IAGVStationType
     {
-        public string RemoveURI { get; set; }
+        public string RemoveURI { get { return this.TcpIpAgentName; } }
         public string getAGVStationID()
         {
             return this.EQPT_ID;
@@ -181,7 +181,7 @@ namespace com.mirle.ibg3k0.sc
 
     public interface IAGVStationType
     {
-        string RemoveURI { get; set; }
+        string RemoveURI { get; }
         string getAGVStationID();
         List<APORTSTATION> loadReadyAGVStationPort();
         bool IsReservation { get; set; }
