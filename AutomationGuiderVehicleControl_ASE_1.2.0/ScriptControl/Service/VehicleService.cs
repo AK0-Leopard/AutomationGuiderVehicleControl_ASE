@@ -2019,7 +2019,8 @@ namespace com.mirle.ibg3k0.sc.Service
                             if (is_agv_station_target_port)
                             {
                                 var target_port_agv_station = cmd.getTragetPortEQ(scApp.PortStationBLL, scApp.EqptBLL) as AGVStation;
-                                if (!target_port_agv_station.IsReadyDoubleUnload)
+                                //if (!target_port_agv_station.IsReadyDoubleUnload)
+                                if (!target_port_agv_station.IsReadySingleUnload)
                                 {
                                     preMoveToSourcePort(assignVH, cmd);
                                     continue;
@@ -2523,7 +2524,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.LongTimeInaction += Vh_LongTimeInaction;
                 vh.LongTimeDisconnection += Vh_LongTimeDisconnection;
                 vh.ModeStatusChange += Vh_ModeStatusChange;
-                vh.Idling += Vh_Idling;
+                //vh.Idling += Vh_Idling;
                 vh.SetupTimerAction();
             }
         }

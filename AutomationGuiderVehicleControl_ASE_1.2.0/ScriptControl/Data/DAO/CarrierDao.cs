@@ -21,7 +21,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             var query = from db_obj in con.ACARRIER
                         where db_obj.ID == carrierID.Trim()
                         select db_obj;
-            return query.SingleOrDefault();
+            return query.FirstOrDefault();
         }
         public List<ACARRIER> loadCurrentInLineCarrier(DBConnection_EF con)
         {

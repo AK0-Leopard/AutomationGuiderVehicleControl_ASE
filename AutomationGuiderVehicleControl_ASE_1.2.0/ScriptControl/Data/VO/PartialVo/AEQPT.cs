@@ -65,6 +65,8 @@ namespace com.mirle.ibg3k0.sc
 
         public List<AUNIT> UnitList;
 
+        public string proc_Formaat = "";
+
         public override void doShareMemoryInit(BCFAppConstants.RUN_LEVEL runLevel)
         {
             foreach (IValueDefMapAction action in valueDefMapActionDic.Values)
@@ -142,12 +144,15 @@ namespace com.mirle.ibg3k0.sc
 
     public class AGVStation : AEQPT, IAGVStationType
     {
+
         public string RemoveURI { get { return this.TcpIpAgentName; } }
+        public string AGVStationID { get { return this.EQPT_ID; } }
         public string getAGVStationID()
         {
             return this.EQPT_ID;
         }
         public bool IsReservation { get; set; }
+        public long syncPoint = 0;
         public bool IsTransferUnloadExcuting { get; set; }
         public bool IsReadyDoubleUnload
         {
@@ -159,12 +164,34 @@ namespace com.mirle.ibg3k0.sc
                        Count() >= 2;
             }
         }
+        public bool IsReadySingleUnload
+        {
+            get
+            {
+                return portStationList != null &&
+                       portStationList.
+                       Where(port_station => port_station.IsInPutMode && port_station.PortReady).
+                       Count() >= 1;
+            }
+        }
+
+        public string BindingVh { get { return proc_Formaat; } }
+
+        public bool IsVirtrueUse { get { return !SCUtility.isEmpty(this.TcpIpAgentName); } }
+
         public List<APORTSTATION> getAGVStationPorts()
         {
             if (portStationList == null) return null;
             return portStationList.
                    Where(port_station => port_station.IsInPutMode && port_station.PortReady).
                    ToList();
+        }
+        public APORTSTATION getVirtruePort()
+        {
+            if (portStationList == null) return null;
+            return portStationList.
+                   Where(port_station => port_station.PORT_ID.Contains("_ST0")).
+                   FirstOrDefault();
         }
 
         public List<APORTSTATION> loadReadyAGVStationPort()
@@ -181,13 +208,19 @@ namespace com.mirle.ibg3k0.sc
 
     public interface IAGVStationType
     {
+        bool IsVirtrueUse { get; }
         string RemoveURI { get; }
+        string AGVStationID { get; }
         string getAGVStationID();
         List<APORTSTATION> loadReadyAGVStationPort();
         bool IsReservation { get; set; }
         bool IsTransferUnloadExcuting { get; set; }
         bool IsReadyDoubleUnload { get; }
+        bool IsReadySingleUnload { get; }
         List<APORTSTATION> getAGVStationPorts();
+        string BindingVh { get; }
+
+        APORTSTATION getVirtruePort();
     }
 
 

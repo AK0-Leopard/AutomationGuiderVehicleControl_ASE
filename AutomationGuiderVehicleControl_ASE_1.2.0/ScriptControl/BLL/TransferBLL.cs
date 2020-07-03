@@ -217,10 +217,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             public bool canExcuteUnloadTransferToAGVStation(IAGVStationType agvStation, int unfinishCmdCount, bool isEmergency)
             {
-                if (DebugParameter.CanUnloadToAGVStationTest)
-                    return true;
-                else
-                    return false;
+                //if (DebugParameter.CanUnloadToAGVStationTest)
+                //    return true;
+                //else
+                //    return false;
                 string result = "";
                 try
                 {
@@ -239,16 +239,18 @@ namespace com.mirle.ibg3k0.sc.BLL
                     $"&{nameof(isEmergency)}={isEmergency}",
                     };
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
-                       Data: $"Try to reserve agv station to unload,uri:{agv_url} station id:{agv_station_id}...");
+                       Data: $"Try to reserve agv station to unload,uri:{agv_url} station id:{agv_station_id} unfinishCmdCount:{unfinishCmdCount} isEmergency:{isEmergency}...");
                     result = webClientManager.GetInfoFromServer(agv_url, action_targets, param);
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
-                       Data: $"Try to reserve agv station to unload,uri:{agv_url} station id:{agv_station_id},result:{result}");
+                       Data: $"Try to reserve agv station to unload,uri:{agv_url} station id:{agv_station_id} unfinishCmdCount:{unfinishCmdCount} isEmergency:{isEmergency},result:{result}");
+                    result = result.ToUpper();
                 }
                 catch (Exception ex)
                 {
                     logger.Error(ex, "Exception");
                 }
-                return SCUtility.isMatche(result, UNLOAD_CHECK_RESULT_OK);
+                //return SCUtility.isMatche(result, UNLOAD_CHECK_RESULT_OK);
+                return result.Contains(UNLOAD_CHECK_RESULT_OK);
             }
 
             List<string> notify_urls = new List<string>()

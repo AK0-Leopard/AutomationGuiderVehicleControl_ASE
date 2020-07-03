@@ -36,6 +36,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         APORTSTATION P13 = null;
         APORTSTATION P14 = null;
         List<APORTSTATION> agvPortStation = null;
+        List<AGVStation> agvStations = null;
         AEQPT mCharger = null;
 
         public DebugForm(BCMainForm _mainForm)
@@ -80,6 +81,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_Cache_data_Name.Items.Add("ASECTION");
             dgv_cache_object_data.AutoGenerateColumns = false;
             dgv_cache_object_data_portstation.AutoGenerateColumns = false;
+            dgv_AGVStationInfo.AutoGenerateColumns = false;
             P11 = bcApp.SCApplication.getEQObjCacheManager().getPortStation("AASTK250P01");
             P12 = bcApp.SCApplication.getEQObjCacheManager().getPortStation("AASTK250P02");
             P13 = bcApp.SCApplication.getEQObjCacheManager().getPortStation("CASTK010P01");
@@ -126,6 +128,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             agvPortStation = bcApp.SCApplication.PortStationBLL.OperateCatch.loadAllPortStation();
             dgv_cache_object_data_portstation.DataSource = agvPortStation;
+
+            agvStations = bcApp.SCApplication.EqptBLL.OperateCatch.loadAllAGVStation();
+            dgv_AGVStationInfo.DataSource = agvStations;
 
             tabControl1.TabPages.RemoveAt(1);
 
@@ -1426,6 +1431,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             Enum.TryParse(cbTranMode.SelectedValue.ToString(), out DebugParameter.TransferModeType transferModeType);
             DebugParameter.TransferMode = transferModeType;
+        }
+
+        private void btn_refresh_agvstationInfo_Click(object sender, EventArgs e)
+        {
+            dgv_AGVStationInfo.Refresh();
         }
     }
 }

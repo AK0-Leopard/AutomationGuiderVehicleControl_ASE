@@ -217,6 +217,7 @@
             this.cmb_force_assign.Name = "cmb_force_assign";
             this.cmb_force_assign.Size = new System.Drawing.Size(153, 30);
             this.cmb_force_assign.TabIndex = 6;
+            this.cmb_force_assign.SelectedIndexChanged += new System.EventHandler(this.cmb_force_assign_SelectedIndexChanged);
             // 
             // btn_force_finish
             // 

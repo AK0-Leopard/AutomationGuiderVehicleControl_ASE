@@ -220,7 +220,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
             }
 
         }
-        public ATRANSFER ToTRANSFER(BLL.PortStationBLL portStationBLL)
+        public ATRANSFER ToTRANSFER(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqprBLL)
         {
             string cmdID = REPITEMS.COMMINFO.COMMAINFOVALUE.COMMANDID.CPVAL;
             string priority = REPITEMS.COMMINFO.COMMAINFOVALUE.PRIORITY.CPVAL;
@@ -228,6 +228,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
             string cstID = REPITEMS.TRANINFO.TRANSFERINFOVALUE.CARRIERIDINFO.CPVAL;
             string source = REPITEMS.TRANINFO.TRANSFERINFOVALUE.SOUINFO.CPVAL;
             string dest = REPITEMS.TRANINFO.TRANSFERINFOVALUE.DESTINFO.CPVAL;
+            dest = tryGetVirturePortID(portStationBLL, eqprBLL, dest);
             string lot_id = tryGetLotID();
             if (!int.TryParse(priority, out int ipriority))
             {
@@ -271,6 +272,31 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
                 REPLACE = ireplace,
                 LOT_ID = lot_id
             };
+        }
+
+        public static string tryGetVirturePortID(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL, string dest)
+        {
+            APORTSTATION port_station = portStationBLL.OperateCatch.getPortStation(dest);
+            if (port_station == null) return dest;
+            var eqpt = port_station.GetEqpt(eqptBLL);
+            if (eqpt is AGVStation)
+            {
+                var agv_station = eqpt as AGVStation;
+                var virtrue_port = agv_station.getVirtruePort();
+                if (agv_station.IsVirtrueUse)
+                {
+                    return SCUtility.Trim(virtrue_port.PORT_ID, true);
+                }
+                else
+                {
+                    return dest;
+                }
+
+            }
+            else
+            {
+                return dest;
+            }
         }
 
         private string tryGetLotID()

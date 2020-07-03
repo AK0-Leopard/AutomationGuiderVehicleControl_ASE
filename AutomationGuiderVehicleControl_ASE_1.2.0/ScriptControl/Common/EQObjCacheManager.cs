@@ -415,7 +415,8 @@ namespace com.mirle.ibg3k0.sc.Common
                         eqTemp.TcpIpAgentName = eqptConfig.TcpIpAgentName;
                         eqTemp.UnitList = unit_lsit_temp;
                         eqTemp.Type = eqptType;
-
+                        eqTemp.proc_Formaat = procDataFormat;
+                        
                         //AEQPT eqTemp = new AEQPT()
                         //{
                         //    EQPT_ID = eqpt_id,

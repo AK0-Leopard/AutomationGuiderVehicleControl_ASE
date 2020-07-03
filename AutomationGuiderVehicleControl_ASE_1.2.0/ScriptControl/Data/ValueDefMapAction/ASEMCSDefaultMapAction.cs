@@ -270,7 +270,15 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         }
         private S6F11.RPTINFO.RPTITEM.VIDITEM_118 buildCurrentPortStatus()
         {
-            List<APORTSTATION> port_station = scApp.PortStationBLL.OperateCatch.loadAllPortStation();
+            List<APORTSTATION> port_station = scApp.PortStationBLL.OperateCatch.loadAllPortStation().ToList();
+            //List<AGVStation> agv_stations = scApp.EqptBLL.OperateCatch.loadAllAGVStation();
+            //foreach (var agv_station in agv_stations)
+            //{
+            //    port_station.Add(new APORTSTATION()
+            //    {
+            //        PORT_ID = SCUtility.Trim(agv_station.EQPT_ID, true)
+            //    });
+            //}
             int port_count = port_station.Count;
             S6F11.RPTINFO.RPTITEM.VIDITEM_118 item = new S6F11.RPTINFO.RPTITEM.VIDITEM_118();
             item.PortInfos = new S6F11.RPTINFO.RPTITEM.PORTTINFO[port_count];
@@ -631,7 +639,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         string rtnStr = "";
                         var check_result = doCheckMCSCommand(s2f49_transfer, ref s2f50, out rtnStr);
                         s2f50.HCACK = check_result.result;
-                        ATRANSFER transfer = s2f49_transfer.ToTRANSFER(scApp.PortStationBLL);
+                        ATRANSFER transfer = s2f49_transfer.ToTRANSFER(scApp.PortStationBLL, scApp.EqptBLL);
                         transfer.SetCheckResult(check_result.isSuccess, check_result.result);
                         // todo continue 20200131
                         bool is_process_success = true;
@@ -673,7 +681,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         }
                         if (is_process_success && check_result.isSuccess)
                         {
-                            scApp.TransferService.Scan();
+                            //scApp.TransferService.Scan();
                             scApp.TransferBLL.web.receiveMCSCommandNotify();
                         }
                         else

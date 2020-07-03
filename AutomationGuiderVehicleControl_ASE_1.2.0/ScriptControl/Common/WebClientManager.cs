@@ -50,7 +50,7 @@ namespace com.mirle.ibg3k0.sc.Common
         }
         public string GetInfoFromServer(string uri, string[] action_targets, string param)
         {
-            string result = string.Empty;
+            string result = "default";
             string action_target = string.Join("/", action_targets);
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create($"{uri}/{action_target}/{param}");
             httpWebRequest.Timeout = 5000;

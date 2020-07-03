@@ -112,6 +112,9 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label46 = new System.Windows.Forms.Label();
+            this.cbTranMode = new System.Windows.Forms.ComboBox();
+            this.label45 = new System.Windows.Forms.Label();
             this.groupBox19 = new System.Windows.Forms.GroupBox();
             this.label44 = new System.Windows.Forms.Label();
             this.numer_commandWaitTime = new System.Windows.Forms.NumericUpDown();
@@ -159,6 +162,8 @@
             this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btn_refresf_portsation_info = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btn_refresh_agvstationInfo = new System.Windows.Forms.Button();
+            this.dgv_AGVStationInfo = new System.Windows.Forms.DataGridView();
             this.cb_canUnloadToAGVStation = new System.Windows.Forms.CheckBox();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.btn_cmp_vh_complete = new System.Windows.Forms.Button();
@@ -327,9 +332,11 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.label45 = new System.Windows.Forms.Label();
-            this.cbTranMode = new System.Windows.Forms.ComboBox();
-            this.label46 = new System.Windows.Forms.Label();
+            this.AGVStationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsReservation = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsTransferUnloadExcuting = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsReadySingleUnload = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.BindingVh = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -355,6 +362,7 @@
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_cache_object_data_portstation)).BeginInit();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_AGVStationInfo)).BeginInit();
             this.groupBox18.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numer_num_of_avoid_seg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_batteryCapacity)).BeginInit();
@@ -1327,6 +1335,33 @@
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(1133, 88);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(130, 22);
+            this.label46.TabIndex = 30;
+            this.label46.Text = "Tranfer Mode";
+            // 
+            // cbTranMode
+            // 
+            this.cbTranMode.FormattingEnabled = true;
+            this.cbTranMode.Location = new System.Drawing.Point(1141, 113);
+            this.cbTranMode.Name = "cbTranMode";
+            this.cbTranMode.Size = new System.Drawing.Size(170, 30);
+            this.cbTranMode.TabIndex = 29;
+            this.cbTranMode.SelectedIndexChanged += new System.EventHandler(this.cbTranMode_SelectedIndexChanged);
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(1131, -1);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(150, 22);
+            this.label45.TabIndex = 28;
+            this.label45.Text = "Cycle Run Type";
+            // 
             // groupBox19
             // 
             this.groupBox19.Controls.Add(this.label44);
@@ -1574,7 +1609,7 @@
             this.table_cache_data_pisplay.Location = new System.Drawing.Point(4, 31);
             this.table_cache_data_pisplay.Name = "table_cache_data_pisplay";
             this.table_cache_data_pisplay.Padding = new System.Windows.Forms.Padding(3);
-            this.table_cache_data_pisplay.Size = new System.Drawing.Size(1455, 830);
+            this.table_cache_data_pisplay.Size = new System.Drawing.Size(1479, 916);
             this.table_cache_data_pisplay.TabIndex = 3;
             this.table_cache_data_pisplay.Text = "Cache Data Display";
             this.table_cache_data_pisplay.UseVisualStyleBackColor = true;
@@ -1596,7 +1631,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.61165F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 95.38835F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1449, 824);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1473, 910);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // dgv_cache_object_data
@@ -1607,12 +1642,12 @@
             this.cstt_id});
             this.tableLayoutPanel2.SetColumnSpan(this.dgv_cache_object_data, 2);
             this.dgv_cache_object_data.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_cache_object_data.Location = new System.Drawing.Point(3, 40);
+            this.dgv_cache_object_data.Location = new System.Drawing.Point(3, 44);
             this.dgv_cache_object_data.MultiSelect = false;
             this.dgv_cache_object_data.Name = "dgv_cache_object_data";
             this.dgv_cache_object_data.RowTemplate.Height = 24;
             this.dgv_cache_object_data.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_cache_object_data.Size = new System.Drawing.Size(1217, 781);
+            this.dgv_cache_object_data.Size = new System.Drawing.Size(1241, 863);
             this.dgv_cache_object_data.TabIndex = 0;
             this.dgv_cache_object_data.Visible = false;
             this.dgv_cache_object_data.EditModeChanged += new System.EventHandler(this.dgv_cache_object_data_EditModeChanged);
@@ -1638,7 +1673,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(210, 3);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -1648,7 +1683,7 @@
             // 
             this.label22.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(44, 7);
+            this.label22.Location = new System.Drawing.Point(68, 9);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(160, 22);
             this.label22.TabIndex = 2;
@@ -1656,7 +1691,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(1226, 40);
+            this.button7.Location = new System.Drawing.Point(1250, 44);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(123, 54);
             this.button7.TabIndex = 3;
@@ -1669,7 +1704,7 @@
             this.tabPage5.Controls.Add(this.tableLayoutPanel1);
             this.tabPage5.Location = new System.Drawing.Point(4, 31);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1455, 830);
+            this.tabPage5.Size = new System.Drawing.Size(1479, 916);
             this.tabPage5.TabIndex = 7;
             this.tabPage5.Text = "Cache Data Display";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1687,8 +1722,8 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 830F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1455, 830);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 916F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1479, 916);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // dgv_cache_object_data_portstation
@@ -1714,7 +1749,7 @@
             this.dgv_cache_object_data_portstation.Name = "dgv_cache_object_data_portstation";
             this.dgv_cache_object_data_portstation.RowTemplate.Height = 24;
             this.dgv_cache_object_data_portstation.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_cache_object_data_portstation.Size = new System.Drawing.Size(1355, 824);
+            this.dgv_cache_object_data_portstation.Size = new System.Drawing.Size(1379, 910);
             this.dgv_cache_object_data_portstation.TabIndex = 0;
             // 
             // dataGridViewTextBoxColumn1
@@ -1746,7 +1781,6 @@
             this.isinput_mode.DataPropertyName = "IsInPutMode";
             this.isinput_mode.HeaderText = "In Put Mode";
             this.isinput_mode.Name = "isinput_mode";
-            this.isinput_mode.ReadOnly = true;
             // 
             // isOutPutMode
             // 
@@ -1760,7 +1794,6 @@
             this.portReady.DataPropertyName = "PortReady";
             this.portReady.HeaderText = "Port Ready";
             this.portReady.Name = "portReady";
-            this.portReady.ReadOnly = true;
             // 
             // waitOut
             // 
@@ -1807,7 +1840,7 @@
             // 
             // btn_refresf_portsation_info
             // 
-            this.btn_refresf_portsation_info.Location = new System.Drawing.Point(1364, 3);
+            this.btn_refresf_portsation_info.Location = new System.Drawing.Point(1388, 3);
             this.btn_refresf_portsation_info.Name = "btn_refresf_portsation_info";
             this.btn_refresf_portsation_info.Size = new System.Drawing.Size(88, 54);
             this.btn_refresf_portsation_info.TabIndex = 3;
@@ -1817,6 +1850,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.btn_refresh_agvstationInfo);
+            this.tabPage3.Controls.Add(this.dgv_AGVStationInfo);
             this.tabPage3.Controls.Add(this.cb_canUnloadToAGVStation);
             this.tabPage3.Controls.Add(this.groupBox18);
             this.tabPage3.Controls.Add(this.numer_num_of_avoid_seg);
@@ -1833,10 +1868,35 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 31);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1455, 830);
+            this.tabPage3.Size = new System.Drawing.Size(1479, 916);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Test Tool";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btn_refresh_agvstationInfo
+            // 
+            this.btn_refresh_agvstationInfo.Location = new System.Drawing.Point(612, 710);
+            this.btn_refresh_agvstationInfo.Name = "btn_refresh_agvstationInfo";
+            this.btn_refresh_agvstationInfo.Size = new System.Drawing.Size(98, 47);
+            this.btn_refresh_agvstationInfo.TabIndex = 40;
+            this.btn_refresh_agvstationInfo.Text = "Refresh";
+            this.btn_refresh_agvstationInfo.UseVisualStyleBackColor = true;
+            this.btn_refresh_agvstationInfo.Click += new System.EventHandler(this.btn_refresh_agvstationInfo_Click);
+            // 
+            // dgv_AGVStationInfo
+            // 
+            this.dgv_AGVStationInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_AGVStationInfo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.AGVStationID,
+            this.IsReservation,
+            this.IsTransferUnloadExcuting,
+            this.IsReadySingleUnload,
+            this.BindingVh});
+            this.dgv_AGVStationInfo.Location = new System.Drawing.Point(12, 710);
+            this.dgv_AGVStationInfo.Name = "dgv_AGVStationInfo";
+            this.dgv_AGVStationInfo.RowTemplate.Height = 24;
+            this.dgv_AGVStationInfo.Size = new System.Drawing.Size(594, 198);
+            this.dgv_AGVStationInfo.TabIndex = 39;
             // 
             // cb_canUnloadToAGVStation
             // 
@@ -2222,7 +2282,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 31);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1455, 830);
+            this.tabPage4.Size = new System.Drawing.Size(1479, 916);
             this.tabPage4.TabIndex = 4;
             this.tabPage4.Text = "Charger Test";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -3408,7 +3468,7 @@
             this.DIO_DEVICE_TEST.Controls.Add(this.comboBox_port11);
             this.DIO_DEVICE_TEST.Location = new System.Drawing.Point(4, 31);
             this.DIO_DEVICE_TEST.Name = "DIO_DEVICE_TEST";
-            this.DIO_DEVICE_TEST.Size = new System.Drawing.Size(1455, 830);
+            this.DIO_DEVICE_TEST.Size = new System.Drawing.Size(1479, 916);
             this.DIO_DEVICE_TEST.TabIndex = 5;
             this.DIO_DEVICE_TEST.Text = "PortEnableSet";
             this.DIO_DEVICE_TEST.UseVisualStyleBackColor = true;
@@ -3509,7 +3569,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 31);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1455, 830);
+            this.tabPage2.Size = new System.Drawing.Size(1479, 916);
             this.tabPage2.TabIndex = 6;
             this.tabPage2.Text = "ON-LINE";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -3524,32 +3584,36 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // label45
+            // AGVStationID
             // 
-            this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(1131, -1);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(150, 22);
-            this.label45.TabIndex = 28;
-            this.label45.Text = "Cycle Run Type";
+            this.AGVStationID.DataPropertyName = "AGVStationID";
+            this.AGVStationID.HeaderText = "AGVStationID";
+            this.AGVStationID.Name = "AGVStationID";
+            this.AGVStationID.Width = 150;
             // 
-            // cbTranMode
+            // IsReservation
             // 
-            this.cbTranMode.FormattingEnabled = true;
-            this.cbTranMode.Location = new System.Drawing.Point(1141, 113);
-            this.cbTranMode.Name = "cbTranMode";
-            this.cbTranMode.Size = new System.Drawing.Size(170, 30);
-            this.cbTranMode.TabIndex = 29;
-            this.cbTranMode.SelectedIndexChanged += new System.EventHandler(this.cbTranMode_SelectedIndexChanged);
+            this.IsReservation.DataPropertyName = "IsReservation";
+            this.IsReservation.HeaderText = "IsReservation";
+            this.IsReservation.Name = "IsReservation";
             // 
-            // label46
+            // IsTransferUnloadExcuting
             // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(1133, 88);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(130, 22);
-            this.label46.TabIndex = 30;
-            this.label46.Text = "Tranfer Mode";
+            this.IsTransferUnloadExcuting.DataPropertyName = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.HeaderText = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.Name = "IsTransferUnloadExcuting";
+            // 
+            // IsReadySingleUnload
+            // 
+            this.IsReadySingleUnload.DataPropertyName = "IsReadySingleUnload";
+            this.IsReadySingleUnload.HeaderText = "IsReadySingleUnload";
+            this.IsReadySingleUnload.Name = "IsReadySingleUnload";
+            // 
+            // BindingVh
+            // 
+            this.BindingVh.DataPropertyName = "BindingVh";
+            this.BindingVh.HeaderText = "BindingVh";
+            this.BindingVh.Name = "BindingVh";
             // 
             // DebugForm
             // 
@@ -3604,6 +3668,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_cache_object_data_portstation)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_AGVStationInfo)).EndInit();
             this.groupBox18.ResumeLayout(false);
             this.groupBox18.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numer_num_of_avoid_seg)).EndInit();
@@ -3927,6 +3992,9 @@
         private System.Windows.Forms.CheckBox cb_coupler_enable;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox cb_canUnloadToAGVStation;
+        private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.ComboBox cbTranMode;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn adrID;
@@ -3939,8 +4007,12 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn cSTPresenceMismatch;
         private System.Windows.Forms.DataGridViewTextBoxColumn cstID_PLC;
         private System.Windows.Forms.DataGridViewCheckBoxColumn includeCycleTest;
-        private System.Windows.Forms.Label label45;
-        private System.Windows.Forms.Label label46;
-        private System.Windows.Forms.ComboBox cbTranMode;
+        private System.Windows.Forms.DataGridView dgv_AGVStationInfo;
+        private System.Windows.Forms.Button btn_refresh_agvstationInfo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AGVStationID;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsReservation;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsTransferUnloadExcuting;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsReadySingleUnload;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BindingVh;
     }
 }

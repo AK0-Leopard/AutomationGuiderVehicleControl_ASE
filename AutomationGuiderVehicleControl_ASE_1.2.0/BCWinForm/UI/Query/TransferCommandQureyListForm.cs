@@ -213,5 +213,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 btn_force_finish.Enabled = true;
             }
         }
+
+        private void cmb_force_assign_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
