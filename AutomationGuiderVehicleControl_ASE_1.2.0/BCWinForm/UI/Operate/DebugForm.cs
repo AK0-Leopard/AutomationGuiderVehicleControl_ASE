@@ -47,6 +47,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             cb_StartGenAntoCmd.Checked = DebugParameter.CanAutoRandomGeneratesCommand;
             numer_num_of_avoid_seg.Value = DebugParameter.NumberOfAvoidanceSegment;
+            ck_check_port_is_ready.Checked = DebugParameter.isNeedCheckPortReady;
 
             List<string> lstVh = new List<string>();
             lstVh.Add(string.Empty);
@@ -1436,6 +1437,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void btn_refresh_agvstationInfo_Click(object sender, EventArgs e)
         {
             dgv_AGVStationInfo.Refresh();
+        }
+
+        private void ck_check_port_is_ready_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.isNeedCheckPortReady = ck_check_port_is_ready.Checked;
         }
     }
 }

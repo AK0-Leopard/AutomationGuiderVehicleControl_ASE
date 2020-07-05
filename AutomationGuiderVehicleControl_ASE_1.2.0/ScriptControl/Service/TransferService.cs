@@ -285,7 +285,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                             if (bestSuitableVh != null)
                             {
-                                if (AssignTransferToVehicle(first_waitting_excute_mcs_cmd, bestSuitableVh))
+                                if (AssignTransferToVehicle(first_waitting_excute_mcs_cmd, bestSuitableVh, ""))
                                 {
                                     scApp.VehicleService.Command.Scan();
                                     return;
@@ -491,7 +491,8 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         List<VTRANSFER> excuting_transfer = un_finish_trnasfer.
                                                     Where(tr => tr.TRANSFERSTATE > E_TRAN_STATUS.Queue &&
-                                                                tr.TRANSFERSTATE <= E_TRAN_STATUS.Transferring).
+                                                                tr.TRANSFERSTATE <= E_TRAN_STATUS.Transferring &&
+                                                                !SCUtility.isEmpty(tr.VH_ID)).
                                                     ToList();
                         List<VTRANSFER> in_queue_transfer = un_finish_trnasfer.
                                                     Where(tr => tr.TRANSFERSTATE == E_TRAN_STATUS.Queue).
@@ -1090,38 +1091,61 @@ namespace com.mirle.ibg3k0.sc.Service
             return (is_success, best_suitable_vh, best_suitable_transfer);
         }
 
-        public bool AssignTransferToVehicle(ATRANSFER waittingExcuteMcsCmd, AVEHICLE bestSuitableVh)
+        public bool AssignTransferToVehicle(ATRANSFER waittingExcuteMcsCmd, AVEHICLE bestSuitableVh, string forceAssignStPort)
         {
             bool is_success = true;
             ACMD assign_cmd = waittingExcuteMcsCmd.ConvertToCmd(scApp.PortStationBLL, scApp.SequenceBLL, bestSuitableVh);
-            var destination_info = checkAndRenameDestinationPortIfAGVStation(assign_cmd);
-            if (destination_info.checkSuccess)
+            bool is_force_assign_st_port = !SCUtility.isEmpty(forceAssignStPort);
+            if (is_force_assign_st_port)
             {
-                assign_cmd.DESTINATION = destination_info.destinationAdrID;
-                assign_cmd.DESTINATION_PORT = destination_info.destinationPortID;
+                APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(forceAssignStPort);
+                SCAppConstants.EqptType eq_type = port_station.GetEqptType(scApp.EqptBLL);
+                if (eq_type != SCAppConstants.EqptType.AGVStation)
+                {
+                    CMDBLL.CommandCheckResult check_result = CMDBLL.getOrSetCallContext<CMDBLL.CommandCheckResult>(CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
+                    check_result.Result.AppendLine($"port station:{port_station.PORT_ID} can't force assign.it type:{eq_type}");
+                    //todo log...
+                    return false;
+                }
+                assign_cmd.DESTINATION = SCUtility.Trim(port_station.ADR_ID, true);
+                assign_cmd.DESTINATION_PORT = SCUtility.Trim(port_station.PORT_ID, true);
             }
             else
             {
-                CMDBLL.CommandCheckResult check_result = CMDBLL.getOrSetCallContext<CMDBLL.CommandCheckResult>(CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
-                check_result.Result.AppendLine($" vh:{assign_cmd.VH_ID} creat command to db unsuccess. destination port :{SCUtility.Trim(assign_cmd.DESTINATION_PORT, true)} not ready");
-                //todo log...
-                return false;
-            }
-            is_success = is_success && scApp.CMDBLL.checkCmd(assign_cmd);
-            using (TransactionScope tx = SCUtility.getTransactionScope())
-            {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                var destination_info = checkAndRenameDestinationPortIfAGVStationReady(assign_cmd);
+                if (destination_info.checkSuccess)
                 {
-                    is_success = is_success && scApp.CMDBLL.addCmd(assign_cmd);
-                    is_success = is_success && scApp.CMDBLL.updateTransferCmd_TranStatus2PreInitial(waittingExcuteMcsCmd.ID);
-                    if (is_success)
+                    assign_cmd.DESTINATION = destination_info.destinationAdrID;
+                    assign_cmd.DESTINATION_PORT = destination_info.destinationPortID;
+                }
+                else
+                {
+                    CMDBLL.CommandCheckResult check_result = CMDBLL.getOrSetCallContext<CMDBLL.CommandCheckResult>(CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
+                    check_result.Result.AppendLine($" vh:{assign_cmd.VH_ID} creat command to db unsuccess. destination port :{SCUtility.Trim(assign_cmd.DESTINATION_PORT, true)} not ready");
+                    //todo log...
+                    return false;
+                }
+            }
+
+            is_success = is_success && scApp.CMDBLL.checkCmd(assign_cmd);
+            if (is_success)
+            {
+                using (TransactionScope tx = SCUtility.getTransactionScope())
+                {
+                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
                     {
-                        tx.Complete();
-                    }
-                    else
-                    {
-                        CMDBLL.CommandCheckResult check_result = CMDBLL.getOrSetCallContext<CMDBLL.CommandCheckResult>(CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
-                        check_result.Result.AppendLine($" vh:{assign_cmd.VH_ID} creat command to db unsuccess.");
+                        is_success = is_success && scApp.CMDBLL.addCmd(assign_cmd);
+                        is_success = is_success && scApp.CMDBLL.updateTransferCmd_TranStatus2PreInitial(waittingExcuteMcsCmd.ID);
+                        if (is_success)
+                        {
+                            tx.Complete();
+                        }
+                        else
+                        {
+                            CMDBLL.CommandCheckResult check_result = CMDBLL.getOrSetCallContext<CMDBLL.CommandCheckResult>(CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
+                            check_result.Result.AppendLine($" vh:{assign_cmd.VH_ID} creat command to db unsuccess.");
+                            check_result.IsSuccess = false;
+                        }
                     }
                 }
             }
@@ -1160,7 +1184,13 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             bool is_success = true;
             ACMD assign_cmd = waittingExcuteMcsCmd.ConvertToCmd(scApp.PortStationBLL, scApp.SequenceBLL, bestSuitableVh);
-            var destination_info = checkAndRenameDestinationPortIfAGVStation(assign_cmd);
+            //var destination_info = checkAndRenameDestinationPortIfAGVStationReady(assign_cmd);
+            (bool checkSuccess, string destinationPortID, string destinationAdrID) destination_info =
+                default((bool checkSuccess, string destinationPortID, string destinationAdrID));
+            if (DebugParameter.isNeedCheckPortReady)
+                destination_info = checkAndRenameDestinationPortIfAGVStationReady(assign_cmd);
+            else
+                destination_info = checkAndRenameDestinationPortIfAGVStationAuto(assign_cmd);
             if (destination_info.checkSuccess)
             {
                 assign_cmd.DESTINATION = destination_info.destinationAdrID;
@@ -1196,7 +1226,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             return is_success;
         }
-        private (bool checkSuccess, string destinationPortID, string destinationAdrID) checkAndRenameDestinationPortIfAGVStation(ACMD assignCmd)
+        private (bool checkSuccess, string destinationPortID, string destinationAdrID) checkAndRenameDestinationPortIfAGVStationReady(ACMD assignCmd)
         {
             if (assignCmd.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType)
             {
@@ -1208,6 +1238,42 @@ namespace com.mirle.ibg3k0.sc.Service
                     return (false, "", "");
                 }
                 var ready_agv_station_port = unload_agv_station.loadReadyAGVStationPort();
+                foreach (var port in ready_agv_station_port)
+                {
+                    bool has_command_excute = cmdBLL.hasExcuteCMDByDestinationPort(port.PORT_ID);
+                    if (!has_command_excute)
+                    {
+                        return (true, port.PORT_ID, port.ADR_ID);
+                    }
+                }
+                //todo log
+                return (false, "", "");
+            }
+            else
+            {
+                return (true, assignCmd.DESTINATION_PORT, assignCmd.DESTINATION);
+            }
+        }
+        private (bool checkSuccess, string destinationPortID, string destinationAdrID) checkAndRenameDestinationPortIfAGVStationAuto(ACMD assignCmd)
+        {
+            if (assignCmd.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType)
+            {
+                IAGVStationType unload_agv_station = assignCmd.getTragetPortEQ(scApp.EqptBLL) as IAGVStationType;
+                //bool is_ready_double_port = unload_agv_station.IsReadyDoubleUnload;
+                //bool is_ready_double_port = unload_agv_station.IsReadySingleUnload;
+                //if (!is_ready_double_port)
+                //{
+                //    return (false, "", "");
+                //}
+                bool has_port_in_auto_mode = unload_agv_station.HasPortAuto;
+                if (!has_port_in_auto_mode)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(TransferService), Device: DEVICE_NAME_AGV,
+                       Data: $"agv station:[{unload_agv_station.getAGVStationID()}] no port is auto.");
+                    return (false, "", "");
+                }
+                //var ready_agv_station_port = unload_agv_station.loadReadyAGVStationPort();
+                var ready_agv_station_port = unload_agv_station.getAGVAutoRealPorts();
                 foreach (var port in ready_agv_station_port)
                 {
                     bool has_command_excute = cmdBLL.hasExcuteCMDByDestinationPort(port.PORT_ID);

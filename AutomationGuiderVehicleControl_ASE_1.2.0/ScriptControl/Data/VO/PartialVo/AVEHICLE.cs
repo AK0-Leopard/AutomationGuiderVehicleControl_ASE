@@ -71,7 +71,7 @@ namespace com.mirle.ibg3k0.sc
         /// <summary>
         /// 最大允許斷線時間Milliseconds
         /// </summary>
-        public static UInt16 MAX_ALLOW_IDLE_TIME_MILLISECOND { get; private set; } = 10000;
+        public static UInt32 MAX_ALLOW_IDLE_TIME_MILLISECOND { get; private set; } = 180000;
 
         VehicleTimerAction vehicleTimer = null;
         public VehicleStateMachine vhStateMachine;

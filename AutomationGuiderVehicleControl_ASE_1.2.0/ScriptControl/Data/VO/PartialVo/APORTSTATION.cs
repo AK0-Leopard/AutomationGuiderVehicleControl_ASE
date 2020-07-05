@@ -24,6 +24,8 @@ namespace com.mirle.ibg3k0.sc
         public string CST_ID { get; set; }
         public string ZONE_ID { get; set; }
         public string EQPT_ID { get; set; }
+        public int PortNum { get; set; }
+
         public bool IncludeCycleTest { get; set; }
         public int TestTimes { get; set; }
 
@@ -82,6 +84,7 @@ namespace com.mirle.ibg3k0.sc
             }
         }
         //public bool IsInPutMode { get { return PortInfo.IsInputMode; } }
+        public bool IsAutoMode { set { PortInfo.IsAutoMode = value; } get { return PortInfo.IsAutoMode; } }
         public bool IsInPutMode { set { PortInfo.IsInputMode = value; } get { return PortInfo.IsInputMode; } }
         public bool IsOutPutMode { get { return PortInfo.IsOutputMode; } }
         public bool PortReady { set { PortInfo.AGVPortReady = value; } get { return PortInfo.AGVPortReady; } }
@@ -93,6 +96,7 @@ namespace com.mirle.ibg3k0.sc
         public void SetPortInfo(PORT_INFO newPortInfo)
         {
             PortInfo.Timestamp = newPortInfo.Timestamp;
+            PortInfo.IsAutoMode = newPortInfo.IsAutoMode;
             PortInfo.IsInputMode = newPortInfo.IsInputMode;
             PortInfo.IsOutputMode = newPortInfo.IsOutputMode;
             PortInfo.AGVPortReady = newPortInfo.AGVPortReady;
@@ -104,6 +108,7 @@ namespace com.mirle.ibg3k0.sc
         }
         public void ResetPortInfo()
         {
+            PortInfo.IsAutoMode = false;
             PortInfo.IsInputMode = false;
             PortInfo.IsOutputMode = false;
             PortInfo.AGVPortReady = false;

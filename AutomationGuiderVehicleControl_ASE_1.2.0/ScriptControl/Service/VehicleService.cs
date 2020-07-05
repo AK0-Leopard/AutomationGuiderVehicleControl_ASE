@@ -1989,63 +1989,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
 
-            public void Scan_V2()
-            {
-                if (System.Threading.Interlocked.Exchange(ref cmd_SyncPoint, 1) == 0)
-                {
-                    try
-                    {
-                        if (scApp.getEQObjCacheManager().getLine().ServiceMode
-                            != SCAppConstants.AppServiceMode.Active)
-                            return;
-                        List<ACMD> CMD_OHTC_Queues = scApp.CMDBLL.loadCMD_OHTCMDStatusIsQueue();
-                        if (CMD_OHTC_Queues == null || CMD_OHTC_Queues.Count == 0)
-                            return;
-                        foreach (ACMD cmd in CMD_OHTC_Queues)
-                        {
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(CMDBLL), Device: string.Empty,
-                               Data: $"Start process command ,id:{SCUtility.Trim(cmd.ID)},vh id:{SCUtility.Trim(cmd.VH_ID)},from:{SCUtility.Trim(cmd.SOURCE)},to:{SCUtility.Trim(cmd.DESTINATION)}");
-
-                            string vehicle_id = cmd.VH_ID.Trim();
-                            AVEHICLE assignVH = scApp.VehicleBLL.cache.getVehicle(vehicle_id);
-                            if (!assignVH.isTcpIpConnect ||
-                                !scApp.CMDBLL.canSendCmd(vehicle_id)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
-                            {
-                                continue;
-                            }
-                            //1.如果目的地是AGV Station，則需要去看目的地的Port是否已經準備好了
-                            //  如果還沒好，則需要先把這台AGV派至該命令的EQ端等待接收命令
-                            bool is_agv_station_target_port = cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
-                            if (is_agv_station_target_port)
-                            {
-                                var target_port_agv_station = cmd.getTragetPortEQ(scApp.PortStationBLL, scApp.EqptBLL) as AGVStation;
-                                //if (!target_port_agv_station.IsReadyDoubleUnload)
-                                if (!target_port_agv_station.IsReadySingleUnload)
-                                {
-                                    preMoveToSourcePort(assignVH, cmd);
-                                    continue;
-                                }
-                            }
-
-                            bool is_success = service.Send.Command(assignVH, cmd);
-                            if (!is_success)
-                            {
-                                //Finish(cmd.ID, CompleteStatus.Cancel);
-                                //Finish(cmd.ID, CompleteStatus.VehicleAbort);
-                                CommandInitialFail(cmd);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.Error(ex, "Exection:");
-                    }
-                    finally
-                    {
-                        System.Threading.Interlocked.Exchange(ref cmd_SyncPoint, 0);
-                    }
-                }
-            }
 
             /// <summary>
             /// 確認vh是否已經在準備要他去的Address上，如果還沒且
@@ -2524,7 +2467,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.LongTimeInaction += Vh_LongTimeInaction;
                 vh.LongTimeDisconnection += Vh_LongTimeDisconnection;
                 vh.ModeStatusChange += Vh_ModeStatusChange;
-                //vh.Idling += Vh_Idling;
+                vh.Idling += Vh_Idling;
                 vh.SetupTimerAction();
             }
         }

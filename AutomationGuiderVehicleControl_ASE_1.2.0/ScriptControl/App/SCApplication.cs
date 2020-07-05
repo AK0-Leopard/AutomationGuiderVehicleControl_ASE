@@ -1739,5 +1739,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static int NumberOfAvoidanceSegment = 3;
         public static TransferModeType TransferMode = TransferModeType.Normal;
 
+        public static Boolean isNeedCheckPortReady = true;
+
     }
 }

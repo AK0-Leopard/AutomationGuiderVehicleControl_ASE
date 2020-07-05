@@ -416,7 +416,7 @@ namespace com.mirle.ibg3k0.sc.Common
                         eqTemp.UnitList = unit_lsit_temp;
                         eqTemp.Type = eqptType;
                         eqTemp.proc_Formaat = procDataFormat;
-                        
+
                         //AEQPT eqTemp = new AEQPT()
                         //{
                         //    EQPT_ID = eqpt_id,
@@ -485,6 +485,7 @@ namespace com.mirle.ibg3k0.sc.Common
                             _lockPorStationtDic.Add(port_id, new Object());
                             E_VH_TYPE load_vh_type = (E_VH_TYPE)portStationConfig.Load_Vh_Type;
                             E_VH_TYPE unload_vh_type = (E_VH_TYPE)portStationConfig.Unload_Vh_Type;
+                            int port_num = portStationConfig.Port_Num;
                             portStationList.Add(new APORTSTATION()
                             {
                                 ZONE_ID = zone_id,
@@ -493,7 +494,8 @@ namespace com.mirle.ibg3k0.sc.Common
                                 ADR_ID = adr_id,
                                 LD_VH_TYPE = load_vh_type,
                                 ULD_VH_TYPE = unload_vh_type,
-                                PORT_TYPE = 0
+                                PORT_TYPE = 0,
+                                PortNum = port_num
                             });
                         }
                     }

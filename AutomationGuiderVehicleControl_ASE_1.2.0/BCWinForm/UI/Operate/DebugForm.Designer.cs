@@ -151,6 +151,7 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.adrID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsAutoMode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.isinput_mode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.isOutPutMode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.portReady = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -162,8 +163,15 @@
             this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btn_refresf_portsation_info = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.ck_check_port_is_ready = new System.Windows.Forms.CheckBox();
             this.btn_refresh_agvstationInfo = new System.Windows.Forms.Button();
             this.dgv_AGVStationInfo = new System.Windows.Forms.DataGridView();
+            this.AGVStationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HasPortAuto = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsReservation = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsTransferUnloadExcuting = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsReadySingleUnload = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.BindingVh = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cb_canUnloadToAGVStation = new System.Windows.Forms.CheckBox();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.btn_cmp_vh_complete = new System.Windows.Forms.Button();
@@ -332,11 +340,6 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.AGVStationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsReservation = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.IsTransferUnloadExcuting = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.IsReadySingleUnload = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.BindingVh = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1382,7 +1385,6 @@
             this.groupBox19.TabIndex = 27;
             this.groupBox19.TabStop = false;
             this.groupBox19.Text = "Test Flag";
-            this.groupBox19.Visible = false;
             // 
             // label44
             // 
@@ -1733,6 +1735,7 @@
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
             this.adrID,
+            this.IsAutoMode,
             this.isinput_mode,
             this.isOutPutMode,
             this.portReady,
@@ -1775,6 +1778,13 @@
             this.adrID.HeaderText = "Adr ID";
             this.adrID.Name = "adrID";
             this.adrID.ReadOnly = true;
+            // 
+            // IsAutoMode
+            // 
+            this.IsAutoMode.DataPropertyName = "IsAutoMode";
+            this.IsAutoMode.HeaderText = "Is Auto Mode";
+            this.IsAutoMode.Name = "IsAutoMode";
+            this.IsAutoMode.ReadOnly = true;
             // 
             // isinput_mode
             // 
@@ -1850,6 +1860,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.ck_check_port_is_ready);
             this.tabPage3.Controls.Add(this.btn_refresh_agvstationInfo);
             this.tabPage3.Controls.Add(this.dgv_AGVStationInfo);
             this.tabPage3.Controls.Add(this.cb_canUnloadToAGVStation);
@@ -1873,9 +1884,20 @@
             this.tabPage3.Text = "Test Tool";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // ck_check_port_is_ready
+            // 
+            this.ck_check_port_is_ready.AutoSize = true;
+            this.ck_check_port_is_ready.Location = new System.Drawing.Point(13, 678);
+            this.ck_check_port_is_ready.Name = "ck_check_port_is_ready";
+            this.ck_check_port_is_ready.Size = new System.Drawing.Size(269, 26);
+            this.ck_check_port_is_ready.TabIndex = 41;
+            this.ck_check_port_is_ready.Text = "Need Check Port IS Ready";
+            this.ck_check_port_is_ready.UseVisualStyleBackColor = true;
+            this.ck_check_port_is_ready.CheckedChanged += new System.EventHandler(this.ck_check_port_is_ready_CheckedChanged);
+            // 
             // btn_refresh_agvstationInfo
             // 
-            this.btn_refresh_agvstationInfo.Location = new System.Drawing.Point(612, 710);
+            this.btn_refresh_agvstationInfo.Location = new System.Drawing.Point(1079, 710);
             this.btn_refresh_agvstationInfo.Name = "btn_refresh_agvstationInfo";
             this.btn_refresh_agvstationInfo.Size = new System.Drawing.Size(98, 47);
             this.btn_refresh_agvstationInfo.TabIndex = 40;
@@ -1885,9 +1907,11 @@
             // 
             // dgv_AGVStationInfo
             // 
+            this.dgv_AGVStationInfo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgv_AGVStationInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_AGVStationInfo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AGVStationID,
+            this.HasPortAuto,
             this.IsReservation,
             this.IsTransferUnloadExcuting,
             this.IsReadySingleUnload,
@@ -1895,8 +1919,50 @@
             this.dgv_AGVStationInfo.Location = new System.Drawing.Point(12, 710);
             this.dgv_AGVStationInfo.Name = "dgv_AGVStationInfo";
             this.dgv_AGVStationInfo.RowTemplate.Height = 24;
-            this.dgv_AGVStationInfo.Size = new System.Drawing.Size(594, 198);
+            this.dgv_AGVStationInfo.Size = new System.Drawing.Size(1061, 198);
             this.dgv_AGVStationInfo.TabIndex = 39;
+            // 
+            // AGVStationID
+            // 
+            this.AGVStationID.DataPropertyName = "AGVStationID";
+            this.AGVStationID.HeaderText = "AGVStationID";
+            this.AGVStationID.Name = "AGVStationID";
+            this.AGVStationID.Width = 155;
+            // 
+            // HasPortAuto
+            // 
+            this.HasPortAuto.DataPropertyName = "HasPortAuto";
+            this.HasPortAuto.HeaderText = "HasPortAuto";
+            this.HasPortAuto.Name = "HasPortAuto";
+            this.HasPortAuto.Width = 126;
+            // 
+            // IsReservation
+            // 
+            this.IsReservation.DataPropertyName = "IsReservation";
+            this.IsReservation.HeaderText = "IsReservation";
+            this.IsReservation.Name = "IsReservation";
+            this.IsReservation.Width = 146;
+            // 
+            // IsTransferUnloadExcuting
+            // 
+            this.IsTransferUnloadExcuting.DataPropertyName = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.HeaderText = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.Name = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.Width = 256;
+            // 
+            // IsReadySingleUnload
+            // 
+            this.IsReadySingleUnload.DataPropertyName = "IsReadySingleUnload";
+            this.IsReadySingleUnload.HeaderText = "IsReadySingleUnload";
+            this.IsReadySingleUnload.Name = "IsReadySingleUnload";
+            this.IsReadySingleUnload.Width = 206;
+            // 
+            // BindingVh
+            // 
+            this.BindingVh.DataPropertyName = "BindingVh";
+            this.BindingVh.HeaderText = "BindingVh";
+            this.BindingVh.Name = "BindingVh";
+            this.BindingVh.Width = 125;
             // 
             // cb_canUnloadToAGVStation
             // 
@@ -3584,37 +3650,6 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // AGVStationID
-            // 
-            this.AGVStationID.DataPropertyName = "AGVStationID";
-            this.AGVStationID.HeaderText = "AGVStationID";
-            this.AGVStationID.Name = "AGVStationID";
-            this.AGVStationID.Width = 150;
-            // 
-            // IsReservation
-            // 
-            this.IsReservation.DataPropertyName = "IsReservation";
-            this.IsReservation.HeaderText = "IsReservation";
-            this.IsReservation.Name = "IsReservation";
-            // 
-            // IsTransferUnloadExcuting
-            // 
-            this.IsTransferUnloadExcuting.DataPropertyName = "IsTransferUnloadExcuting";
-            this.IsTransferUnloadExcuting.HeaderText = "IsTransferUnloadExcuting";
-            this.IsTransferUnloadExcuting.Name = "IsTransferUnloadExcuting";
-            // 
-            // IsReadySingleUnload
-            // 
-            this.IsReadySingleUnload.DataPropertyName = "IsReadySingleUnload";
-            this.IsReadySingleUnload.HeaderText = "IsReadySingleUnload";
-            this.IsReadySingleUnload.Name = "IsReadySingleUnload";
-            // 
-            // BindingVh
-            // 
-            this.BindingVh.DataPropertyName = "BindingVh";
-            this.BindingVh.HeaderText = "BindingVh";
-            this.BindingVh.Name = "BindingVh";
-            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -3995,9 +4030,12 @@
         private System.Windows.Forms.Label label45;
         private System.Windows.Forms.Label label46;
         private System.Windows.Forms.ComboBox cbTranMode;
+        private System.Windows.Forms.DataGridView dgv_AGVStationInfo;
+        private System.Windows.Forms.Button btn_refresh_agvstationInfo;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn adrID;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsAutoMode;
         private System.Windows.Forms.DataGridViewCheckBoxColumn isinput_mode;
         private System.Windows.Forms.DataGridViewCheckBoxColumn isOutPutMode;
         private System.Windows.Forms.DataGridViewCheckBoxColumn portReady;
@@ -4007,9 +4045,9 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn cSTPresenceMismatch;
         private System.Windows.Forms.DataGridViewTextBoxColumn cstID_PLC;
         private System.Windows.Forms.DataGridViewCheckBoxColumn includeCycleTest;
-        private System.Windows.Forms.DataGridView dgv_AGVStationInfo;
-        private System.Windows.Forms.Button btn_refresh_agvstationInfo;
+        private System.Windows.Forms.CheckBox ck_check_port_is_ready;
         private System.Windows.Forms.DataGridViewTextBoxColumn AGVStationID;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn HasPortAuto;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsReservation;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsTransferUnloadExcuting;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsReadySingleUnload;

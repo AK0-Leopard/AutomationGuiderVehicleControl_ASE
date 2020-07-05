@@ -222,9 +222,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 //else
                 //    return false;
                 string result = "";
+                string url = "";
                 try
                 {
                     string agv_url = agvStation.RemoveURI;
+                    url = SCUtility.Trim(agv_url, true);
                     string agv_station_id = agvStation.getAGVStationID();
                     string[] action_targets = new string[]
                     {
@@ -247,7 +249,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, "Exception");
+                    logger.Error(ex, $"Exception:{url}");
                 }
                 //return SCUtility.isMatche(result, UNLOAD_CHECK_RESULT_OK);
                 return result.Contains(UNLOAD_CHECK_RESULT_OK);

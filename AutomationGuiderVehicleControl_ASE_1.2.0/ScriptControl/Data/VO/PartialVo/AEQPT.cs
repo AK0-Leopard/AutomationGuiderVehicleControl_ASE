@@ -174,6 +174,16 @@ namespace com.mirle.ibg3k0.sc
                        Count() >= 1;
             }
         }
+        public bool HasPortAuto
+        {
+            get
+            {
+                return portStationList != null &&
+                       portStationList.
+                       //Where(port_station => port_station.IsAutoMode).
+                       Count() >= 1;
+            }
+        }
 
         public string BindingVh { get { return proc_Formaat; } }
 
@@ -183,15 +193,30 @@ namespace com.mirle.ibg3k0.sc
         {
             if (portStationList == null) return null;
             return portStationList.
+                   ToList();
+        }
+        public List<APORTSTATION> getAGVStationReadyLoadPorts()
+        {
+            if (portStationList == null) return null;
+            return portStationList.
                    Where(port_station => port_station.IsInPutMode && port_station.PortReady).
                    ToList();
         }
-        public APORTSTATION getVirtruePort()
+        public APORTSTATION getAGVVirtruePort()
         {
             if (portStationList == null) return null;
             return portStationList.
                    Where(port_station => port_station.PORT_ID.Contains("_ST0")).
                    FirstOrDefault();
+        }
+        public List<APORTSTATION> getAGVAutoRealPorts()
+        {
+            if (portStationList == null) return null;
+            return portStationList.
+                   //Where(port_station => !port_station.PORT_ID.Contains("_ST0") && port_station.IsAutoMode).
+                   Where(port_station => !port_station.PORT_ID.Contains("_ST0")).
+                   OrderBy(port_station => port_station.PortNum).
+                   ToList();
         }
 
         public List<APORTSTATION> loadReadyAGVStationPort()
@@ -217,10 +242,12 @@ namespace com.mirle.ibg3k0.sc
         bool IsTransferUnloadExcuting { get; set; }
         bool IsReadyDoubleUnload { get; }
         bool IsReadySingleUnload { get; }
-        List<APORTSTATION> getAGVStationPorts();
+        bool HasPortAuto { get; }
+        APORTSTATION getAGVVirtruePort();
+        List<APORTSTATION> getAGVStationReadyLoadPorts();
+        List<APORTSTATION> getAGVAutoRealPorts();
         string BindingVh { get; }
 
-        APORTSTATION getVirtruePort();
     }
 
 

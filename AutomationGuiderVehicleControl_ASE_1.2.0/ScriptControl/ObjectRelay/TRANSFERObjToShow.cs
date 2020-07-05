@@ -16,7 +16,7 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
         public BLL.PortStationBLL PortStationBLL = null;
         public BLL.VehicleBLL VehicleBLL = null;
         //public ATRANSFER cmd_mcs = null;
-        public VTRANSFER vtrnasfer = null;
+        public VTRANSFER vtrnasfer { get; private set; }
 
         public TRANSFERObjToShow()
         {

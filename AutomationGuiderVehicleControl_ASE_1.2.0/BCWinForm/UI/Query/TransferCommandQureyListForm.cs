@@ -84,8 +84,27 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void dgv_TransferCommand_SelectionChanged(object sender, EventArgs e)
         {
+            cmb_st_port_ids.Visible = false;
+            lbl_st_port_id.Visible = false;
             if (dgv_TransferCommand.SelectedRows.Count > 0)
+            {
                 selection_index = dgv_TransferCommand.SelectedRows[0].Index;
+                var mcs_cmd_show = cmdMCSshowList[selection_index];
+                var mcs_cmd = mcs_cmd_show.vtrnasfer;
+                if (mcs_cmd.getTragetPortEQ(mainform.BCApp.SCApplication.PortStationBLL,
+                                            mainform.BCApp.SCApplication.EqptBLL) is AGVStation)
+                {
+                    AGVStation aGVStation = mcs_cmd.getTragetPortEQ(mainform.BCApp.SCApplication.PortStationBLL,
+                                                                    mainform.BCApp.SCApplication.EqptBLL) as AGVStation;
+                    List<string> agv_station_port_ids = aGVStation.getAGVStationPorts().
+                                                                    Where(station => !station.PORT_ID.Contains("_ST0")).
+                                                                    Select(station => station.PORT_ID).
+                                                                    ToList();
+                    cmb_st_port_ids.DataSource = agv_station_port_ids;
+                    cmb_st_port_ids.Visible = true;
+                    lbl_st_port_id.Visible = true;
+                }
+            }
         }
 
         private async void btn_force_finish_Click(object sender, EventArgs e)
@@ -186,25 +205,31 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 AVEHICLE excute_cmd_of_vh = mainform.BCApp.SCApplication.VehicleBLL.cache.getVehicle(selected_vh_id);
                 ATRANSFER transfer = mainform.BCApp.SCApplication.CMDBLL.GetTransferByID(mcs_cmd.CMD_ID);
                 sc.BLL.CMDBLL.CommandCheckResult check_result_info = null;
+                string force_assign_st_port = "";
+                bool is_selected_agv_station_port = cmb_st_port_ids.Visible;
+                if (is_selected_agv_station_port)
+                {
+                    force_assign_st_port = cmb_st_port_ids.Text;
+                }
                 await Task.Run(() =>
                 {
                     try
                     {
-                        mainform.BCApp.SCApplication.TransferService.AssignTransferToVehicle(transfer, excute_cmd_of_vh);
+                        mainform.BCApp.SCApplication.TransferService.AssignTransferToVehicle(transfer, excute_cmd_of_vh, force_assign_st_port);
                         check_result_info = sc.BLL.CMDBLL.getCallContext<sc.BLL.CMDBLL.CommandCheckResult>
-                                                                           (sc.BLL.CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
+                                                                        (sc.BLL.CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
                     }
                     catch { }
                 }
-                );
+                );  
                 updateTransferCommand();
                 if (check_result_info != null && !check_result_info.IsSuccess)
                 {
-                    MessageBox.Show(check_result_info.ToString(), "Command create fail.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show( check_result_info.ToString(), "Command create fail. ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
-                    MessageBox.Show("OK", "Command create success.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Command create success.", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch { }

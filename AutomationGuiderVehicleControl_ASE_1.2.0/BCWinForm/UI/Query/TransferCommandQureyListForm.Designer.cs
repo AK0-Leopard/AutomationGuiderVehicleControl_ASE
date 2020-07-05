@@ -47,6 +47,9 @@
             this.cmb_force_assign = new System.Windows.Forms.ComboBox();
             this.btn_force_finish = new System.Windows.Forms.Button();
             this.btn_refresh = new System.Windows.Forms.Button();
+            this.cmb_st_port_ids = new System.Windows.Forms.ComboBox();
+            this.lbl_vhid = new System.Windows.Forms.Label();
+            this.lbl_st_port_id = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).BeginInit();
@@ -81,7 +84,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 143F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1602, 716);
             this.tableLayoutPanel1.TabIndex = 7;
             // 
@@ -112,7 +115,7 @@
             this.dgv_TransferCommand.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgv_TransferCommand.RowTemplate.Height = 24;
             this.dgv_TransferCommand.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_TransferCommand.Size = new System.Drawing.Size(1596, 635);
+            this.dgv_TransferCommand.Size = new System.Drawing.Size(1596, 567);
             this.dgv_TransferCommand.TabIndex = 8;
             this.dgv_TransferCommand.SelectionChanged += new System.EventHandler(this.dgv_TransferCommand_SelectionChanged);
             // 
@@ -188,21 +191,24 @@
             // 
             // pel_button
             // 
+            this.pel_button.Controls.Add(this.lbl_st_port_id);
+            this.pel_button.Controls.Add(this.lbl_vhid);
+            this.pel_button.Controls.Add(this.cmb_st_port_ids);
             this.pel_button.Controls.Add(this.btn_force_assign);
             this.pel_button.Controls.Add(this.cmb_force_assign);
             this.pel_button.Controls.Add(this.btn_force_finish);
             this.pel_button.Controls.Add(this.btn_refresh);
             this.pel_button.Controls.Add(this.btn_cancel_abort);
             this.pel_button.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pel_button.Location = new System.Drawing.Point(5, 647);
+            this.pel_button.Location = new System.Drawing.Point(5, 579);
             this.pel_button.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.pel_button.Name = "pel_button";
-            this.pel_button.Size = new System.Drawing.Size(1592, 63);
+            this.pel_button.Size = new System.Drawing.Size(1592, 131);
             this.pel_button.TabIndex = 6;
             // 
             // btn_force_assign
             // 
-            this.btn_force_assign.Location = new System.Drawing.Point(1421, 12);
+            this.btn_force_assign.Location = new System.Drawing.Point(1445, 83);
             this.btn_force_assign.Name = "btn_force_assign";
             this.btn_force_assign.Size = new System.Drawing.Size(140, 42);
             this.btn_force_assign.TabIndex = 7;
@@ -213,9 +219,9 @@
             // cmb_force_assign
             // 
             this.cmb_force_assign.FormattingEnabled = true;
-            this.cmb_force_assign.Location = new System.Drawing.Point(1262, 19);
+            this.cmb_force_assign.Location = new System.Drawing.Point(1398, 3);
             this.cmb_force_assign.Name = "cmb_force_assign";
-            this.cmb_force_assign.Size = new System.Drawing.Size(153, 30);
+            this.cmb_force_assign.Size = new System.Drawing.Size(187, 30);
             this.cmb_force_assign.TabIndex = 6;
             this.cmb_force_assign.SelectedIndexChanged += new System.EventHandler(this.cmb_force_assign_SelectedIndexChanged);
             // 
@@ -239,6 +245,32 @@
             this.btn_refresh.UseVisualStyleBackColor = true;
             this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
             // 
+            // cmb_st_port_ids
+            // 
+            this.cmb_st_port_ids.FormattingEnabled = true;
+            this.cmb_st_port_ids.Location = new System.Drawing.Point(1398, 47);
+            this.cmb_st_port_ids.Name = "cmb_st_port_ids";
+            this.cmb_st_port_ids.Size = new System.Drawing.Size(187, 30);
+            this.cmb_st_port_ids.TabIndex = 8;
+            // 
+            // lbl_vhid
+            // 
+            this.lbl_vhid.AutoSize = true;
+            this.lbl_vhid.Location = new System.Drawing.Point(1322, 6);
+            this.lbl_vhid.Name = "lbl_vhid";
+            this.lbl_vhid.Size = new System.Drawing.Size(70, 22);
+            this.lbl_vhid.TabIndex = 9;
+            this.lbl_vhid.Text = "Vh ID:";
+            // 
+            // lbl_st_port_id
+            // 
+            this.lbl_st_port_id.AutoSize = true;
+            this.lbl_st_port_id.Location = new System.Drawing.Point(1261, 50);
+            this.lbl_st_port_id.Name = "lbl_st_port_id";
+            this.lbl_st_port_id.Size = new System.Drawing.Size(130, 22);
+            this.lbl_st_port_id.TabIndex = 9;
+            this.lbl_st_port_id.Text = "St. Port ID:";
+            // 
             // TransferCommandQureyListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -254,6 +286,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).EndInit();
             this.pel_button.ResumeLayout(false);
+            this.pel_button.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -277,5 +310,8 @@
         private System.Windows.Forms.Button btn_force_finish;
         private System.Windows.Forms.Button btn_force_assign;
         private System.Windows.Forms.ComboBox cmb_force_assign;
+        private System.Windows.Forms.ComboBox cmb_st_port_ids;
+        private System.Windows.Forms.Label lbl_st_port_id;
+        private System.Windows.Forms.Label lbl_vhid;
     }
 }

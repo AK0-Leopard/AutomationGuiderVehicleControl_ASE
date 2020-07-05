@@ -282,7 +282,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
             if (eqpt is AGVStation)
             {
                 var agv_station = eqpt as AGVStation;
-                var virtrue_port = agv_station.getVirtruePort();
+                var virtrue_port = agv_station.getAGVVirtruePort();
                 if (agv_station.IsVirtrueUse)
                 {
                     return SCUtility.Trim(virtrue_port.PORT_ID, true);
