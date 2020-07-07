@@ -80,7 +80,9 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                var carrier_info = transfer.GetCarrierInfo();
+
+                //var carrier_info = transfer.GetCarrierInfo();
+                var carrier_info = transfer.GetCarrierInfo(scApp.VehicleBLL);
                 var sys_excute_quality_info = transfer.GetSysExcuteQuality(scApp.VehicleBLL);
                 transferBLL.db.transfer.add(transfer);
                 if (transfer.TRANSFERSTATE == E_TRAN_STATUS.Queue)

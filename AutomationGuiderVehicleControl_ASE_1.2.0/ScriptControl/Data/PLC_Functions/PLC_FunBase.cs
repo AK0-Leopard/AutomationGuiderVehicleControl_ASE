@@ -67,7 +67,7 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
             }
             if (listVR.Count > 0)
             {
-                BCFUtility.writeEquipmentLog(eq_id, listVR);
+                //BCFUtility.writeEquipmentLog(eq_id, listVR);
             }
         }
 

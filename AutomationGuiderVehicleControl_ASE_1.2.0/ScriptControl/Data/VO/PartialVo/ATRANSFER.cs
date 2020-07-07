@@ -40,8 +40,10 @@ namespace com.mirle.ibg3k0.sc
             this.TRANSFERSTATE = isSuccess ? E_TRAN_STATUS.Queue : E_TRAN_STATUS.Reject;
             this.CHECKCODE = checkCode;
         }
-        public ACARRIER GetCarrierInfo()
+        //public ACARRIER GetCarrierInfo()
+        public ACARRIER GetCarrierInfo(BLL.VehicleBLL vehicleBLL)
         {
+            bool is_vh_location = vehicleBLL.cache.IsVehicleLocationExistByLocationRealID(this.HOSTSOURCE);
             return new ACARRIER()
             {
                 ID = this.CARRIER_ID,
@@ -49,7 +51,9 @@ namespace com.mirle.ibg3k0.sc
                 INSER_TIME = this.CMD_INSER_TIME,
                 INSTALLED_TIME = this.CMD_INSER_TIME,
                 LOCATION = this.HOSTSOURCE,
-                STATE = ProtocolFormat.OHTMessage.E_CARRIER_STATE.WaitIn,
+                //STATE = ProtocolFormat.OHTMessage.E_CARRIER_STATE.WaitIn,
+                STATE = is_vh_location ? ProtocolFormat.OHTMessage.E_CARRIER_STATE.Installed :
+                                         ProtocolFormat.OHTMessage.E_CARRIER_STATE.WaitIn,
                 HOSTSOURCE = this.HOSTSOURCE,
                 HOSTDESTINATION = this.HOSTDESTINATION,
                 READ_STATUS = ProtocolFormat.OHTMessage.E_ID_READ_STSTUS.Successful
