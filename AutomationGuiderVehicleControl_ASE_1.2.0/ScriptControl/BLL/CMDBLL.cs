@@ -1376,7 +1376,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             return cmds;
         }
 
-
+        
         #endregion CMD_OHTC
 
         #region CMD_OHTC_DETAIL
@@ -1996,6 +1996,27 @@ namespace com.mirle.ibg3k0.sc.BLL
                     return false;
                 }
             }
+
+            public ACMD getExcuteCmd(string cmdID)
+            {
+                try
+                {
+                    ALINE line = app.getEQObjCacheManager().getLine();
+                    var current_unfinish_cmd = line.CurrentExcuteCommand;
+                    if (current_unfinish_cmd == null || current_unfinish_cmd.Count == 0)
+                        return null;
+                    var has_unfinish_cmd_by_vh = current_unfinish_cmd.Where(cmd => SCUtility.isMatche(cmd.ID, cmdID)
+                                                                                && cmd.CMD_STATUS < E_CMD_STATUS.Aborting).
+                                                                      SingleOrDefault();
+                    return has_unfinish_cmd_by_vh;
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    return null;
+                }
+            }
+
         }
 
 

@@ -29,6 +29,12 @@ namespace com.mirle.ibg3k0.sc
         public bool IncludeCycleTest { get; set; }
         public int TestTimes { get; set; }
 
+        public (bool isSuccess, double x, double y) getAxis(ReserveBLL reserveBLL)
+        {
+            var result = reserveBLL.GetHltMapAddress(this.ADR_ID);
+            return (result.isSuccess, result.x, result.y);
+        }
+
         public override void doShareMemoryInit(BCFAppConstants.RUN_LEVEL runLevel)
         {
             foreach (IValueDefMapAction action in valueDefMapActionDic.Values)

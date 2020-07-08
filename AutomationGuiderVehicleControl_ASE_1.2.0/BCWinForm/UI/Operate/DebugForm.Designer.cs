@@ -163,6 +163,8 @@
             this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btn_refresf_portsation_info = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.numer_pre_open_agv_station_distance = new System.Windows.Forms.NumericUpDown();
+            this.label47 = new System.Windows.Forms.Label();
             this.ck_check_port_is_ready = new System.Windows.Forms.CheckBox();
             this.btn_refresh_agvstationInfo = new System.Windows.Forms.Button();
             this.dgv_AGVStationInfo = new System.Windows.Forms.DataGridView();
@@ -365,6 +367,7 @@
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_cache_object_data_portstation)).BeginInit();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numer_pre_open_agv_station_distance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_AGVStationInfo)).BeginInit();
             this.groupBox18.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numer_num_of_avoid_seg)).BeginInit();
@@ -1861,6 +1864,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.numer_pre_open_agv_station_distance);
+            this.tabPage3.Controls.Add(this.label47);
             this.tabPage3.Controls.Add(this.ck_check_port_is_ready);
             this.tabPage3.Controls.Add(this.btn_refresh_agvstationInfo);
             this.tabPage3.Controls.Add(this.dgv_AGVStationInfo);
@@ -1884,6 +1889,28 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Test Tool";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // numer_pre_open_agv_station_distance
+            // 
+            this.numer_pre_open_agv_station_distance.Location = new System.Drawing.Point(8, 628);
+            this.numer_pre_open_agv_station_distance.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numer_pre_open_agv_station_distance.Name = "numer_pre_open_agv_station_distance";
+            this.numer_pre_open_agv_station_distance.Size = new System.Drawing.Size(120, 30);
+            this.numer_pre_open_agv_station_distance.TabIndex = 43;
+            this.numer_pre_open_agv_station_distance.ValueChanged += new System.EventHandler(this.numer_pre_open_agv_station_distance_ValueChanged);
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(7, 591);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(360, 22);
+            this.label47.TabIndex = 42;
+            this.label47.Text = "Pre open AGV Station Cover Distance";
             // 
             // ck_check_port_is_ready
             // 
@@ -1968,7 +1995,7 @@
             // cb_canUnloadToAGVStation
             // 
             this.cb_canUnloadToAGVStation.AutoSize = true;
-            this.cb_canUnloadToAGVStation.Location = new System.Drawing.Point(12, 504);
+            this.cb_canUnloadToAGVStation.Location = new System.Drawing.Point(12, 472);
             this.cb_canUnloadToAGVStation.Name = "cb_canUnloadToAGVStation";
             this.cb_canUnloadToAGVStation.Size = new System.Drawing.Size(269, 26);
             this.cb_canUnloadToAGVStation.TabIndex = 38;
@@ -2251,7 +2278,7 @@
             // lbl_num_of_avoid_seg
             // 
             this.lbl_num_of_avoid_seg.AutoSize = true;
-            this.lbl_num_of_avoid_seg.Location = new System.Drawing.Point(8, 388);
+            this.lbl_num_of_avoid_seg.Location = new System.Drawing.Point(6, 388);
             this.lbl_num_of_avoid_seg.Name = "lbl_num_of_avoid_seg";
             this.lbl_num_of_avoid_seg.Size = new System.Drawing.Size(280, 22);
             this.lbl_num_of_avoid_seg.TabIndex = 35;
@@ -3704,6 +3731,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_cache_object_data_portstation)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numer_pre_open_agv_station_distance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_AGVStationInfo)).EndInit();
             this.groupBox18.ResumeLayout(false);
             this.groupBox18.PerformLayout();
@@ -4053,5 +4081,7 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsTransferUnloadExcuting;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsReadySingleUnload;
         private System.Windows.Forms.DataGridViewTextBoxColumn BindingVh;
+        private System.Windows.Forms.NumericUpDown numer_pre_open_agv_station_distance;
+        private System.Windows.Forms.Label label47;
     }
 }

@@ -209,7 +209,7 @@ namespace com.mirle.ibg3k0.sc
                    Where(port_station => port_station.PORT_ID.Contains("_ST0")).
                    FirstOrDefault();
         }
-        public List<APORTSTATION> getAGVAutoRealPorts()
+        public List<APORTSTATION> loadAGVAutoReadyPorts()
         {
             if (portStationList == null) return null;
             return portStationList.
@@ -245,7 +245,7 @@ namespace com.mirle.ibg3k0.sc
         bool HasPortAuto { get; }
         APORTSTATION getAGVVirtruePort();
         List<APORTSTATION> getAGVStationReadyLoadPorts();
-        List<APORTSTATION> getAGVAutoRealPorts();
+        List<APORTSTATION> loadAGVAutoReadyPorts();
         string BindingVh { get; }
 
     }

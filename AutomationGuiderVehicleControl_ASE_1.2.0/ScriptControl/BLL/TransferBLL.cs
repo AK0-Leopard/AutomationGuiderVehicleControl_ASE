@@ -283,6 +283,38 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
             }
 
+            public void preOpenAGVStationCover(IAGVStationType agvStation, string portID)
+            {
+                string result = "";
+                string url = "";
+                try
+                {
+                    string agv_url = agvStation.RemoveURI;
+                    url = SCUtility.Trim(agv_url, true);
+                    string agv_station_id = agvStation.getAGVStationID();
+                    string[] action_targets = new string[]
+                    {
+                    "TransferManagement",
+                    "PreOpenAGVStationCover",
+                    "AGVStationPorts"
+                    };
+                    string[] param = new string[]
+                    {
+                    portID
+                    };
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
+                       Data: $"Try to pre open agv station cover,uri:{agv_url} station id:{agv_station_id} port id:{portID}...");
+                    result = webClientManager.GetInfoFromServer(agv_url, action_targets, param);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
+                       Data: $"Try to pre open agv station cover,uri:{agv_url} station id:{agv_station_id} port id:{portID} ,result:{result}");
+                    result = result.ToUpper();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, $"Exception:{url}");
+                }
+            }
+
 
 
         }

@@ -244,8 +244,8 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             string current_sec_id = SCUtility.isEmpty(report_obj.CurrentSecID) ? string.Empty : report_obj.CurrentSecID;
             string current_adr_id = SCUtility.isEmpty(report_obj.CurrentAdrID) ? string.Empty : report_obj.CurrentAdrID;
-            double x_axis = report_obj.XAxis;
-            double y_axis = report_obj.YAxis;
+            double current_x_axis = report_obj.XAxis;
+            double current_y_axis = report_obj.YAxis;
             double dir_angle = report_obj.DirectionAngle;
             double vh_angle = report_obj.VehicleAngle;
             DriveDirction drive_dirction = report_obj.DrivingDirection;
@@ -268,12 +268,15 @@ namespace com.mirle.ibg3k0.sc.BLL
             string last_sec_id = vh.CUR_SEC_ID;
             string last_seg_id = vh.CUR_SEG_ID;
 
+            double last_x_axis = vh.X_Axis;
+            double last_y_axis = vh.Y_Axis;
+
             uint sec_dis = report_obj.SecDistance;
             lock (vh.PositionRefresh_Sync)
             {
-                cache.updateVheiclePosition_CacheManager(vhID, current_adr_id, current_sec_id, current_seg_id, sec_dis, drive_dirction, x_axis, y_axis, dir_angle, vh_angle);
+                cache.updateVheiclePosition_CacheManager(vhID, current_adr_id, current_sec_id, current_seg_id, sec_dis, drive_dirction, current_x_axis, current_y_axis, dir_angle, vh_angle);
 
-                var update_result = updateVheiclePositionToReserveControlModule(scApp.ReserveBLL, vh, current_sec_id, x_axis, y_axis, dir_angle, vh_angle, dri_speed,
+                var update_result = updateVheiclePositionToReserveControlModule(scApp.ReserveBLL, vh, current_sec_id, current_x_axis, current_y_axis, dir_angle, vh_angle, dri_speed,
                                                                                 Mirle.Hlts.Utils.HltDirection.Forward, Mirle.Hlts.Utils.HltDirection.None);
                 if (!update_result.OK)
                 {
@@ -313,6 +316,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                     if (!SCUtility.isMatche(current_seg_id, last_seg_id))
                     {
                         vh.onSegmentChange(current_seg_id, last_seg_id);
+                    }
+                    if (last_x_axis != current_x_axis || last_y_axis != current_y_axis)
+                    {
+                        vh.onPositionChange(last_x_axis, last_y_axis, current_x_axis, current_y_axis);
                     }
                 }
             }
@@ -607,7 +614,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                           string leftCstID, string rightCstID, VHModeStatus mode_status, VHActionStatus act_status, VhChargeStatus chargeStatus,
                                           VhStopSingle block_pause, VhStopSingle cmd_pause, VhStopSingle obs_pause, VhStopSingle hid_pause, VhStopSingle error_status, VhStopSingle reserve_pause,
                                           bool left_has_cst, bool right_has_cst,
-                                          string cmdID1, string cmdID2,
+                                          string cmdID1, string cmdID2, string currenExcuteCmdID,
                                           uint batteryCapacity, string[] willPassSection)
             {
                 var vh = eqObjCacheManager.getVehicletByVHID(vhID);
@@ -634,6 +641,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                     vh.CMD_ID_2 = cmdID2;
                     //vh.TRANSFER_ID_2 = tryGetTranCommandID(cmdBLL, cmdID2);
                 }
+                if (!SCUtility.isMatche(vh.CurrentExcuteCmdID, currenExcuteCmdID))
+                {
+                    vh.CurrentExcuteCmdID = currenExcuteCmdID;
+                }
+
                 if (vh.RESERVE_PAUSE == VhStopSingle.Off)
                 {
                     vh.CurrentFailOverrideTimes = 0;
@@ -1219,6 +1231,13 @@ namespace com.mirle.ibg3k0.sc.BLL
                            Count() != 0;
             }
 
+            public bool IsCarryCstByCstID(string vhID, string cstID)
+            {
+                List<AVEHICLE> vhs = eqObjCacheManager.getAllVehicle();
+                return vhs.Where(vh => SCUtility.isMatche(vh.VEHICLE_ID, vhID) &&
+                                       SCUtility.isMatche(vh.CST_ID_L, cstID) || SCUtility.isMatche(vh.CST_ID_R, cstID)).
+                           Count() > 0;
+            }
         }
 
         public class Redis

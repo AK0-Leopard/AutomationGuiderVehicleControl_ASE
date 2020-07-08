@@ -20,6 +20,20 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc
 {
+    public class PositionChangeEventArgs : EventArgs
+    {
+        public double Last_X_Axis;
+        public double Last_Y_Axis;
+        public double Current_X_Axis;
+        public double Current_Y_Axis;
+        public PositionChangeEventArgs(double last_X_Axis, double last_Y_Axis, double current_X_Axis, double current_Y_Axis)
+        {
+            Last_X_Axis = last_X_Axis;
+            Last_Y_Axis = last_Y_Axis;
+            Current_X_Axis = current_X_Axis;
+            Current_Y_Axis = current_Y_Axis;
+        }
+    }
     public class LocationChangeEventArgs : EventArgs
     {
         public string EntrySection;
@@ -94,6 +108,13 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler VehiclePositionChange;
         public event EventHandler<bool> ConnectionStatusChange;
 
+        /// <summary>
+        /// 用來通知X、Y改變
+        /// </summary>
+        public event EventHandler<PositionChangeEventArgs> PositionChange;
+        /// <summary>
+        /// 用來通知Section改變
+        /// </summary>
         public event EventHandler<LocationChangeEventArgs> LocationChange;
         public event EventHandler<SegmentChangeEventArgs> SegmentChange;
         public event EventHandler<CompleteStatus> CommandComplete;
@@ -125,6 +146,10 @@ namespace com.mirle.ibg3k0.sc
         public void onCommandComplete(CompleteStatus cmpStatus)
         {
             CommandComplete?.Invoke(this, cmpStatus);
+        }
+        public void onPositionChange(double last_X_Axis, double last_Y_Axis, double current_X_Axis, double current_Y_Axis)
+        {
+            PositionChange?.Invoke(this, new PositionChangeEventArgs(last_X_Axis, last_Y_Axis, current_X_Axis, current_Y_Axis));
         }
         public void onLocationChange(string entrySection, string leaveSection)
         {
@@ -224,6 +249,7 @@ namespace com.mirle.ibg3k0.sc
                 }
             }
         }
+        public bool IsCloseToAGVStation { get; set; }
         public string getZoneID(SectionBLL sectionBLL)
         {
             string current_adr = SCUtility.Trim(CUR_ADR_ID, true);
@@ -285,6 +311,7 @@ namespace com.mirle.ibg3k0.sc
         public string CMD_ID_1 { get; set; }
         public string TRANSFER_ID_2 { get; set; }
         public string CMD_ID_2 { get; set; }
+        public string CurrentExcuteCmdID { get; set; }
 
         public List<Location> CarrierLocation { get; private set; }
 

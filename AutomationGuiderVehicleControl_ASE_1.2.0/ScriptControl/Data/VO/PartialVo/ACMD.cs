@@ -26,11 +26,23 @@ namespace com.mirle.ibg3k0.sc
             }
         }
 
+        public bool IsSourcePortAGVStation(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.SOURCE_PORT);
+            if (port_station == null) return false;
+            return port_station.GetEqptType(eqptBLL) == SCAppConstants.EqptType.AGVStation;
+        }
         public bool IsTargetPortAGVStation(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
         {
             var port_station = portStationBLL.OperateCatch.getPortStation(this.DESTINATION_PORT);
             if (port_station == null) return false;
             return port_station.GetEqptType(eqptBLL) == SCAppConstants.EqptType.AGVStation;
+        }
+        public AEQPT getSourcePortEQ(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.SOURCE_PORT);
+            if (port_station == null) return null;
+            return port_station.GetEqpt(eqptBLL);
         }
         public AEQPT getTragetPortEQ(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
         {

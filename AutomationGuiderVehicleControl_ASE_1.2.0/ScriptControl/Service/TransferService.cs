@@ -1275,7 +1275,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     return (false, "", "");
                 }
                 //var ready_agv_station_port = unload_agv_station.loadReadyAGVStationPort();
-                var ready_agv_station_port = unload_agv_station.getAGVAutoRealPorts();
+                var ready_agv_station_port = unload_agv_station.loadAGVAutoReadyPorts();
                 foreach (var port in ready_agv_station_port)
                 {
                     bool has_command_excute = cmdBLL.hasExcuteCMDByDestinationPort(port.PORT_ID);

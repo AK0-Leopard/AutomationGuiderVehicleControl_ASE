@@ -125,7 +125,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cbTranMode.SelectedItem = DebugParameter.TransferMode;
             num_BatteryLowBoundaryValue.Value = AVEHICLE.BATTERYLEVELVALUE_LOW;
             num_BatteryHighBoundaryValue.Value = AVEHICLE.BATTERYLEVELVALUE_HIGH;
-
+            numer_pre_open_agv_station_distance.Value = sc.App.SystemParameter.OpenAGVStationCoverDistance_mm;
 
             agvPortStation = bcApp.SCApplication.PortStationBLL.OperateCatch.loadAllPortStation();
             dgv_cache_object_data_portstation.DataSource = agvPortStation;
@@ -1442,6 +1442,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void ck_check_port_is_ready_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.isNeedCheckPortReady = ck_check_port_is_ready.Checked;
+        }
+
+        private void numer_pre_open_agv_station_distance_ValueChanged(object sender, EventArgs e)
+        {
+            sc.App.SystemParameter.setOpenAGVStationCoverDistance((int)numer_pre_open_agv_station_distance.Value);
         }
     }
 }
