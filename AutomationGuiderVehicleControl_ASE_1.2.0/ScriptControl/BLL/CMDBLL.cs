@@ -1235,81 +1235,89 @@ namespace com.mirle.ibg3k0.sc.BLL
         const int MAX_ASSIGN_COM_COUNT = 2;
         public (bool canAssign, string result) canAssignCmdNew(AVEHICLE vh, E_CMD_TYPE cmdType)
         {
-            string vh_id = vh.VEHICLE_ID;
-            List<ACMD> assign_cmds = null;
-            //1.如果是Move則需要在沒有執行任何命令下才可以指派
-            //2.如果是Trasfer命令，則需要在
-            //  a.沒有Move命令下才可以指派
-            //  b.已經指派的命令要小於2
-            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            try
             {
-                assign_cmds = cmd_ohtcDAO.loadAssignCmd(con, vh_id);
-            }
-            int current_vh_carrier_count = 0;
-            if (vh.HAS_CST_L)
-            {
-                bool cst_l_is_in_commanding = assign_cmds.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, vh.CST_ID_L)).Count() > 0;
-                //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
-                if (!cst_l_is_in_commanding)
+                string vh_id = vh.VEHICLE_ID;
+                List<ACMD> assign_cmds = null;
+                //1.如果是Move則需要在沒有執行任何命令下才可以指派
+                //2.如果是Trasfer命令，則需要在
+                //  a.沒有Move命令下才可以指派
+                //  b.已經指派的命令要小於2
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
-                    current_vh_carrier_count++;
+                    assign_cmds = cmd_ohtcDAO.loadAssignCmd(con, vh_id);
                 }
-            }
-            if (vh.HAS_CST_R)
-            {
-                bool cst_r_is_in_commanding = assign_cmds.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, vh.CST_ID_R)).Count() > 0;
-                //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
-                if (!cst_r_is_in_commanding)
+                int current_vh_carrier_count = 0;
+                if (vh.HAS_CST_L)
                 {
-                    current_vh_carrier_count++;
+                    bool cst_l_is_in_commanding = assign_cmds.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, vh.CST_ID_L)).Count() > 0;
+                    //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
+                    if (!cst_l_is_in_commanding)
+                    {
+                        current_vh_carrier_count++;
+                    }
                 }
-            }
-            int current_can_assign_command_count = MAX_ASSIGN_COM_COUNT - current_vh_carrier_count;
+                if (vh.HAS_CST_R)
+                {
+                    bool cst_r_is_in_commanding = assign_cmds.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, vh.CST_ID_R)).Count() > 0;
+                    //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
+                    if (!cst_r_is_in_commanding)
+                    {
+                        current_vh_carrier_count++;
+                    }
+                }
+                int current_can_assign_command_count = MAX_ASSIGN_COM_COUNT - current_vh_carrier_count;
 
-            //if (assign_cmds.Count == 0)
-            //    return (true, "");
-            //else
-            //{
-            switch (cmdType)
-            {
-                case E_CMD_TYPE.Move:
-                case E_CMD_TYPE.Move_Charger:
-                    if (assign_cmds.Count == 0)
-                    {
-                        return (true, "");
-                    }
-                    else
-                    {
-                        return (false, "has command excute, can't assign move/move to change commmand");
-                    }
-                case E_CMD_TYPE.Unload:
-                    return (true, "");//Unload一律都回覆OK，不然遇到身上已經載2個CST的，會無法下命令
-                default:
-                    if (assign_cmds.Count == 0)
-                    {
-                        return (true, "");
-                    }
-                    else
-                    {
-                        bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
-                        if (has_move_command)
+                //if (assign_cmds.Count == 0)
+                //    return (true, "");
+                //else
+                //{
+                switch (cmdType)
+                {
+                    case E_CMD_TYPE.Move:
+                    case E_CMD_TYPE.Move_Charger:
+                        if (assign_cmds.Count == 0)
                         {
-                            return (false, "has move command excute, can't assign transfer commmand");
+                            return (true, "");
                         }
                         else
                         {
-                            //if (assign_cmds.Count < MAX_ASSIGN_COM_COUNT)
-                            if (assign_cmds.Count < current_can_assign_command_count)
+                            return (false, "has command excute, can't assign move/move to change commmand");
+                        }
+                    case E_CMD_TYPE.Unload:
+                        return (true, "");//Unload一律都回覆OK，不然遇到身上已經載2個CST的，會無法下命令
+                    default:
+                        if (assign_cmds.Count == 0)
+                        {
+                            return (true, "");
+                        }
+                        else
+                        {
+                            bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
+                            if (has_move_command)
                             {
-                                return (true, "");
+                                return (false, "has move command excute, can't assign transfer commmand");
                             }
                             else
                             {
-                                return (false, $"vh:{vh_id} can assign count:[{current_can_assign_command_count}], has [{assign_cmds.Count}] commands excute and current carrier [{current_vh_carrier_count}] cst," +
-                                               $" can't assign transfer commmand");
+                                //if (assign_cmds.Count < MAX_ASSIGN_COM_COUNT)
+                                if (assign_cmds.Count < current_can_assign_command_count)
+                                {
+                                    return (true, "");
+                                }
+                                else
+                                {
+                                    return (false, $"vh:{vh_id} can assign count:[{current_can_assign_command_count}], has [{assign_cmds.Count}] commands excute and current carrier [{current_vh_carrier_count}] cst," +
+                                                   $" can't assign transfer commmand");
+                                }
                             }
                         }
-                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return (false, ex.ToString());
             }
             //}
         }
@@ -1376,7 +1384,9 @@ namespace com.mirle.ibg3k0.sc.BLL
             return cmds;
         }
 
-        
+
+
+
         #endregion CMD_OHTC
 
         #region CMD_OHTC_DETAIL

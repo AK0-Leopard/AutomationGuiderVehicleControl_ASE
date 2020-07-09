@@ -126,6 +126,7 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler<VHModeStatus> ModeStatusChange;
         public event EventHandler<VhStopSingle> ErrorStatusChange;
         public event EventHandler Idling;
+        public event EventHandler<string> CurrentExcuteCmdChange;
 
         public void onExcuteCommandStatusChange()
         {
@@ -184,6 +185,11 @@ namespace com.mirle.ibg3k0.sc
             isIdling = true;
             Idling?.Invoke(this, EventArgs.Empty);
         }
+        public void onCurrentExcuteCmdChange(string currentExcuteCmdID)
+        {
+            CurrentExcuteCmdChange?.Invoke(this, currentExcuteCmdID);
+        }
+
         #endregion Event
 
         public void SetupTimerAction()
