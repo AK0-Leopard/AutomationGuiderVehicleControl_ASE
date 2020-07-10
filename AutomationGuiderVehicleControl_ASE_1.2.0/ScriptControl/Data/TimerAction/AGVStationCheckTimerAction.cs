@@ -192,18 +192,21 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 {
                     int current_excute_task = 0;
                     AVEHICLE service_vh = scApp.VehicleBLL.cache.getVehicle(agv_station.BindingVh);
-                    if (service_vh.IsError)
-                    {
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
-                           Data: $"vh:{service_vh.VEHICLE_ID} has error happend.pass this one ask agv station");
-                        return;
-                    }
                     if (service_vh != null)
                     {
-                        if (service_vh.HAS_CST_L)
-                            current_excute_task++;
-                        if (service_vh.HAS_CST_R)
-                            current_excute_task++;
+                        if (service_vh.IsError)
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
+                               Data: $"vh:{service_vh.VEHICLE_ID} has error happend.pass this one ask agv station");
+                            return;
+                        }
+                        if (service_vh != null)
+                        {
+                            if (service_vh.HAS_CST_L)
+                                current_excute_task++;
+                            if (service_vh.HAS_CST_R)
+                                current_excute_task++;
+                        }
                     }
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
                        Data: $"start check agv station:[{agv_station.getAGVStationID()}] status...");
@@ -272,16 +275,18 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                         }
                         else
                         {
-                            scApp.TransferBLL.web.canExcuteUnloadTransferToAGVStation(agv_station, current_excute_task, false);
+                            bool is_reserve_success = scApp.TransferBLL.web.canExcuteUnloadTransferToAGVStation(agv_station, current_excute_task, false);
                             //scApp.TransferBLL.web.notifyNoUnloadTransferToAGVStation(agv_station);
                             agv_station.IsReservation = false;
+                            checkIsNeedPreMoveToAGVStation(agv_station, service_vh, is_reserve_success, current_excute_task);
                         }
                     }
                     else
                     {
-                        scApp.TransferBLL.web.canExcuteUnloadTransferToAGVStation(agv_station, current_excute_task, false);
+                        bool is_reserve_success = scApp.TransferBLL.web.canExcuteUnloadTransferToAGVStation(agv_station, current_excute_task, false);
                         //scApp.TransferBLL.web.notifyNoUnloadTransferToAGVStation(agv_station);
                         agv_station.IsReservation = false;
+                        checkIsNeedPreMoveToAGVStation(agv_station, service_vh, is_reserve_success, current_excute_task);
                     }
                 }
                 catch (Exception ex)
@@ -291,6 +296,20 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 finally
                 {
                     System.Threading.Interlocked.Exchange(ref agv_station.syncPoint, 0);
+                }
+            }
+        }
+
+        private void checkIsNeedPreMoveToAGVStation(AGVStation agv_station, AVEHICLE serviceVh, bool is_reserve_success, int current_excute_task)
+        {
+            if (current_excute_task == 0 && !is_reserve_success)
+            {
+                if (serviceVh != null)
+                {
+                    var virtrueagv_station = agv_station.getAGVVirtruePort();
+                    scApp.VehicleService.Command.Move(serviceVh.VEHICLE_ID, virtrueagv_station.ADR_ID);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
+                       Data: $"agv station:[{agv_station.getAGVStationID()}] will cst out,service vh:{serviceVh.VEHICLE_ID} pre move to adr:{virtrueagv_station.ADR_ID}");
                 }
             }
         }

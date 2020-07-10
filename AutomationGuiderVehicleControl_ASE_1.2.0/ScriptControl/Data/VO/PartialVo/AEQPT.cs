@@ -144,7 +144,7 @@ namespace com.mirle.ibg3k0.sc
 
     public class AGVStation : AEQPT, IAGVStationType
     {
-
+        public bool IsCheckPortReady { get; set; } = true;
         public string RemoveURI { get { return this.TcpIpAgentName; } }
         public string AGVStationID { get { return this.EQPT_ID; } }
         public string getAGVStationID()
@@ -209,7 +209,7 @@ namespace com.mirle.ibg3k0.sc
                    Where(port_station => port_station.PORT_ID.Contains("_ST0")).
                    FirstOrDefault();
         }
-        public List<APORTSTATION> loadAGVAutoReadyPorts()
+        public List<APORTSTATION> loadAutoAGVStationPorts()
         {
             if (portStationList == null) return null;
             return portStationList.
@@ -233,6 +233,7 @@ namespace com.mirle.ibg3k0.sc
 
     public interface IAGVStationType
     {
+        bool IsCheckPortReady { get; set; }
         bool IsVirtrueUse { get; }
         string RemoveURI { get; }
         string AGVStationID { get; }
@@ -245,7 +246,7 @@ namespace com.mirle.ibg3k0.sc
         bool HasPortAuto { get; }
         APORTSTATION getAGVVirtruePort();
         List<APORTSTATION> getAGVStationReadyLoadPorts();
-        List<APORTSTATION> loadAGVAutoReadyPorts();
+        List<APORTSTATION> loadAutoAGVStationPorts();
         string BindingVh { get; }
 
     }

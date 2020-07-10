@@ -2726,7 +2726,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             {
                                 vh.IsCloseToAGVStation = true;
                                 var agv_station = excute_cmd.getTragetPortEQ(scApp.PortStationBLL, scApp.EqptBLL);
-                                List<APORTSTATION> pre_open_port_cover_list = (agv_station as AGVStation).loadAGVAutoReadyPorts();
+                                List<APORTSTATION> pre_open_port_cover_list = (agv_station as AGVStation).loadAutoAGVStationPorts();
                                 //string notify_port_id = excute_cmd.DESTINATION_PORT;
                                 int open_count = 0;
                                 foreach (var port_sation in pre_open_port_cover_list)
@@ -2791,7 +2791,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                 vh.IsCloseToAGVStation = true;
                                 var agv_station = excute_cmd.getSourcePortEQ(scApp.PortStationBLL, scApp.EqptBLL);
                                 string notify_port_id = excute_cmd.SOURCE_PORT;
-                                List<APORTSTATION> pre_open_port_cover_list = (agv_station as AGVStation).loadAGVAutoReadyPorts();
+                                List<APORTSTATION> pre_open_port_cover_list = (agv_station as AGVStation).loadAutoAGVStationPorts();
                                 int open_count = 0;
                                 foreach (var port_sation in pre_open_port_cover_list)
                                 {
@@ -2847,9 +2847,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-
                 AVEHICLE vh = sender as AVEHICLE;
-
                 if (vh.IsCloseToAGVStation)
                 {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,

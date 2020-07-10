@@ -66,6 +66,8 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
 
+
+
         public (bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost)
         getGuideInfo_New2(string startAddress, string targetAddress, List<string> byPassAddressIDs = null)
         {

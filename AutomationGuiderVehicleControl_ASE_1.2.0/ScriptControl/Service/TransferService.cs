@@ -1114,7 +1114,8 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             else
             {
-                var destination_info = checkAndRenameDestinationPortIfAGVStationReady(assign_cmd);
+                //var destination_info = checkAndRenameDestinationPortIfAGVStationReady(assign_cmd);
+                var destination_info = checkAndRenameDestinationPortIfAGVStation(assign_cmd);
                 if (destination_info.checkSuccess)
                 {
                     assign_cmd.DESTINATION = destination_info.destinationAdrID;
@@ -1189,10 +1190,11 @@ namespace com.mirle.ibg3k0.sc.Service
             //var destination_info = checkAndRenameDestinationPortIfAGVStationReady(assign_cmd);
             (bool checkSuccess, string destinationPortID, string destinationAdrID) destination_info =
                 default((bool checkSuccess, string destinationPortID, string destinationAdrID));
-            if (DebugParameter.isNeedCheckPortReady)
-                destination_info = checkAndRenameDestinationPortIfAGVStationReady(assign_cmd);
-            else
-                destination_info = checkAndRenameDestinationPortIfAGVStationAuto(assign_cmd);
+            //if (DebugParameter.isNeedCheckPortReady)
+            //    destination_info = checkAndRenameDestinationPortIfAGVStationReady(assign_cmd);
+            //else
+            //    destination_info = checkAndRenameDestinationPortIfAGVStationAuto(assign_cmd);
+            destination_info = checkAndRenameDestinationPortIfAGVStation(assign_cmd);
             if (destination_info.checkSuccess)
             {
                 assign_cmd.DESTINATION = destination_info.destinationAdrID;
@@ -1256,6 +1258,47 @@ namespace com.mirle.ibg3k0.sc.Service
                 return (true, assignCmd.DESTINATION_PORT, assignCmd.DESTINATION);
             }
         }
+        private (bool checkSuccess, string destinationPortID, string destinationAdrID) checkAndRenameDestinationPortIfAGVStation(ACMD assignCmd)
+        {
+            if (assignCmd.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType)
+            {
+                IAGVStationType unload_agv_station = assignCmd.getTragetPortEQ(scApp.EqptBLL) as IAGVStationType;
+                //bool is_ready_double_port = unload_agv_station.IsReadyDoubleUnload;
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(TransferService), Device: DEVICE_NAME_AGV,
+                   Data: $"check agv station:{unload_agv_station.getAGVStationID()},IsCheckPortReady:{unload_agv_station.IsCheckPortReady}");
+                bool is_ready = false;
+                List<APORTSTATION> port_stations = new List<APORTSTATION>();
+                if (unload_agv_station.IsCheckPortReady)
+                {
+                    is_ready = unload_agv_station.IsReadySingleUnload;
+                    port_stations = unload_agv_station.loadReadyAGVStationPort();
+                }
+                else
+                {
+                    is_ready = unload_agv_station.HasPortAuto;
+                    port_stations = unload_agv_station.loadAutoAGVStationPorts();
+                }
+                if (!is_ready)
+                {
+                    return (false, "", "");
+                }
+                foreach (var port in port_stations)
+                {
+                    bool has_command_excute = cmdBLL.hasExcuteCMDByDestinationPort(port.PORT_ID);
+                    if (!has_command_excute)
+                    {
+                        return (true, port.PORT_ID, port.ADR_ID);
+                    }
+                }
+                //todo log
+                return (false, "", "");
+            }
+            else
+            {
+                return (true, assignCmd.DESTINATION_PORT, assignCmd.DESTINATION);
+            }
+        }
+
         private (bool checkSuccess, string destinationPortID, string destinationAdrID) checkAndRenameDestinationPortIfAGVStationAuto(ACMD assignCmd)
         {
             if (assignCmd.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType)
@@ -1275,7 +1318,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     return (false, "", "");
                 }
                 //var ready_agv_station_port = unload_agv_station.loadReadyAGVStationPort();
-                var ready_agv_station_port = unload_agv_station.loadAGVAutoReadyPorts();
+                var ready_agv_station_port = unload_agv_station.loadAutoAGVStationPorts();
                 foreach (var port in ready_agv_station_port)
                 {
                     bool has_command_excute = cmdBLL.hasExcuteCMDByDestinationPort(port.PORT_ID);
