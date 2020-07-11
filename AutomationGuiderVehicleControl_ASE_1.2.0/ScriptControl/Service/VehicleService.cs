@@ -2492,7 +2492,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.LongTimeDisconnection += Vh_LongTimeDisconnection;
                 vh.ModeStatusChange += Vh_ModeStatusChange;
                 vh.Idling += Vh_Idling;
-                //vh.CurrentExcuteCmdChange += Vh_CurrentExcuteCmdChange; ;
+                vh.CurrentExcuteCmdChange += Vh_CurrentExcuteCmdChange;
                 vh.SetupTimerAction();
             }
         }
@@ -2676,7 +2676,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        private void Vh_PositionChange(object sender, PositionChangeEventArgs e)
+        private void Vh_PositionChangeOld(object sender, PositionChangeEventArgs e)
         {
             try
             {
@@ -2843,7 +2843,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 logger.Error(ex, "Exception:");
             }
         }
-        private void Vh_PositionChangeNew(object sender, PositionChangeEventArgs e)
+        private void Vh_PositionChange(object sender, PositionChangeEventArgs e)
         {
             try
             {

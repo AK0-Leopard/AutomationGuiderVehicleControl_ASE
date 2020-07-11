@@ -1238,6 +1238,22 @@ namespace com.mirle.ibg3k0.sc.BLL
                                        SCUtility.isMatche(vh.CST_ID_L, cstID) || SCUtility.isMatche(vh.CST_ID_R, cstID)).
                            Count() > 0;
             }
+
+            public (bool has, string cmdID) hasOrtherCmd(string vhID, string currentCmdID)
+            {
+                var vh = eqObjCacheManager.getVehicletByVHID(vhID);
+                if (vh == null) return (false, "");
+                if (SCUtility.isMatche(currentCmdID, vh.CMD_ID_1))
+                {
+                    return (!SCUtility.isEmpty(vh.CMD_ID_2), SCUtility.Trim(vh.CMD_ID_2));
+                }
+                if (SCUtility.isMatche(currentCmdID, vh.CMD_ID_2))
+                {
+                    return (!SCUtility.isEmpty(vh.CMD_ID_1), SCUtility.Trim(vh.CMD_ID_1));
+                }
+                return (false, "");
+            }
+
         }
 
         public class Redis

@@ -307,6 +307,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 if (serviceVh != null)
                 {
                     var virtrueagv_station = agv_station.getAGVVirtruePort();
+                    if (SCUtility.isMatche(serviceVh.CUR_ADR_ID, virtrueagv_station.ADR_ID)) return;
                     scApp.VehicleService.Command.Move(serviceVh.VEHICLE_ID, virtrueagv_station.ADR_ID);
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
                        Data: $"agv station:[{agv_station.getAGVStationID()}] will cst out,service vh:{serviceVh.VEHICLE_ID} pre move to adr:{virtrueagv_station.ADR_ID}");

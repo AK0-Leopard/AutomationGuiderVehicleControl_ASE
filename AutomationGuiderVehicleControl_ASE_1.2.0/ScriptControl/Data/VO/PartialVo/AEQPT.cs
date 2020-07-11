@@ -180,7 +180,7 @@ namespace com.mirle.ibg3k0.sc
             {
                 return portStationList != null &&
                        portStationList.
-                       //Where(port_station => port_station.IsAutoMode).
+                       Where(port_station => port_station.IsAutoMode).
                        Count() >= 1;
             }
         }
@@ -213,8 +213,8 @@ namespace com.mirle.ibg3k0.sc
         {
             if (portStationList == null) return null;
             return portStationList.
-                   //Where(port_station => !port_station.PORT_ID.Contains("_ST0") && port_station.IsAutoMode).
-                   Where(port_station => !port_station.PORT_ID.Contains("_ST0")).
+                   Where(port_station => !port_station.PORT_ID.Contains("_ST0") && port_station.IsAutoMode).
+                   //Where(port_station => !port_station.PORT_ID.Contains("_ST0")).
                    OrderBy(port_station => port_station.PortNum).
                    ToList();
         }
