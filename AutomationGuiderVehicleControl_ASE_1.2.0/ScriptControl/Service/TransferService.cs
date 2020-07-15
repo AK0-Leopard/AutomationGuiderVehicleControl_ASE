@@ -1493,7 +1493,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 var check_has_carrier_on_location_result = carrierBLL.db.hasCarrierOnVhLocation(vhLocation);
                 if (check_has_carrier_on_location_result.has)
                 {
-                    if (SCUtility.isMatche(check_has_carrier_on_location_result.onVhCarrier.ID, carrierID))
+                    if(SCUtility.isMatche(check_has_carrier_on_location_result.onVhCarrier.ID,carrierID))
                     {
                         return (false, $"Location:{vhLocation} is already carrier:{check_has_carrier_on_location_result.onVhCarrier.ID} exist.");
                     }

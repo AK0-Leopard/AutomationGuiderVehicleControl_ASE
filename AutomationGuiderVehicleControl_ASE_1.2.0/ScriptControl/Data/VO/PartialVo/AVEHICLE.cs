@@ -359,6 +359,20 @@ namespace com.mirle.ibg3k0.sc
             get { return CarrierLocation[VEHICLE_CARRIER_LOCATION_L_INDEX].ShelfStatus; }
             set { CarrierLocation[VEHICLE_CARRIER_LOCATION_L_INDEX].setShelfStatus(value); }
         }
+        public int CurrentCanAssignMAXCount { get; private set; } = 2;
+        public void setCurrentCanAssignCmdCount(ShelfStatus shelfStatusL, ShelfStatus shelfStatusR)
+        {
+            int can_assign_coun = 0;
+            if (shelfStatusR == ShelfStatus.Enable)
+            {
+                can_assign_coun++;
+            }
+            if (shelfStatusL == ShelfStatus.Enable)
+            {
+                can_assign_coun++;
+            }
+            CurrentCanAssignMAXCount = can_assign_coun;
+        }
         public string getLoctionRealID(AGVLocation location)
         {
             switch (location)

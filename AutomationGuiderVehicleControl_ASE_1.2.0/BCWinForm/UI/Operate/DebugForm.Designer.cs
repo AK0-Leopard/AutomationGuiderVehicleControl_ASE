@@ -112,7 +112,6 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.cb_by_pass_shelf_status = new System.Windows.Forms.CheckBox();
             this.label46 = new System.Windows.Forms.Label();
             this.cbTranMode = new System.Windows.Forms.ComboBox();
             this.label45 = new System.Windows.Forms.Label();
@@ -344,7 +343,7 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.btn_remove_cst = new System.Windows.Forms.Button();
+            this.cb_by_pass_shelf_status = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1345,17 +1344,6 @@
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // cb_by_pass_shelf_status
-            // 
-            this.cb_by_pass_shelf_status.AutoSize = true;
-            this.cb_by_pass_shelf_status.Location = new System.Drawing.Point(1137, 438);
-            this.cb_by_pass_shelf_status.Name = "cb_by_pass_shelf_status";
-            this.cb_by_pass_shelf_status.Size = new System.Drawing.Size(329, 26);
-            this.cb_by_pass_shelf_status.TabIndex = 2;
-            this.cb_by_pass_shelf_status.Text = "Force By Pass AGV Shelf Status";
-            this.cb_by_pass_shelf_status.UseVisualStyleBackColor = true;
-            this.cb_by_pass_shelf_status.CheckedChanged += new System.EventHandler(this.cb_by_pass_shelf_status_CheckedChanged);
-            // 
             // label46
             // 
             this.label46.AutoSize = true;
@@ -1694,7 +1682,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2028,7 +2016,6 @@
             // 
             // groupBox18
             // 
-            this.groupBox18.Controls.Add(this.btn_remove_cst);
             this.groupBox18.Controls.Add(this.btn_cmp_vh_complete);
             this.groupBox18.Controls.Add(this.btn_cmp_vh_abort);
             this.groupBox18.Controls.Add(this.btn_idReadError);
@@ -3702,15 +3689,16 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // btn_remove_cst
+            // cb_by_pass_shelf_status
             // 
-            this.btn_remove_cst.Location = new System.Drawing.Point(41, 567);
-            this.btn_remove_cst.Name = "btn_remove_cst";
-            this.btn_remove_cst.Size = new System.Drawing.Size(201, 30);
-            this.btn_remove_cst.TabIndex = 54;
-            this.btn_remove_cst.Text = "Remove CST";
-            this.btn_remove_cst.UseVisualStyleBackColor = true;
-            this.btn_remove_cst.Click += new System.EventHandler(this.btn_remove_cst_Click);
+            this.cb_by_pass_shelf_status.AutoSize = true;
+            this.cb_by_pass_shelf_status.Location = new System.Drawing.Point(1137, 438);
+            this.cb_by_pass_shelf_status.Name = "cb_by_pass_shelf_status";
+            this.cb_by_pass_shelf_status.Size = new System.Drawing.Size(329, 26);
+            this.cb_by_pass_shelf_status.TabIndex = 2;
+            this.cb_by_pass_shelf_status.Text = "Force By Pass AGV Shelf Status";
+            this.cb_by_pass_shelf_status.UseVisualStyleBackColor = true;
+            this.cb_by_pass_shelf_status.CheckedChanged += new System.EventHandler(this.cb_by_pass_shelf_status_CheckedChanged);
             // 
             // DebugForm
             // 
@@ -4119,6 +4107,5 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsCheckPortReady;
         private System.Windows.Forms.DataGridViewTextBoxColumn BindingVh;
         private System.Windows.Forms.CheckBox cb_by_pass_shelf_status;
-        private System.Windows.Forms.Button btn_remove_cst;
     }
 }

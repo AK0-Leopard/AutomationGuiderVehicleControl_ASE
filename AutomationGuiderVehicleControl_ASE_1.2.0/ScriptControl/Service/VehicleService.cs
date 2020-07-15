@@ -321,7 +321,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     vh.onModeStatusChange(modeStat);
                 }
-                cmdBLL.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
+                //cmdBLL.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
+                vh.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
                 return isSuccess;
             }
             private (bool isSuccess, ID_143_STATUS_RESPONSE statusResponse) sendMessage_ID_43_STATUS_REQUEST(string vhID)
@@ -799,7 +800,8 @@ namespace com.mirle.ibg3k0.sc.Service
                                CST_ID_L: vh.CST_ID_L,
                                CST_ID_R: vh.CST_ID_R);
 
-                    var remove_result = scApp.TransferService.ForceRemoveCarrierInVehicleByAGV(vh.VEHICLE_ID, Location, on_vh_carrier.ID);
+                    //var remove_result = scApp.TransferService.ForceRemoveCarrierInVehicleByAGV(on_vh_carrier.ID, Location, "");
+                    var remove_result = scApp.TransferService.ForceRemoveCarrierInVehicleByAGV(vh.VEHICLE_ID, Location, "");
 
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                                Data: $"Process cst remove event:{eventType} cst id:{cstID} cmd id:{excute_cmd_id} agv location:{Location},remove result:{remove_result.result}",
@@ -1758,7 +1760,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     vh.onModeStatusChange(modeStat);
                 }
-                cmdBLL.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
+                //cmdBLL.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
+                vh.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
                 //  reply_status_event_report(bcfApp, eqpt, seq_num);
             }
             private bool reply_status_event_report(BCFApplication bcfApp, AVEHICLE vh, int seq_num)
@@ -2064,7 +2067,8 @@ namespace com.mirle.ibg3k0.sc.Service
                             string vehicle_id = cmd.VH_ID.Trim();
                             AVEHICLE assignVH = scApp.VehicleBLL.cache.getVehicle(vehicle_id);
                             if (!assignVH.isTcpIpConnect ||
-                                !scApp.CMDBLL.canSendCmd(vehicle_id)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
+                                !scApp.CMDBLL.canSendCmd(assignVH)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
+                                                                    //!scApp.CMDBLL.canSendCmd(vehicle_id)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
                             {
                                 continue;
                             }
@@ -2113,7 +2117,8 @@ namespace com.mirle.ibg3k0.sc.Service
                             string vehicle_id = cmd.VH_ID.Trim();
                             AVEHICLE assignVH = scApp.VehicleBLL.cache.getVehicle(vehicle_id);
                             if (!assignVH.isTcpIpConnect ||
-                                !scApp.CMDBLL.canSendCmd(vehicle_id)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
+                                !scApp.CMDBLL.canSendCmd(assignVH)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
+                                //!scApp.CMDBLL.canSendCmd(vehicle_id)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
                             {
                                 continue;
                             }

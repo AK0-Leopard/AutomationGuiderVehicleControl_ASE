@@ -1454,11 +1454,5 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             sc.App.SystemParameter.setIsByPassAGVShelfStatus(cb_by_pass_shelf_status.Checked);
         }
-
-        private void btn_remove_cst_Click(object sender, EventArgs e)
-        {
-            var report_event = sc.ProtocolFormat.OHTMessage.EventType.Cstremove;
-            McsReportEventTest(report_event);
-        }
     }
 }
