@@ -126,6 +126,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             num_BatteryLowBoundaryValue.Value = AVEHICLE.BATTERYLEVELVALUE_LOW;
             num_BatteryHighBoundaryValue.Value = AVEHICLE.BATTERYLEVELVALUE_HIGH;
             numer_pre_open_agv_station_distance.Value = sc.App.SystemParameter.OpenAGVStationCoverDistance_mm;
+            cb_by_pass_shelf_status.Checked = sc.App.SystemParameter.IsByPassAGVShelfStatus;
 
             agvPortStation = bcApp.SCApplication.PortStationBLL.OperateCatch.loadAllPortStation();
             dgv_cache_object_data_portstation.DataSource = agvPortStation;
@@ -1447,6 +1448,17 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void numer_pre_open_agv_station_distance_ValueChanged(object sender, EventArgs e)
         {
             sc.App.SystemParameter.setOpenAGVStationCoverDistance((int)numer_pre_open_agv_station_distance.Value);
+        }
+
+        private void cb_by_pass_shelf_status_CheckedChanged(object sender, EventArgs e)
+        {
+            sc.App.SystemParameter.setIsByPassAGVShelfStatus(cb_by_pass_shelf_status.Checked);
+        }
+
+        private void btn_remove_cst_Click(object sender, EventArgs e)
+        {
+            var report_event = sc.ProtocolFormat.OHTMessage.EventType.Cstremove;
+            McsReportEventTest(report_event);
         }
     }
 }

@@ -32,7 +32,7 @@
         <EntityTypeShape EntityType="OHTC_DevModel.UASUFNC" Width="1.5" PointX="6.75" PointY="10.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.APORTSTATION" Width="1.5" PointX="10.75" PointY="8.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.APORT" Width="1.5" PointX="7" PointY="0.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="OHTC_DevModel.AMCSREPORTQUEUE" Width="1.5" PointX="10.75" PointY="10.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="OHTC_DevModel.AMCSREPORTQUEUE" Width="1.5" PointX="8.875" PointY="10.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.AADDRESS_DATA" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.APORT_POSITION_TEACHING_DATA" Width="1.5" PointX="4.75" PointY="12.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.SCALE_BASE_DATA" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="false" />

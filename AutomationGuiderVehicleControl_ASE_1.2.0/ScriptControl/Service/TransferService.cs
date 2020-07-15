@@ -1474,6 +1474,49 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             return (true, $"Force finish mcs command sucess.");
         }
+        public (bool isSuccess, string result) tryInstallCarrierInVehicle(string vhID, string vhLocation, string carrierID)
+        {
+            try
+            {
+                //1.需確認該Carrier原本是不再車上車，且車上要有CST存在
+                //1.1.如果原本就在車上就忽略該次的動作
+                //1.2.如果原本不再車上則要將他Install到車上並且上報給CS
+                AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+                Location location_info = vh.CarrierLocation.
+                                            Where(loc => SCUtility.isMatche(loc.ID, vhLocation)).
+                                            FirstOrDefault();
+                if (!location_info.HAS_CST)
+                {
+                    return (false, $"Location:{vhLocation} no carrier exist.");
+                }
+
+                var check_has_carrier_on_location_result = carrierBLL.db.hasCarrierOnVhLocation(vhLocation);
+                if (check_has_carrier_on_location_result.has)
+                {
+                    if (SCUtility.isMatche(check_has_carrier_on_location_result.onVhCarrier.ID, carrierID))
+                    {
+                        return (false, $"Location:{vhLocation} is already carrier:{check_has_carrier_on_location_result.onVhCarrier.ID} exist.");
+                    }
+                }
+                ACARRIER carrier = new ACARRIER()
+                {
+                    ID = carrierID,
+                    LOT_ID = "",
+                    INSER_TIME = DateTime.Now,
+                    INSTALLED_TIME = DateTime.Now,
+                    LOCATION = vhLocation,
+                    STATE = ProtocolFormat.OHTMessage.E_CARRIER_STATE.Installed
+                };
+                carrierBLL.db.addOrUpdate(carrier);
+                scApp.ReportBLL.newReportCarrierInstalled(vh.Real_ID, carrierID, vhLocation, null);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return (false, ex.ToString());
+            }
+            return (true, $"Install carrier:{carrierID} in location:{vhLocation} success.");
+        }
 
         public (bool isSuccess, string result) ForceInstallCarrierInVehicle(string vhID, string vhLocation, string carrierID)
         {
@@ -1521,7 +1564,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             return (true, $"Install carrier:{carrierID} in location:{vhLocation} success.");
         }
-        public (bool isSuccess, string result) ForceRemoveCarrierInVehicle(string carrierID)
+        public (bool isSuccess, string result) ForceRemoveCarrierInVehicleByOP(string carrierID)
         {
             try
             {
@@ -1537,6 +1580,30 @@ namespace com.mirle.ibg3k0.sc.Service
                 if (location_of_vh != null)
                     scApp.ReportBLL.newReportCarrierRemoved
                         (location_of_vh.Real_ID, SCUtility.Trim(carrierID, true), SCUtility.Trim(current_location, true), null);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return (false, ex.ToString());
+            }
+            return (true, $"Remove carrier:{carrierID} is success.");
+        }
+        public (bool isSuccess, string result) ForceRemoveCarrierInVehicleByAGV(string vhID, AGVLocation agvLocation, string carrierID)
+        {
+            try
+            {
+                AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+                string location_real_id = vh.getLoctionRealID(agvLocation);
+
+                var check_has_carrier_on_agv_loction = carrierBLL.db.hasCarrierOnVhLocation(location_real_id);
+                if (!check_has_carrier_on_agv_loction.has)
+                {
+                    return (false, $"No carrier: on vh:{vhID} location:{agvLocation}");
+                }
+                var on_vh_of_carrier = check_has_carrier_on_agv_loction.onVhCarrier;
+                carrierBLL.db.updateLocationAndState(on_vh_of_carrier.ID, "", E_CARRIER_STATE.OpRemove);
+                scApp.ReportBLL.newReportCarrierRemoved
+                    (vh.Real_ID, SCUtility.Trim(on_vh_of_carrier.ID, true), SCUtility.Trim(location_real_id, true), null);
             }
             catch (Exception ex)
             {

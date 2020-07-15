@@ -1232,7 +1232,21 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return (assign_cmd_ids != null && assign_cmd_ids.Count > 0, assign_cmd_ids);
         }
-        const int MAX_ASSIGN_COM_COUNT = 2;
+        private const int MAX_ASSIGN_CMD_COUNT = 2;
+        private int CurrentCanAssignMAXCount = 2;
+        public void setCurrentCanAssignCmdCount(ShelfStatus shelfStatusL, ShelfStatus shelfStatusR)
+        {
+            int can_assign_coun = 0;
+            if (shelfStatusR == ShelfStatus.Enable)
+            {
+                can_assign_coun++;
+            }
+            if (shelfStatusL == ShelfStatus.Enable)
+            {
+                can_assign_coun++;
+            }
+            CurrentCanAssignMAXCount = can_assign_coun;
+        }
         public (bool canAssign, string result) canAssignCmdNew(AVEHICLE vh, E_CMD_TYPE cmdType)
         {
             try
@@ -1266,7 +1280,16 @@ namespace com.mirle.ibg3k0.sc.BLL
                         current_vh_carrier_count++;
                     }
                 }
-                int current_can_assign_command_count = MAX_ASSIGN_COM_COUNT - current_vh_carrier_count;
+                //int current_can_assign_command_count = CurrentCanAssignMAXCount - current_vh_carrier_count;
+                int current_can_assign_command_count = MAX_ASSIGN_CMD_COUNT - current_vh_carrier_count;
+                if (SystemParameter.IsByPassAGVShelfStatus)
+                {
+                    current_can_assign_command_count = MAX_ASSIGN_CMD_COUNT - current_vh_carrier_count;
+                }
+                else
+                {
+                    current_can_assign_command_count = CurrentCanAssignMAXCount - current_vh_carrier_count;
+                }
 
                 //if (assign_cmds.Count == 0)
                 //    return (true, "");
@@ -1287,9 +1310,17 @@ namespace com.mirle.ibg3k0.sc.BLL
                     case E_CMD_TYPE.Unload:
                         return (true, "");//Unload一律都回覆OK，不然遇到身上已經載2個CST的，會無法下命令
                     default:
+                        //if (assign_cmds.Count == 0)
                         if (assign_cmds.Count == 0)
                         {
-                            return (true, "");
+                            if (current_can_assign_command_count == 0)
+                            {
+                                return (false, $"currrent can assign cmd count:{current_can_assign_command_count}");
+                            }
+                            else
+                            {
+                                return (true, "");
+                            }
                         }
                         else
                         {
@@ -1329,7 +1360,17 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 count = cmd_ohtcDAO.getVhExcuteCMDConut(con, vhID);
             }
-            return count < MAX_ASSIGN_COM_COUNT;
+            int current_can_assign_command_count = MAX_ASSIGN_CMD_COUNT;
+            if (SystemParameter.IsByPassAGVShelfStatus)
+            {
+                current_can_assign_command_count = MAX_ASSIGN_CMD_COUNT;
+            }
+            else
+            {
+                current_can_assign_command_count = CurrentCanAssignMAXCount;
+            }
+            //return count < CurrentCanAssignMAXCount;
+            return count < current_can_assign_command_count;
         }
 
         public bool forceUpdataCmdStatus2FnishByVhID(string vh_id)

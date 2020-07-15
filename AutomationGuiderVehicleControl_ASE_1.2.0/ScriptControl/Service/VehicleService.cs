@@ -9,6 +9,7 @@ using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.Module;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 using com.mirle.ibg3k0.sc.RouteKit;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Google.Protobuf.Collections;
 using KingAOP;
 using Newtonsoft.Json.Linq;
@@ -271,6 +272,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 int obstacleDIST = statusReqponse.ObstDistance;
                 string obstacleVhID = statusReqponse.ObstVehicleID;
                 int steeringWheel = statusReqponse.SteeringWheel;
+
+                ShelfStatus shelf_status_l = statusReqponse.ShelfStatusL;
+                ShelfStatus shelf_status_r = statusReqponse.ShelfStatusR;
+
                 bool hasdifferent = vh.BATTERYCAPACITY != batteryCapacity ||
                                     vh.MODE_STATUS != modeStat ||
                                     vh.ACT_STATUS != actionStat ||
@@ -287,6 +292,8 @@ namespace com.mirle.ibg3k0.sc.Service
                                     vh.ERROR != errorStat ||
                                     vh.HAS_CST_L != has_cst_l ||
                                     vh.HAS_CST_R != has_cst_r ||
+                                    vh.ShelfStatus_L != shelf_status_l ||
+                                    vh.ShelfStatus_R != shelf_status_r ||
                                     !SCUtility.isMatche(vh.PredictSections, will_pass_section_id)
                                     ;
 
@@ -294,12 +301,17 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     vh.onCurrentExcuteCmdChange(current_excute_cmd_id);
                 }
+                if (errorStat != vh.ERROR)
+                {
+                    vh.onErrorStatusChange(errorStat);
+                }
 
                 if (hasdifferent)
                 {
                     scApp.VehicleBLL.cache.updateVehicleStatus(scApp.CMDBLL, vh.VEHICLE_ID,
                                                          cst_id_l, cst_id_r, modeStat, actionStat, chargeStatus,
                                                          blockingStat, pauseStat, obstacleStat, VhStopSingle.Off, errorStat, reserveStatus,
+                                                         shelf_status_l, shelf_status_r,
                                                          has_cst_l, has_cst_r,
                                                          cmd_id_1, cmd_id_2, current_excute_cmd_id,
                                                          batteryCapacity, will_pass_section_id);
@@ -309,11 +321,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     vh.onModeStatusChange(modeStat);
                 }
-                if (errorStat != vh.ERROR)
-                {
-                    vh.onErrorStatusChange(errorStat);
-                }
-
+                cmdBLL.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
                 return isSuccess;
             }
             private (bool isSuccess, ID_143_STATUS_RESPONSE statusResponse) sendMessage_ID_43_STATUS_REQUEST(string vhID)
@@ -724,6 +732,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 string excute_cmd_id = recive_str.CmdID;
                 var reserveInfos = recive_str.ReserveInfos;
                 BCRReadResult bCRReadResult = recive_str.BCRReadResult;
+                AGVLocation cst_location = recive_str.Location;
 
                 switch (eventType)
                 {
@@ -757,13 +766,50 @@ namespace com.mirle.ibg3k0.sc.Service
                         break;
                     case EventType.Bcrread:
                         if (DebugParameter.testRetryBcrread) return;
-                        TranEventReport_BCRRead(bcfApp, vh, seq_num, eventType, carrier_id, bCRReadResult, excute_cmd_id);
+                        TranEventReport_BCRRead(bcfApp, vh, seq_num, eventType, cst_location, carrier_id, bCRReadResult, excute_cmd_id);
+                        break;
+                    case EventType.Cstremove:
+                        TranEventReport_CSTRemove(bcfApp, vh, seq_num, eventType, cst_location, carrier_id, excute_cmd_id);
                         break;
                     default:
                         replyTranEventReport(bcfApp, eventType, vh, seq_num, excute_cmd_id);
                         break;
                 }
             }
+
+            private void TranEventReport_CSTRemove(BCFApplication bcfApp, AVEHICLE vh, int seq_num, EventType eventType, AGVLocation Location, string cstID, string excute_cmd_id)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"Process  cst remove event:{eventType} cst id:{cstID} cmd id:{excute_cmd_id} agv location:{Location}",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+
+                string location_real_id = vh.getLoctionRealID(Location);
+
+
+                var check_cst_location_result = scApp.CarrierBLL.db.hasCarrierOnVhLocation(location_real_id);
+                if (check_cst_location_result.has)
+                {
+                    var on_vh_carrier = check_cst_location_result.onVhCarrier;
+
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"Process cst remove event:{eventType} cst id:{cstID} cmd id:{excute_cmd_id} agv location:{Location},find the cst:{on_vh_carrier.ID} start remove it...",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+
+                    var remove_result = scApp.TransferService.ForceRemoveCarrierInVehicleByAGV(vh.VEHICLE_ID, Location, on_vh_carrier.ID);
+
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"Process cst remove event:{eventType} cst id:{cstID} cmd id:{excute_cmd_id} agv location:{Location},remove result:{remove_result.result}",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                }
+                replyTranEventReport(bcfApp, eventType, vh, seq_num, excute_cmd_id);
+            }
+
             private void TranEventReport_LoadArrivals(BCFApplication bcfApp, AVEHICLE vh, int seqNum
                                                     , EventType eventType, string cmdID)
             {
@@ -874,6 +920,60 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 scApp.PortBLL.OperateCatch.updatePortStationCSTExistStatus(cmd.SOURCE_PORT, string.Empty);
                 scApp.VehicleBLL.doLoadComplete(vh.VEHICLE_ID);
+                Task.Run(() => checkHasOrtherCommandExcuteAndIsNeedToPreOpenCover(vh, cmdID));
+            }
+
+            private void checkHasOrtherCommandExcuteAndIsNeedToPreOpenCover(AVEHICLE vh, string currentExcuteCmd)
+            {
+                try
+                {
+                    if (vh.IsCloseToAGVStation)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"Close to agv station is on",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+
+                        return;
+                    }
+                    var has_orther_cmd = scApp.VehicleBLL.cache.hasOrtherCmd(vh.VEHICLE_ID, currentExcuteCmd);
+                    if (has_orther_cmd.has)
+                    {
+                        string next_excute_cmd_id = SCUtility.Trim(has_orther_cmd.cmdID, true);
+                        if (SCUtility.isEmpty(next_excute_cmd_id)) return;
+                        //先確認目前執行的命令，是否是要去AGV Station 進行Load/Unload
+                        //是的話則判斷是否已經進入到N公尺m內
+                        //如果是 則將通知OHBC將此AGV ST進行開蓋
+                        bool has_excute_cmd = !SCUtility.isEmpty(vh.CurrentExcuteCmdID);
+                        if (!has_excute_cmd)
+                            return;
+                        ACMD current_excute_cmd = scApp.CMDBLL.cache.getExcuteCmd(next_excute_cmd_id);
+                        if (current_excute_cmd == null)
+                            return;
+                        if (current_excute_cmd.CMD_TYPE == E_CMD_TYPE.LoadUnload || current_excute_cmd.CMD_TYPE == E_CMD_TYPE.Unload)
+                        {
+                            //not thing...
+                        }
+                        else
+                        {
+                            return;
+                        }
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{next_excute_cmd_id} " +
+                                 $"source port:{SCUtility.Trim(current_excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(current_excute_cmd.DESTINATION_PORT, true)} ...,",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+
+                        scApp.VehicleService.checkWillGoToPortIsAGVStationAndIsNeedPreOpenCover(vh, current_excute_cmd);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception:");
+                }
             }
 
             private void updateCarrierInVehicleLocation(AVEHICLE vh, ACMD cmd, string readCarrierID)
@@ -1049,11 +1149,13 @@ namespace com.mirle.ibg3k0.sc.Service
                     replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
                 }
                 scApp.VehicleBLL.doUnloadComplete(vh.VEHICLE_ID);
+                Task.Run(() => checkHasOrtherCommandExcuteAndIsNeedToPreOpenCover(vh, cmdID));
+
             }
 
 
             private void TranEventReport_BCRRead(BCFApplication bcfApp, AVEHICLE vh, int seqNum,
-                                               EventType eventType, string readCarrierID, BCRReadResult bCRReadResult,
+                                               EventType eventType, AGVLocation location, string readCarrierID, BCRReadResult bCRReadResult,
                                                string cmdID)
             {
                 ACMD cmd = scApp.CMDBLL.GetCMD_OHTCByID(cmdID);
@@ -1061,33 +1163,49 @@ namespace com.mirle.ibg3k0.sc.Service
                 ReplyActionType replyActionType = ReplyActionType.Continue;
                 if (cmd == null)
                 {
-                    if (!SCUtility.isEmpty(vh.LastLoadCompleteCommandID))
+                    //if (!SCUtility.isEmpty(vh.LastLoadCompleteCommandID))
+                    //{
+                    //    cmd = scApp.CMDBLL.GetCMD_OHTCByID(vh.LastLoadCompleteCommandID);
+                    //}
+                    //if (cmd == null)
+                    //{
+
+                    switch (bCRReadResult)
                     {
-                        cmd = scApp.CMDBLL.GetCMD_OHTCByID(vh.LastLoadCompleteCommandID);
+                        case BCRReadResult.BcrNormal:
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"Try install carrier in vehicle by bcr read event(no cmd id)...",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                            string action_lcation_real_id = vh.getLoctionRealID(location);
+                            var try_install_result = scApp.TransferService.tryInstallCarrierInVehicle(vh.VEHICLE_ID, action_lcation_real_id, readCarrierID);
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"Try install carrier in vehicle by bcr read event(no cmd id),result:[{try_install_result.isSuccess}] " +
+                                     $"raeson:{try_install_result.result}",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                            break;
+                        case BCRReadResult.BcrMisMatch:
+                            replyActionType = ReplyActionType.CancelIdMisnatch;
+                            rename_carrier_id = readCarrierID;
+                            break;
+                        case BCRReadResult.BcrReadFail:
+                            replyActionType = ReplyActionType.CancelIdReadFailed;
+                            string new_carrier_id =
+                                $"UNKF{vh.Real_ID.Trim()}{DateTime.Now.ToString(SCAppConstants.TimestampFormat_12)}";
+                            rename_carrier_id = new_carrier_id;
+                            break;
+                        default:
+                            replyActionType = ReplyActionType.Continue;
+                            break;
                     }
-                    if (cmd == null)
-                    {
-                        switch (bCRReadResult)
-                        {
-                            case BCRReadResult.BcrMisMatch:
-                                replyActionType = ReplyActionType.CancelIdMisnatch;
-                                rename_carrier_id = readCarrierID;
-                                break;
-                            case BCRReadResult.BcrReadFail:
-                                replyActionType = ReplyActionType.CancelIdReadFailed;
-                                string new_carrier_id =
-                                    $"UNKF{vh.Real_ID.Trim()}{DateTime.Now.ToString(SCAppConstants.TimestampFormat_12)}";
-                                rename_carrier_id = new_carrier_id;
-                                break;
-                            default:
-                                replyActionType = ReplyActionType.Continue;
-                                break;
-                        }
-                        replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID,
-                            renameCarrierID: rename_carrier_id,
-                            actionType: replyActionType);
-                        return;
-                    }
+                    replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID,
+                        renameCarrierID: rename_carrier_id,
+                        actionType: replyActionType);
+                    return;
+                    //}
                 }
                 //updateCarrierInVehicleLocation(vh, cmd, readCarrierID);
                 bool is_tran_cmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
@@ -1591,9 +1709,17 @@ namespace com.mirle.ibg3k0.sc.Service
                 string obstacleVhID = recive_str.ObstVehicleID;
                 int steeringWheel = recive_str.SteeringWheel;
 
+                ShelfStatus shelf_status_l = recive_str.ShelfStatusL;
+                ShelfStatus shelf_status_r = recive_str.ShelfStatusR;
+
+
                 if (!SCUtility.isMatche(current_excute_cmd_id, vh.CurrentExcuteCmdID))
                 {
                     vh.onCurrentExcuteCmdChange(current_excute_cmd_id);
+                }
+                if (errorStat != vh.ERROR)
+                {
+                    vh.onErrorStatusChange(errorStat);
                 }
 
 
@@ -1613,6 +1739,8 @@ namespace com.mirle.ibg3k0.sc.Service
                                     vh.ERROR != errorStat ||
                                     vh.HAS_CST_L != has_cst_l ||
                                     vh.HAS_CST_R != has_cst_r ||
+                                    vh.ShelfStatus_L != shelf_status_l ||
+                                    vh.ShelfStatus_R != shelf_status_r ||
                                     !SCUtility.isMatche(vh.PredictSections, will_pass_section_id)
                                     ;
                 if (hasdifferent)
@@ -1620,19 +1748,17 @@ namespace com.mirle.ibg3k0.sc.Service
                     scApp.VehicleBLL.cache.updateVehicleStatus(scApp.CMDBLL, vh.VEHICLE_ID,
                                                          cst_id_l, cst_id_r, modeStat, actionStat, chargeStatus,
                                                          blockingStat, pauseStat, obstacleStat, VhStopSingle.Off, errorStat, reserveStatus,
+                                                         shelf_status_l, shelf_status_r,
                                                          has_cst_l, has_cst_r,
                                                          cmd_id_1, cmd_id_2, current_excute_cmd_id,
                                                          batteryCapacity, will_pass_section_id);
                 }
+
                 if (modeStat != vh.MODE_STATUS)
                 {
                     vh.onModeStatusChange(modeStat);
                 }
-                if (errorStat != vh.ERROR)
-                {
-                    vh.onErrorStatusChange(errorStat);
-                }
-
+                cmdBLL.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
                 //  reply_status_event_report(bcfApp, eqpt, seq_num);
             }
             private bool reply_status_event_report(BCFApplication bcfApp, AVEHICLE vh, int seq_num)
@@ -2557,7 +2683,7 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 if (vhStopSingle == VhStopSingle.On)
                 {
-                    scApp.VehicleBLL.web.errorHappendNotify();
+                    Task.Run(() => scApp.VehicleBLL.web.errorHappendNotify());
                 }
             }
             catch (Exception ex)

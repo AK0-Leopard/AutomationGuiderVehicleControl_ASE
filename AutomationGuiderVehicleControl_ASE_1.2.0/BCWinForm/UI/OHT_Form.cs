@@ -260,7 +260,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             //portIDTemp.AddRange(adr_port1_ID);    
             //portIDTemp.AddRange(adr_port2_ID);
             //portIDTemp.OrderBy(id => id);
-            allPortID = scApp.MapBLL.loadAllPort().Select(s => s.PORT_ID).ToArray();
+            //allPortID = scApp.MapBLL.loadAllPort().Select(s => s.PORT_ID).ToArray();
+            allPortID = scApp.PortStationBLL.OperateCatch.loadAllPortStation().
+                                                          Where(s => !s.PORT_ID.Contains("_ST0")).
+                                                          Select(s => SCUtility.Trim(s.PORT_ID, true)).ToArray();
             //allPortID = allAddress_obj.Where(adr=>adr.
             BCUtility.setComboboxDataSource(cmb_toAddress, allAdr_ID);
             BCUtility.setComboboxDataSource(cmb_fromAddress, allAdr_ID.ToArray());

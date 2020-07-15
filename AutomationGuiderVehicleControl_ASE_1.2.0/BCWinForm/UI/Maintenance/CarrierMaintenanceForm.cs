@@ -95,7 +95,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 (bool isSuccess, string result) check_result = (false, "");
                 await Task.Run(() =>
                 {
-                    check_result = scApp.TransferService.ForceRemoveCarrierInVehicle(carrier_id);
+                    check_result = scApp.TransferService.ForceRemoveCarrierInVehicleByOP(carrier_id);
                 });
                 MessageBox.Show(check_result.result, "Carrier remove info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 await Task.Run(() =>

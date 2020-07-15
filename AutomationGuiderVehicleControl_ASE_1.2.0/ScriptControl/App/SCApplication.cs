@@ -1596,6 +1596,8 @@ namespace com.mirle.ibg3k0.sc.App
         public static int PortMaxPriority = 99;
 
         public static int OpenAGVStationCoverDistance_mm = 5000;
+        public static bool IsByPassAGVShelfStatus { get; private set; } = true;
+
 
         public static void setSECSConversactionTimeout(int timeout)
         {
@@ -1641,6 +1643,10 @@ namespace com.mirle.ibg3k0.sc.App
         public static void setOpenAGVStationCoverDistance(int openAGVStationCoverDistance_mm)
         {
             OpenAGVStationCoverDistance_mm = openAGVStationCoverDistance_mm;
+        }
+        public static void setIsByPassAGVShelfStatus(bool isByPassAGVShelfStatus)
+        {
+            IsByPassAGVShelfStatus = isByPassAGVShelfStatus;
         }
     }
 

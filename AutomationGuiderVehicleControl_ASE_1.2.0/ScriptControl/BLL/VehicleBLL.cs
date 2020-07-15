@@ -613,6 +613,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             public void updateVehicleStatus(CMDBLL cmdBLL, string vhID,
                                           string leftCstID, string rightCstID, VHModeStatus mode_status, VHActionStatus act_status, VhChargeStatus chargeStatus,
                                           VhStopSingle block_pause, VhStopSingle cmd_pause, VhStopSingle obs_pause, VhStopSingle hid_pause, VhStopSingle error_status, VhStopSingle reserve_pause,
+                                          ShelfStatus left_shelf_status, ShelfStatus right_shelf_status,
                                           bool left_has_cst, bool right_has_cst,
                                           string cmdID1, string cmdID2, string currenExcuteCmdID,
                                           uint batteryCapacity, string[] willPassSection)

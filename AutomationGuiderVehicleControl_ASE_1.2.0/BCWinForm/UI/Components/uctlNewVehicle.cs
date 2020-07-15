@@ -621,17 +621,25 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
             {
                 try
                 {
-                    //如果車子目前是位於9開頭的Section就先不處理
-                    if (vh.CUR_SEC_ID != null && vh.CUR_SEC_ID.StartsWith("9"))
-                        return;
-                    GroupRails groupRails = Uctl_Map.getGroupRailBySecID(vh.CUR_SEC_ID);
-                    if (groupRails != null)
+                    //如果車子目前是位於9開頭的Address 就把他換成用Address的座標來定位
+                    if (vh.CUR_ADR_ID != null && vh.CUR_ADR_ID.StartsWith("9"))
                     {
-                        groupRails.VehicleEnterSection(this, vh.CUR_ADR_ID, vh.ACC_SEC_DIST, vh.CurrentDriveDirction);
+                        string replaced_cur_adr = replaceFirstChar(vh.CUR_ADR_ID);
+                        uctlAddress uctlAdr = Uctl_Map.getuctAddressByAdrID(replaced_cur_adr);
+                        if (uctlAdr == null) return;
+                        PrcSetLocation(uctlAdr.p_LocX, uctlAdr.p_LocY);
                     }
                     else
                     {
-                        PrcSetLocation((UNKNOW_DEFAULT_X_LOCATION_VALUE * Num) + 2, UNKNOW_DEFAULT_Y_LOCATION_VALUE);
+                        GroupRails groupRails = Uctl_Map.getGroupRailBySecID(vh.CUR_SEC_ID);
+                        if (groupRails != null)
+                        {
+                            groupRails.VehicleEnterSection(this, vh.CUR_ADR_ID, vh.ACC_SEC_DIST, vh.CurrentDriveDirction);
+                        }
+                        else
+                        {
+                            PrcSetLocation((UNKNOW_DEFAULT_X_LOCATION_VALUE * Num) + 2, UNKNOW_DEFAULT_Y_LOCATION_VALUE);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -641,6 +649,19 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
             }, null);
         }
 
+        private string replaceFirstChar(string curAdrID)
+        {
+            string replaced_cur_adr = curAdrID;
+            try
+            {
+                replaced_cur_adr = $"1{replaced_cur_adr.Substring(1, curAdrID.Length-1)}";
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+            return replaced_cur_adr;
+        }
 
         public void PrcSetLocation(int iLocX, int iLocY)
         {

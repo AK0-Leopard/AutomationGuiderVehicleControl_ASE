@@ -193,6 +193,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         private S6F11.RPTINFO.RPTITEM.VIDITEM_51 buildEnhanecdCarriersVIDItem()
         {
             var in_line_carriers = scApp.CarrierBLL.db.loadCurrentInLineCarrier();
+            in_line_carriers = in_line_carriers.Where(cst => cst.STATE == E_CARRIER_STATE.Installed).ToList();
             List<S6F11.RPTINFO.RPTITEM.ENHANCEDCARRIERINFO> enhanced_carier_info =
                 new List<S6F11.RPTINFO.RPTITEM.ENHANCEDCARRIERINFO>();
             foreach (ACARRIER carrier in in_line_carriers)

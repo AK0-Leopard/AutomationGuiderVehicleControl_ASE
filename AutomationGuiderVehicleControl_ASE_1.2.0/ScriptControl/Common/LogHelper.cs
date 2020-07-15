@@ -36,6 +36,7 @@ namespace com.mirle.ibg3k0.sc.Common
             string VehicleID = null, string CST_ID_L = null, string CST_ID_R = null, string LogID = null, string Level = null, string ThreadID = null, string Lot = null, string XID = null, string Transaction = null,
             [CallerMemberName] string Method = "")
         {
+            return;
             //如果被F'Y'，Y可以被2整除的話代表是收到的
             bool isReceive = Data.getF() % 2 == 0;
             LogConstants.Type type = isReceive ? LogConstants.Type.Receive : LogConstants.Type.Send;
@@ -61,6 +62,7 @@ namespace com.mirle.ibg3k0.sc.Common
             string VehicleID = null, string CST_ID_L = null, string CST_ID_R = null, string LogID = null, string Level = null, string ThreadID = null, string Lot = null, string XID = null, string Transaction = null,
             [CallerMemberName] string Method = "")
         {
+            return;
             string function_name = $"[{seq_num}]{Data.Descriptor.Name}";
 
             LogConstants.Type? type = null;

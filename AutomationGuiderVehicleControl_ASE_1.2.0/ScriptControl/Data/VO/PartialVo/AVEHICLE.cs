@@ -335,7 +335,11 @@ namespace com.mirle.ibg3k0.sc
             get { return CarrierLocation[VEHICLE_CARRIER_LOCATION_R_INDEX].CST_ID; }
             set { CarrierLocation[VEHICLE_CARRIER_LOCATION_R_INDEX].setCstID(value); }
         }
-
+        public ShelfStatus ShelfStatus_R
+        {
+            get { return CarrierLocation[VEHICLE_CARRIER_LOCATION_R_INDEX].ShelfStatus; }
+            set { CarrierLocation[VEHICLE_CARRIER_LOCATION_R_INDEX].setShelfStatus(value); }
+        }
         public string LocationRealID_L
         {
             get { return CarrierLocation[VEHICLE_CARRIER_LOCATION_L_INDEX].ID; }
@@ -349,6 +353,24 @@ namespace com.mirle.ibg3k0.sc
         {
             get { return CarrierLocation[VEHICLE_CARRIER_LOCATION_L_INDEX].CST_ID; }
             set { CarrierLocation[VEHICLE_CARRIER_LOCATION_L_INDEX].setCstID(value); }
+        }
+        public ShelfStatus ShelfStatus_L
+        {
+            get { return CarrierLocation[VEHICLE_CARRIER_LOCATION_L_INDEX].ShelfStatus; }
+            set { CarrierLocation[VEHICLE_CARRIER_LOCATION_L_INDEX].setShelfStatus(value); }
+        }
+        public string getLoctionRealID(AGVLocation location)
+        {
+            switch (location)
+            {
+                case AGVLocation.Left:
+                    return LocationRealID_L;
+                case AGVLocation.Right:
+                    return LocationRealID_R;
+                default:
+                    return "";
+            }
+
         }
 
         public com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.VhStopSingle BLOCK_PAUSE { get; set; }
@@ -1410,6 +1432,7 @@ namespace com.mirle.ibg3k0.sc
             public string ID { get; set; }
             public bool HAS_CST { get; private set; }
             public string CST_ID { get; private set; }
+            public ShelfStatus ShelfStatus { get; private set; }
 
             public Location(string id)
             {
@@ -1423,6 +1446,10 @@ namespace com.mirle.ibg3k0.sc
             public void setHasCst(bool has_cst)
             {
                 HAS_CST = has_cst;
+            }
+            public void setShelfStatus(ShelfStatus status)
+            {
+                ShelfStatus = status;
             }
         }
 

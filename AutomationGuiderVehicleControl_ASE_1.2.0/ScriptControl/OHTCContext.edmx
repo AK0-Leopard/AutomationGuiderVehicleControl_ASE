@@ -1917,7 +1917,7 @@
           <Key>
             <PropertyRef Name="PORT_ID" />
           </Key>
-          <Property Name="PORT_ID" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="PORT_ID" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="ADR_ID" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
           <Property Name="LD_VH_TYPE" Type="OHTC_DevModel.E_VH_TYPE" Nullable="false" />
           <Property Name="ULD_VH_TYPE" Type="OHTC_DevModel.E_VH_TYPE" Nullable="false" />

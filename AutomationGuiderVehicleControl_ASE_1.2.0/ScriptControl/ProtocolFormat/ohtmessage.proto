@@ -748,6 +748,7 @@ enum CompleteStatus {
         E_CARRIER_STATE_IdDuplicate = 6;
         E_CARRIER_STATE_OpRemove = 7;
         E_CARRIER_STATE_MoveError = 8;
+        E_CARRIER_STATE_AGVRemove = 9;
    }
 
        message VEHICLE_INFO {
