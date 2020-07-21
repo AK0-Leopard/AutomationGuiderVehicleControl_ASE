@@ -76,37 +76,38 @@ namespace com.mirle.ibg3k0.bc.winform
             this.stopConnectionToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.sEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.logInToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.logOutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.operatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.engineerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.roadControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.hostConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageChangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zhTwToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enUSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sectionDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hostConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.deviceStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.carrierInstalledRemoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transferCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.queryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.transferCommandHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alarmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.roadControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reserveSectionInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.carrierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zh_twToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zh_chToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tipMessageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.monitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.communectionStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.engineerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.engineeringModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.queryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.transferCommandHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.alarmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tipMessageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.CMS_OnLineMode.SuspendLayout();
@@ -251,12 +252,11 @@ namespace com.mirle.ibg3k0.bc.winform
             this.systemToolStripMenuItem,
             this.toolStripMenuItem2,
             this.operatorToolStripMenuItem,
+            this.queryToolStripMenuItem,
             this.mataToolStripMenuItem,
             this.languageToolStripMenuItem,
-            this.tipMessageToolStripMenuItem,
-            this.monitorToolStripMenuItem,
             this.engineerToolStripMenuItem1,
-            this.queryToolStripMenuItem});
+            this.tipMessageToolStripMenuItem});
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.menuStrip1_MouseDoubleClick);
             // 
@@ -266,7 +266,12 @@ namespace com.mirle.ibg3k0.bc.winform
             this.startConnectionToolStripMenuItem1,
             this.stopConnectionToolStripMenuItem1,
             this.sEToolStripMenuItem,
-            this.dToolStripMenuItem});
+            this.dToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.logInToolStripMenuItem1,
+            this.logOutToolStripMenuItem1,
+            this.toolStripSeparator4,
+            this.exitToolStripMenuItem});
             this.systemToolStripMenuItem.Name = "systemToolStripMenuItem";
             resources.ApplyResources(this.systemToolStripMenuItem, "systemToolStripMenuItem");
             // 
@@ -292,6 +297,34 @@ namespace com.mirle.ibg3k0.bc.winform
             this.dToolStripMenuItem.Name = "dToolStripMenuItem";
             resources.ApplyResources(this.dToolStripMenuItem, "dToolStripMenuItem");
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
+            // 
+            // logInToolStripMenuItem1
+            // 
+            this.logInToolStripMenuItem1.Name = "logInToolStripMenuItem1";
+            resources.ApplyResources(this.logInToolStripMenuItem1, "logInToolStripMenuItem1");
+            this.logInToolStripMenuItem1.Click += new System.EventHandler(this.logInToolStripMenuItem1_Click);
+            // 
+            // logOutToolStripMenuItem1
+            // 
+            this.logOutToolStripMenuItem1.Name = "logOutToolStripMenuItem1";
+            resources.ApplyResources(this.logOutToolStripMenuItem1, "logOutToolStripMenuItem1");
+            this.logOutToolStripMenuItem1.Click += new System.EventHandler(this.logOutToolStripMenuItem1_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -301,48 +334,27 @@ namespace com.mirle.ibg3k0.bc.winform
             // operatorToolStripMenuItem
             // 
             this.operatorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.logInToolStripMenuItem,
-            this.logOutToolStripMenuItem,
-            this.engineerToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.hostConnectionToolStripMenuItem,
             this.languageChangeToolStripMenuItem,
             this.editToolStripMenuItem,
-            this.hostConnectionToolStripMenuItem,
-            this.toolStripSeparator1,
+            this.deviceStatusToolStripMenuItem,
+            this.toolStripSeparator5,
+            this.carrierInstalledRemoveToolStripMenuItem,
             this.transferCommandToolStripMenuItem});
             this.operatorToolStripMenuItem.Name = "operatorToolStripMenuItem";
             resources.ApplyResources(this.operatorToolStripMenuItem, "operatorToolStripMenuItem");
             // 
-            // logInToolStripMenuItem
+            // toolStripSeparator2
             // 
-            this.logInToolStripMenuItem.Name = "logInToolStripMenuItem";
-            resources.ApplyResources(this.logInToolStripMenuItem, "logInToolStripMenuItem");
-            this.logInToolStripMenuItem.Click += new System.EventHandler(this.logInToolStripMenuItem_Click);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             // 
-            // logOutToolStripMenuItem
+            // hostConnectionToolStripMenuItem
             // 
-            this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            resources.ApplyResources(this.logOutToolStripMenuItem, "logOutToolStripMenuItem");
-            this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
-            // 
-            // engineerToolStripMenuItem
-            // 
-            this.engineerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.debugToolStripMenuItem,
-            this.roadControlToolStripMenuItem});
-            this.engineerToolStripMenuItem.Name = "engineerToolStripMenuItem";
-            resources.ApplyResources(this.engineerToolStripMenuItem, "engineerToolStripMenuItem");
-            this.engineerToolStripMenuItem.Click += new System.EventHandler(this.engineerToolStripMenuItem_Click);
-            // 
-            // debugToolStripMenuItem
-            // 
-            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            resources.ApplyResources(this.debugToolStripMenuItem, "debugToolStripMenuItem");
-            // 
-            // roadControlToolStripMenuItem
-            // 
-            this.roadControlToolStripMenuItem.Name = "roadControlToolStripMenuItem";
-            resources.ApplyResources(this.roadControlToolStripMenuItem, "roadControlToolStripMenuItem");
-            this.roadControlToolStripMenuItem.Click += new System.EventHandler(this.roadControlToolStripMenuItem_Click);
+            this.hostConnectionToolStripMenuItem.Name = "hostConnectionToolStripMenuItem";
+            resources.ApplyResources(this.hostConnectionToolStripMenuItem, "hostConnectionToolStripMenuItem");
+            this.hostConnectionToolStripMenuItem.Click += new System.EventHandler(this.hostConnectionToolStripMenuItem_Click);
             // 
             // languageChangeToolStripMenuItem
             // 
@@ -377,43 +389,69 @@ namespace com.mirle.ibg3k0.bc.winform
             resources.ApplyResources(this.sectionDataToolStripMenuItem, "sectionDataToolStripMenuItem");
             this.sectionDataToolStripMenuItem.Click += new System.EventHandler(this.sectionDataToolStripMenuItem_Click);
             // 
-            // hostConnectionToolStripMenuItem
+            // deviceStatusToolStripMenuItem
             // 
-            this.hostConnectionToolStripMenuItem.Name = "hostConnectionToolStripMenuItem";
-            resources.ApplyResources(this.hostConnectionToolStripMenuItem, "hostConnectionToolStripMenuItem");
-            this.hostConnectionToolStripMenuItem.Click += new System.EventHandler(this.hostConnectionToolStripMenuItem_Click);
+            this.deviceStatusToolStripMenuItem.Name = "deviceStatusToolStripMenuItem";
+            resources.ApplyResources(this.deviceStatusToolStripMenuItem, "deviceStatusToolStripMenuItem");
+            this.deviceStatusToolStripMenuItem.Click += new System.EventHandler(this.deviceStatusToolStripMenuItem_Click);
             // 
-            // toolStripSeparator1
+            // toolStripSeparator5
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            resources.ApplyResources(this.toolStripSeparator5, "toolStripSeparator5");
+            // 
+            // carrierInstalledRemoveToolStripMenuItem
+            // 
+            this.carrierInstalledRemoveToolStripMenuItem.Name = "carrierInstalledRemoveToolStripMenuItem";
+            resources.ApplyResources(this.carrierInstalledRemoveToolStripMenuItem, "carrierInstalledRemoveToolStripMenuItem");
+            this.carrierInstalledRemoveToolStripMenuItem.Click += new System.EventHandler(this.carrierInstalledRemoveToolStripMenuItem_Click);
             // 
             // transferCommandToolStripMenuItem
             // 
             this.transferCommandToolStripMenuItem.Name = "transferCommandToolStripMenuItem";
             resources.ApplyResources(this.transferCommandToolStripMenuItem, "transferCommandToolStripMenuItem");
-            this.transferCommandToolStripMenuItem.Click += new System.EventHandler(this.transferCommandToolStripMenuItem_Click);
+            this.transferCommandToolStripMenuItem.Click += new System.EventHandler(this.transferCommandToolStripMenuItem_Click_1);
+            // 
+            // queryToolStripMenuItem
+            // 
+            this.queryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.transferCommandHistoryToolStripMenuItem,
+            this.alarmToolStripMenuItem});
+            this.queryToolStripMenuItem.Name = "queryToolStripMenuItem";
+            resources.ApplyResources(this.queryToolStripMenuItem, "queryToolStripMenuItem");
+            // 
+            // transferCommandHistoryToolStripMenuItem
+            // 
+            this.transferCommandHistoryToolStripMenuItem.Name = "transferCommandHistoryToolStripMenuItem";
+            resources.ApplyResources(this.transferCommandHistoryToolStripMenuItem, "transferCommandHistoryToolStripMenuItem");
+            this.transferCommandHistoryToolStripMenuItem.Click += new System.EventHandler(this.transferCommandHistoryToolStripMenuItem_Click);
+            // 
+            // alarmToolStripMenuItem
+            // 
+            this.alarmToolStripMenuItem.Name = "alarmToolStripMenuItem";
+            resources.ApplyResources(this.alarmToolStripMenuItem, "alarmToolStripMenuItem");
+            this.alarmToolStripMenuItem.Click += new System.EventHandler(this.alarmToolStripMenuItem_Click);
             // 
             // mataToolStripMenuItem
             // 
             this.mataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.reserveSectionInfoToolStripMenuItem,
-            this.carrierToolStripMenuItem});
+            this.roadControlToolStripMenuItem,
+            this.reserveSectionInfoToolStripMenuItem});
             this.mataToolStripMenuItem.Name = "mataToolStripMenuItem";
             resources.ApplyResources(this.mataToolStripMenuItem, "mataToolStripMenuItem");
             this.mataToolStripMenuItem.Click += new System.EventHandler(this.mataToolStripMenuItem_Click);
+            // 
+            // roadControlToolStripMenuItem
+            // 
+            this.roadControlToolStripMenuItem.Name = "roadControlToolStripMenuItem";
+            resources.ApplyResources(this.roadControlToolStripMenuItem, "roadControlToolStripMenuItem");
+            this.roadControlToolStripMenuItem.Click += new System.EventHandler(this.roadControlToolStripMenuItem_Click_1);
             // 
             // reserveSectionInfoToolStripMenuItem
             // 
             this.reserveSectionInfoToolStripMenuItem.Name = "reserveSectionInfoToolStripMenuItem";
             resources.ApplyResources(this.reserveSectionInfoToolStripMenuItem, "reserveSectionInfoToolStripMenuItem");
             this.reserveSectionInfoToolStripMenuItem.Click += new System.EventHandler(this.reserveSectionInfoToolStripMenuItem_Click);
-            // 
-            // carrierToolStripMenuItem
-            // 
-            this.carrierToolStripMenuItem.Name = "carrierToolStripMenuItem";
-            resources.ApplyResources(this.carrierToolStripMenuItem, "carrierToolStripMenuItem");
-            this.carrierToolStripMenuItem.Click += new System.EventHandler(this.carrierToolStripMenuItem_Click);
             // 
             // languageToolStripMenuItem
             // 
@@ -442,25 +480,6 @@ namespace com.mirle.ibg3k0.bc.winform
             resources.ApplyResources(this.zh_chToolStripMenuItem, "zh_chToolStripMenuItem");
             this.zh_chToolStripMenuItem.Click += new System.EventHandler(this.zh_chToolStripMenuItem_Click);
             // 
-            // tipMessageToolStripMenuItem
-            // 
-            this.tipMessageToolStripMenuItem.Name = "tipMessageToolStripMenuItem";
-            resources.ApplyResources(this.tipMessageToolStripMenuItem, "tipMessageToolStripMenuItem");
-            this.tipMessageToolStripMenuItem.Click += new System.EventHandler(this.tipMessageToolStripMenuItem_Click);
-            // 
-            // monitorToolStripMenuItem
-            // 
-            this.monitorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.communectionStatusToolStripMenuItem});
-            this.monitorToolStripMenuItem.Name = "monitorToolStripMenuItem";
-            resources.ApplyResources(this.monitorToolStripMenuItem, "monitorToolStripMenuItem");
-            // 
-            // communectionStatusToolStripMenuItem
-            // 
-            this.communectionStatusToolStripMenuItem.Name = "communectionStatusToolStripMenuItem";
-            resources.ApplyResources(this.communectionStatusToolStripMenuItem, "communectionStatusToolStripMenuItem");
-            this.communectionStatusToolStripMenuItem.Click += new System.EventHandler(this.communectionStatusToolStripMenuItem_Click);
-            // 
             // engineerToolStripMenuItem1
             // 
             this.engineerToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -481,25 +500,11 @@ namespace com.mirle.ibg3k0.bc.winform
             resources.ApplyResources(this.engineeringModeToolStripMenuItem, "engineeringModeToolStripMenuItem");
             this.engineeringModeToolStripMenuItem.Click += new System.EventHandler(this.engineeringModeToolStripMenuItem_Click);
             // 
-            // queryToolStripMenuItem
+            // tipMessageToolStripMenuItem
             // 
-            this.queryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.transferCommandHistoryToolStripMenuItem,
-            this.alarmToolStripMenuItem});
-            this.queryToolStripMenuItem.Name = "queryToolStripMenuItem";
-            resources.ApplyResources(this.queryToolStripMenuItem, "queryToolStripMenuItem");
-            // 
-            // transferCommandHistoryToolStripMenuItem
-            // 
-            this.transferCommandHistoryToolStripMenuItem.Name = "transferCommandHistoryToolStripMenuItem";
-            resources.ApplyResources(this.transferCommandHistoryToolStripMenuItem, "transferCommandHistoryToolStripMenuItem");
-            this.transferCommandHistoryToolStripMenuItem.Click += new System.EventHandler(this.transferCommandHistoryToolStripMenuItem_Click);
-            // 
-            // alarmToolStripMenuItem
-            // 
-            this.alarmToolStripMenuItem.Name = "alarmToolStripMenuItem";
-            resources.ApplyResources(this.alarmToolStripMenuItem, "alarmToolStripMenuItem");
-            this.alarmToolStripMenuItem.Click += new System.EventHandler(this.alarmToolStripMenuItem_Click);
+            this.tipMessageToolStripMenuItem.Name = "tipMessageToolStripMenuItem";
+            resources.ApplyResources(this.tipMessageToolStripMenuItem, "tipMessageToolStripMenuItem");
+            this.tipMessageToolStripMenuItem.Click += new System.EventHandler(this.tipMessageToolStripMenuItem_Click);
             // 
             // timer1
             // 
@@ -627,23 +632,19 @@ namespace com.mirle.ibg3k0.bc.winform
         /// The menu strip1
         /// </summary>
         private System.Windows.Forms.MenuStrip menuStrip1;
+        [AuthorityCheck(FUNCode = BCAppConstants.FUNC_MAINTENANCE_FUN)]
         private System.Windows.Forms.ToolStripMenuItem mataToolStripMenuItem;
+        [AuthorityCheck(FUNCode = BCAppConstants.FUNC_OPERATION_FUN)]
         private System.Windows.Forms.ToolStripMenuItem operatorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem logInToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zh_twToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zh_chToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tipMessageToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem monitorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem communectionStatusToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem engineerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
+        [AuthorityCheck(FUNCode = BCAppConstants.FUNC_ENGINEER_FUN)]
         private System.Windows.Forms.ToolStripMenuItem engineerToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem engineeringModeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem roadControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem languageChangeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zhTwToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem enUSToolStripMenuItem;
@@ -655,13 +656,21 @@ namespace com.mirle.ibg3k0.bc.winform
         private System.Windows.Forms.ToolStripStatusLabel tssl_Error_Value;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripMenuItem hostConnectionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem transferCommandToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem queryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem transferCommandHistoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem alarmToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reserveSectionInfoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem carrierToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem roadControlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem logInToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem deviceStatusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem carrierInstalledRemoveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem transferCommandToolStripMenuItem;
     }
 
     /// <summary>

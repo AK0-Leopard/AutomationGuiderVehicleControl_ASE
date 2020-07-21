@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.m_tableLayoutPnl = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
             this.m_CMDIDTxb = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.m_sourceTxb = new System.Windows.Forms.TextBox();
@@ -38,21 +39,19 @@
             this.m_pwdVerifyLbl = new System.Windows.Forms.Label();
             this.m_CSTIDTxb = new System.Windows.Forms.TextBox();
             this.m_oldpwdLbl = new System.Windows.Forms.Label();
-            this.radioBtn_Source = new System.Windows.Forms.RadioButton();
-            this.radioBtn_dest = new System.Windows.Forms.RadioButton();
-            this.radioBtn_InVehicle = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.cmb_vhLocations = new System.Windows.Forms.ComboBox();
             this.cmb_vhIDs = new System.Windows.Forms.ComboBox();
             this.m_destTxb = new System.Windows.Forms.TextBox();
+            this.radioBtn_Source = new System.Windows.Forms.RadioButton();
+            this.radioBtn_InVehicle = new System.Windows.Forms.RadioButton();
+            this.radioBtn_dest = new System.Windows.Forms.RadioButton();
+            this.radioBtn_manual = new System.Windows.Forms.RadioButton();
             this.m_confirmBtn = new CCWin.SkinControl.SkinButton();
             this.m_cancelBtn = new CCWin.SkinControl.SkinButton();
             this.label1 = new System.Windows.Forms.Label();
             this.cmd_force_finish_status = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.radioBtn_manual = new System.Windows.Forms.RadioButton();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.m_tableLayoutPnl.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -62,24 +61,24 @@
             this.m_tableLayoutPnl.BackColor = System.Drawing.Color.Transparent;
             this.m_tableLayoutPnl.ColumnCount = 3;
             this.m_tableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 32.00883F));
+            this.m_tableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.m_tableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67.99117F));
-            this.m_tableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 44F));
-            this.m_tableLayoutPnl.Controls.Add(this.textBox1, 0, 5);
+            this.m_tableLayoutPnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.m_tableLayoutPnl.Controls.Add(this.label4, 0, 5);
-            this.m_tableLayoutPnl.Controls.Add(this.m_CMDIDTxb, 1, 0);
+            this.m_tableLayoutPnl.Controls.Add(this.m_CMDIDTxb, 2, 0);
             this.m_tableLayoutPnl.Controls.Add(this.label2, 0, 0);
-            this.m_tableLayoutPnl.Controls.Add(this.m_sourceTxb, 1, 2);
+            this.m_tableLayoutPnl.Controls.Add(this.m_sourceTxb, 2, 2);
             this.m_tableLayoutPnl.Controls.Add(this.m_idLbl, 0, 1);
             this.m_tableLayoutPnl.Controls.Add(this.m_pwdLbl, 0, 3);
             this.m_tableLayoutPnl.Controls.Add(this.m_pwdVerifyLbl, 0, 4);
-            this.m_tableLayoutPnl.Controls.Add(this.m_CSTIDTxb, 1, 1);
+            this.m_tableLayoutPnl.Controls.Add(this.m_CSTIDTxb, 2, 1);
             this.m_tableLayoutPnl.Controls.Add(this.m_oldpwdLbl, 0, 2);
-            this.m_tableLayoutPnl.Controls.Add(this.radioBtn_Source, 2, 2);
-            this.m_tableLayoutPnl.Controls.Add(this.radioBtn_dest, 2, 4);
-            this.m_tableLayoutPnl.Controls.Add(this.radioBtn_InVehicle, 2, 3);
-            this.m_tableLayoutPnl.Controls.Add(this.tableLayoutPanel1, 1, 3);
-            this.m_tableLayoutPnl.Controls.Add(this.m_destTxb, 1, 4);
-            this.m_tableLayoutPnl.Controls.Add(this.radioBtn_manual, 2, 5);
+            this.m_tableLayoutPnl.Controls.Add(this.tableLayoutPanel1, 2, 3);
+            this.m_tableLayoutPnl.Controls.Add(this.m_destTxb, 2, 4);
+            this.m_tableLayoutPnl.Controls.Add(this.radioBtn_Source, 1, 2);
+            this.m_tableLayoutPnl.Controls.Add(this.radioBtn_InVehicle, 1, 3);
+            this.m_tableLayoutPnl.Controls.Add(this.radioBtn_dest, 1, 4);
+            this.m_tableLayoutPnl.Controls.Add(this.radioBtn_manual, 1, 5);
             this.m_tableLayoutPnl.Font = new System.Drawing.Font("Arial", 11.25F);
             this.m_tableLayoutPnl.Location = new System.Drawing.Point(19, 59);
             this.m_tableLayoutPnl.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
@@ -94,11 +93,24 @@
             this.m_tableLayoutPnl.Size = new System.Drawing.Size(605, 270);
             this.m_tableLayoutPnl.TabIndex = 1;
             // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Arial", 15.75F);
+            this.label4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label4.Location = new System.Drawing.Point(6, 233);
+            this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(166, 24);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "Manual Take Out";
+            // 
             // m_CMDIDTxb
             // 
             this.m_CMDIDTxb.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.m_CMDIDTxb.Font = new System.Drawing.Font("Arial", 15.75F);
-            this.m_CMDIDTxb.Location = new System.Drawing.Point(185, 7);
+            this.m_CMDIDTxb.Location = new System.Drawing.Point(230, 7);
             this.m_CMDIDTxb.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.m_CMDIDTxb.Name = "m_CMDIDTxb";
             this.m_CMDIDTxb.ReadOnly = true;
@@ -123,7 +135,7 @@
             // 
             this.m_sourceTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.m_sourceTxb.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.m_sourceTxb.Location = new System.Drawing.Point(182, 96);
+            this.m_sourceTxb.Location = new System.Drawing.Point(227, 94);
             this.m_sourceTxb.Name = "m_sourceTxb";
             this.m_sourceTxb.ReadOnly = true;
             this.m_sourceTxb.Size = new System.Drawing.Size(375, 32);
@@ -135,7 +147,7 @@
             this.m_idLbl.AutoSize = true;
             this.m_idLbl.Font = new System.Drawing.Font("Arial", 15.75F);
             this.m_idLbl.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_idLbl.Location = new System.Drawing.Point(6, 55);
+            this.m_idLbl.Location = new System.Drawing.Point(6, 54);
             this.m_idLbl.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.m_idLbl.Name = "m_idLbl";
             this.m_idLbl.Size = new System.Drawing.Size(102, 24);
@@ -149,7 +161,7 @@
             this.m_pwdLbl.AutoSize = true;
             this.m_pwdLbl.Font = new System.Drawing.Font("Arial", 15.75F);
             this.m_pwdLbl.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_pwdLbl.Location = new System.Drawing.Point(6, 145);
+            this.m_pwdLbl.Location = new System.Drawing.Point(6, 142);
             this.m_pwdLbl.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.m_pwdLbl.Name = "m_pwdLbl";
             this.m_pwdLbl.Size = new System.Drawing.Size(100, 24);
@@ -163,7 +175,7 @@
             this.m_pwdVerifyLbl.AutoSize = true;
             this.m_pwdVerifyLbl.Font = new System.Drawing.Font("Arial", 15.75F);
             this.m_pwdVerifyLbl.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_pwdVerifyLbl.Location = new System.Drawing.Point(6, 190);
+            this.m_pwdVerifyLbl.Location = new System.Drawing.Point(6, 186);
             this.m_pwdVerifyLbl.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.m_pwdVerifyLbl.Name = "m_pwdVerifyLbl";
             this.m_pwdVerifyLbl.Size = new System.Drawing.Size(116, 24);
@@ -174,7 +186,7 @@
             // 
             this.m_CSTIDTxb.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.m_CSTIDTxb.Font = new System.Drawing.Font("Arial", 15.75F);
-            this.m_CSTIDTxb.Location = new System.Drawing.Point(185, 52);
+            this.m_CSTIDTxb.Location = new System.Drawing.Point(230, 51);
             this.m_CSTIDTxb.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.m_CSTIDTxb.Name = "m_CSTIDTxb";
             this.m_CSTIDTxb.ReadOnly = true;
@@ -187,49 +199,13 @@
             this.m_oldpwdLbl.AutoSize = true;
             this.m_oldpwdLbl.Font = new System.Drawing.Font("Arial", 15.75F);
             this.m_oldpwdLbl.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_oldpwdLbl.Location = new System.Drawing.Point(6, 100);
+            this.m_oldpwdLbl.Location = new System.Drawing.Point(6, 98);
             this.m_oldpwdLbl.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.m_oldpwdLbl.Name = "m_oldpwdLbl";
             this.m_oldpwdLbl.Size = new System.Drawing.Size(77, 24);
             this.m_oldpwdLbl.TabIndex = 1;
             this.m_oldpwdLbl.Text = "Source";
             this.m_oldpwdLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // radioBtn_Source
-            // 
-            this.radioBtn_Source.AutoSize = true;
-            this.radioBtn_Source.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radioBtn_Source.Location = new System.Drawing.Point(563, 93);
-            this.radioBtn_Source.Name = "radioBtn_Source";
-            this.radioBtn_Source.Size = new System.Drawing.Size(39, 39);
-            this.radioBtn_Source.TabIndex = 7;
-            this.radioBtn_Source.TabStop = true;
-            this.radioBtn_Source.UseVisualStyleBackColor = true;
-            this.radioBtn_Source.Click += new System.EventHandler(this.radioBtn_Click);
-            // 
-            // radioBtn_dest
-            // 
-            this.radioBtn_dest.AutoSize = true;
-            this.radioBtn_dest.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radioBtn_dest.Location = new System.Drawing.Point(563, 183);
-            this.radioBtn_dest.Name = "radioBtn_dest";
-            this.radioBtn_dest.Size = new System.Drawing.Size(39, 39);
-            this.radioBtn_dest.TabIndex = 8;
-            this.radioBtn_dest.TabStop = true;
-            this.radioBtn_dest.UseVisualStyleBackColor = true;
-            this.radioBtn_dest.Click += new System.EventHandler(this.radioBtn_Click);
-            // 
-            // radioBtn_InVehicle
-            // 
-            this.radioBtn_InVehicle.AutoSize = true;
-            this.radioBtn_InVehicle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radioBtn_InVehicle.Location = new System.Drawing.Point(563, 138);
-            this.radioBtn_InVehicle.Name = "radioBtn_InVehicle";
-            this.radioBtn_InVehicle.Size = new System.Drawing.Size(39, 39);
-            this.radioBtn_InVehicle.TabIndex = 8;
-            this.radioBtn_InVehicle.TabStop = true;
-            this.radioBtn_InVehicle.UseVisualStyleBackColor = true;
-            this.radioBtn_InVehicle.Click += new System.EventHandler(this.radioBtn_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -239,11 +215,11 @@
             this.tableLayoutPanel1.Controls.Add(this.cmb_vhLocations, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.cmb_vhIDs, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(182, 138);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(227, 135);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(375, 39);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(375, 38);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
             // cmb_vhLocations
@@ -271,11 +247,58 @@
             // 
             this.m_destTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.m_destTxb.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.m_destTxb.Location = new System.Drawing.Point(182, 186);
+            this.m_destTxb.Location = new System.Drawing.Point(227, 182);
             this.m_destTxb.Name = "m_destTxb";
             this.m_destTxb.ReadOnly = true;
             this.m_destTxb.Size = new System.Drawing.Size(375, 32);
             this.m_destTxb.TabIndex = 11;
+            // 
+            // radioBtn_Source
+            // 
+            this.radioBtn_Source.AutoSize = true;
+            this.radioBtn_Source.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radioBtn_Source.Location = new System.Drawing.Point(182, 91);
+            this.radioBtn_Source.Name = "radioBtn_Source";
+            this.radioBtn_Source.Size = new System.Drawing.Size(39, 38);
+            this.radioBtn_Source.TabIndex = 7;
+            this.radioBtn_Source.TabStop = true;
+            this.radioBtn_Source.UseVisualStyleBackColor = true;
+            this.radioBtn_Source.Click += new System.EventHandler(this.radioBtn_Click);
+            // 
+            // radioBtn_InVehicle
+            // 
+            this.radioBtn_InVehicle.AutoSize = true;
+            this.radioBtn_InVehicle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radioBtn_InVehicle.Location = new System.Drawing.Point(182, 135);
+            this.radioBtn_InVehicle.Name = "radioBtn_InVehicle";
+            this.radioBtn_InVehicle.Size = new System.Drawing.Size(39, 38);
+            this.radioBtn_InVehicle.TabIndex = 8;
+            this.radioBtn_InVehicle.TabStop = true;
+            this.radioBtn_InVehicle.UseVisualStyleBackColor = true;
+            this.radioBtn_InVehicle.Click += new System.EventHandler(this.radioBtn_Click);
+            // 
+            // radioBtn_dest
+            // 
+            this.radioBtn_dest.AutoSize = true;
+            this.radioBtn_dest.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radioBtn_dest.Location = new System.Drawing.Point(182, 179);
+            this.radioBtn_dest.Name = "radioBtn_dest";
+            this.radioBtn_dest.Size = new System.Drawing.Size(39, 38);
+            this.radioBtn_dest.TabIndex = 8;
+            this.radioBtn_dest.TabStop = true;
+            this.radioBtn_dest.UseVisualStyleBackColor = true;
+            this.radioBtn_dest.Click += new System.EventHandler(this.radioBtn_Click);
+            // 
+            // radioBtn_manual
+            // 
+            this.radioBtn_manual.AutoSize = true;
+            this.radioBtn_manual.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radioBtn_manual.Location = new System.Drawing.Point(182, 223);
+            this.radioBtn_manual.Name = "radioBtn_manual";
+            this.radioBtn_manual.Size = new System.Drawing.Size(39, 44);
+            this.radioBtn_manual.TabIndex = 14;
+            this.radioBtn_manual.TabStop = true;
+            this.radioBtn_manual.UseVisualStyleBackColor = true;
             // 
             // m_confirmBtn
             // 
@@ -367,40 +390,6 @@
             this.label3.TabIndex = 13;
             this.label3.Text = "Force finish status";
             // 
-            // label4
-            // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Arial", 15.75F);
-            this.label4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label4.Location = new System.Drawing.Point(6, 235);
-            this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(166, 24);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "Manual Take Out";
-            // 
-            // radioBtn_manual
-            // 
-            this.radioBtn_manual.AutoSize = true;
-            this.radioBtn_manual.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radioBtn_manual.Location = new System.Drawing.Point(563, 228);
-            this.radioBtn_manual.Name = "radioBtn_manual";
-            this.radioBtn_manual.Size = new System.Drawing.Size(39, 39);
-            this.radioBtn_manual.TabIndex = 14;
-            this.radioBtn_manual.TabStop = true;
-            this.radioBtn_manual.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(182, 231);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(375, 32);
-            this.textBox1.TabIndex = 15;
-            // 
             // CarrierLocationChooseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 21F);
@@ -450,6 +439,5 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.RadioButton radioBtn_manual;
-        private System.Windows.Forms.TextBox textBox1;
     }
 }

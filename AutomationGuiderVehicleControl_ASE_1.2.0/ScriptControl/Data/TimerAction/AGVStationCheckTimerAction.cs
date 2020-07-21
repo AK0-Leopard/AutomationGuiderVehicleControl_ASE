@@ -248,9 +248,11 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                             }
                             else
                             {
+                                bool has_source_on_vh = hasSourceIsVh(queue_target_port_tran);
                                 var cehck_has_vh_go_tran_reault = scApp.TransferService.FindNearestVhAndCommand(queue_target_port_tran);
                                 //如果有命令還在Queue的話，則嘗試找看看能不能有車子來服務，有的話就可以去詢問看看
-                                if (cehck_has_vh_go_tran_reault.isFind)
+                                //if (cehck_has_vh_go_tran_reault.isFind)
+                                if (cehck_has_vh_go_tran_reault.isFind || has_source_on_vh)
                                 {
                                     //int current_excute_task = 0;
                                     current_excute_task += unfinish_target_port_command.Count();
@@ -299,6 +301,14 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 }
             }
         }
+
+        private bool hasSourceIsVh(List<VTRANSFER> transfers)
+        {
+            if (transfers == null || transfers.Count == 0) return false;
+            int count = transfers.Where(tran => tran.IsSourceOnVh(scApp.VehicleBLL)).Count();
+            return count != 0;
+        }
+
 
         private void checkIsNeedPreMoveToAGVStation(AGVStation agv_station, AVEHICLE serviceVh, bool is_reserve_success, int current_excute_task)
         {

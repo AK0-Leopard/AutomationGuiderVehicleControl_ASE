@@ -521,6 +521,20 @@ namespace com.mirle.ibg3k0.sc.Service
                                 List<VTRANSFER> tran_queue_in_group = transfer_group.
                                                               Where(tran => tran.TRANSFERSTATE == E_TRAN_STATUS.Queue).
                                                               ToList();
+
+
+                                var try_find_carrier_on_vh_result = tryFindAssignOnVhCarrier(tran_queue_in_group);
+                                if (try_find_carrier_on_vh_result.hasFind)
+                                {
+                                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                       Data: $"find has carrier of vh:{try_find_carrier_on_vh_result.hasCarrierOfVh.VEHICLE_ID}, start assign command to vh");
+
+                                    bool is_success = AssignTransferToVehicle_V2(try_find_carrier_on_vh_result.tran,
+                                                                                 try_find_carrier_on_vh_result.hasCarrierOfVh);
+                                    if (is_success)
+                                        return;
+                                }
+
                                 //如果該Group已經有準備被執行/執行中的命令時，則代表該AGV Station已經有到vh去服務了，
                                 //而等待被執行/執行中只有一筆且那一筆已經是Initial的時候(代表已經成功下給車子)
                                 //就可以再以這一筆當出發點找出它鄰近的一筆再下給車子
@@ -671,6 +685,32 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
+        private (bool hasFind, AVEHICLE hasCarrierOfVh, VTRANSFER tran) tryFindAssignOnVhCarrier(List<VTRANSFER> tran_queue_in_group)
+        {
+            foreach (var tran in tran_queue_in_group)
+            {
+                string hostsource = tran.HOSTSOURCE;
+                string from_adr = string.Empty;
+                bool source_is_a_port = scApp.PortStationBLL.OperateCatch.IsExist(hostsource);
+                //if (!source_is_a_port) continue;
+                if (!source_is_a_port)
+                {
+                    var bestSuitableVh = scApp.VehicleBLL.cache.getVehicleByLocationRealID(hostsource);
+                    if (bestSuitableVh == null ||
+                        bestSuitableVh.IsError ||
+                        bestSuitableVh.MODE_STATUS != VHModeStatus.AutoRemote)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"Has transfer command:{SCUtility.Trim(tran.ID, true)} for vh:{hostsource}" +
+                                 $"but it error happend or not auto remove or not this object.");
+                        continue;
+                    }
+                    return (true, bestSuitableVh, tran);
+                }
+            }
+            return (false, null, null);
+        }
+
         private (bool isFind, IEnumerable<IGrouping<AGVStation, VTRANSFER>> tranGroupsByAGVStation)
             checkAndFindReserveSuccessUnloadToAGVStationTransfer(List<VTRANSFER> unfinish_transfer)
         {
@@ -715,21 +755,21 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         string hostsource = tran.HOSTSOURCE;
                         string from_adr = string.Empty;
-                        bool source_is_a_port = scApp.PortStationBLL.OperateCatch.IsExist(hostsource);
-                        //if (!source_is_a_port) continue;
-                        if (!source_is_a_port)
-                        {
-                            var bestSuitableVh = scApp.VehicleBLL.cache.getVehicleByLocationRealID(hostsource);
-                            if (bestSuitableVh.IsError)
-                            {
-                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                                   Data: $"Has transfer command:{SCUtility.Trim(tran.ID, true)} for vh:{bestSuitableVh.VEHICLE_ID}" +
-                                         $"but it error happend.",
-                                   VehicleID: bestSuitableVh.VEHICLE_ID);
-                                continue;
-                            }
-                            return (true, bestSuitableVh, tran);
-                        }
+                        //bool source_is_a_port = scApp.PortStationBLL.OperateCatch.IsExist(hostsource);
+                        ////if (!source_is_a_port) continue;
+                        //if (!source_is_a_port)
+                        //{
+                        //    var bestSuitableVh = scApp.VehicleBLL.cache.getVehicleByLocationRealID(hostsource);
+                        //    if (bestSuitableVh.IsError)
+                        //    {
+                        //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                        //           Data: $"Has transfer command:{SCUtility.Trim(tran.ID, true)} for vh:{bestSuitableVh.VEHICLE_ID}" +
+                        //                 $"but it error happend.",
+                        //           VehicleID: bestSuitableVh.VEHICLE_ID);
+                        //        continue;
+                        //    }
+                        //    return (true, bestSuitableVh, tran);
+                        //}
 
 
                         scApp.MapBLL.getAddressID(hostsource, out from_adr);
@@ -1493,7 +1533,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 var check_has_carrier_on_location_result = carrierBLL.db.hasCarrierOnVhLocation(vhLocation);
                 if (check_has_carrier_on_location_result.has)
                 {
-                    if(SCUtility.isMatche(check_has_carrier_on_location_result.onVhCarrier.ID,carrierID))
+                    if (SCUtility.isMatche(check_has_carrier_on_location_result.onVhCarrier.ID, carrierID))
                     {
                         return (false, $"Location:{vhLocation} is already carrier:{check_has_carrier_on_location_result.onVhCarrier.ID} exist.");
                     }

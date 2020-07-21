@@ -92,6 +92,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 bool isTransferCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 try
                 {
+                    reportBLL.newReportTransferInitial(cmd.TRANSFER_ID, null);
                     List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
                     using (var tx = SCUtility.getTransactionScope())
                     {
@@ -1389,7 +1390,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 lock (reserve_lock)
                 {
-                    var ReserveResult = scApp.ReserveBLL.IsReserveSuccessNew(vh.VEHICLE_ID, reserveInfos);
+                    //var ReserveResult = scApp.ReserveBLL.IsReserveSuccessNew(vh.VEHICLE_ID, reserveInfos);
+                    var ReserveResult = scApp.ReserveBLL.IsMultiReserveSuccess(vh.VEHICLE_ID, reserveInfos);
                     if (ReserveResult.isSuccess)
                     {
                         scApp.VehicleBLL.cache.ResetCanNotReserveInfo(vh.VEHICLE_ID);//TODO Mark check
@@ -1402,8 +1404,8 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                     else
                     {
-                        string reserve_fail_section = reserveInfos[0].ReserveSectionID;
-                        DriveDirction driveDirction = reserveInfos[0].DriveDirction;
+                        //string reserve_fail_section = reserveInfos[0].ReserveSectionID;
+                        string reserve_fail_section = ReserveResult.reservedFailSection;
                         ASECTION reserve_fail_sec_obj = scApp.SectionBLL.cache.GetSection(reserve_fail_section);
                         scApp.VehicleBLL.cache.SetUnsuccessReserveInfo(vh.VEHICLE_ID, new AVEHICLE.ReserveUnsuccessInfo(ReserveResult.reservedVhID, "", reserve_fail_section));
                         Task.Run(() => service.Avoid.tryNotifyVhAvoid(vh.VEHICLE_ID, ReserveResult.reservedVhID));
@@ -2118,7 +2120,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             AVEHICLE assignVH = scApp.VehicleBLL.cache.getVehicle(vehicle_id);
                             if (!assignVH.isTcpIpConnect ||
                                 !scApp.CMDBLL.canSendCmd(assignVH)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
-                                //!scApp.CMDBLL.canSendCmd(vehicle_id)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
+                                                                    //!scApp.CMDBLL.canSendCmd(vehicle_id)) //todo kevin 需要確認是否要再判斷是否有命令的執行?
                             {
                                 continue;
                             }

@@ -115,7 +115,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public void DeleteMaserHeartbeat()
         {
-            redisCacheManager.KeyDelete(REDIS_KEY_WORD_MASTER_Name);
+            redisCacheManager?.KeyDelete(REDIS_KEY_WORD_MASTER_Name);
         }
     }
 }

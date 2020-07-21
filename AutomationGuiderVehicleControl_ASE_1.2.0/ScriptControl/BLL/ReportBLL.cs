@@ -361,7 +361,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             bool isSuccsess = true;
             isSuccsess = isSuccsess && iBSEMDriver.S6F11SendVehicleAssigned(cmdID, reportqueues);
-            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendTransferInitial(cmdID, reportqueues);
+            //isSuccsess = isSuccsess && iBSEMDriver.S6F11SendTransferInitial(cmdID, reportqueues);
             return isSuccsess;
         }
         public bool newReportLoadArrivals(string cmdID, List<AMCSREPORTQUEUE> reportqueues)

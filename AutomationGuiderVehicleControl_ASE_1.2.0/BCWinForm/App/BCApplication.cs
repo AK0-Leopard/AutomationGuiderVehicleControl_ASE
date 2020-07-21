@@ -350,6 +350,18 @@ namespace com.mirle.ibg3k0.bc.winform.App
                 refresh_UIDisplay_FunDic.Add(refreshFun.Method.Name, refreshFun);
             }
         }
+        public void addRefreshUIDisplayFun(string formName, Action<object> refreshFun)
+        {
+            //statusUserIDLabelDic
+            if (refresh_UIDisplay_FunDic.ContainsKey(formName))
+            {
+                refresh_UIDisplay_FunDic[formName] = refreshFun;
+            }
+            else
+            {
+                refresh_UIDisplay_FunDic.Add(formName, refreshFun);
+            }
+        }
         //public void addRe
         #endregion
 

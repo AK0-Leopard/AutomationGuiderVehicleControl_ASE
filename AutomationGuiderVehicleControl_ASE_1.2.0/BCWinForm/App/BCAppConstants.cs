@@ -20,31 +20,17 @@ namespace com.mirle.ibg3k0.bc.winform.App
 {
     /// <summary>
     /// Class BCAppConstants.
-    /// </summary>
+    /// </summary>Engineer Function
     public class BCAppConstants
     {
         /****************************** UAS *******************************/
         public const string FUNC_LOGIN = "FUNC_LOGIN";                        //Login
         public const string FUNC_USER_MANAGEMENT = "FUNC_USER_MANAGEMENT";    //User Management
-        //A0.01 public const string FUNC_PPID_EDIT = "FUNC_PPID_EDIT";                //PPID/Recipe Edit
-        //A0.01 public const string FUNC_ECID_EDIT = "FUNC_ECID_EDIT";                //ECID Edit
-        //A0.01 public const string FUNC_ROBOT_CMD_RESET = "FUNC_ROBOT_CMD_RESET";    //Robot Command Reset Button
-        //A0.01 public const string FUNC_DEBUG_FORM = "FUNC_DEBUG_FORM";              //Debug Form
-        //A0.01 public const string FUNC_GLASS_SORT_FORM = "FUNC_GLASS_SORT_FORM";    //Glass Sort Form
-        public const string FUNC_EXCUTE_SEMI_AUTO_PROC = "FUNC_EXCUTE_SEMI_AUTO_PROC";    //Excute Semi-Auto Process Button
-        public const string FUNC_CONNECTION_MANAGEMENT = "FUNC_CONNECTION_MANAGEMENT";    //Start / Stop Connection
-        public const string FUNC_CLOSE_MASTER_PC = "FUNC_CLOSE_MASTER_PC";    //Close Master PC
-        //A0.01 public const string FUNC_EAP_CONTROL_MODE = "FUNC_EAP_CONTROL_MODE";  //EAP CONTROL MODE 
-        public const string FUNC_HOST_MODE_CHG = "FUNC_HOST_MODE_CHG";    //Host Mode Change  //A0.01
-        public const string FUNC_COMMAND_MAIN = "FUNC_COMMAND_MAIN";    //Command Maintenance  //A0.01
-        public const string FUNC_CST_REMOVE = "FUNC_CST_REMOVE";    //Cassette Remove  //A0.01
-        public const string FUNC_ALARM_MAIN = "FUNC_ALARM_MAIN";    //Alarm Maintenance  //A0.01
-        public const string FUNC_CST_SIZE_MAIN = "FUNC_CST_SIZE_MAIN";    //Cassette Size Maintenance  //A0.01
-        public const string FUNC_GLASS_DATA_MAIN = "FUNC_GLASS_DATA_MAIN";    //Glass Data Maintenance  //A0.01
-        public const string FUNC_EQPTPARAMETER = "FUNC_EQPTPARAMETER";    //EqptParameterForm  //A0.02
-        public const string FUNC_AUTOLOGOUTTIME = "FUNC_AUTOLOGOUTTIME";    //AutoLogoutTimeForm  //A0.03
-        public const string FUNC_BUTTONCONTROL = "FUNC_BUTTONCONTROL";    //Button Control  //A0.04
-        public const string FUNC_BUTTONCONTROL_CIMON = "FUNC_BUTTONCONTROL_CIMON";                        //Button Control (CIM On)
+        public const string FUNC_MAINTENANCE_FUN = "FUNC_MAINTENANCE_FUN";    //Host Mode Change  //A0.01
+        public const string FUNC_ENGINEER_FUN = "FUNC_ENGINEER_FUN";    //AutoLogoutTimeForm  //A0.03
+        public const string FUNC_OPERATION_FUN = "FUNC_OPERATION_FUN";    //AutoLogoutTimeForm  //A0.03
+        public const string FUNC_HIGHT_LEVEL_ACTION = "FUNC_HIGHT_LEVEL_ACTION";    //AutoLogoutTimeForm  //A0.03
+        public const string FUNC_CLOSE_MASTER_PC = "FUNC_CLOSE_MASTER_PC";    //AutoLogoutTimeForm  //A0.03
 
         /******************************************************************/
         public const string LOGIN_USER_DEFAULT = "";

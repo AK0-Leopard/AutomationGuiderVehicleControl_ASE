@@ -1684,7 +1684,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         public void shutDown()
         {
-            tcpIpServer.Shutdown();
+            tcpIpServer?.Shutdown();
         }
         public void listen()
         {

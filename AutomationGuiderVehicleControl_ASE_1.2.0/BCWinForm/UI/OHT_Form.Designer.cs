@@ -1,4 +1,6 @@
-﻿namespace com.mirle.ibg3k0.bc.winform.UI
+﻿using com.mirle.ibg3k0.bc.winform.App;
+
+namespace com.mirle.ibg3k0.bc.winform.UI
 {
     partial class OHT_Form
     {
@@ -33,6 +35,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnl_Map = new System.Windows.Forms.Panel();
+            this.uctl_Map = new com.mirle.ibg3k0.bc.winform.UI.Components.uctl_Map();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lbl_SCState = new System.Windows.Forms.Label();
             this.lbl_detectionSystemExist = new System.Windows.Forms.Label();
@@ -50,6 +53,8 @@
             this.ck_montor_vh = new System.Windows.Forms.CheckBox();
             this.cb_autoTip = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbm_Action_admin = new System.Windows.Forms.ComboBox();
+            this.cbm_Action_op = new System.Windows.Forms.ComboBox();
             this.cb_autoOverride = new System.Windows.Forms.CheckBox();
             this.txt_cst_id = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -63,7 +68,6 @@
             this.btn_start = new System.Windows.Forms.Button();
             this.cmb_fromAddress = new System.Windows.Forms.ComboBox();
             this.cmb_toAddress = new System.Windows.Forms.ComboBox();
-            this.cbm_Action = new System.Windows.Forms.ComboBox();
             this.cmb_Vehicle = new System.Windows.Forms.ComboBox();
             this.cmb_fromSection = new System.Windows.Forms.ComboBox();
             this.lbl_sourceName = new System.Windows.Forms.Label();
@@ -91,8 +95,6 @@
             this.BATTERYCAPACITY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.uPDTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.vehicleObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.tapTrace = new System.Windows.Forms.TabPage();
-            this.listTrace = new System.Windows.Forms.ListBox();
             this.tapTransferCmd = new System.Windows.Forms.TabPage();
             this.dgv_TransferCommand = new System.Windows.Forms.DataGridView();
             this.cMDIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -127,14 +129,9 @@
             this.alarm_lvl = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.report_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.alarm_desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabPLC = new System.Windows.Forms.TabPage();
-            this.tab_SECS = new System.Windows.Forms.TabPage();
             this.timer_TimedUpdates = new System.Windows.Forms.Timer(this.components);
             this.vehicleObjToShowBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.aCMDMCSBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.uctl_Map = new com.mirle.ibg3k0.bc.winform.UI.Components.uctl_Map();
-            this.utilityLog1 = new com.mirle.ibg3k0.bc.winform.UI.Components.UtilityLog();
-            this.utilityLog_SECS = new com.mirle.ibg3k0.bc.winform.UI.Components.UtilityLog();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -148,7 +145,6 @@
             this.tab_vhStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vhStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource)).BeginInit();
-            this.tapTrace.SuspendLayout();
             this.tapTransferCmd.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).BeginInit();
@@ -158,8 +154,6 @@
             this.tapCurrentAlarm.SuspendLayout();
             this.tlp_crtAlarm.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Alarm)).BeginInit();
-            this.tabPLC.SuspendLayout();
-            this.tab_SECS.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aCMDMCSBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -210,6 +204,19 @@
             this.pnl_Map.Name = "pnl_Map";
             this.pnl_Map.Size = new System.Drawing.Size(1626, 855);
             this.pnl_Map.TabIndex = 0;
+            // 
+            // uctl_Map
+            // 
+            this.uctl_Map.AutoScroll = true;
+            this.uctl_Map.BackColor = System.Drawing.Color.MidnightBlue;
+            this.uctl_Map.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uctl_Map.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uctl_Map.Location = new System.Drawing.Point(0, 0);
+            this.uctl_Map.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uctl_Map.Name = "uctl_Map";
+            this.uctl_Map.Size = new System.Drawing.Size(1626, 855);
+            this.uctl_Map.TabIndex = 0;
+            this.uctl_Map.Load += new System.EventHandler(this.uctl_Map_Load);
             // 
             // panel1
             // 
@@ -399,6 +406,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbm_Action_admin);
+            this.groupBox1.Controls.Add(this.cbm_Action_op);
             this.groupBox1.Controls.Add(this.cb_autoOverride);
             this.groupBox1.Controls.Add(this.txt_cst_id);
             this.groupBox1.Controls.Add(this.label8);
@@ -410,7 +419,6 @@
             this.groupBox1.Controls.Add(this.btn_start);
             this.groupBox1.Controls.Add(this.cmb_fromAddress);
             this.groupBox1.Controls.Add(this.cmb_toAddress);
-            this.groupBox1.Controls.Add(this.cbm_Action);
             this.groupBox1.Controls.Add(this.cmb_Vehicle);
             this.groupBox1.Controls.Add(this.cmb_fromSection);
             this.groupBox1.Controls.Add(this.lbl_sourceName);
@@ -426,6 +434,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Specify Path";
             // 
+            // cbm_Action_admin
+            // 
+            this.cbm_Action_admin.FormattingEnabled = true;
+            this.cbm_Action_admin.Location = new System.Drawing.Point(11, 110);
+            this.cbm_Action_admin.Name = "cbm_Action_admin";
+            this.cbm_Action_admin.Size = new System.Drawing.Size(162, 27);
+            this.cbm_Action_admin.TabIndex = 1;
+            this.cbm_Action_admin.SelectedIndexChanged += new System.EventHandler(this.cbm_Action_SelectedIndexChanged);
+            // 
+            // cbm_Action_op
+            // 
+            this.cbm_Action_op.FormattingEnabled = true;
+            this.cbm_Action_op.Location = new System.Drawing.Point(10, 110);
+            this.cbm_Action_op.Name = "cbm_Action_op";
+            this.cbm_Action_op.Size = new System.Drawing.Size(162, 27);
+            this.cbm_Action_op.TabIndex = 13;
+            // 
             // cb_autoOverride
             // 
             this.cb_autoOverride.AutoSize = true;
@@ -437,6 +462,7 @@
             this.cb_autoOverride.TabIndex = 12;
             this.cb_autoOverride.Text = "Auto override";
             this.cb_autoOverride.UseVisualStyleBackColor = true;
+            this.cb_autoOverride.Visible = false;
             this.cb_autoOverride.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged_1);
             this.cb_autoOverride.Click += new System.EventHandler(this.cb_autoOverride_Click);
             // 
@@ -533,6 +559,7 @@
             this.btn_Avoid.TabIndex = 2;
             this.btn_Avoid.Text = "Avoid";
             this.btn_Avoid.UseVisualStyleBackColor = true;
+            this.btn_Avoid.Visible = false;
             this.btn_Avoid.Click += new System.EventHandler(this.btn_Avoid_Click);
             // 
             // btn_start
@@ -563,15 +590,6 @@
             this.cmb_toAddress.Size = new System.Drawing.Size(198, 27);
             this.cmb_toAddress.TabIndex = 1;
             // 
-            // cbm_Action
-            // 
-            this.cbm_Action.FormattingEnabled = true;
-            this.cbm_Action.Location = new System.Drawing.Point(11, 110);
-            this.cbm_Action.Name = "cbm_Action";
-            this.cbm_Action.Size = new System.Drawing.Size(162, 27);
-            this.cbm_Action.TabIndex = 1;
-            this.cbm_Action.SelectedIndexChanged += new System.EventHandler(this.cbm_Action_SelectedIndexChanged);
-            // 
             // cmb_Vehicle
             // 
             this.cmb_Vehicle.FormattingEnabled = true;
@@ -587,6 +605,7 @@
             this.cmb_fromSection.Name = "cmb_fromSection";
             this.cmb_fromSection.Size = new System.Drawing.Size(162, 27);
             this.cmb_fromSection.TabIndex = 1;
+            this.cmb_fromSection.Visible = false;
             this.cmb_fromSection.SelectedIndexChanged += new System.EventHandler(this.cmb_fromSection_SelectedIndexChanged);
             // 
             // lbl_sourceName
@@ -638,12 +657,9 @@
             // tbcList
             // 
             this.tbcList.Controls.Add(this.tab_vhStatus);
-            this.tbcList.Controls.Add(this.tapTrace);
             this.tbcList.Controls.Add(this.tapTransferCmd);
             this.tbcList.Controls.Add(this.tapDetail);
             this.tbcList.Controls.Add(this.tapCurrentAlarm);
-            this.tbcList.Controls.Add(this.tabPLC);
-            this.tbcList.Controls.Add(this.tab_SECS);
             this.tbcList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbcList.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
             this.tbcList.ItemSize = new System.Drawing.Size(160, 23);
@@ -844,29 +860,6 @@
             // vehicleObjToShowBindingSource
             // 
             this.vehicleObjToShowBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.VehicleObjToShow);
-            // 
-            // tapTrace
-            // 
-            this.tapTrace.Controls.Add(this.listTrace);
-            this.tapTrace.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold);
-            this.tapTrace.Location = new System.Drawing.Point(4, 27);
-            this.tapTrace.Name = "tapTrace";
-            this.tapTrace.Size = new System.Drawing.Size(1908, 156);
-            this.tapTrace.TabIndex = 3;
-            this.tapTrace.Text = "System Log            ";
-            this.tapTrace.UseVisualStyleBackColor = true;
-            // 
-            // listTrace
-            // 
-            this.listTrace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listTrace.Font = new System.Drawing.Font("Arial", 12F);
-            this.listTrace.FormattingEnabled = true;
-            this.listTrace.HorizontalScrollbar = true;
-            this.listTrace.ItemHeight = 18;
-            this.listTrace.Location = new System.Drawing.Point(0, 0);
-            this.listTrace.Name = "listTrace";
-            this.listTrace.Size = new System.Drawing.Size(1908, 156);
-            this.listTrace.TabIndex = 0;
             // 
             // tapTransferCmd
             // 
@@ -1189,28 +1182,6 @@
             this.alarm_desc.Name = "alarm_desc";
             this.alarm_desc.ReadOnly = true;
             // 
-            // tabPLC
-            // 
-            this.tabPLC.Controls.Add(this.utilityLog1);
-            this.tabPLC.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold);
-            this.tabPLC.Location = new System.Drawing.Point(4, 27);
-            this.tabPLC.Name = "tabPLC";
-            this.tabPLC.Size = new System.Drawing.Size(1908, 156);
-            this.tabPLC.TabIndex = 4;
-            this.tabPLC.Text = "PLC Communication      ";
-            this.tabPLC.UseVisualStyleBackColor = true;
-            // 
-            // tab_SECS
-            // 
-            this.tab_SECS.Controls.Add(this.utilityLog_SECS);
-            this.tab_SECS.Location = new System.Drawing.Point(4, 27);
-            this.tab_SECS.Name = "tab_SECS";
-            this.tab_SECS.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_SECS.Size = new System.Drawing.Size(1908, 156);
-            this.tab_SECS.TabIndex = 6;
-            this.tab_SECS.Text = "SECS Communcation    ";
-            this.tab_SECS.UseVisualStyleBackColor = true;
-            // 
             // timer_TimedUpdates
             // 
             this.timer_TimedUpdates.Interval = 3000;
@@ -1224,40 +1195,6 @@
             // aCMDMCSBindingSource
             // 
             this.aCMDMCSBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ATRANSFER);
-            // 
-            // uctl_Map
-            // 
-            this.uctl_Map.AutoScroll = true;
-            this.uctl_Map.BackColor = System.Drawing.Color.MidnightBlue;
-            this.uctl_Map.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uctl_Map.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uctl_Map.Location = new System.Drawing.Point(0, 0);
-            this.uctl_Map.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uctl_Map.Name = "uctl_Map";
-            this.uctl_Map.Size = new System.Drawing.Size(1626, 855);
-            this.uctl_Map.TabIndex = 0;
-            this.uctl_Map.Load += new System.EventHandler(this.uctl_Map_Load);
-            // 
-            // utilityLog1
-            // 
-            this.utilityLog1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.utilityLog1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            this.utilityLog1.ForeColor = System.Drawing.Color.Black;
-            this.utilityLog1.Location = new System.Drawing.Point(0, 0);
-            this.utilityLog1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.utilityLog1.Name = "utilityLog1";
-            this.utilityLog1.Size = new System.Drawing.Size(1908, 156);
-            this.utilityLog1.TabIndex = 0;
-            // 
-            // utilityLog_SECS
-            // 
-            this.utilityLog_SECS.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.utilityLog_SECS.Font = new System.Drawing.Font("Consolas", 12F);
-            this.utilityLog_SECS.Location = new System.Drawing.Point(3, 3);
-            this.utilityLog_SECS.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.utilityLog_SECS.Name = "utilityLog_SECS";
-            this.utilityLog_SECS.Size = new System.Drawing.Size(1902, 150);
-            this.utilityLog_SECS.TabIndex = 0;
             // 
             // OHT_Form
             // 
@@ -1290,7 +1227,6 @@
             this.tab_vhStatus.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vhStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource)).EndInit();
-            this.tapTrace.ResumeLayout(false);
             this.tapTransferCmd.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).EndInit();
@@ -1300,8 +1236,6 @@
             this.tapCurrentAlarm.ResumeLayout(false);
             this.tlp_crtAlarm.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Alarm)).EndInit();
-            this.tabPLC.ResumeLayout(false);
-            this.tab_SECS.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aCMDMCSBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -1312,8 +1246,6 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TabControl tbcList;
-        private System.Windows.Forms.TabPage tapTrace;
-        private System.Windows.Forms.ListBox listTrace;
         private System.Windows.Forms.TabPage tapTransferCmd;
         private System.Windows.Forms.DataGridView dgv_TransferCommand;
         private System.Windows.Forms.TabPage tapDetail;
@@ -1321,8 +1253,6 @@
         private System.Windows.Forms.TabPage tapCurrentAlarm;
         private System.Windows.Forms.TableLayoutPanel tlp_crtAlarm;
         private System.Windows.Forms.DataGridView dgv_Alarm;
-        private System.Windows.Forms.TabPage tabPLC;
-        private Components.UtilityLog utilityLog1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel pnl_Map;
         private System.Windows.Forms.Panel panel1;
@@ -1342,9 +1272,8 @@
         private System.Windows.Forms.Button btn_continuous;
         private System.Windows.Forms.Button btn_pause;
         private System.Windows.Forms.CheckBox cb_autoTip;
-        private System.Windows.Forms.TabPage tab_SECS;
-        private Components.UtilityLog utilityLog_SECS;
-        private System.Windows.Forms.ComboBox cbm_Action;
+        [Common.BCUtility.AuthorityCheck(FUNCode = BCAppConstants.FUNC_HIGHT_LEVEL_ACTION)]
+        private System.Windows.Forms.ComboBox cbm_Action_admin;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cmb_cycRunZone;
         private System.Windows.Forms.RadioButton Raid_PortNameType_PortID;
@@ -1421,5 +1350,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDINSERTIMEDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDSTARTTIMEDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn rEPLACEDataGridViewTextBoxColumn;
+        private System.Windows.Forms.ComboBox cbm_Action_op;
     }
 }

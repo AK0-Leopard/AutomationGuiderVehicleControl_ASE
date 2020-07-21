@@ -78,6 +78,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             initialEvent();
 
+
         }
 
         private void initialEvent()
@@ -140,28 +141,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 {
                     lbl_earthqualeHappend.BackColor =
                     line.IsEarthquakeHappend ? Color.Red : Color.Gray;
-                    //if (line.IsEarthquakeHappend)
-                    //{
-                    //    aLARMs[0].ALAM_CODE = "AE001";
-                    //    aLARMs[0].ALAM_DESC = "An earthquake has occurred !!!";
-                    //    aLARMs[0].ALAM_LVL = "Alarm";
-                    //    aLARMs[0].EQPT_ID = "MCP";
-                    //    aLARMs[0].RPT_DATE_TIME = DateTime.Now.ToString(SCAppConstants.DateTimeFormat_19);
-                    //}
-                    //else
-                    //{
-                    //    aLARMs[0].ALAM_CODE = "";
-                    //    aLARMs[0].ALAM_DESC = "";
-                    //    aLARMs[0].ALAM_LVL = "";
-                    //    aLARMs[0].EQPT_ID = "";
-                    //    aLARMs[0].RPT_DATE_TIME = "";
-                    //}
-                    //Adapter.Invoke((obj) =>
-                    //{
-                    //    if (line.IsEarthquakeHappend)
-                    //        tbcList.SelectedIndex = 4;
-                    //    dgv_Alarm.Refresh();
-                    //}, null);
                 }
                 );
             line.addEventHandler(this.Name
@@ -175,6 +154,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             scApp.getNatsManager().Subscriber(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, SetCurrentAlarm);
 
             sc.App.SystemParameter.AutoOverrideChange += SystemParameter_AutoOverrideChange;
+
+            mainform.BCApp.addRefreshUIDisplayFun(this.Name, delegate (object o) { BCUtility.updateUIDisplayByAuthority(mainform.BCApp, this); });        //B0.02
+            BCUtility.updateUIDisplayByAuthority(mainform.BCApp, this);      //B0.02
+
         }
 
 
@@ -291,7 +274,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cmb_Vehicle.AutoCompleteMode = AutoCompleteMode.Suggest;
             cmb_Vehicle.AutoCompleteSource = AutoCompleteSource.ListItems;
 
-            cbm_Action.DataSource = Enum.GetValues(typeof(E_CMD_TYPE)).Cast<E_CMD_TYPE>()
+            cbm_Action_admin.DataSource = Enum.GetValues(typeof(E_CMD_TYPE)).Cast<E_CMD_TYPE>()
                                                   .Where(e => e != E_CMD_TYPE.Move_Park &&
                                                               e != E_CMD_TYPE.Teaching &&
                                                               e != E_CMD_TYPE.Continue &&
@@ -300,6 +283,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                                                               e != E_CMD_TYPE.MTLHome &&
                                                               e != E_CMD_TYPE.Move_Teaching
                                                               ).ToList();
+
+            cbm_Action_op.DataSource = Enum.GetValues(typeof(E_CMD_TYPE)).Cast<E_CMD_TYPE>()
+                                                  .Where(e => e == E_CMD_TYPE.Move).ToList();
         }
 
 
@@ -314,7 +300,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private async void btn_start_Click(object sender, EventArgs e)
         {
             E_CMD_TYPE cmd_type;
-            Enum.TryParse<E_CMD_TYPE>(cbm_Action.SelectedValue.ToString(), out cmd_type);
+            if (cbm_Action_admin.Visible)
+                Enum.TryParse<E_CMD_TYPE>(cbm_Action_admin.SelectedValue.ToString(), out cmd_type);
+            else
+                Enum.TryParse<E_CMD_TYPE>(cbm_Action_op.SelectedValue.ToString(), out cmd_type);
             await excuteCommand(cmd_type);
         }
         private Task excuteCommand(E_CMD_TYPE cmdType)
@@ -803,7 +792,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             btn_start.Enabled = false;
             lbl_destinationName.Text = "To Address";
             E_CMD_TYPE cmd_type;
-            Enum.TryParse<E_CMD_TYPE>(cbm_Action.SelectedValue.ToString(), out cmd_type);
+            Enum.TryParse<E_CMD_TYPE>(cbm_Action_admin.SelectedValue.ToString(), out cmd_type);
             switch (cmd_type)
             {
                 case E_CMD_TYPE.Move:

@@ -423,6 +423,7 @@ namespace com.mirle.ibg3k0.bc.winform
                     }
                 }
             }
+
         }
 
 
@@ -682,10 +683,7 @@ namespace com.mirle.ibg3k0.bc.winform
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void stopConnectionToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (!BCUtility.doLogin(this, bcApp, BCAppConstants.FUNC_CONNECTION_MANAGEMENT))
-            {
-                return;
-            }
+
             try
             {
                 DialogResult confirmResult = MessageBox.Show(this, BCApplication.getMessageString("Confirm_STOP_CONNECTING"),
@@ -720,11 +718,11 @@ namespace com.mirle.ibg3k0.bc.winform
         private void BCMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //TODO 確認Authority
-            //if (!BCUtility.doLogin(this, bcApp, BCAppConstants.FUNC_CLOSE_MASTER_PC))
-            //{
-            //    //e.Cancel = true;
-            //    //return;
-            //}
+            if (!BCUtility.doLogin(this, bcApp, BCAppConstants.FUNC_CLOSE_MASTER_PC))
+            {
+                e.Cancel = true;
+                return;
+            }
             DialogResult confirmResult = MessageBox.Show(this, "Do you want to close OHTC?",
                 BCApplication.getMessageString("CONFIRM"), MessageBoxButtons.YesNo);
             if (confirmResult != System.Windows.Forms.DialogResult.Yes)
@@ -1087,6 +1085,71 @@ namespace com.mirle.ibg3k0.bc.winform
         private void carrierToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openForm(typeof(CarrierMaintenanceForm).Name, true, false);
+        }
+
+        private void roadControlToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            openForm(typeof(RoadControlForm).Name, true, false);
+        }
+
+        private void transferCommandToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            openForm(typeof(TransferCommandQureyListForm).Name, true, false);
+        }
+
+        private void roadControlToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            openForm(typeof(RoadControlForm).Name, true, false);
+
+        }
+
+        private void logInToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                BCUtility.doLogin(this, bcApp);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+        private void logOutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                BCUtility.doLogout(bcApp);
+                MessageBox.Show(this, BCApplication.getMessageString("LOGOUT_SUCCESS")
+                                , BCApplication.getMessageString("INFO")
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+        private void deviceStatusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openForm("MonitorForm", true, true);
+        }
+
+        private void carrierInstalledRemoveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openForm(typeof(CarrierMaintenanceForm).Name, true, false);
+        }
+
+        private void transferCommandToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            openForm(typeof(TransferCommandQureyListForm).Name, true, false);
+
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

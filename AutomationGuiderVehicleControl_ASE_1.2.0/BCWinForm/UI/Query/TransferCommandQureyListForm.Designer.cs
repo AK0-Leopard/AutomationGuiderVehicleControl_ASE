@@ -43,13 +43,13 @@
             this.cMDSTARTTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rEPLACEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pel_button = new System.Windows.Forms.Panel();
+            this.lbl_st_port_id = new System.Windows.Forms.Label();
+            this.lbl_vhid = new System.Windows.Forms.Label();
+            this.cmb_st_port_ids = new System.Windows.Forms.ComboBox();
             this.btn_force_assign = new System.Windows.Forms.Button();
             this.cmb_force_assign = new System.Windows.Forms.ComboBox();
             this.btn_force_finish = new System.Windows.Forms.Button();
             this.btn_refresh = new System.Windows.Forms.Button();
-            this.cmb_st_port_ids = new System.Windows.Forms.ComboBox();
-            this.lbl_vhid = new System.Windows.Forms.Label();
-            this.lbl_st_port_id = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).BeginInit();
@@ -206,6 +206,32 @@
             this.pel_button.Size = new System.Drawing.Size(1592, 131);
             this.pel_button.TabIndex = 6;
             // 
+            // lbl_st_port_id
+            // 
+            this.lbl_st_port_id.AutoSize = true;
+            this.lbl_st_port_id.Location = new System.Drawing.Point(1261, 50);
+            this.lbl_st_port_id.Name = "lbl_st_port_id";
+            this.lbl_st_port_id.Size = new System.Drawing.Size(130, 22);
+            this.lbl_st_port_id.TabIndex = 9;
+            this.lbl_st_port_id.Text = "St. Port ID:";
+            // 
+            // lbl_vhid
+            // 
+            this.lbl_vhid.AutoSize = true;
+            this.lbl_vhid.Location = new System.Drawing.Point(1322, 6);
+            this.lbl_vhid.Name = "lbl_vhid";
+            this.lbl_vhid.Size = new System.Drawing.Size(70, 22);
+            this.lbl_vhid.TabIndex = 9;
+            this.lbl_vhid.Text = "Vh ID:";
+            // 
+            // cmb_st_port_ids
+            // 
+            this.cmb_st_port_ids.FormattingEnabled = true;
+            this.cmb_st_port_ids.Location = new System.Drawing.Point(1398, 47);
+            this.cmb_st_port_ids.Name = "cmb_st_port_ids";
+            this.cmb_st_port_ids.Size = new System.Drawing.Size(187, 30);
+            this.cmb_st_port_ids.TabIndex = 8;
+            // 
             // btn_force_assign
             // 
             this.btn_force_assign.Location = new System.Drawing.Point(1445, 83);
@@ -244,32 +270,6 @@
             this.btn_refresh.Text = "Refresh";
             this.btn_refresh.UseVisualStyleBackColor = true;
             this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
-            // 
-            // cmb_st_port_ids
-            // 
-            this.cmb_st_port_ids.FormattingEnabled = true;
-            this.cmb_st_port_ids.Location = new System.Drawing.Point(1398, 47);
-            this.cmb_st_port_ids.Name = "cmb_st_port_ids";
-            this.cmb_st_port_ids.Size = new System.Drawing.Size(187, 30);
-            this.cmb_st_port_ids.TabIndex = 8;
-            // 
-            // lbl_vhid
-            // 
-            this.lbl_vhid.AutoSize = true;
-            this.lbl_vhid.Location = new System.Drawing.Point(1322, 6);
-            this.lbl_vhid.Name = "lbl_vhid";
-            this.lbl_vhid.Size = new System.Drawing.Size(70, 22);
-            this.lbl_vhid.TabIndex = 9;
-            this.lbl_vhid.Text = "Vh ID:";
-            // 
-            // lbl_st_port_id
-            // 
-            this.lbl_st_port_id.AutoSize = true;
-            this.lbl_st_port_id.Location = new System.Drawing.Point(1261, 50);
-            this.lbl_st_port_id.Name = "lbl_st_port_id";
-            this.lbl_st_port_id.Size = new System.Drawing.Size(130, 22);
-            this.lbl_st_port_id.TabIndex = 9;
-            this.lbl_st_port_id.Text = "St. Port ID:";
             // 
             // TransferCommandQureyListForm
             // 

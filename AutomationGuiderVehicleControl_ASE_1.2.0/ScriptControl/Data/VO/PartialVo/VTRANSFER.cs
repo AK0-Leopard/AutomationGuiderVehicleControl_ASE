@@ -105,6 +105,13 @@ namespace com.mirle.ibg3k0.sc
             if (eq == null) return false;
             return eq is IAGVStationType;
         }
+
+        public bool IsSourceOnVh(BLL.VehicleBLL vehicleBLL)
+        {
+            var vh = vehicleBLL.cache.getVehicleByLocationRealID(HOSTSOURCE);
+            return vh != null;
+        }
+
         public override string ToString()
         {
             return $"Command:{this.ID},source:{this.HOSTSOURCE},desc:{this.HOSTDESTINATION},inser time:{CMD_INSER_TIME.ToString()}";

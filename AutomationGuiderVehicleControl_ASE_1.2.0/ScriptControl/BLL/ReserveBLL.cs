@@ -8,6 +8,7 @@ using NLog;
 using Google.Protobuf.Collections;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 using System.Collections.Generic;
+using Quartz.Impl.Triggers;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -287,6 +288,70 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
+        public (bool isSuccess, string reservedVhID, string reservedFailSection, RepeatedField<ReserveInfo> reserveSuccessInfos) IsMultiReserveSuccess
+                (string vhID, RepeatedField<ReserveInfo> reserveInfos, bool isAsk = false)
+        {
+            try
+            {
+                if (DebugParameter.isForcedPassReserve)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ReserveBLL), Device: "AGV",
+                       Data: "test flag: Force pass reserve is open, will driect reply to vh pass",
+                       VehicleID: vhID);
+                    return (true, string.Empty, string.Empty, reserveInfos);
+                }
+
+                //強制拒絕Reserve的要求
+                if (DebugParameter.isForcedRejectReserve)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ReserveBLL), Device: "AGV",
+                       Data: "test flag: Force reject reserve is open, will driect reply to vh can't pass",
+                       VehicleID: vhID);
+                    return (false, string.Empty,  string.Empty, null);
+                }
+
+                if (reserveInfos == null || reserveInfos.Count == 0) return (false, string.Empty, string.Empty, null);
+
+                var reserve_success_section = new RepeatedField<ReserveInfo>();
+                bool has_success = false;
+                string final_blocked_vh_id = string.Empty;
+                string reserve_fail_section = "";
+                Mirle.Hlts.Utils.HltResult result = default(Mirle.Hlts.Utils.HltResult);
+                foreach (var reserve_info in reserveInfos)
+                {
+                    string reserve_section_id = reserve_info.ReserveSectionID;
+
+                    Mirle.Hlts.Utils.HltDirection hltDirection = Mirle.Hlts.Utils.HltDirection.Forward;
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(ReserveBLL), Device: "AGV",
+                       Data: $"vh:{vhID} Try add(Only ask) reserve section:{reserve_section_id} ,hlt dir:{hltDirection}...",
+                       VehicleID: vhID);
+                    result = TryAddReservedSection(vhID, reserve_section_id,
+                                                   sensorDir: hltDirection,
+                                                   isAsk: true);
+                    if (result.OK)
+                    {
+                        reserve_success_section.Add(reserve_info);
+                        has_success |= true;
+                    }
+                    else
+                    {
+                        has_success |= false;
+                        final_blocked_vh_id = result.VehicleID;
+                        reserve_fail_section = reserve_info.ReserveSectionID;
+                        break;
+                    }
+                }
+
+                return (has_success, final_blocked_vh_id, reserve_fail_section, reserve_success_section);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(ReserveBLL), Device: "AGV",
+                   Data: ex,
+                   Details: $"process function:{nameof(IsMultiReserveSuccess)} Exception");
+                return (false, string.Empty,string.Empty, null);
+            }
+        }
 
     }
 

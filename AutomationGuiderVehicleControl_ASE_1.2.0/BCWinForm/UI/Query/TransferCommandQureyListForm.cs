@@ -221,11 +221,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                     }
                     catch { }
                 }
-                );  
+                );
                 updateTransferCommand();
                 if (check_result_info != null && !check_result_info.IsSuccess)
                 {
-                    MessageBox.Show( check_result_info.ToString(), "Command create fail. ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(check_result_info.ToString(), "Command create fail. ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
