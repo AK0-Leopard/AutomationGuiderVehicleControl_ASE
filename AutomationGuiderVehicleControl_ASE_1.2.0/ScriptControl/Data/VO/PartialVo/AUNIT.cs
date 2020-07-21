@@ -127,6 +127,10 @@ namespace com.mirle.ibg3k0.sc
         public SCAppConstants.CouplerStatus coupler2Status;
         public SCAppConstants.CouplerStatus coupler3Status;
 
+        public SCAppConstants.CouplerPosition coupler1Position;
+        public SCAppConstants.CouplerPosition coupler2Position;
+        public SCAppConstants.CouplerPosition coupler3Position;
+
 
         public float chargerOutputVoltage;
         public float chargerOutputCurrent;

@@ -57,6 +57,21 @@ namespace com.mirle.ibg3k0.sc
         public virtual int abnormalReportCode03 { get; set; }
         public virtual int abnormalReportCode04 { get; set; }
         public virtual int abnormalReportCode05 { get; set; }
+        public virtual int abnormalReportCode06 { get; set; }
+        public virtual int abnormalReportCode07 { get; set; }
+        public virtual int abnormalReportCode08 { get; set; }
+        public virtual int abnormalReportCode09 { get; set; }
+        public virtual int abnormalReportCode10 { get; set; }
+        public virtual int abnormalReportCode11 { get; set; }
+        public virtual int abnormalReportCode12 { get; set; }
+        public virtual int abnormalReportCode13 { get; set; }
+        public virtual int abnormalReportCode14 { get; set; }
+        public virtual int abnormalReportCode15 { get; set; }
+        public virtual int abnormalReportCode16 { get; set; }
+        public virtual int abnormalReportCode17 { get; set; }
+        public virtual int abnormalReportCode18 { get; set; }
+        public virtual int abnormalReportCode19 { get; set; }
+        public virtual int abnormalReportCode20 { get; set; }
         #endregion MCharger
         public virtual SCAppConstants.EqptType Type { get; set; }
 

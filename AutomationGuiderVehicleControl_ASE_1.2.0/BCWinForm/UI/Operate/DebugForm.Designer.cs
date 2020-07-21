@@ -112,6 +112,7 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cb_by_pass_shelf_status = new System.Windows.Forms.CheckBox();
             this.label46 = new System.Windows.Forms.Label();
             this.cbTranMode = new System.Windows.Forms.ComboBox();
             this.label45 = new System.Windows.Forms.Label();
@@ -343,7 +344,12 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.cb_by_pass_shelf_status = new System.Windows.Forms.CheckBox();
+            this.tb_CouplerPosition3 = new System.Windows.Forms.TextBox();
+            this.tb_CouplerPosition2 = new System.Windows.Forms.TextBox();
+            this.tb_CouplerPosition1 = new System.Windows.Forms.TextBox();
+            this.label48 = new System.Windows.Forms.Label();
+            this.label49 = new System.Windows.Forms.Label();
+            this.label50 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1344,6 +1350,17 @@
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // cb_by_pass_shelf_status
+            // 
+            this.cb_by_pass_shelf_status.AutoSize = true;
+            this.cb_by_pass_shelf_status.Location = new System.Drawing.Point(1137, 438);
+            this.cb_by_pass_shelf_status.Name = "cb_by_pass_shelf_status";
+            this.cb_by_pass_shelf_status.Size = new System.Drawing.Size(329, 26);
+            this.cb_by_pass_shelf_status.TabIndex = 2;
+            this.cb_by_pass_shelf_status.Text = "Force By Pass AGV Shelf Status";
+            this.cb_by_pass_shelf_status.UseVisualStyleBackColor = true;
+            this.cb_by_pass_shelf_status.CheckedChanged += new System.EventHandler(this.cb_by_pass_shelf_status_CheckedChanged);
+            // 
             // label46
             // 
             this.label46.AutoSize = true;
@@ -1682,7 +1699,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2528,7 +2545,7 @@
             this.groupBox14.Controls.Add(this.groupBox20);
             this.groupBox14.Location = new System.Drawing.Point(501, 6);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(946, 677);
+            this.groupBox14.Size = new System.Drawing.Size(946, 722);
             this.groupBox14.TabIndex = 34;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Charger";
@@ -2937,6 +2954,12 @@
             // 
             // groupBox15
             // 
+            this.groupBox15.Controls.Add(this.tb_CouplerPosition3);
+            this.groupBox15.Controls.Add(this.tb_CouplerPosition2);
+            this.groupBox15.Controls.Add(this.tb_CouplerPosition1);
+            this.groupBox15.Controls.Add(this.label48);
+            this.groupBox15.Controls.Add(this.label49);
+            this.groupBox15.Controls.Add(this.label50);
             this.groupBox15.Controls.Add(this.tb_ChargerStatusReportIndex);
             this.groupBox15.Controls.Add(this.label71);
             this.groupBox15.Controls.Add(this.tb_CouplerStatus3);
@@ -2965,7 +2988,7 @@
             this.groupBox15.Controls.Add(this.tb_ContantCurrentOutput);
             this.groupBox15.Location = new System.Drawing.Point(21, 268);
             this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(457, 398);
+            this.groupBox15.Size = new System.Drawing.Size(457, 448);
             this.groupBox15.TabIndex = 33;
             this.groupBox15.TabStop = false;
             this.groupBox15.Text = "Charger Status Report";
@@ -2991,7 +3014,7 @@
             // tb_CouplerStatus3
             // 
             this.tb_CouplerStatus3.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_CouplerStatus3.Location = new System.Drawing.Point(202, 357);
+            this.tb_CouplerStatus3.Location = new System.Drawing.Point(202, 330);
             this.tb_CouplerStatus3.Name = "tb_CouplerStatus3";
             this.tb_CouplerStatus3.ReadOnly = true;
             this.tb_CouplerStatus3.Size = new System.Drawing.Size(134, 23);
@@ -3000,7 +3023,7 @@
             // tb_CouplerStatus2
             // 
             this.tb_CouplerStatus2.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_CouplerStatus2.Location = new System.Drawing.Point(202, 335);
+            this.tb_CouplerStatus2.Location = new System.Drawing.Point(202, 308);
             this.tb_CouplerStatus2.Name = "tb_CouplerStatus2";
             this.tb_CouplerStatus2.ReadOnly = true;
             this.tb_CouplerStatus2.Size = new System.Drawing.Size(134, 23);
@@ -3009,7 +3032,7 @@
             // tb_CouplerStatus1
             // 
             this.tb_CouplerStatus1.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_CouplerStatus1.Location = new System.Drawing.Point(202, 313);
+            this.tb_CouplerStatus1.Location = new System.Drawing.Point(202, 286);
             this.tb_CouplerStatus1.Name = "tb_CouplerStatus1";
             this.tb_CouplerStatus1.ReadOnly = true;
             this.tb_CouplerStatus1.Size = new System.Drawing.Size(134, 23);
@@ -3018,7 +3041,7 @@
             // tb_RS485Status
             // 
             this.tb_RS485Status.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_RS485Status.Location = new System.Drawing.Point(190, 272);
+            this.tb_RS485Status.Location = new System.Drawing.Point(202, 256);
             this.tb_RS485Status.Name = "tb_RS485Status";
             this.tb_RS485Status.ReadOnly = true;
             this.tb_RS485Status.Size = new System.Drawing.Size(113, 23);
@@ -3027,7 +3050,7 @@
             // label59
             // 
             this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(26, 273);
+            this.label59.Location = new System.Drawing.Point(26, 256);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(140, 22);
             this.label59.TabIndex = 37;
@@ -3036,7 +3059,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(26, 358);
+            this.label23.Location = new System.Drawing.Point(26, 331);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(170, 22);
             this.label23.TabIndex = 6;
@@ -3063,7 +3086,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(26, 336);
+            this.label21.Location = new System.Drawing.Point(26, 309);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(170, 22);
             this.label21.TabIndex = 4;
@@ -3090,7 +3113,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(26, 314);
+            this.label19.Location = new System.Drawing.Point(26, 287);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(170, 22);
             this.label19.TabIndex = 0;
@@ -3528,7 +3551,7 @@
             // 
             // num_BatteryHighBoundaryValue
             // 
-            this.num_BatteryHighBoundaryValue.Location = new System.Drawing.Point(510, 795);
+            this.num_BatteryHighBoundaryValue.Location = new System.Drawing.Point(667, 878);
             this.num_BatteryHighBoundaryValue.Name = "num_BatteryHighBoundaryValue";
             this.num_BatteryHighBoundaryValue.Size = new System.Drawing.Size(158, 30);
             this.num_BatteryHighBoundaryValue.TabIndex = 29;
@@ -3537,7 +3560,7 @@
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(506, 760);
+            this.label38.Location = new System.Drawing.Point(663, 843);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(360, 22);
             this.label38.TabIndex = 28;
@@ -3545,7 +3568,7 @@
             // 
             // num_BatteryLowBoundaryValue
             // 
-            this.num_BatteryLowBoundaryValue.Location = new System.Drawing.Point(510, 724);
+            this.num_BatteryLowBoundaryValue.Location = new System.Drawing.Point(284, 878);
             this.num_BatteryLowBoundaryValue.Name = "num_BatteryLowBoundaryValue";
             this.num_BatteryLowBoundaryValue.Size = new System.Drawing.Size(158, 30);
             this.num_BatteryLowBoundaryValue.TabIndex = 27;
@@ -3554,7 +3577,7 @@
             // lbl_batteryLowBoundaryValue
             // 
             this.lbl_batteryLowBoundaryValue.AutoSize = true;
-            this.lbl_batteryLowBoundaryValue.Location = new System.Drawing.Point(506, 689);
+            this.lbl_batteryLowBoundaryValue.Location = new System.Drawing.Point(280, 843);
             this.lbl_batteryLowBoundaryValue.Name = "lbl_batteryLowBoundaryValue";
             this.lbl_batteryLowBoundaryValue.Size = new System.Drawing.Size(350, 22);
             this.lbl_batteryLowBoundaryValue.TabIndex = 26;
@@ -3689,16 +3712,59 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // cb_by_pass_shelf_status
+            // tb_CouplerPosition3
             // 
-            this.cb_by_pass_shelf_status.AutoSize = true;
-            this.cb_by_pass_shelf_status.Location = new System.Drawing.Point(1137, 438);
-            this.cb_by_pass_shelf_status.Name = "cb_by_pass_shelf_status";
-            this.cb_by_pass_shelf_status.Size = new System.Drawing.Size(329, 26);
-            this.cb_by_pass_shelf_status.TabIndex = 2;
-            this.cb_by_pass_shelf_status.Text = "Force By Pass AGV Shelf Status";
-            this.cb_by_pass_shelf_status.UseVisualStyleBackColor = true;
-            this.cb_by_pass_shelf_status.CheckedChanged += new System.EventHandler(this.cb_by_pass_shelf_status_CheckedChanged);
+            this.tb_CouplerPosition3.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_CouplerPosition3.Location = new System.Drawing.Point(202, 411);
+            this.tb_CouplerPosition3.Name = "tb_CouplerPosition3";
+            this.tb_CouplerPosition3.ReadOnly = true;
+            this.tb_CouplerPosition3.Size = new System.Drawing.Size(134, 23);
+            this.tb_CouplerPosition3.TabIndex = 48;
+            // 
+            // tb_CouplerPosition2
+            // 
+            this.tb_CouplerPosition2.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_CouplerPosition2.Location = new System.Drawing.Point(202, 389);
+            this.tb_CouplerPosition2.Name = "tb_CouplerPosition2";
+            this.tb_CouplerPosition2.ReadOnly = true;
+            this.tb_CouplerPosition2.Size = new System.Drawing.Size(134, 23);
+            this.tb_CouplerPosition2.TabIndex = 47;
+            // 
+            // tb_CouplerPosition1
+            // 
+            this.tb_CouplerPosition1.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_CouplerPosition1.Location = new System.Drawing.Point(202, 367);
+            this.tb_CouplerPosition1.Name = "tb_CouplerPosition1";
+            this.tb_CouplerPosition1.ReadOnly = true;
+            this.tb_CouplerPosition1.Size = new System.Drawing.Size(134, 23);
+            this.tb_CouplerPosition1.TabIndex = 46;
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(6, 412);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(190, 22);
+            this.label48.TabIndex = 45;
+            this.label48.Text = "Coupler3 Position:";
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(6, 390);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(190, 22);
+            this.label49.TabIndex = 44;
+            this.label49.Text = "Coupler2 Position:";
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(6, 368);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(190, 22);
+            this.label50.TabIndex = 43;
+            this.label50.Text = "Coupler1 Position:";
             // 
             // DebugForm
             // 
@@ -4107,5 +4173,11 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsCheckPortReady;
         private System.Windows.Forms.DataGridViewTextBoxColumn BindingVh;
         private System.Windows.Forms.CheckBox cb_by_pass_shelf_status;
+        private System.Windows.Forms.TextBox tb_CouplerPosition3;
+        private System.Windows.Forms.TextBox tb_CouplerPosition2;
+        private System.Windows.Forms.TextBox tb_CouplerPosition1;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.Label label50;
     }
 }

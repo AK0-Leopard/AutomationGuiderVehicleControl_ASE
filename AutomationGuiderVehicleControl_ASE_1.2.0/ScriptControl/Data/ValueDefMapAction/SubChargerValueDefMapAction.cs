@@ -194,6 +194,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 unit.coupler1Status = function.Coupler1Status;
                 unit.coupler2Status = function.Coupler2Status;
                 unit.coupler3Status = function.Coupler3Status;
+                unit.coupler1Position = function.Coupler1Position;
+                unit.coupler2Position = function.Coupler2Position;
+                unit.coupler3Position = function.Coupler3Position;
                 unit.ChargerStatusIndex = function.Index;
 
                 //3.logical (include db save)

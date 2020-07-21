@@ -94,6 +94,21 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 eqpt.abnormalReportCode03 = recevie_function.ErrorCode_3;
                 eqpt.abnormalReportCode04 = recevie_function.ErrorCode_4;
                 eqpt.abnormalReportCode05 = recevie_function.ErrorCode_5;
+                eqpt.abnormalReportCode06 = recevie_function.ErrorCode_6;
+                eqpt.abnormalReportCode07 = recevie_function.ErrorCode_7;
+                eqpt.abnormalReportCode08 = recevie_function.ErrorCode_8;
+                eqpt.abnormalReportCode09 = recevie_function.ErrorCode_9;
+                eqpt.abnormalReportCode10 = recevie_function.ErrorCode_10;
+                eqpt.abnormalReportCode11 = recevie_function.ErrorCode_11;
+                eqpt.abnormalReportCode12 = recevie_function.ErrorCode_12;
+                eqpt.abnormalReportCode13 = recevie_function.ErrorCode_13;
+                eqpt.abnormalReportCode14 = recevie_function.ErrorCode_14;
+                eqpt.abnormalReportCode15 = recevie_function.ErrorCode_15;
+                eqpt.abnormalReportCode16 = recevie_function.ErrorCode_16;
+                eqpt.abnormalReportCode17 = recevie_function.ErrorCode_17;
+                eqpt.abnormalReportCode18 = recevie_function.ErrorCode_18;
+                eqpt.abnormalReportCode19 = recevie_function.ErrorCode_19;
+                eqpt.abnormalReportCode20 = recevie_function.ErrorCode_20;
                 eqpt.AbnormalReportIndex = recevie_function.index;
 
             }
@@ -249,7 +264,25 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 eqpt.abnormalReportCode03 = recevie_function.ErrorCode_3;
                 eqpt.abnormalReportCode04 = recevie_function.ErrorCode_4;
                 eqpt.abnormalReportCode05 = recevie_function.ErrorCode_5;
+                eqpt.abnormalReportCode06 = recevie_function.ErrorCode_6;
+                eqpt.abnormalReportCode07 = recevie_function.ErrorCode_7;
+                eqpt.abnormalReportCode08 = recevie_function.ErrorCode_8;
+                eqpt.abnormalReportCode09 = recevie_function.ErrorCode_9;
+                eqpt.abnormalReportCode10 = recevie_function.ErrorCode_10;
+                eqpt.abnormalReportCode11 = recevie_function.ErrorCode_11;
+                eqpt.abnormalReportCode12 = recevie_function.ErrorCode_12;
+                eqpt.abnormalReportCode13 = recevie_function.ErrorCode_13;
+                eqpt.abnormalReportCode14 = recevie_function.ErrorCode_14;
+                eqpt.abnormalReportCode15 = recevie_function.ErrorCode_15;
+                eqpt.abnormalReportCode16 = recevie_function.ErrorCode_16;
+                eqpt.abnormalReportCode17 = recevie_function.ErrorCode_17;
+                eqpt.abnormalReportCode18 = recevie_function.ErrorCode_18;
+                eqpt.abnormalReportCode19 = recevie_function.ErrorCode_19;
+                eqpt.abnormalReportCode20 = recevie_function.ErrorCode_20;
                 eqpt.AbnormalReportIndex = recevie_function.index;
+
+
+
 
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(ChargerValueDefMapAction), Device: DEVICE_NAME_MC,
                          Data: recevie_function.ToString(),

@@ -1136,6 +1136,11 @@ namespace com.mirle.ibg3k0.sc.App
             Charging = 2,
             Error = 3
         }
+        public enum CouplerPosition
+        {
+            OP = 0,
+            HP = 1,
+        }
 
 
 

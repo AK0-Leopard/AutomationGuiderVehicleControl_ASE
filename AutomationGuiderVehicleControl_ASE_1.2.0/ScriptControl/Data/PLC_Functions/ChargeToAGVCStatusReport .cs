@@ -37,6 +37,12 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
         public SCAppConstants.CouplerStatus Coupler2Status;
         [PLCElement(ValueName = "CHARGERX_TO_AGVC_CHARGER_STATUS_REPORT_COUPLER3_STATUS")]
         public SCAppConstants.CouplerStatus Coupler3Status;
+        [PLCElement(ValueName = "CHARGERX_TO_AGVC_CHARGER_STATUS_REPORT_COUPLER1_POSITION")]
+        public SCAppConstants.CouplerPosition Coupler1Position;
+        [PLCElement(ValueName = "CHARGERX_TO_AGVC_CHARGER_STATUS_REPORT_COUPLER2_POSITION")]
+        public SCAppConstants.CouplerPosition Coupler2Position;
+        [PLCElement(ValueName = "CHARGERX_TO_AGVC_CHARGER_STATUS_REPORT_COUPLER3_POSITION")]
+        public SCAppConstants.CouplerPosition Coupler3Position;
 
         public enum RS485StatusType
         {
@@ -49,6 +55,7 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
             OutputCurrentOutRange = 7,
             DeviceOutputWriteForbid = 8
         }
+
         //public enum CouplerStatus
         //{
         //    Disable = 0,
