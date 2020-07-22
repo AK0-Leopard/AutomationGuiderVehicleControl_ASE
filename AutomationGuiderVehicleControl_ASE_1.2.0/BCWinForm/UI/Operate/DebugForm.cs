@@ -234,6 +234,21 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 tb_ErrorReportCode3.Text = eqpt.abnormalReportCode03.ToString();
                 tb_ErrorReportCode4.Text = eqpt.abnormalReportCode04.ToString();
                 tb_ErrorReportCode5.Text = eqpt.abnormalReportCode05.ToString();
+                tb_ErrorReportCode6.Text = eqpt.abnormalReportCode06.ToString();
+                tb_ErrorReportCode7.Text = eqpt.abnormalReportCode07.ToString();
+                tb_ErrorReportCode8.Text = eqpt.abnormalReportCode08.ToString();
+                tb_ErrorReportCode9.Text = eqpt.abnormalReportCode09.ToString();
+                tb_ErrorReportCode10.Text = eqpt.abnormalReportCode10.ToString();
+                tb_ErrorReportCode11.Text = eqpt.abnormalReportCode11.ToString();
+                tb_ErrorReportCode12.Text = eqpt.abnormalReportCode12.ToString();
+                tb_ErrorReportCode13.Text = eqpt.abnormalReportCode13.ToString();
+                tb_ErrorReportCode14.Text = eqpt.abnormalReportCode14.ToString();
+                tb_ErrorReportCode15.Text = eqpt.abnormalReportCode15.ToString();
+                tb_ErrorReportCode16.Text = eqpt.abnormalReportCode16.ToString();
+                tb_ErrorReportCode17.Text = eqpt.abnormalReportCode17.ToString();
+                tb_ErrorReportCode18.Text = eqpt.abnormalReportCode18.ToString();
+                tb_ErrorReportCode19.Text = eqpt.abnormalReportCode19.ToString();
+                tb_ErrorReportCode20.Text = eqpt.abnormalReportCode20.ToString();
             }), null);
         }
         private void ChargerAliveChange(AUNIT unit)

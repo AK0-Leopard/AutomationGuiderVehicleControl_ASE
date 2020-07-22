@@ -53,8 +53,55 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
         public UInt16 ErrorCode_20;
         [PLCElement(ValueName = "MCHARGER_TO_AGVC_ABNORMAL_CHARGING_REPORT_INDEX")]
         public UInt16 index;
-    }
 
+        public List<string> loadCurrentHappendAlarms()
+        {
+            var alarms = new List<UInt16>();
+            if (ErrorCode_1 != 0)
+                alarms.Add(ErrorCode_1);
+            if (ErrorCode_2 != 0)
+                alarms.Add(ErrorCode_2);
+            if (ErrorCode_3 != 0)
+                alarms.Add(ErrorCode_3);
+            if (ErrorCode_4 != 0)
+                alarms.Add(ErrorCode_4);
+            if (ErrorCode_5 != 0)
+                alarms.Add(ErrorCode_5);
+            if (ErrorCode_6 != 0)
+                alarms.Add(ErrorCode_6);
+            if (ErrorCode_7 != 0)
+                alarms.Add(ErrorCode_7);
+            if (ErrorCode_8 != 0)
+                alarms.Add(ErrorCode_8);
+            if (ErrorCode_9 != 0)
+                alarms.Add(ErrorCode_9);
+            if (ErrorCode_10 != 0)
+                alarms.Add(ErrorCode_10);
+            if (ErrorCode_11 != 0)
+                alarms.Add(ErrorCode_11);
+            if (ErrorCode_12 != 0)
+                alarms.Add(ErrorCode_12);
+            if (ErrorCode_13 != 0)
+                alarms.Add(ErrorCode_13);
+            if (ErrorCode_14 != 0)
+                alarms.Add(ErrorCode_14);
+            if (ErrorCode_15 != 0)
+                alarms.Add(ErrorCode_15);
+            if (ErrorCode_16 != 0)
+                alarms.Add(ErrorCode_16);
+            if (ErrorCode_17 != 0)
+                alarms.Add(ErrorCode_17);
+            if (ErrorCode_18 != 0)
+                alarms.Add(ErrorCode_18);
+            if (ErrorCode_19 != 0)
+                alarms.Add(ErrorCode_19);
+            if (ErrorCode_20 != 0)
+                alarms.Add(ErrorCode_20);
+            return alarms.Select(error_code => error_code.ToString()).ToList();
+        }
+
+
+    }
 
 
 }

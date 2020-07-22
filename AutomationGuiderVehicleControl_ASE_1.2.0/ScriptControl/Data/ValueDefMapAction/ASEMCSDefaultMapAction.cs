@@ -1714,8 +1714,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 var vh = scApp.VehicleBLL.cache.getVehicle(vhID);
                 VIDCollection vid_collection = new VIDCollection();
                 vid_collection.VID_58_CommandID.CommandID = transfer_id;
-                vid_collection.VID_71_VehicleInfo.VehicleInfo.VehicleID = vh.Real_ID;
-                vid_collection.VID_71_VehicleInfo.VehicleInfo.VehicleState = ((int)vh.State).ToString();
+                vid_collection.VID_71_VehicleInfo.VehicleInfo.VehicleID = vh == null ? "" : vh.Real_ID;
+                vid_collection.VID_71_VehicleInfo.VehicleInfo.VehicleState = vh == null ? "" : ((int)vh.State).ToString();
                 vid_collection.VID_81_AlarmID.AlarmID = alarmID;
                 vid_collection.VID_82_AlarmText.AlarmText = alarmTest;
                 vid_collection.VID_54_CarrierID.CarrierID = carrier_id;
@@ -1755,8 +1755,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 var vh = scApp.VehicleBLL.cache.getVehicle(vhID);
                 VIDCollection vid_collection = new VIDCollection();
                 vid_collection.VID_58_CommandID.CommandID = transfer_id;
-                vid_collection.VID_71_VehicleInfo.VehicleInfo.VehicleID = vh.Real_ID;
-                vid_collection.VID_71_VehicleInfo.VehicleInfo.VehicleState = ((int)vh.State).ToString();
+                vid_collection.VID_71_VehicleInfo.VehicleInfo.VehicleID = vh == null ? "" : vh.Real_ID;
+                vid_collection.VID_71_VehicleInfo.VehicleInfo.VehicleState = vh == null ? "" : ((int)vh.State).ToString();
                 vid_collection.VID_81_AlarmID.AlarmID = alarmID;
                 vid_collection.VID_82_AlarmText.AlarmText = alarmTest;
                 vid_collection.VID_54_CarrierID.CarrierID = carrier_id;

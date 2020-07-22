@@ -394,7 +394,83 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
+        public void ProcessAlarmReport(string eqptID, string err_code, ErrorStatus status, string errorDesc)
+        {
+            try
+            {
+                string eq_id = eqptID;
+                bool is_all_alarm_clear = SCUtility.isMatche(err_code, "0") && status == ErrorStatus.ErrReset;
+                List<ALARM> alarms = null;
+                scApp.getRedisCacheManager().BeginTransaction();
+                using (TransactionScope tx = SCUtility.getTransactionScope())
+                {
+                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"Process eq alarm report.alarm code:{err_code},alarm status{status},error desc:{errorDesc}");
+                        ALARM alarm = null;
+                        if (is_all_alarm_clear)
+                        {
+                            alarms = scApp.AlarmBLL.resetAllAlarmReport(eq_id);
+                            scApp.AlarmBLL.resetAllAlarmReport2Redis(eq_id);
+                        }
+                        else
+                        {
+                            switch (status)
+                            {
+                                case ErrorStatus.ErrSet:
+                                    //將設備上報的Alarm填入資料庫。
+                                    alarm = scApp.AlarmBLL.setAlarmReport(eq_id, err_code, errorDesc);
+                                    //將其更新至Redis，保存目前所發生的Alarm
+                                    scApp.AlarmBLL.setAlarmReport2Redis(alarm);
+                                    alarms = new List<ALARM>() { alarm };
+                                    break;
+                                case ErrorStatus.ErrReset:
+                                    //將設備上報的Alarm從資料庫刪除。
+                                    alarm = scApp.AlarmBLL.resetAlarmReport(eq_id, err_code);
+                                    //將其更新至Redis，保存目前所發生的Alarm
+                                    scApp.AlarmBLL.resetAlarmReport2Redis(alarm);
+                                    alarms = new List<ALARM>() { alarm };
+                                    break;
+                            }
+                        }
+                        tx.Complete();
+                    }
+                }
+                scApp.getRedisCacheManager().ExecuteTransaction();
+                //通知有Alarm的資訊改變。
+                scApp.getNatsManager().PublishAsync(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, new byte[0]);
 
+                foreach (ALARM report_alarm in alarms)
+                {
+                    if (report_alarm == null) continue;
+                    if (report_alarm.ALAM_LVL == E_ALARM_LVL.Warn) continue;
+                    //需判斷Alarm是否存在如果有的話則需再判斷MCS是否有Disable該Alarm的上報
+                    if (scApp.AlarmBLL.IsReportToHost(report_alarm.ALAM_CODE))
+                    {
+                        string alarm_code = report_alarm.ALAM_CODE;
+                        List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
+                        if (report_alarm.ALAM_STAT == ErrorStatus.ErrSet)
+                        {
+                            scApp.ReportBLL.ReportAlarmHappend("", "", report_alarm.ALAM_STAT, alarm_code, report_alarm.ALAM_DESC, reportqueues);
+                        }
+                        else
+                        {
+                            scApp.ReportBLL.ReportAlarmCleared("", "", report_alarm.ALAM_STAT, alarm_code, report_alarm.ALAM_DESC, reportqueues);
+                        }
+                        scApp.ReportBLL.newSendMCSMessage(reportqueues);
+
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"do report alarm to mcs,eq:{eq_id} alarm code:{err_code},alarm status{status}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: ex);
+            }
+        }
         public void ProcessAlarmReport(AVEHICLE vh, string err_code, ErrorStatus status, string errorDesc)
         {
             try
