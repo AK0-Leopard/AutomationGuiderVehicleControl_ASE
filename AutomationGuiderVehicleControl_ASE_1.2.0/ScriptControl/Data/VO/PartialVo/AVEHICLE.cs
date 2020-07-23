@@ -674,7 +674,7 @@ namespace com.mirle.ibg3k0.sc
             mapAction = getExcuteMapAction();
             return mapAction.send_Str1(send_gpb, out receive_gpp);
         }
-        public bool send_S11(ID_11_BASIC_INFO_REP send_gpb, out ID_111_BASIC_INFO_RESPONSE receive_gpp)
+        public bool send_S11(ID_11_COUPLER_INFO_REP send_gpb, out ID_111_COUPLER_INFO_RESPONSE receive_gpp)
         {
             ValueDefMapActionBase mapAction = null;
             mapAction = getExcuteMapAction();

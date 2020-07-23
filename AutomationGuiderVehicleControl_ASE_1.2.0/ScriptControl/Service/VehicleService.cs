@@ -3251,29 +3251,14 @@ namespace com.mirle.ibg3k0.sc.Service
             isSuccess = isSuccess && receive_gpp.ReplyCode == 0;
             return isSuccess;
         }
-        public bool BasicInfoReport(string vh_id)
+        public bool CoplerInfosReport(string vhID)
         {
             bool isSuccess = false;
-            AVEHICLE vh = scApp.getEQObjCacheManager().getVehicletByVHID(vh_id);
+            AVEHICLE vh = scApp.getEQObjCacheManager().getVehicletByVHID(vhID);
             DateTime crtTime = DateTime.Now;
-            ID_111_BASIC_INFO_RESPONSE receive_gpp = null;
-            int travel_base_data_count = 1;
-            int section_data_count = 0;
-            int address_data_coune = 0;
-            int scale_base_data_count = 1;
-            int control_data_count = 1;
-            int guide_base_data_count = 1;
-            section_data_count = scApp.DataSyncBLL.getCount_ReleaseVSections();
-            address_data_coune = scApp.MapBLL.getCount_AddressCount();
-            ID_11_BASIC_INFO_REP sned_gpp = new ID_11_BASIC_INFO_REP()
-            {
-                TravelBasicDataCount = travel_base_data_count,
-                SectionDataCount = section_data_count,
-                AddressDataCount = address_data_coune,
-                ScaleDataCount = scale_base_data_count,
-                ContrlDataCount = control_data_count,
-                GuideDataCount = guide_base_data_count
-            };
+            ID_111_COUPLER_INFO_RESPONSE receive_gpp = null;
+            ID_11_COUPLER_INFO_REP sned_gpp = new ID_11_COUPLER_INFO_REP();
+
             isSuccess = vh.send_S11(sned_gpp, out receive_gpp);
             isSuccess = isSuccess && receive_gpp.ReplyCode == 0;
             return isSuccess;
@@ -3392,7 +3377,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             bool isSyscCmp = false;
             DateTime ohtDataVersion = new DateTime(2017, 03, 27, 10, 30, 00);
-            if (BasicInfoReport(vh_id) &&
+            if (CoplerInfosReport(vh_id) &&
                 TavellingDataReport(vh_id) &&
                 AddressDataReport(vh_id) &&
                 ScaleDataReport(vh_id) &&

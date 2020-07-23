@@ -469,7 +469,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         }
         private void uctl_SendFun11_Click(object sender, EventArgs e)
         {
-            asyExecuteAction(bcApp.SCApplication.VehicleService.BasicInfoReport);
+            asyExecuteAction(bcApp.SCApplication.VehicleService.CoplerInfosReport);
             //asyExecuteAction(noticeCar.sned_S11);
         }
         private void uctl_SendFun13_Click(object sender, EventArgs e)
