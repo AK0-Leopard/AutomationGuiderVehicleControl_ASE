@@ -3257,9 +3257,22 @@ namespace com.mirle.ibg3k0.sc.Service
             AVEHICLE vh = scApp.getEQObjCacheManager().getVehicletByVHID(vhID);
             DateTime crtTime = DateTime.Now;
             ID_111_COUPLER_INFO_RESPONSE receive_gpp = null;
-            ID_11_COUPLER_INFO_REP sned_gpp = new ID_11_COUPLER_INFO_REP();
-
-            isSuccess = vh.send_S11(sned_gpp, out receive_gpp);
+            ID_11_COUPLER_INFO_REP send_gpp = new ID_11_COUPLER_INFO_REP();
+            var all_coupler = scApp.AddressesBLL.cache.GetCouplerAddresses();
+            List<CouplerInfo> couplerInfos = new List<CouplerInfo>();
+            foreach (var coupler in all_coupler)
+            {
+                string adr_id = coupler.ADR_ID;
+                ProtocolFormat.OHTMessage.CouplerStatus couplerStatus = coupler.IsWork(scApp.UnitBLL) ?
+                                                                        ProtocolFormat.OHTMessage.CouplerStatus.Enable : ProtocolFormat.OHTMessage.CouplerStatus.Enable;
+                couplerInfos.Add(new CouplerInfo()
+                {
+                    AddressID = adr_id,
+                    CouplerStatus = couplerStatus
+                });
+            }
+            send_gpp.CouplerInfos.AddRange(couplerInfos);
+            isSuccess = vh.send_S11(send_gpp, out receive_gpp);
             isSuccess = isSuccess && receive_gpp.ReplyCode == 0;
             return isSuccess;
         }
@@ -3376,13 +3389,7 @@ namespace com.mirle.ibg3k0.sc.Service
         public bool doDataSysc(string vh_id)
         {
             bool isSyscCmp = false;
-            DateTime ohtDataVersion = new DateTime(2017, 03, 27, 10, 30, 00);
-            if (CoplerInfosReport(vh_id) &&
-                TavellingDataReport(vh_id) &&
-                AddressDataReport(vh_id) &&
-                ScaleDataReport(vh_id) &&
-                ControlDataReport(vh_id) &&
-                GuideDataReport(vh_id))
+            if (CoplerInfosReport(vh_id))
             {
                 isSyscCmp = true;
             }
@@ -3508,6 +3515,7 @@ namespace com.mirle.ibg3k0.sc.Service
                CST_ID_L: vh.CST_ID_L,
                CST_ID_R: vh.CST_ID_R);
             VehicleInfoSynchronize(vh.VEHICLE_ID);
+            doDataSysc(vh.VEHICLE_ID);
             LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                Data: "Connection ! End synchronize with vehicle.",
                VehicleID: vh.VEHICLE_ID,

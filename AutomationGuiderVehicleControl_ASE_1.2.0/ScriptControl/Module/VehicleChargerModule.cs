@@ -402,7 +402,7 @@ namespace com.mirle.ibg3k0.sc.Module
                         vh.ACT_STATUS == VHActionStatus.NoCommand &&
                         (!(current_adr is CouplerAddress) ||
                         //((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsEnable))
-                        ((current_adr is CouplerAddress) && !addressesBLL.cache.IsCouplerWork(current_adr as CouplerAddress, unitBLL)))
+                        ((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsWork(unitBLL)))
                        )
                     {
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
@@ -417,7 +417,8 @@ namespace com.mirle.ibg3k0.sc.Module
                         vh.ACT_STATUS == VHActionStatus.NoCommand &&
                         (!(current_adr is CouplerAddress) ||
                         //((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsEnable))
-                        ((current_adr is CouplerAddress) && !addressesBLL.cache.IsCouplerWork(current_adr as CouplerAddress, unitBLL)))
+                        //((current_adr is CouplerAddress) && !addressesBLL.cache.IsCouplerWork(current_adr as CouplerAddress, unitBLL)))
+                        ((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsWork(unitBLL)))
                        )
                     {
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,

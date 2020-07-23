@@ -62,13 +62,13 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 List<CouplerAddress> CouplerAddresses = CommObjCacheManager.getCouplerAddresses();
                 //CouplerAddresses = CouplerAddresses.Where(coupler => coupler.IsEnable).ToList();
-                CouplerAddresses = CouplerAddresses.Where(coupler => IsCouplerWork(coupler, unitBLL)).ToList();
+                //CouplerAddresses = CouplerAddresses.Where(coupler => IsCouplerWork(coupler, unitBLL)).ToList();
+                CouplerAddresses = CouplerAddresses.Where(coupler => coupler.IsWork(unitBLL)).ToList();
                 return CouplerAddresses;
             }
 
             public bool IsCouplerWork(CouplerAddress couplerAddress, UnitBLL unitBLL)
             {
-                return true;
                 AUNIT charger = unitBLL.OperateCatch.getUnit(couplerAddress.ChargerID);
                 if (charger != null)
                 {

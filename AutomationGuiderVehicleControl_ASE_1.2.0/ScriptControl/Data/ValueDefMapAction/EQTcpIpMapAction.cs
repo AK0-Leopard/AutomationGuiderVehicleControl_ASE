@@ -351,6 +351,29 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             //eqpt.VHStateMach.Fire(SCAppConstants.E_VH_EVENT.CompensationDataError);
         }
 
+        public override bool send_Str11(ID_11_COUPLER_INFO_REP send_gpp, out ID_111_COUPLER_INFO_RESPONSE receive_gpp)
+        {
+            bool isScuess = false;
+            try
+            {
+                string rtnMsg = string.Empty;
+                WrapperMessage wrapper = new WrapperMessage
+                {
+                    ID = WrapperMessage.CouplerInfoRepFieldNumber,
+                    CouplerInfoRep = send_gpp
+                };
+                com.mirle.iibg3k0.ttc.Common.TrxTcpIp.ReturnCode result = snedRecv(wrapper, out receive_gpp, out rtnMsg);
+                isScuess = result == TrxTcpIp.ReturnCode.Normal;
+            }
+            catch (Exception ex)
+            {
+                receive_gpp = null;
+                logger.Error(ex, "Exception");
+            }
+            return isScuess;
+        }
+
+
         public override bool send_Str31(ID_31_TRANS_REQUEST send_gpp, out ID_131_TRANS_RESPONSE receive_gpp, out string reason)
         {
             bool isSuccess = false;

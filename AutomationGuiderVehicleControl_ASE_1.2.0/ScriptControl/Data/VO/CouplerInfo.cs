@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.Data.VO
 {
-    public class CouplerInfo
+    public class CouplerData
     {
         public string AddressID;
         public int Priority;

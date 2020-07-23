@@ -42,14 +42,14 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
         /// <param name="object_id">The eqpt_real_id.</param>
         /// <param name="vhID">The alarm_id.</param>
         /// <returns>AlarmMap.</returns>
-        public CouplerInfo getCouplerInfo(SCApplication app, string adrID)
+        public CouplerData getCouplerInfo(SCApplication app, string adrID)
         {
             try
             {
                 DataTable dt = app.OHxCConfig.Tables["COUPLERINFO"];
                 var query = from c in dt.AsEnumerable()
                             where c.Field<string>("ADDRESS_ID").Trim() == adrID.Trim()
-                            select new CouplerInfo
+                            select new CouplerData
                             {
                                 AddressID = c.Field<string>("ADDRESS_ID"),
                                 Priority = stringToInt(c.Field<string>("PRIORITY")),

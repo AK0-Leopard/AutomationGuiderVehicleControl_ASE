@@ -134,7 +134,7 @@ namespace com.mirle.ibg3k0.sc
 
         public bool IsWork(UnitBLL unitBLL)
         {
-            return true;
+            //return true;
             AUNIT charger = unitBLL.OperateCatch.getUnit(ChargerID);
             if (charger != null)
             {
@@ -208,7 +208,7 @@ namespace com.mirle.ibg3k0.sc
 
         public bool IsWork(UnitBLL unitBLL)
         {
-            return true;
+            //return true;
             AUNIT charger = unitBLL.OperateCatch.getUnit(ChargerID);
             if (charger != null)
             {

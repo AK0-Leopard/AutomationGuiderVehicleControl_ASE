@@ -141,7 +141,7 @@ namespace com.mirle.ibg3k0.sc.Common
         private void setCouplerTypeAddressInfo(AADDRESS couplerAddress)
         {
             //  CouplerInfo coupler_info = GetCouplerInfo(couplerAddress.ADR_ID);
-            CouplerInfo coupler_info = scApp.CouplerInfoDao.getCouplerInfo(scApp, couplerAddress.ADR_ID);
+            CouplerData coupler_info = scApp.CouplerInfoDao.getCouplerInfo(scApp, couplerAddress.ADR_ID);
             if (coupler_info == null)
             {
                 throw new Exception($"CouplerInfo not exist!,Adr id:{couplerAddress.ADR_ID}");
