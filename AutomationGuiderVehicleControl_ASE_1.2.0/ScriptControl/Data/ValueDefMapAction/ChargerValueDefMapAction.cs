@@ -22,6 +22,7 @@ using KingAOP;
 using NLog;
 using System;
 using System.Dynamic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
@@ -111,6 +112,34 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 eqpt.abnormalReportCode20 = recevie_function.ErrorCode_20;
                 eqpt.AbnormalReportIndex = recevie_function.index;
 
+                var current_has_record_alarms = scApp.AlarmBLL.getCurrentChargerAlarmsFromRedis();
+                var current_has_record_alarm_ids = current_has_record_alarms.Select(alarm => SCUtility.Trim(alarm.ALAM_CODE, true)).ToList();
+                var current_happend_alarm_ids = recevie_function.loadCurrentHappendAlarms();
+                var new_happend_alarm_ids = current_happend_alarm_ids.Except(current_has_record_alarm_ids);
+                var end_happend_alarm_ids = current_has_record_alarm_ids.Except(current_happend_alarm_ids);
+
+                foreach (string error_code in new_happend_alarm_ids)
+                {
+                    var find_alarm_info = scApp.AlarmBLL.tryGetChargerAlarmMap(error_code);
+                    if (find_alarm_info.isExist)
+                    {
+                        string eq_id = find_alarm_info.map.EQPT_REAL_ID;
+                        string alarm_code = find_alarm_info.map.ALARM_ID;
+                        string alarm_desc = find_alarm_info.map.ALARM_DESC;
+                        scApp.LineService.ProcessAlarmReport(eq_id, alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet, alarm_desc);
+                    }
+                }
+                foreach (string error_code in end_happend_alarm_ids)
+                {
+                    var find_alarm_info = scApp.AlarmBLL.tryGetChargerAlarmMap(error_code);
+                    if (find_alarm_info.isExist)
+                    {
+                        string eq_id = find_alarm_info.map.EQPT_REAL_ID;
+                        string alarm_code = find_alarm_info.map.ALARM_ID;
+                        string alarm_desc = find_alarm_info.map.ALARM_DESC;
+                        scApp.LineService.ProcessAlarmReport(eq_id, alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset, alarm_desc);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -251,50 +280,80 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
 
 
-
+        object alarmReport_lock_obj = new object();
         public virtual void MasterChargerAbnormalChargingReport(object sender, ValueChangedEventArgs args)
         {
-            var recevie_function =
-                scApp.getFunBaseObj<MCToAGVCAbnormalReport>(eqpt.EQPT_ID) as MCToAGVCAbnormalReport;
-            try
+            lock (alarmReport_lock_obj)
             {
-                recevie_function.Read(bcfApp, eqpt.EqptObjectCate, eqpt.EQPT_ID);
-                eqpt.abnormalReportCode01 = recevie_function.ErrorCode_1;
-                eqpt.abnormalReportCode02 = recevie_function.ErrorCode_2;
-                eqpt.abnormalReportCode03 = recevie_function.ErrorCode_3;
-                eqpt.abnormalReportCode04 = recevie_function.ErrorCode_4;
-                eqpt.abnormalReportCode05 = recevie_function.ErrorCode_5;
-                eqpt.abnormalReportCode06 = recevie_function.ErrorCode_6;
-                eqpt.abnormalReportCode07 = recevie_function.ErrorCode_7;
-                eqpt.abnormalReportCode08 = recevie_function.ErrorCode_8;
-                eqpt.abnormalReportCode09 = recevie_function.ErrorCode_9;
-                eqpt.abnormalReportCode10 = recevie_function.ErrorCode_10;
-                eqpt.abnormalReportCode11 = recevie_function.ErrorCode_11;
-                eqpt.abnormalReportCode12 = recevie_function.ErrorCode_12;
-                eqpt.abnormalReportCode13 = recevie_function.ErrorCode_13;
-                eqpt.abnormalReportCode14 = recevie_function.ErrorCode_14;
-                eqpt.abnormalReportCode15 = recevie_function.ErrorCode_15;
-                eqpt.abnormalReportCode16 = recevie_function.ErrorCode_16;
-                eqpt.abnormalReportCode17 = recevie_function.ErrorCode_17;
-                eqpt.abnormalReportCode18 = recevie_function.ErrorCode_18;
-                eqpt.abnormalReportCode19 = recevie_function.ErrorCode_19;
-                eqpt.abnormalReportCode20 = recevie_function.ErrorCode_20;
-                eqpt.AbnormalReportIndex = recevie_function.index;
+                var recevie_function =
+                    scApp.getFunBaseObj<MCToAGVCAbnormalReport>(eqpt.EQPT_ID) as MCToAGVCAbnormalReport;
+                try
+                {
+                    recevie_function.Read(bcfApp, eqpt.EqptObjectCate, eqpt.EQPT_ID);
+                    eqpt.abnormalReportCode01 = recevie_function.ErrorCode_1;
+                    eqpt.abnormalReportCode02 = recevie_function.ErrorCode_2;
+                    eqpt.abnormalReportCode03 = recevie_function.ErrorCode_3;
+                    eqpt.abnormalReportCode04 = recevie_function.ErrorCode_4;
+                    eqpt.abnormalReportCode05 = recevie_function.ErrorCode_5;
+                    eqpt.abnormalReportCode06 = recevie_function.ErrorCode_6;
+                    eqpt.abnormalReportCode07 = recevie_function.ErrorCode_7;
+                    eqpt.abnormalReportCode08 = recevie_function.ErrorCode_8;
+                    eqpt.abnormalReportCode09 = recevie_function.ErrorCode_9;
+                    eqpt.abnormalReportCode10 = recevie_function.ErrorCode_10;
+                    eqpt.abnormalReportCode11 = recevie_function.ErrorCode_11;
+                    eqpt.abnormalReportCode12 = recevie_function.ErrorCode_12;
+                    eqpt.abnormalReportCode13 = recevie_function.ErrorCode_13;
+                    eqpt.abnormalReportCode14 = recevie_function.ErrorCode_14;
+                    eqpt.abnormalReportCode15 = recevie_function.ErrorCode_15;
+                    eqpt.abnormalReportCode16 = recevie_function.ErrorCode_16;
+                    eqpt.abnormalReportCode17 = recevie_function.ErrorCode_17;
+                    eqpt.abnormalReportCode18 = recevie_function.ErrorCode_18;
+                    eqpt.abnormalReportCode19 = recevie_function.ErrorCode_19;
+                    eqpt.abnormalReportCode20 = recevie_function.ErrorCode_20;
+                    eqpt.AbnormalReportIndex = recevie_function.index;
 
 
+                    var current_has_record_alarms = scApp.AlarmBLL.getCurrentChargerAlarmsFromRedis();
+                    var current_has_record_alarm_ids = current_has_record_alarms.Select(alarm => SCUtility.Trim(alarm.ALAM_CODE, true)).ToList();
+                    var current_happend_alarm_ids = recevie_function.loadCurrentHappendAlarms();
+                    var new_happend_alarm_ids = current_happend_alarm_ids.Except(current_has_record_alarm_ids);
+                    var end_happend_alarm_ids = current_has_record_alarm_ids.Except(current_happend_alarm_ids);
 
+                    foreach (string error_code in new_happend_alarm_ids)
+                    {
+                        var find_alarm_info = scApp.AlarmBLL.tryGetChargerAlarmMap(error_code);
+                        if (find_alarm_info.isExist)
+                        {
+                            string eq_id = find_alarm_info.map.EQPT_REAL_ID;
+                            string alarm_code = find_alarm_info.map.ALARM_ID;
+                            string alarm_desc = find_alarm_info.map.ALARM_DESC;
+                            scApp.LineService.ProcessAlarmReport(eq_id, alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet, alarm_desc);
+                        }
+                    }
+                    foreach (string error_code in end_happend_alarm_ids)
+                    {
+                        var find_alarm_info = scApp.AlarmBLL.tryGetChargerAlarmMap(error_code);
+                        if (find_alarm_info.isExist)
+                        {
+                            string eq_id = find_alarm_info.map.EQPT_REAL_ID;
+                            string alarm_code = find_alarm_info.map.ALARM_ID;
+                            string alarm_desc = find_alarm_info.map.ALARM_DESC;
+                            scApp.LineService.ProcessAlarmReport(eq_id, alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset, alarm_desc);
+                        }
+                    }
 
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(ChargerValueDefMapAction), Device: DEVICE_NAME_MC,
-                         Data: recevie_function.ToString(),
-                         VehicleID: eqpt.EQPT_ID);
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Exception");
-            }
-            finally
-            {
-                scApp.putFunBaseObj<MCToAGVCAbnormalReport>(recevie_function);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(ChargerValueDefMapAction), Device: DEVICE_NAME_MC,
+                             Data: recevie_function.ToString(),
+                             VehicleID: eqpt.EQPT_ID);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    scApp.putFunBaseObj<MCToAGVCAbnormalReport>(recevie_function);
+                }
             }
         }
 
