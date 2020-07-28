@@ -58,6 +58,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                 List<CouplerAddress> CouplerAddresses = CommObjCacheManager.getCouplerAddresses();
                 return CouplerAddresses;
             }
+            public List<CouplerAddress> LoadCouplerAddresses(string chargerID)
+            {
+                List<CouplerAddress> CouplerAddresses = CommObjCacheManager.getCouplerAddresses();
+                CouplerAddresses = CouplerAddresses.Where(coupler => SCUtility.isMatche(coupler.ChargerID, chargerID)).ToList();
+                return CouplerAddresses;
+            }
             public List<CouplerAddress> GetEnableCouplerAddresses(UnitBLL unitBLL)
             {
                 List<CouplerAddress> CouplerAddresses = CommObjCacheManager.getCouplerAddresses();
@@ -75,14 +81,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                     switch (couplerAddress.CouplerNum)
                     {
                         case CouplerNum.NumberOne:
-                            return charger.coupler1Status == SCAppConstants.CouplerStatus.Enable ||
-                                   charger.coupler1Status == SCAppConstants.CouplerStatus.Charging;
+                            return charger.Coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                                   charger.Coupler1Status == SCAppConstants.CouplerStatus.Charging;
                         case CouplerNum.NumberTwo:
-                            return charger.coupler1Status == SCAppConstants.CouplerStatus.Enable ||
-                                   charger.coupler1Status == SCAppConstants.CouplerStatus.Charging;
+                            return charger.Coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                                   charger.Coupler1Status == SCAppConstants.CouplerStatus.Charging;
                         case CouplerNum.NumberThree:
-                            return charger.coupler1Status == SCAppConstants.CouplerStatus.Enable ||
-                                   charger.coupler1Status == SCAppConstants.CouplerStatus.Charging;
+                            return charger.Coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                                   charger.Coupler1Status == SCAppConstants.CouplerStatus.Charging;
                     }
                 }
                 return false;

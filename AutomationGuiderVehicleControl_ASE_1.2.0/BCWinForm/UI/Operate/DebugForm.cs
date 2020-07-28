@@ -288,9 +288,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 tb_HighOutputCurrentProtect.Text = unit.chargerHighOutputCurrentProtection.ToString();
                 tb_OverheatProtect.Text = unit.chargerOverheatProtection.ToString();
                 tb_RS485Status.Text = unit.chargerRS485Status.ToString();
-                tb_CouplerStatus1.Text = unit.coupler1Status.ToString();
-                tb_CouplerStatus2.Text = unit.coupler2Status.ToString();
-                tb_CouplerStatus3.Text = unit.coupler3Status.ToString();
+                tb_CouplerStatus1.Text = unit.Coupler1Status.ToString();
+                tb_CouplerStatus2.Text = unit.Coupler2Status.ToString();
+                tb_CouplerStatus3.Text = unit.Coupler3Status.ToString();
                 tb_CouplerPosition1.Text = unit.coupler1Position.ToString();
                 tb_CouplerPosition2.Text = unit.coupler2Position.ToString();
                 tb_CouplerPosition3.Text = unit.coupler3Position.ToString();
@@ -364,9 +364,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 tb_HighOutputCurrentProtect.Text = unit.chargerHighOutputCurrentProtection.ToString();
                 tb_OverheatProtect.Text = unit.chargerOverheatProtection.ToString();
                 tb_RS485Status.Text = unit.chargerRS485Status.ToString();
-                tb_CouplerStatus1.Text = unit.coupler1Status.ToString();
-                tb_CouplerStatus2.Text = unit.coupler2Status.ToString();
-                tb_CouplerStatus3.Text = unit.coupler3Status.ToString();
+                tb_CouplerStatus1.Text = unit.Coupler1Status.ToString();
+                tb_CouplerStatus2.Text = unit.Coupler2Status.ToString();
+                tb_CouplerStatus3.Text = unit.Coupler3Status.ToString();
                 tb_CouplerPosition1.Text = unit.coupler1Position.ToString();
                 tb_CouplerPosition2.Text = unit.coupler2Position.ToString();
                 tb_CouplerPosition3.Text = unit.coupler3Position.ToString();

@@ -159,6 +159,18 @@ namespace com.mirle.ibg3k0.sc
 
     public class AGVStation : AEQPT, IAGVStationType
     {
+        public string AddressID
+        {
+            get
+            {
+                if (portStationList == null) return "";
+                var position = portStationList.
+                       Where(port_station => port_station.PORT_ID.Contains("_ST0")).
+                       FirstOrDefault();
+                if (position == null) return "";
+                return SCUtility.Trim(position.ADR_ID, true);
+            }
+        }
         public bool IsCheckPortReady { get; set; } = true;
         public string RemoveURI { get { return this.TcpIpAgentName; } }
         public string AGVStationID { get { return this.EQPT_ID; } }
@@ -250,6 +262,7 @@ namespace com.mirle.ibg3k0.sc
     {
         bool IsCheckPortReady { get; set; }
         bool IsVirtrueUse { get; }
+        string AddressID { get; }
         string RemoveURI { get; }
         string AGVStationID { get; }
         string getAGVStationID();

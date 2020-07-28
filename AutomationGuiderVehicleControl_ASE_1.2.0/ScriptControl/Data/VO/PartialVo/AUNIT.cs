@@ -21,6 +21,10 @@ namespace com.mirle.ibg3k0.sc
         private AlarmHisList alarmHisList = new AlarmHisList();
         #region charger 
 
+        #region Event
+        public event EventHandler CouplerStatusChanged;
+        public event EventHandler CouplerPositionAbnormalHappend;
+        #endregion Event
 
         private int chargerAlive;
         public virtual int ChargerAlive
@@ -123,9 +127,63 @@ namespace com.mirle.ibg3k0.sc
         public bool chargerOverheatProtection;
         public string chargerRS485Status;
 
-        public SCAppConstants.CouplerStatus coupler1Status;
-        public SCAppConstants.CouplerStatus coupler2Status;
-        public SCAppConstants.CouplerStatus coupler3Status;
+        public SCAppConstants.CouplerStatus Coupler1Status { get; private set; }
+        public SCAppConstants.CouplerStatus Coupler2Status { get; private set; }
+        public SCAppConstants.CouplerStatus Coupler3Status { get; private set; }
+        public void setCouplerStatus(SCAppConstants.CouplerStatus coupler1Status, SCAppConstants.CouplerStatus coupler2Status,
+                                     SCAppConstants.CouplerStatus coupler3Status)
+        {
+            bool has_change = false;
+            if (Coupler1Status != coupler1Status)
+            {
+                has_change = hasCouplerStatusChange(coupler1Status, Coupler1Status);
+                Coupler1Status = coupler1Status;
+            }
+            if (Coupler2Status != coupler2Status)
+            {
+                has_change = hasCouplerStatusChange(coupler2Status, Coupler2Status);
+                Coupler2Status = coupler2Status;
+            }
+            if (Coupler3Status != coupler3Status)
+            {
+                has_change = hasCouplerStatusChange(coupler3Status, Coupler3Status);
+                Coupler3Status = coupler3Status;
+            }
+            if (has_change)
+            {
+                onCouplerStatusChange();
+            }
+        }
+        private bool hasCouplerStatusChange(SCAppConstants.CouplerStatus oldStatus, SCAppConstants.CouplerStatus newStatus)
+        {
+            switch (oldStatus)
+            {
+                case SCAppConstants.CouplerStatus.Enable:
+                case SCAppConstants.CouplerStatus.Charging:
+                    if (newStatus == SCAppConstants.CouplerStatus.Disable ||
+                       newStatus == SCAppConstants.CouplerStatus.Error)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                case SCAppConstants.CouplerStatus.Disable:
+                case SCAppConstants.CouplerStatus.Error:
+                    if (newStatus == SCAppConstants.CouplerStatus.Enable ||
+                       newStatus == SCAppConstants.CouplerStatus.Charging)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+            }
+            return false;
+        }
+
 
         public SCAppConstants.CouplerPosition coupler1Position;
         public SCAppConstants.CouplerPosition coupler2Position;
@@ -153,7 +211,14 @@ namespace com.mirle.ibg3k0.sc
             public string signal2;
         }
 
-
+        public void onCouplerStatusChange()
+        {
+            CouplerStatusChanged?.Invoke(this, EventArgs.Empty);
+        }
+        public void onCouplerPositionAbnormalHappend()
+        {
+            CouplerPositionAbnormalHappend?.Invoke(this, EventArgs.Empty);
+        }
         #endregion charger
 
         public AUNIT()

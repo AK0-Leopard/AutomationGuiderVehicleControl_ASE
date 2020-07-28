@@ -20,6 +20,7 @@ namespace com.mirle.ibg3k0.sc.Module
         private AddressesBLL addressesBLL = null;
         private GuideBLL guideBLL = null;
         private CMDBLL cmdBLL = null;
+        private EqptBLL eqptBLL = null;
         private UnitBLL unitBLL = null;
         private CommObjCacheManager commObjCacheManager = null;
         public VehicleChargerModule()
@@ -34,6 +35,7 @@ namespace com.mirle.ibg3k0.sc.Module
             addressesBLL = app.AddressesBLL;
             guideBLL = app.GuideBLL;
             cmdBLL = app.CMDBLL;
+            eqptBLL = app.EqptBLL;
             unitBLL = app.UnitBLL;
             commObjCacheManager = app.getCommObjCacheManager();
             var vhs = app.getEQObjCacheManager().getAllVehicle();
@@ -41,6 +43,62 @@ namespace com.mirle.ibg3k0.sc.Module
             {
                 vh.CommandComplete += Vh_CommandComplete;
                 vh.BatteryLevelChange += Vh_BatteryLevelChange;
+            }
+
+            //註冊各個Coupler的Status變化，在有其中一個有變化的時候要通知AGV目前所有coupler的狀態
+            List<AUNIT> chargers = unitBLL.OperateCatch.loadUnits();
+            foreach (AUNIT charger in chargers)
+            {
+                charger.CouplerStatusChanged += Charger_CouplerStatusChanged;
+                //charger.CouplerPositionAbnormalHappend += Charger_CouplerPositionAbnormalHappend;
+            }
+        }
+
+        private void Charger_CouplerPositionAbnormalHappend(object sender, EventArgs e)
+        {
+            try
+            {
+                AUNIT charger = sender as AUNIT;
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                   Data: $"Charger:{charger.EQPT_ID} of coupler position error send pause command to vh...");
+                var couplers = addressesBLL.cache.LoadCouplerAddresses(charger.EQPT_ID);
+                if (couplers != null && couplers.Count > 0)
+                {
+                    foreach (var coupler in couplers)
+                    {
+                        AGVStation station = eqptBLL.OperateCatch.getAGVStation(coupler.ADR_ID);
+                        if (station == null) continue;
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                           Data: $"Charger:{charger.EQPT_ID} of coupler position error send pause command to vh:{station.BindingVh}");
+                        vehicleService.Send.Pause(station.BindingVh, PauseEvent.Pause, PauseType.Normal);
+                        //var service_vh = vehicleBLL.cache.getVehicle(station.BindingVh);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+        object charger_status_notify_lock_obj = new object();
+        private void Charger_CouplerStatusChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                   Data: $"Start sysc coupler status...");
+                lock (charger_status_notify_lock_obj)
+                {
+                    vehicleService.doDataSyscAllVh();
+                }
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                   Data: $"End sysc coupler status.");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
             }
         }
 

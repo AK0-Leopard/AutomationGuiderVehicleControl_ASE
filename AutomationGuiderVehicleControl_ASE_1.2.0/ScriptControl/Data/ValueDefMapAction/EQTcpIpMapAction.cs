@@ -353,7 +353,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
         public override bool send_Str11(ID_11_COUPLER_INFO_REP send_gpp, out ID_111_COUPLER_INFO_RESPONSE receive_gpp)
         {
-            bool isScuess = false;
+            bool isScuess = true;
             try
             {
                 string rtnMsg = string.Empty;
@@ -362,8 +362,11 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     ID = WrapperMessage.CouplerInfoRepFieldNumber,
                     CouplerInfoRep = send_gpp
                 };
-                com.mirle.iibg3k0.ttc.Common.TrxTcpIp.ReturnCode result = snedRecv(wrapper, out receive_gpp, out rtnMsg);
-                isScuess = result == TrxTcpIp.ReturnCode.Normal;
+                //com.mirle.iibg3k0.ttc.Common.TrxTcpIp.ReturnCode result = snedRecv(wrapper, out receive_gpp, out rtnMsg);
+                receive_gpp = new ID_111_COUPLER_INFO_RESPONSE();
+
+                ITcpIpControl.sendGoogleMsg(bcfApp, tcpipAgentName, wrapper, false);
+                //isScuess = result == TrxTcpIp.ReturnCode.Normal;
             }
             catch (Exception ex)
             {
@@ -702,7 +705,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(eqpt.VEHICLE_ID);
             if (eqpt.PauseStatus == VhStopSingle.Off)
-                //&& !SCUtility.isEmpty(vh.MCS_CMD))
+            //&& !SCUtility.isEmpty(vh.MCS_CMD))
             {
                 double PauseTime_ms = eqpt.watchPauseTime.ElapsedMilliseconds;
                 double PauseTime_s = PauseTime_ms / 1000;

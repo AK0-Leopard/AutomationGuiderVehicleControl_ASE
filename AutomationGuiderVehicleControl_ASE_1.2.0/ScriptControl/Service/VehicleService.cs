@@ -1,4 +1,5 @@
 ﻿using com.mirle.ibg3k0.bcf.App;
+using com.mirle.ibg3k0.bcf.App;
 using com.mirle.ibg3k0.bcf.Common;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.BLL;
@@ -306,6 +307,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     vh.onErrorStatusChange(errorStat);
                 }
+                if (modeStat != vh.MODE_STATUS)
+                {
+                    vh.onModeStatusChange(modeStat);
+                }
 
                 if (hasdifferent)
                 {
@@ -316,11 +321,6 @@ namespace com.mirle.ibg3k0.sc.Service
                                                          has_cst_l, has_cst_r,
                                                          cmd_id_1, cmd_id_2, current_excute_cmd_id,
                                                          batteryCapacity, will_pass_section_id);
-                }
-
-                if (modeStat != vh.MODE_STATUS)
-                {
-                    vh.onModeStatusChange(modeStat);
                 }
                 //cmdBLL.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
                 vh.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
@@ -1725,6 +1725,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     vh.onErrorStatusChange(errorStat);
                 }
+                if (modeStat != vh.MODE_STATUS)
+                {
+                    vh.onModeStatusChange(modeStat);
+                }
 
 
                 bool hasdifferent = vh.BATTERYCAPACITY != batteryCapacity ||
@@ -1760,7 +1764,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 if (modeStat != vh.MODE_STATUS)
                 {
-                    vh.onModeStatusChange(modeStat);
+                    //vh.onModeStatusChange(modeStat);
                 }
                 //cmdBLL.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
                 vh.setCurrentCanAssignCmdCount(shelf_status_l, shelf_status_r);
@@ -2708,23 +2712,29 @@ namespace com.mirle.ibg3k0.sc.Service
             if (vh == null) return;
             try
             {
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                   Data: $"Process vehicle mode change ,change to mode status:{e}",
-                   VehicleID: vh.VEHICLE_ID,
-                   CST_ID_L: vh.CST_ID_L,
-                   CST_ID_R: vh.CST_ID_R);
+                //LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                //   Data: $"Process vehicle mode change ,change to mode status:{e}",
+                //   VehicleID: vh.VEHICLE_ID,
+                //   CST_ID_L: vh.CST_ID_L,
+                //   CST_ID_R: vh.CST_ID_R);
 
-                //如果他是變成manual mode的話，則需要報告無法服務的Alarm給 MCS
-                if (e == VHModeStatus.AutoCharging ||
-                    e == VHModeStatus.AutoLocal ||
-                    e == VHModeStatus.AutoRemote)
+                ////如果他是變成manual mode的話，則需要報告無法服務的Alarm給 MCS
+                //if (e == VHModeStatus.AutoCharging ||
+                //    e == VHModeStatus.AutoLocal ||
+                //    e == VHModeStatus.AutoRemote)
+                //{
+                //    scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrReset, $"vehicle cannot service");
+                //}
+                //else
+                //{
+                //    if (vh.IS_INSTALLED)
+                //        scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrSet, $"vehicle cannot service");
+                //}
+                if (e == VHModeStatus.AutoLocal ||
+                    e == VHModeStatus.AutoRemote ||
+                    e == VHModeStatus.AutoCharging)
                 {
-                    scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrReset, $"vehicle cannot service");
-                }
-                else
-                {
-                    if (vh.IS_INSTALLED)
-                        scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrSet, $"vehicle cannot service");
+                    doDataSysc(vh.VEHICLE_ID);
                 }
             }
             catch (Exception ex)
@@ -3264,7 +3274,7 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 string adr_id = coupler.ADR_ID;
                 ProtocolFormat.OHTMessage.CouplerStatus couplerStatus = coupler.IsWork(scApp.UnitBLL) ?
-                                                                        ProtocolFormat.OHTMessage.CouplerStatus.Enable : ProtocolFormat.OHTMessage.CouplerStatus.Enable;
+                                                                        ProtocolFormat.OHTMessage.CouplerStatus.Enable : ProtocolFormat.OHTMessage.CouplerStatus.Disable;
                 couplerInfos.Add(new CouplerInfo()
                 {
                     AddressID = adr_id,
@@ -3385,6 +3395,39 @@ namespace com.mirle.ibg3k0.sc.Service
             isSuccess = vh.send_S23(sned_gpp, out receive_gpp);
             isSuccess = isSuccess && receive_gpp.ReplyCode == 0;
             return isSuccess;
+        }
+        public bool doDataSyscAllVh()
+        {
+            bool isSyscCmp = true;
+            try
+            {
+                var vhs = scApp.VehicleBLL.cache.loadAllVh();
+                foreach (AVEHICLE vh in vhs)
+                {
+                    if (!vh.isTcpIpConnect)
+                        continue;
+
+                    string syc_vh_id = vh.VEHICLE_ID;
+                    Task.Run(() =>
+                    {
+                        try
+                        {
+                            CoplerInfosReport(syc_vh_id);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex, "Exception");
+                            isSyscCmp = false;
+                        }
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                isSyscCmp = false;
+            }
+            return isSyscCmp;
         }
         public bool doDataSysc(string vh_id)
         {

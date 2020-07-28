@@ -48,6 +48,16 @@ namespace com.mirle.ibg3k0.sc.BLL
                              ToList();
                 return eqpts;
             }
+            public AGVStation getAGVStation(string addressID)
+            {
+                var eqpt = CacheManager.getAllEquipment().
+                             Where(e => (e is AGVStation) && 
+                                        SCUtility.isMatche((e as AGVStation).AddressID, addressID)).
+                             Select(e => e as AGVStation).
+                             FirstOrDefault();
+                return eqpt;
+            }
+
             public SCAppConstants.EqptType GetEqptType(string eqptID)
             {
                 var eqpt = CacheManager.getAllEquipment().
