@@ -2162,14 +2162,14 @@ namespace com.mirle.ibg3k0.sc.Service
                 //如果一樣 則代表已經在待命位上
                 if (SCUtility.isMatche(vh_current_adr, cmd_source_adr)) return;
                 var creat_result = service.Command.Move(assignVH.VEHICLE_ID, cmd.SOURCE);
-                if (creat_result.isSuccess)
-                {
-                    bool is_success = service.Send.Command(assignVH, creat_result.moveCmd);
-                    if (!is_success)
-                    {
-                        CommandInitialFail(cmd);
-                    }
-                }
+                //if (creat_result.isSuccess)
+                //{
+                //    bool is_success = service.Send.Command(assignVH, creat_result.moveCmd);
+                //    if (!is_success)
+                //    {
+                //        CommandInitialFail(cmd);
+                //    }
+                //}
             }
         }
         public class AvoidProcessor
@@ -2735,6 +2735,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     e == VHModeStatus.AutoCharging)
                 {
                     doDataSysc(vh.VEHICLE_ID);
+                    Send.AlarmReset(vh.VEHICLE_ID);
                 }
             }
             catch (Exception ex)

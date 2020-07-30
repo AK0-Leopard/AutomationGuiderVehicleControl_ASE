@@ -126,6 +126,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             num_BatteryLowBoundaryValue.Value = AVEHICLE.BATTERYLEVELVALUE_LOW;
             num_BatteryHighBoundaryValue.Value = AVEHICLE.BATTERYLEVELVALUE_HIGH;
             numer_pre_open_agv_station_distance.Value = sc.App.SystemParameter.OpenAGVStationCoverDistance_mm;
+            num_tran_cmd_queue_time_out_ms.Value = sc.App.SystemParameter.TransferCommandQueueTimeOut_mSec;
             cb_by_pass_shelf_status.Checked = sc.App.SystemParameter.IsByPassAGVShelfStatus;
 
             agvPortStation = bcApp.SCApplication.PortStationBLL.OperateCatch.loadAllPortStation();
@@ -1474,6 +1475,20 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_by_pass_shelf_status_CheckedChanged(object sender, EventArgs e)
         {
             sc.App.SystemParameter.setIsByPassAGVShelfStatus(cb_by_pass_shelf_status.Checked);
+        }
+
+        private void num_tran_cmd_queue_time_out_ms_ValueChanged(object sender, EventArgs e)
+        {
+            sc.App.SystemParameter.setTransferCommandQueueTimeOut_mSec((int)num_tran_cmd_queue_time_out_ms.Value);
+        }
+
+        private async void button11_Click_1(object sender, EventArgs e)
+        {
+            await Task.Run(() =>
+            {
+                bcApp.SCApplication.LineService.ProcessAlarmReport("AGVC", "0", sc.ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
+                            $"");
+            });
         }
     }
 }

@@ -11,6 +11,7 @@ using com.mirle.ibg3k0.sc.ObjectRelay;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -178,7 +179,63 @@ namespace com.mirle.ibg3k0.sc
         {
             return this.EQPT_ID;
         }
-        public bool IsReservation { get; set; }
+
+        private Stopwatch OutOfStockTimer = new Stopwatch();
+        const int OUT_OF_STOCK_TIME_OUT_MS = 90000;
+        public bool IsOutOfStockTimeOut
+        {
+            get { return OutOfStockTimer.ElapsedMilliseconds > OUT_OF_STOCK_TIME_OUT_MS; }
+        }
+        private bool isoutofstock;
+        public bool IsOutOfStock
+        {
+            get { return isoutofstock; }
+            set
+            {
+                if (isoutofstock != value)
+                {
+                    isoutofstock = value;
+                    if (isoutofstock)
+                    {
+                        OutOfStockTimer.Start();
+                    }
+                    else
+                    {
+                        OutOfStockTimer.Reset();
+                    }
+                }
+            }
+        }
+
+        private Stopwatch ReservedTimer = new Stopwatch();
+        const int RESERVED_TIME_OUT_MS = 90000;
+        public bool IsReservedTimeOut
+        {
+            get { return ReservedTimer.ElapsedMilliseconds > RESERVED_TIME_OUT_MS; }
+        }
+        private bool isreservation;
+        public bool IsReservation
+        {
+            get
+            {
+                return isreservation;
+            }
+            set
+            {
+                if (isreservation != value)
+                {
+                    isreservation = value;
+                    if (isreservation)
+                    {
+                        ReservedTimer.Start();
+                    }
+                    else
+                    {
+                        ReservedTimer.Reset();
+                    }
+                }
+            }
+        }
         public long syncPoint = 0;
         public bool IsTransferUnloadExcuting { get; set; }
         public bool IsReadyDoubleUnload

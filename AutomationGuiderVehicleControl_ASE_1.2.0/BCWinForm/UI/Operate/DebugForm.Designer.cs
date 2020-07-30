@@ -34,6 +34,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.uctl_Send_Fun_71 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -51,6 +52,8 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.ck_CST_Status_L = new System.Windows.Forms.CheckBox();
             this.ck_CST_Status_R = new System.Windows.Forms.CheckBox();
+            this.btn_changeToRemove = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToInstall = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.lbl_install_status = new System.Windows.Forms.Label();
             this.label73 = new System.Windows.Forms.Label();
             this.btn_auto_local = new System.Windows.Forms.Button();
@@ -82,6 +85,8 @@
             this.txt_func51_guideSec = new System.Windows.Forms.TextBox();
             this.label40 = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
+            this.btn_func71 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun2 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.btn_cmd_override_test = new System.Windows.Forms.Button();
             this.btn_reset_teach_result = new System.Windows.Forms.Button();
             this.ck_autoTech = new System.Windows.Forms.CheckBox();
@@ -94,7 +99,17 @@
             this.label6 = new System.Windows.Forms.Label();
             this.cmb_pauseType = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.btn_pause = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.cmb_pauseEvent = new System.Windows.Forms.ComboBox();
+            this.uctl_SendFun1 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun15 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun13 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun11 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun17 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun19 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun21 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun23 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.cb_by_pass_shelf_status = new System.Windows.Forms.CheckBox();
@@ -149,6 +164,8 @@
             this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btn_refresf_portsation_info = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.num_tran_cmd_queue_time_out_ms = new System.Windows.Forms.NumericUpDown();
+            this.label95 = new System.Windows.Forms.Label();
             this.numer_pre_open_agv_station_distance = new System.Windows.Forms.NumericUpDown();
             this.label47 = new System.Windows.Forms.Label();
             this.ck_check_port_is_ready = new System.Windows.Forms.CheckBox();
@@ -200,6 +217,36 @@
             this.ck_test_carrierinterface_error = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.groupBox23 = new System.Windows.Forms.GroupBox();
+            this.tb_ErrorReportCode20 = new System.Windows.Forms.TextBox();
+            this.label85 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode19 = new System.Windows.Forms.TextBox();
+            this.label86 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode18 = new System.Windows.Forms.TextBox();
+            this.label87 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode17 = new System.Windows.Forms.TextBox();
+            this.label88 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode16 = new System.Windows.Forms.TextBox();
+            this.label89 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode15 = new System.Windows.Forms.TextBox();
+            this.label90 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode14 = new System.Windows.Forms.TextBox();
+            this.label91 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode13 = new System.Windows.Forms.TextBox();
+            this.label92 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode12 = new System.Windows.Forms.TextBox();
+            this.label93 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode11 = new System.Windows.Forms.TextBox();
+            this.label94 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode10 = new System.Windows.Forms.TextBox();
+            this.label68 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode9 = new System.Windows.Forms.TextBox();
+            this.label74 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode8 = new System.Windows.Forms.TextBox();
+            this.label75 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode7 = new System.Windows.Forms.TextBox();
+            this.label76 = new System.Windows.Forms.Label();
+            this.tb_ErrorReportCode6 = new System.Windows.Forms.TextBox();
+            this.label84 = new System.Windows.Forms.Label();
             this.tb_ErrorReportIndex = new System.Windows.Forms.TextBox();
             this.label58 = new System.Windows.Forms.Label();
             this.tb_ErrorReportCode5 = new System.Windows.Forms.TextBox();
@@ -335,51 +382,7 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.btn_changeToRemove = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToInstall = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_func71 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun2 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_pause = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun1 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun15 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun13 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun11 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun17 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun19 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun21 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun23 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_Send_Fun_71 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.tb_ErrorReportCode10 = new System.Windows.Forms.TextBox();
-            this.label68 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode9 = new System.Windows.Forms.TextBox();
-            this.label74 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode8 = new System.Windows.Forms.TextBox();
-            this.label75 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode7 = new System.Windows.Forms.TextBox();
-            this.label76 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode6 = new System.Windows.Forms.TextBox();
-            this.label84 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode20 = new System.Windows.Forms.TextBox();
-            this.label85 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode19 = new System.Windows.Forms.TextBox();
-            this.label86 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode18 = new System.Windows.Forms.TextBox();
-            this.label87 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode17 = new System.Windows.Forms.TextBox();
-            this.label88 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode16 = new System.Windows.Forms.TextBox();
-            this.label89 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode15 = new System.Windows.Forms.TextBox();
-            this.label90 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode14 = new System.Windows.Forms.TextBox();
-            this.label91 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode13 = new System.Windows.Forms.TextBox();
-            this.label92 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode12 = new System.Windows.Forms.TextBox();
-            this.label93 = new System.Windows.Forms.Label();
-            this.tb_ErrorReportCode11 = new System.Windows.Forms.TextBox();
-            this.label94 = new System.Windows.Forms.Label();
+            this.button11 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -405,6 +408,7 @@
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_cache_object_data_portstation)).BeginInit();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_tran_cmd_queue_time_out_ms)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numer_pre_open_agv_station_distance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_AGVStationInfo)).BeginInit();
             this.groupBox18.SuspendLayout();
@@ -490,6 +494,17 @@
             this.label1.Size = new System.Drawing.Size(90, 22);
             this.label1.TabIndex = 15;
             this.label1.Text = "From Adr";
+            // 
+            // uctl_Send_Fun_71
+            // 
+            this.uctl_Send_Fun_71.Location = new System.Drawing.Point(10, 191);
+            this.uctl_Send_Fun_71.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_Send_Fun_71.Name = "uctl_Send_Fun_71";
+            this.uctl_Send_Fun_71.Size = new System.Drawing.Size(138, 42);
+            this.uctl_Send_Fun_71.TabIndex = 13;
+            this.uctl_Send_Fun_71.Text = "Send Func 71";
+            this.uctl_Send_Fun_71.UseVisualStyleBackColor = true;
+            this.uctl_Send_Fun_71.Click += new System.EventHandler(this.uctl_Send_Fun_71_Click);
             // 
             // button1
             // 
@@ -715,6 +730,26 @@
             this.ck_CST_Status_R.Text = "CST Status R";
             this.ck_CST_Status_R.UseVisualStyleBackColor = true;
             this.ck_CST_Status_R.Click += new System.EventHandler(this.ck_CST_Status_Click);
+            // 
+            // btn_changeToRemove
+            // 
+            this.btn_changeToRemove.Location = new System.Drawing.Point(823, 312);
+            this.btn_changeToRemove.Name = "btn_changeToRemove";
+            this.btn_changeToRemove.Size = new System.Drawing.Size(165, 30);
+            this.btn_changeToRemove.TabIndex = 53;
+            this.btn_changeToRemove.Text = "Remove";
+            this.btn_changeToRemove.UseVisualStyleBackColor = true;
+            this.btn_changeToRemove.Click += new System.EventHandler(this.btn_changeToRemove_Click);
+            // 
+            // btn_changeToInstall
+            // 
+            this.btn_changeToInstall.Location = new System.Drawing.Point(823, 346);
+            this.btn_changeToInstall.Name = "btn_changeToInstall";
+            this.btn_changeToInstall.Size = new System.Drawing.Size(165, 32);
+            this.btn_changeToInstall.TabIndex = 52;
+            this.btn_changeToInstall.Text = "Install";
+            this.btn_changeToInstall.UseVisualStyleBackColor = true;
+            this.btn_changeToInstall.Click += new System.EventHandler(this.btn_changeToInstall_Click);
             // 
             // lbl_install_status
             // 
@@ -1048,6 +1083,28 @@
             this.label42.TabIndex = 15;
             this.label42.Text = "Guide Section";
             // 
+            // btn_func71
+            // 
+            this.btn_func71.Location = new System.Drawing.Point(9, 136);
+            this.btn_func71.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btn_func71.Name = "btn_func71";
+            this.btn_func71.Size = new System.Drawing.Size(138, 42);
+            this.btn_func71.TabIndex = 13;
+            this.btn_func71.Text = "Send Func 71";
+            this.btn_func71.UseVisualStyleBackColor = true;
+            this.btn_func71.Click += new System.EventHandler(this.btn_func71_Click);
+            // 
+            // uctl_SendFun2
+            // 
+            this.uctl_SendFun2.Location = new System.Drawing.Point(6, 186);
+            this.uctl_SendFun2.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun2.Name = "uctl_SendFun2";
+            this.uctl_SendFun2.Size = new System.Drawing.Size(214, 35);
+            this.uctl_SendFun2.TabIndex = 29;
+            this.uctl_SendFun2.Text = "Send Func:2";
+            this.uctl_SendFun2.UseVisualStyleBackColor = true;
+            this.uctl_SendFun2.Click += new System.EventHandler(this.uctl_SendFun2_Click);
+            // 
             // btn_cmd_override_test
             // 
             this.btn_cmd_override_test.Location = new System.Drawing.Point(6, 767);
@@ -1171,6 +1228,17 @@
             this.label5.TabIndex = 15;
             this.label5.Text = "Event";
             // 
+            // btn_pause
+            // 
+            this.btn_pause.Location = new System.Drawing.Point(8, 171);
+            this.btn_pause.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btn_pause.Name = "btn_pause";
+            this.btn_pause.Size = new System.Drawing.Size(138, 42);
+            this.btn_pause.TabIndex = 13;
+            this.btn_pause.Text = "Send Func 39";
+            this.btn_pause.UseVisualStyleBackColor = true;
+            this.btn_pause.Click += new System.EventHandler(this.btn_pause_Click);
+            // 
             // cmb_pauseEvent
             // 
             this.cmb_pauseEvent.FormattingEnabled = true;
@@ -1179,6 +1247,105 @@
             this.cmb_pauseEvent.Name = "cmb_pauseEvent";
             this.cmb_pauseEvent.Size = new System.Drawing.Size(199, 30);
             this.cmb_pauseEvent.TabIndex = 14;
+            // 
+            // uctl_SendFun1
+            // 
+            this.uctl_SendFun1.Location = new System.Drawing.Point(6, 143);
+            this.uctl_SendFun1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun1.Name = "uctl_SendFun1";
+            this.uctl_SendFun1.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun1.TabIndex = 8;
+            this.uctl_SendFun1.Text = "Send Func:1";
+            this.uctl_SendFun1.UseVisualStyleBackColor = true;
+            this.uctl_SendFun1.Click += new System.EventHandler(this.uctl_Btn1_Click);
+            // 
+            // uctl_SendFun15
+            // 
+            this.uctl_SendFun15.Location = new System.Drawing.Point(6, 330);
+            this.uctl_SendFun15.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun15.Name = "uctl_SendFun15";
+            this.uctl_SendFun15.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun15.TabIndex = 8;
+            this.uctl_SendFun15.Text = "Send Func:15";
+            this.uctl_SendFun15.UseVisualStyleBackColor = true;
+            this.uctl_SendFun15.Click += new System.EventHandler(this.uctl_SendFun15_Click);
+            // 
+            // uctl_SendFun13
+            // 
+            this.uctl_SendFun13.Location = new System.Drawing.Point(6, 277);
+            this.uctl_SendFun13.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun13.Name = "uctl_SendFun13";
+            this.uctl_SendFun13.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun13.TabIndex = 10;
+            this.uctl_SendFun13.Text = "Send Func:13";
+            this.uctl_SendFun13.UseVisualStyleBackColor = true;
+            this.uctl_SendFun13.Click += new System.EventHandler(this.uctl_SendFun13_Click);
+            // 
+            // uctl_SendFun11
+            // 
+            this.uctl_SendFun11.Location = new System.Drawing.Point(6, 222);
+            this.uctl_SendFun11.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun11.Name = "uctl_SendFun11";
+            this.uctl_SendFun11.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun11.TabIndex = 10;
+            this.uctl_SendFun11.Text = "Send Func:11";
+            this.uctl_SendFun11.UseVisualStyleBackColor = true;
+            this.uctl_SendFun11.Click += new System.EventHandler(this.uctl_SendFun11_Click);
+            // 
+            // uctl_SendFun17
+            // 
+            this.uctl_SendFun17.Location = new System.Drawing.Point(6, 383);
+            this.uctl_SendFun17.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun17.Name = "uctl_SendFun17";
+            this.uctl_SendFun17.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun17.TabIndex = 11;
+            this.uctl_SendFun17.Text = "Send Func:17";
+            this.uctl_SendFun17.UseVisualStyleBackColor = true;
+            this.uctl_SendFun17.Click += new System.EventHandler(this.uctl_SendFun17_Click);
+            // 
+            // uctl_SendFun19
+            // 
+            this.uctl_SendFun19.Location = new System.Drawing.Point(6, 436);
+            this.uctl_SendFun19.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun19.Name = "uctl_SendFun19";
+            this.uctl_SendFun19.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun19.TabIndex = 12;
+            this.uctl_SendFun19.Text = "Send Func:19";
+            this.uctl_SendFun19.UseVisualStyleBackColor = true;
+            this.uctl_SendFun19.Click += new System.EventHandler(this.uctl_SendFun19_Click);
+            // 
+            // uctl_SendFun21
+            // 
+            this.uctl_SendFun21.Location = new System.Drawing.Point(6, 490);
+            this.uctl_SendFun21.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun21.Name = "uctl_SendFun21";
+            this.uctl_SendFun21.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun21.TabIndex = 12;
+            this.uctl_SendFun21.Text = "Send Func:21";
+            this.uctl_SendFun21.UseVisualStyleBackColor = true;
+            this.uctl_SendFun21.Click += new System.EventHandler(this.uctl_SendFun21_Click);
+            // 
+            // uctl_SendFun23
+            // 
+            this.uctl_SendFun23.Location = new System.Drawing.Point(6, 543);
+            this.uctl_SendFun23.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun23.Name = "uctl_SendFun23";
+            this.uctl_SendFun23.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun23.TabIndex = 12;
+            this.uctl_SendFun23.Text = "Send Func:23";
+            this.uctl_SendFun23.UseVisualStyleBackColor = true;
+            this.uctl_SendFun23.Click += new System.EventHandler(this.uctl_SendFun23_Click);
+            // 
+            // uctl_SendAllFun
+            // 
+            this.uctl_SendAllFun.Location = new System.Drawing.Point(6, 596);
+            this.uctl_SendAllFun.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendAllFun.Name = "uctl_SendAllFun";
+            this.uctl_SendAllFun.Size = new System.Drawing.Size(214, 99);
+            this.uctl_SendAllFun.TabIndex = 12;
+            this.uctl_SendAllFun.Text = "Send ALL";
+            this.uctl_SendAllFun.UseVisualStyleBackColor = true;
+            this.uctl_SendAllFun.Click += new System.EventHandler(this.uctl_SendAllFun_Click);
             // 
             // tabControl1
             // 
@@ -1199,6 +1366,7 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.button11);
             this.tabPage1.Controls.Add(this.cb_by_pass_shelf_status);
             this.tabPage1.Controls.Add(this.label46);
             this.tabPage1.Controls.Add(this.cbTranMode);
@@ -1615,7 +1783,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 925F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 916F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1479, 916);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
@@ -1751,6 +1919,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.num_tran_cmd_queue_time_out_ms);
+            this.tabPage3.Controls.Add(this.label95);
             this.tabPage3.Controls.Add(this.numer_pre_open_agv_station_distance);
             this.tabPage3.Controls.Add(this.label47);
             this.tabPage3.Controls.Add(this.ck_check_port_is_ready);
@@ -1776,6 +1946,28 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Test Tool";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // num_tran_cmd_queue_time_out_ms
+            // 
+            this.num_tran_cmd_queue_time_out_ms.Location = new System.Drawing.Point(8, 553);
+            this.num_tran_cmd_queue_time_out_ms.Maximum = new decimal(new int[] {
+            6000000,
+            0,
+            0,
+            0});
+            this.num_tran_cmd_queue_time_out_ms.Name = "num_tran_cmd_queue_time_out_ms";
+            this.num_tran_cmd_queue_time_out_ms.Size = new System.Drawing.Size(120, 30);
+            this.num_tran_cmd_queue_time_out_ms.TabIndex = 45;
+            this.num_tran_cmd_queue_time_out_ms.ValueChanged += new System.EventHandler(this.num_tran_cmd_queue_time_out_ms_ValueChanged);
+            // 
+            // label95
+            // 
+            this.label95.AutoSize = true;
+            this.label95.Location = new System.Drawing.Point(7, 521);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(350, 22);
+            this.label95.TabIndex = 44;
+            this.label95.Text = "Transfer CommandQueue Time out(ms)";
             // 
             // numer_pre_open_agv_station_distance
             // 
@@ -2326,6 +2518,261 @@
             this.groupBox23.TabIndex = 35;
             this.groupBox23.TabStop = false;
             this.groupBox23.Text = "Charging System Error Report";
+            // 
+            // tb_ErrorReportCode20
+            // 
+            this.tb_ErrorReportCode20.Location = new System.Drawing.Point(385, 342);
+            this.tb_ErrorReportCode20.Name = "tb_ErrorReportCode20";
+            this.tb_ErrorReportCode20.ReadOnly = true;
+            this.tb_ErrorReportCode20.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode20.TabIndex = 43;
+            // 
+            // label85
+            // 
+            this.label85.AutoSize = true;
+            this.label85.Location = new System.Drawing.Point(228, 347);
+            this.label85.Name = "label85";
+            this.label85.Size = new System.Drawing.Size(160, 22);
+            this.label85.TabIndex = 42;
+            this.label85.Text = "Error Code #20:";
+            // 
+            // tb_ErrorReportCode19
+            // 
+            this.tb_ErrorReportCode19.Location = new System.Drawing.Point(385, 312);
+            this.tb_ErrorReportCode19.Name = "tb_ErrorReportCode19";
+            this.tb_ErrorReportCode19.ReadOnly = true;
+            this.tb_ErrorReportCode19.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode19.TabIndex = 41;
+            // 
+            // label86
+            // 
+            this.label86.AutoSize = true;
+            this.label86.Location = new System.Drawing.Point(228, 317);
+            this.label86.Name = "label86";
+            this.label86.Size = new System.Drawing.Size(160, 22);
+            this.label86.TabIndex = 40;
+            this.label86.Text = "Error Code #19:";
+            // 
+            // tb_ErrorReportCode18
+            // 
+            this.tb_ErrorReportCode18.Location = new System.Drawing.Point(385, 282);
+            this.tb_ErrorReportCode18.Name = "tb_ErrorReportCode18";
+            this.tb_ErrorReportCode18.ReadOnly = true;
+            this.tb_ErrorReportCode18.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode18.TabIndex = 39;
+            // 
+            // label87
+            // 
+            this.label87.AutoSize = true;
+            this.label87.Location = new System.Drawing.Point(228, 287);
+            this.label87.Name = "label87";
+            this.label87.Size = new System.Drawing.Size(160, 22);
+            this.label87.TabIndex = 38;
+            this.label87.Text = "Error Code #18:";
+            // 
+            // tb_ErrorReportCode17
+            // 
+            this.tb_ErrorReportCode17.Location = new System.Drawing.Point(385, 252);
+            this.tb_ErrorReportCode17.Name = "tb_ErrorReportCode17";
+            this.tb_ErrorReportCode17.ReadOnly = true;
+            this.tb_ErrorReportCode17.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode17.TabIndex = 37;
+            // 
+            // label88
+            // 
+            this.label88.AutoSize = true;
+            this.label88.Location = new System.Drawing.Point(228, 257);
+            this.label88.Name = "label88";
+            this.label88.Size = new System.Drawing.Size(160, 22);
+            this.label88.TabIndex = 36;
+            this.label88.Text = "Error Code #17:";
+            // 
+            // tb_ErrorReportCode16
+            // 
+            this.tb_ErrorReportCode16.Location = new System.Drawing.Point(385, 222);
+            this.tb_ErrorReportCode16.Name = "tb_ErrorReportCode16";
+            this.tb_ErrorReportCode16.ReadOnly = true;
+            this.tb_ErrorReportCode16.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode16.TabIndex = 35;
+            // 
+            // label89
+            // 
+            this.label89.AutoSize = true;
+            this.label89.Location = new System.Drawing.Point(228, 227);
+            this.label89.Name = "label89";
+            this.label89.Size = new System.Drawing.Size(160, 22);
+            this.label89.TabIndex = 34;
+            this.label89.Text = "Error Code #16:";
+            // 
+            // tb_ErrorReportCode15
+            // 
+            this.tb_ErrorReportCode15.Location = new System.Drawing.Point(385, 186);
+            this.tb_ErrorReportCode15.Name = "tb_ErrorReportCode15";
+            this.tb_ErrorReportCode15.ReadOnly = true;
+            this.tb_ErrorReportCode15.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode15.TabIndex = 33;
+            // 
+            // label90
+            // 
+            this.label90.AutoSize = true;
+            this.label90.Location = new System.Drawing.Point(228, 191);
+            this.label90.Name = "label90";
+            this.label90.Size = new System.Drawing.Size(160, 22);
+            this.label90.TabIndex = 32;
+            this.label90.Text = "Error Code #15:";
+            // 
+            // tb_ErrorReportCode14
+            // 
+            this.tb_ErrorReportCode14.Location = new System.Drawing.Point(385, 156);
+            this.tb_ErrorReportCode14.Name = "tb_ErrorReportCode14";
+            this.tb_ErrorReportCode14.ReadOnly = true;
+            this.tb_ErrorReportCode14.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode14.TabIndex = 31;
+            // 
+            // label91
+            // 
+            this.label91.AutoSize = true;
+            this.label91.Location = new System.Drawing.Point(228, 161);
+            this.label91.Name = "label91";
+            this.label91.Size = new System.Drawing.Size(160, 22);
+            this.label91.TabIndex = 30;
+            this.label91.Text = "Error Code #14:";
+            // 
+            // tb_ErrorReportCode13
+            // 
+            this.tb_ErrorReportCode13.Location = new System.Drawing.Point(385, 126);
+            this.tb_ErrorReportCode13.Name = "tb_ErrorReportCode13";
+            this.tb_ErrorReportCode13.ReadOnly = true;
+            this.tb_ErrorReportCode13.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode13.TabIndex = 29;
+            // 
+            // label92
+            // 
+            this.label92.AutoSize = true;
+            this.label92.Location = new System.Drawing.Point(228, 131);
+            this.label92.Name = "label92";
+            this.label92.Size = new System.Drawing.Size(160, 22);
+            this.label92.TabIndex = 28;
+            this.label92.Text = "Error Code #13:";
+            // 
+            // tb_ErrorReportCode12
+            // 
+            this.tb_ErrorReportCode12.Location = new System.Drawing.Point(385, 96);
+            this.tb_ErrorReportCode12.Name = "tb_ErrorReportCode12";
+            this.tb_ErrorReportCode12.ReadOnly = true;
+            this.tb_ErrorReportCode12.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode12.TabIndex = 27;
+            // 
+            // label93
+            // 
+            this.label93.AutoSize = true;
+            this.label93.Location = new System.Drawing.Point(228, 101);
+            this.label93.Name = "label93";
+            this.label93.Size = new System.Drawing.Size(160, 22);
+            this.label93.TabIndex = 26;
+            this.label93.Text = "Error Code #12:";
+            // 
+            // tb_ErrorReportCode11
+            // 
+            this.tb_ErrorReportCode11.Location = new System.Drawing.Point(385, 66);
+            this.tb_ErrorReportCode11.Name = "tb_ErrorReportCode11";
+            this.tb_ErrorReportCode11.ReadOnly = true;
+            this.tb_ErrorReportCode11.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode11.TabIndex = 25;
+            // 
+            // label94
+            // 
+            this.label94.AutoSize = true;
+            this.label94.Location = new System.Drawing.Point(228, 71);
+            this.label94.Name = "label94";
+            this.label94.Size = new System.Drawing.Size(160, 22);
+            this.label94.TabIndex = 24;
+            this.label94.Text = "Error Code #11:";
+            // 
+            // tb_ErrorReportCode10
+            // 
+            this.tb_ErrorReportCode10.Location = new System.Drawing.Point(153, 342);
+            this.tb_ErrorReportCode10.Name = "tb_ErrorReportCode10";
+            this.tb_ErrorReportCode10.ReadOnly = true;
+            this.tb_ErrorReportCode10.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode10.TabIndex = 23;
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Location = new System.Drawing.Point(4, 347);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(160, 22);
+            this.label68.TabIndex = 22;
+            this.label68.Text = "Error Code #10:";
+            // 
+            // tb_ErrorReportCode9
+            // 
+            this.tb_ErrorReportCode9.Location = new System.Drawing.Point(153, 312);
+            this.tb_ErrorReportCode9.Name = "tb_ErrorReportCode9";
+            this.tb_ErrorReportCode9.ReadOnly = true;
+            this.tb_ErrorReportCode9.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode9.TabIndex = 21;
+            // 
+            // label74
+            // 
+            this.label74.AutoSize = true;
+            this.label74.Location = new System.Drawing.Point(4, 317);
+            this.label74.Name = "label74";
+            this.label74.Size = new System.Drawing.Size(150, 22);
+            this.label74.TabIndex = 20;
+            this.label74.Text = "Error Code #9:";
+            // 
+            // tb_ErrorReportCode8
+            // 
+            this.tb_ErrorReportCode8.Location = new System.Drawing.Point(153, 282);
+            this.tb_ErrorReportCode8.Name = "tb_ErrorReportCode8";
+            this.tb_ErrorReportCode8.ReadOnly = true;
+            this.tb_ErrorReportCode8.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode8.TabIndex = 19;
+            // 
+            // label75
+            // 
+            this.label75.AutoSize = true;
+            this.label75.Location = new System.Drawing.Point(4, 287);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(150, 22);
+            this.label75.TabIndex = 18;
+            this.label75.Text = "Error Code #8:";
+            // 
+            // tb_ErrorReportCode7
+            // 
+            this.tb_ErrorReportCode7.Location = new System.Drawing.Point(153, 252);
+            this.tb_ErrorReportCode7.Name = "tb_ErrorReportCode7";
+            this.tb_ErrorReportCode7.ReadOnly = true;
+            this.tb_ErrorReportCode7.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode7.TabIndex = 17;
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.Location = new System.Drawing.Point(4, 257);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(150, 22);
+            this.label76.TabIndex = 16;
+            this.label76.Text = "Error Code #7:";
+            // 
+            // tb_ErrorReportCode6
+            // 
+            this.tb_ErrorReportCode6.Location = new System.Drawing.Point(153, 222);
+            this.tb_ErrorReportCode6.Name = "tb_ErrorReportCode6";
+            this.tb_ErrorReportCode6.ReadOnly = true;
+            this.tb_ErrorReportCode6.Size = new System.Drawing.Size(67, 30);
+            this.tb_ErrorReportCode6.TabIndex = 15;
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.Location = new System.Drawing.Point(4, 227);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(150, 22);
+            this.label84.TabIndex = 14;
+            this.label84.Text = "Error Code #6:";
             // 
             // tb_ErrorReportIndex
             // 
@@ -3663,423 +4110,15 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // btn_changeToRemove
-            // 
-            this.btn_changeToRemove.Location = new System.Drawing.Point(823, 312);
-            this.btn_changeToRemove.Name = "btn_changeToRemove";
-            this.btn_changeToRemove.Size = new System.Drawing.Size(165, 30);
-            this.btn_changeToRemove.TabIndex = 53;
-            this.btn_changeToRemove.Text = "Remove";
-            this.btn_changeToRemove.UseVisualStyleBackColor = true;
-            this.btn_changeToRemove.Click += new System.EventHandler(this.btn_changeToRemove_Click);
-            // 
-            // btn_changeToInstall
-            // 
-            this.btn_changeToInstall.Location = new System.Drawing.Point(823, 346);
-            this.btn_changeToInstall.Name = "btn_changeToInstall";
-            this.btn_changeToInstall.Size = new System.Drawing.Size(165, 32);
-            this.btn_changeToInstall.TabIndex = 52;
-            this.btn_changeToInstall.Text = "Install";
-            this.btn_changeToInstall.UseVisualStyleBackColor = true;
-            this.btn_changeToInstall.Click += new System.EventHandler(this.btn_changeToInstall_Click);
-            // 
-            // btn_func71
-            // 
-            this.btn_func71.Location = new System.Drawing.Point(9, 136);
-            this.btn_func71.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.btn_func71.Name = "btn_func71";
-            this.btn_func71.Size = new System.Drawing.Size(138, 42);
-            this.btn_func71.TabIndex = 13;
-            this.btn_func71.Text = "Send Func 71";
-            this.btn_func71.UseVisualStyleBackColor = true;
-            this.btn_func71.Click += new System.EventHandler(this.btn_func71_Click);
-            // 
-            // uctl_SendFun2
-            // 
-            this.uctl_SendFun2.Location = new System.Drawing.Point(6, 186);
-            this.uctl_SendFun2.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun2.Name = "uctl_SendFun2";
-            this.uctl_SendFun2.Size = new System.Drawing.Size(214, 35);
-            this.uctl_SendFun2.TabIndex = 29;
-            this.uctl_SendFun2.Text = "Send Func:2";
-            this.uctl_SendFun2.UseVisualStyleBackColor = true;
-            this.uctl_SendFun2.Click += new System.EventHandler(this.uctl_SendFun2_Click);
-            // 
-            // btn_pause
-            // 
-            this.btn_pause.Location = new System.Drawing.Point(8, 171);
-            this.btn_pause.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.btn_pause.Name = "btn_pause";
-            this.btn_pause.Size = new System.Drawing.Size(138, 42);
-            this.btn_pause.TabIndex = 13;
-            this.btn_pause.Text = "Send Func 39";
-            this.btn_pause.UseVisualStyleBackColor = true;
-            this.btn_pause.Click += new System.EventHandler(this.btn_pause_Click);
-            // 
-            // uctl_SendFun1
-            // 
-            this.uctl_SendFun1.Location = new System.Drawing.Point(6, 143);
-            this.uctl_SendFun1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun1.Name = "uctl_SendFun1";
-            this.uctl_SendFun1.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun1.TabIndex = 8;
-            this.uctl_SendFun1.Text = "Send Func:1";
-            this.uctl_SendFun1.UseVisualStyleBackColor = true;
-            this.uctl_SendFun1.Click += new System.EventHandler(this.uctl_Btn1_Click);
-            // 
-            // uctl_SendFun15
-            // 
-            this.uctl_SendFun15.Location = new System.Drawing.Point(6, 330);
-            this.uctl_SendFun15.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun15.Name = "uctl_SendFun15";
-            this.uctl_SendFun15.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun15.TabIndex = 8;
-            this.uctl_SendFun15.Text = "Send Func:15";
-            this.uctl_SendFun15.UseVisualStyleBackColor = true;
-            this.uctl_SendFun15.Click += new System.EventHandler(this.uctl_SendFun15_Click);
-            // 
-            // uctl_SendFun13
-            // 
-            this.uctl_SendFun13.Location = new System.Drawing.Point(6, 277);
-            this.uctl_SendFun13.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun13.Name = "uctl_SendFun13";
-            this.uctl_SendFun13.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun13.TabIndex = 10;
-            this.uctl_SendFun13.Text = "Send Func:13";
-            this.uctl_SendFun13.UseVisualStyleBackColor = true;
-            this.uctl_SendFun13.Click += new System.EventHandler(this.uctl_SendFun13_Click);
-            // 
-            // uctl_SendFun11
-            // 
-            this.uctl_SendFun11.Location = new System.Drawing.Point(6, 222);
-            this.uctl_SendFun11.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun11.Name = "uctl_SendFun11";
-            this.uctl_SendFun11.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun11.TabIndex = 10;
-            this.uctl_SendFun11.Text = "Send Func:11";
-            this.uctl_SendFun11.UseVisualStyleBackColor = true;
-            this.uctl_SendFun11.Click += new System.EventHandler(this.uctl_SendFun11_Click);
-            // 
-            // uctl_SendFun17
-            // 
-            this.uctl_SendFun17.Location = new System.Drawing.Point(6, 383);
-            this.uctl_SendFun17.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun17.Name = "uctl_SendFun17";
-            this.uctl_SendFun17.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun17.TabIndex = 11;
-            this.uctl_SendFun17.Text = "Send Func:17";
-            this.uctl_SendFun17.UseVisualStyleBackColor = true;
-            this.uctl_SendFun17.Click += new System.EventHandler(this.uctl_SendFun17_Click);
-            // 
-            // uctl_SendFun19
-            // 
-            this.uctl_SendFun19.Location = new System.Drawing.Point(6, 436);
-            this.uctl_SendFun19.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun19.Name = "uctl_SendFun19";
-            this.uctl_SendFun19.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun19.TabIndex = 12;
-            this.uctl_SendFun19.Text = "Send Func:19";
-            this.uctl_SendFun19.UseVisualStyleBackColor = true;
-            this.uctl_SendFun19.Click += new System.EventHandler(this.uctl_SendFun19_Click);
-            // 
-            // uctl_SendFun21
-            // 
-            this.uctl_SendFun21.Location = new System.Drawing.Point(6, 490);
-            this.uctl_SendFun21.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun21.Name = "uctl_SendFun21";
-            this.uctl_SendFun21.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun21.TabIndex = 12;
-            this.uctl_SendFun21.Text = "Send Func:21";
-            this.uctl_SendFun21.UseVisualStyleBackColor = true;
-            this.uctl_SendFun21.Click += new System.EventHandler(this.uctl_SendFun21_Click);
-            // 
-            // uctl_SendFun23
-            // 
-            this.uctl_SendFun23.Location = new System.Drawing.Point(6, 543);
-            this.uctl_SendFun23.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun23.Name = "uctl_SendFun23";
-            this.uctl_SendFun23.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun23.TabIndex = 12;
-            this.uctl_SendFun23.Text = "Send Func:23";
-            this.uctl_SendFun23.UseVisualStyleBackColor = true;
-            this.uctl_SendFun23.Click += new System.EventHandler(this.uctl_SendFun23_Click);
-            // 
-            // uctl_Send_Fun_71
-            // 
-            this.uctl_Send_Fun_71.Location = new System.Drawing.Point(10, 191);
-            this.uctl_Send_Fun_71.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_Send_Fun_71.Name = "uctl_Send_Fun_71";
-            this.uctl_Send_Fun_71.Size = new System.Drawing.Size(138, 42);
-            this.uctl_Send_Fun_71.TabIndex = 13;
-            this.uctl_Send_Fun_71.Text = "Send Func 71";
-            this.uctl_Send_Fun_71.UseVisualStyleBackColor = true;
-            this.uctl_Send_Fun_71.Click += new System.EventHandler(this.uctl_Send_Fun_71_Click);
-            // 
-            // uctl_SendAllFun
-            // 
-            this.uctl_SendAllFun.Location = new System.Drawing.Point(6, 596);
-            this.uctl_SendAllFun.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendAllFun.Name = "uctl_SendAllFun";
-            this.uctl_SendAllFun.Size = new System.Drawing.Size(214, 99);
-            this.uctl_SendAllFun.TabIndex = 12;
-            this.uctl_SendAllFun.Text = "Send ALL";
-            this.uctl_SendAllFun.UseVisualStyleBackColor = true;
-            this.uctl_SendAllFun.Click += new System.EventHandler(this.uctl_SendAllFun_Click);
-            // 
-            // tb_ErrorReportCode10
-            // 
-            this.tb_ErrorReportCode10.Location = new System.Drawing.Point(153, 342);
-            this.tb_ErrorReportCode10.Name = "tb_ErrorReportCode10";
-            this.tb_ErrorReportCode10.ReadOnly = true;
-            this.tb_ErrorReportCode10.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode10.TabIndex = 23;
-            // 
-            // label68
-            // 
-            this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(4, 347);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(160, 22);
-            this.label68.TabIndex = 22;
-            this.label68.Text = "Error Code #10:";
-            // 
-            // tb_ErrorReportCode9
-            // 
-            this.tb_ErrorReportCode9.Location = new System.Drawing.Point(153, 312);
-            this.tb_ErrorReportCode9.Name = "tb_ErrorReportCode9";
-            this.tb_ErrorReportCode9.ReadOnly = true;
-            this.tb_ErrorReportCode9.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode9.TabIndex = 21;
-            // 
-            // label74
-            // 
-            this.label74.AutoSize = true;
-            this.label74.Location = new System.Drawing.Point(4, 317);
-            this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(150, 22);
-            this.label74.TabIndex = 20;
-            this.label74.Text = "Error Code #9:";
-            // 
-            // tb_ErrorReportCode8
-            // 
-            this.tb_ErrorReportCode8.Location = new System.Drawing.Point(153, 282);
-            this.tb_ErrorReportCode8.Name = "tb_ErrorReportCode8";
-            this.tb_ErrorReportCode8.ReadOnly = true;
-            this.tb_ErrorReportCode8.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode8.TabIndex = 19;
-            // 
-            // label75
-            // 
-            this.label75.AutoSize = true;
-            this.label75.Location = new System.Drawing.Point(4, 287);
-            this.label75.Name = "label75";
-            this.label75.Size = new System.Drawing.Size(150, 22);
-            this.label75.TabIndex = 18;
-            this.label75.Text = "Error Code #8:";
-            // 
-            // tb_ErrorReportCode7
-            // 
-            this.tb_ErrorReportCode7.Location = new System.Drawing.Point(153, 252);
-            this.tb_ErrorReportCode7.Name = "tb_ErrorReportCode7";
-            this.tb_ErrorReportCode7.ReadOnly = true;
-            this.tb_ErrorReportCode7.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode7.TabIndex = 17;
-            // 
-            // label76
-            // 
-            this.label76.AutoSize = true;
-            this.label76.Location = new System.Drawing.Point(4, 257);
-            this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(150, 22);
-            this.label76.TabIndex = 16;
-            this.label76.Text = "Error Code #7:";
-            // 
-            // tb_ErrorReportCode6
-            // 
-            this.tb_ErrorReportCode6.Location = new System.Drawing.Point(153, 222);
-            this.tb_ErrorReportCode6.Name = "tb_ErrorReportCode6";
-            this.tb_ErrorReportCode6.ReadOnly = true;
-            this.tb_ErrorReportCode6.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode6.TabIndex = 15;
-            // 
-            // label84
-            // 
-            this.label84.AutoSize = true;
-            this.label84.Location = new System.Drawing.Point(4, 227);
-            this.label84.Name = "label84";
-            this.label84.Size = new System.Drawing.Size(150, 22);
-            this.label84.TabIndex = 14;
-            this.label84.Text = "Error Code #6:";
-            // 
-            // tb_ErrorReportCode20
-            // 
-            this.tb_ErrorReportCode20.Location = new System.Drawing.Point(385, 342);
-            this.tb_ErrorReportCode20.Name = "tb_ErrorReportCode20";
-            this.tb_ErrorReportCode20.ReadOnly = true;
-            this.tb_ErrorReportCode20.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode20.TabIndex = 43;
-            // 
-            // label85
-            // 
-            this.label85.AutoSize = true;
-            this.label85.Location = new System.Drawing.Point(228, 347);
-            this.label85.Name = "label85";
-            this.label85.Size = new System.Drawing.Size(160, 22);
-            this.label85.TabIndex = 42;
-            this.label85.Text = "Error Code #20:";
-            // 
-            // tb_ErrorReportCode19
-            // 
-            this.tb_ErrorReportCode19.Location = new System.Drawing.Point(385, 312);
-            this.tb_ErrorReportCode19.Name = "tb_ErrorReportCode19";
-            this.tb_ErrorReportCode19.ReadOnly = true;
-            this.tb_ErrorReportCode19.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode19.TabIndex = 41;
-            // 
-            // label86
-            // 
-            this.label86.AutoSize = true;
-            this.label86.Location = new System.Drawing.Point(228, 317);
-            this.label86.Name = "label86";
-            this.label86.Size = new System.Drawing.Size(160, 22);
-            this.label86.TabIndex = 40;
-            this.label86.Text = "Error Code #19:";
-            // 
-            // tb_ErrorReportCode18
-            // 
-            this.tb_ErrorReportCode18.Location = new System.Drawing.Point(385, 282);
-            this.tb_ErrorReportCode18.Name = "tb_ErrorReportCode18";
-            this.tb_ErrorReportCode18.ReadOnly = true;
-            this.tb_ErrorReportCode18.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode18.TabIndex = 39;
-            // 
-            // label87
-            // 
-            this.label87.AutoSize = true;
-            this.label87.Location = new System.Drawing.Point(228, 287);
-            this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(160, 22);
-            this.label87.TabIndex = 38;
-            this.label87.Text = "Error Code #18:";
-            // 
-            // tb_ErrorReportCode17
-            // 
-            this.tb_ErrorReportCode17.Location = new System.Drawing.Point(385, 252);
-            this.tb_ErrorReportCode17.Name = "tb_ErrorReportCode17";
-            this.tb_ErrorReportCode17.ReadOnly = true;
-            this.tb_ErrorReportCode17.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode17.TabIndex = 37;
-            // 
-            // label88
-            // 
-            this.label88.AutoSize = true;
-            this.label88.Location = new System.Drawing.Point(228, 257);
-            this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(160, 22);
-            this.label88.TabIndex = 36;
-            this.label88.Text = "Error Code #17:";
-            // 
-            // tb_ErrorReportCode16
-            // 
-            this.tb_ErrorReportCode16.Location = new System.Drawing.Point(385, 222);
-            this.tb_ErrorReportCode16.Name = "tb_ErrorReportCode16";
-            this.tb_ErrorReportCode16.ReadOnly = true;
-            this.tb_ErrorReportCode16.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode16.TabIndex = 35;
-            // 
-            // label89
-            // 
-            this.label89.AutoSize = true;
-            this.label89.Location = new System.Drawing.Point(228, 227);
-            this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(160, 22);
-            this.label89.TabIndex = 34;
-            this.label89.Text = "Error Code #16:";
-            // 
-            // tb_ErrorReportCode15
-            // 
-            this.tb_ErrorReportCode15.Location = new System.Drawing.Point(385, 186);
-            this.tb_ErrorReportCode15.Name = "tb_ErrorReportCode15";
-            this.tb_ErrorReportCode15.ReadOnly = true;
-            this.tb_ErrorReportCode15.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode15.TabIndex = 33;
-            // 
-            // label90
-            // 
-            this.label90.AutoSize = true;
-            this.label90.Location = new System.Drawing.Point(228, 191);
-            this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(160, 22);
-            this.label90.TabIndex = 32;
-            this.label90.Text = "Error Code #15:";
-            // 
-            // tb_ErrorReportCode14
-            // 
-            this.tb_ErrorReportCode14.Location = new System.Drawing.Point(385, 156);
-            this.tb_ErrorReportCode14.Name = "tb_ErrorReportCode14";
-            this.tb_ErrorReportCode14.ReadOnly = true;
-            this.tb_ErrorReportCode14.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode14.TabIndex = 31;
-            // 
-            // label91
-            // 
-            this.label91.AutoSize = true;
-            this.label91.Location = new System.Drawing.Point(228, 161);
-            this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(160, 22);
-            this.label91.TabIndex = 30;
-            this.label91.Text = "Error Code #14:";
-            // 
-            // tb_ErrorReportCode13
-            // 
-            this.tb_ErrorReportCode13.Location = new System.Drawing.Point(385, 126);
-            this.tb_ErrorReportCode13.Name = "tb_ErrorReportCode13";
-            this.tb_ErrorReportCode13.ReadOnly = true;
-            this.tb_ErrorReportCode13.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode13.TabIndex = 29;
-            // 
-            // label92
-            // 
-            this.label92.AutoSize = true;
-            this.label92.Location = new System.Drawing.Point(228, 131);
-            this.label92.Name = "label92";
-            this.label92.Size = new System.Drawing.Size(160, 22);
-            this.label92.TabIndex = 28;
-            this.label92.Text = "Error Code #13:";
-            // 
-            // tb_ErrorReportCode12
-            // 
-            this.tb_ErrorReportCode12.Location = new System.Drawing.Point(385, 96);
-            this.tb_ErrorReportCode12.Name = "tb_ErrorReportCode12";
-            this.tb_ErrorReportCode12.ReadOnly = true;
-            this.tb_ErrorReportCode12.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode12.TabIndex = 27;
-            // 
-            // label93
-            // 
-            this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(228, 101);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(160, 22);
-            this.label93.TabIndex = 26;
-            this.label93.Text = "Error Code #12:";
-            // 
-            // tb_ErrorReportCode11
-            // 
-            this.tb_ErrorReportCode11.Location = new System.Drawing.Point(385, 66);
-            this.tb_ErrorReportCode11.Name = "tb_ErrorReportCode11";
-            this.tb_ErrorReportCode11.ReadOnly = true;
-            this.tb_ErrorReportCode11.Size = new System.Drawing.Size(67, 30);
-            this.tb_ErrorReportCode11.TabIndex = 25;
-            // 
-            // label94
-            // 
-            this.label94.AutoSize = true;
-            this.label94.Location = new System.Drawing.Point(228, 71);
-            this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(160, 22);
-            this.label94.TabIndex = 24;
-            this.label94.Text = "Error Code #11:";
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(14, 830);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(153, 46);
+            this.button11.TabIndex = 31;
+            this.button11.Text = "Alarm Clear";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click_1);
             // 
             // DebugForm
             // 
@@ -4134,6 +4173,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_cache_object_data_portstation)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_tran_cmd_queue_time_out_ms)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numer_pre_open_agv_station_distance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_AGVStationInfo)).EndInit();
             this.groupBox18.ResumeLayout(false);
@@ -4524,5 +4564,8 @@
         private System.Windows.Forms.Label label76;
         private System.Windows.Forms.TextBox tb_ErrorReportCode6;
         private System.Windows.Forms.Label label84;
+        private System.Windows.Forms.NumericUpDown num_tran_cmd_queue_time_out_ms;
+        private System.Windows.Forms.Label label95;
+        private System.Windows.Forms.Button button11;
     }
 }

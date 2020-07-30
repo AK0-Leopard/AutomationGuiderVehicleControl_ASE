@@ -452,11 +452,13 @@ namespace com.mirle.ibg3k0.sc.Service
                         List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
                         if (report_alarm.ALAM_STAT == ErrorStatus.ErrSet)
                         {
-                            scApp.ReportBLL.ReportAlarmHappend("", "", report_alarm.ALAM_STAT, alarm_code, report_alarm.ALAM_DESC, reportqueues);
+                            //scApp.ReportBLL.ReportAlarmHappend("", "", report_alarm.ALAM_STAT, alarm_code, report_alarm.ALAM_DESC, reportqueues);
+                            scApp.ReportBLL.ReportAlarmHappend(eq_id, "", report_alarm.ALAM_STAT, alarm_code, report_alarm.ALAM_DESC, reportqueues);
                         }
                         else
                         {
-                            scApp.ReportBLL.ReportAlarmCleared("", "", report_alarm.ALAM_STAT, alarm_code, report_alarm.ALAM_DESC, reportqueues);
+                            //scApp.ReportBLL.ReportAlarmCleared("", "", report_alarm.ALAM_STAT, alarm_code, report_alarm.ALAM_DESC, reportqueues);
+                            scApp.ReportBLL.ReportAlarmCleared(eq_id, "", report_alarm.ALAM_STAT, alarm_code, report_alarm.ALAM_DESC, reportqueues);
                         }
                         scApp.ReportBLL.newSendMCSMessage(reportqueues);
 

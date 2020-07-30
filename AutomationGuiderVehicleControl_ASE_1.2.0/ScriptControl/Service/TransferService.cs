@@ -4,6 +4,7 @@ using com.mirle.ibg3k0.sc.BLL;
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
+using DocumentFormat.OpenXml.Bibliography;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -487,6 +488,8 @@ namespace com.mirle.ibg3k0.sc.Service
                         return;
                     List<VTRANSFER> un_finish_trnasfer = scApp.TransferBLL.db.vTransfer.loadUnfinishedVTransfer();
                     line.CurrentExcuteTransferCommand = un_finish_trnasfer;
+
+                    Task.Run(() => queueTimeOutCheck(un_finish_trnasfer));
                     if (un_finish_trnasfer == null || un_finish_trnasfer.Count == 0) return;
                     if (DebugParameter.CanAutoRandomGeneratesCommand ||
                         (scApp.getEQObjCacheManager().getLine().SCStats == ALINE.TSCState.AUTO && scApp.getEQObjCacheManager().getLine().MCSCommandAutoAssign))
@@ -499,6 +502,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         List<VTRANSFER> in_queue_transfer = un_finish_trnasfer.
                                                     Where(tr => tr.TRANSFERSTATE == E_TRAN_STATUS.Queue).
                                                     ToList();
+
                         //1.確認是否有要回AGV Station的命令
                         //2.有的話要確認一下，是否已有預約成功
                         //3.預約成功後則看該Station是否已經可以讓AGV執行Double Unload。
@@ -659,7 +663,17 @@ namespace com.mirle.ibg3k0.sc.Service
                         //{
                         //LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferService), Device: string.Empty,
                         //              Data: $"Not find idle car...");
-
+                        //bool has_mcs_cmd_time_out_in_queue = in_queue_transfer.Where(tran => tran.IsQueueTimeOut).Count() > 0;
+                        //if (has_mcs_cmd_time_out_in_queue)
+                        //{
+                        //    scApp.LineService.ProcessAlarmReport("AGVC", AlarmBLL.AGVC_TRAN_COMMAND_IN_QUEUE_TIME_OUT, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
+                        //                $"AGVC has trnasfer commmand in queue over time:{SystemParameter.TransferCommandQueueTimeOut_mSec}ms");
+                        //}
+                        //else
+                        //{
+                        //    scApp.LineService.ProcessAlarmReport("AGVC", AlarmBLL.AGVC_TRAN_COMMAND_IN_QUEUE_TIME_OUT, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
+                        //                $"AGVC has trnasfer commmand in queue over time:{SystemParameter.TransferCommandQueueTimeOut_mSec}ms");
+                        //}
                         //foreach (VTRANSFER waitting_excute_mcs_cmd in in_queue_transfer)
                         //{
                         //    int AccumulateTime_minute = 1;
@@ -683,6 +697,25 @@ namespace com.mirle.ibg3k0.sc.Service
                     System.Threading.Interlocked.Exchange(ref syncTranCmdPoint, 0);
                 }
             }
+        }
+
+        private void queueTimeOutCheck(List<VTRANSFER> un_finish_trnasfer)
+        {
+            try
+            {
+                bool has_mcs_cmd_time_out_in_queue = un_finish_trnasfer.Where(tran => tran.IsQueueTimeOut).Count() > 0;
+                if (has_mcs_cmd_time_out_in_queue)
+                {
+                    scApp.LineService.ProcessAlarmReport("AGVC", AlarmBLL.AGVC_TRAN_COMMAND_IN_QUEUE_TIME_OUT, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
+                                $"AGVC has trnasfer commmand in queue over time:{SystemParameter.TransferCommandQueueTimeOut_mSec}ms");
+                }
+                else
+                {
+                    scApp.LineService.ProcessAlarmReport("AGVC", AlarmBLL.AGVC_TRAN_COMMAND_IN_QUEUE_TIME_OUT, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
+                                $"AGVC has trnasfer commmand in queue over time:{SystemParameter.TransferCommandQueueTimeOut_mSec}ms");
+                }
+            }
+            catch { }
         }
 
         private (bool hasFind, AVEHICLE hasCarrierOfVh, VTRANSFER tran) tryFindAssignOnVhCarrier(List<VTRANSFER> tran_queue_in_group)

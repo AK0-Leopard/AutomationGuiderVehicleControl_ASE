@@ -50,7 +50,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
         {
             var alarm = from b in conn.ALARM
                         where b.RPT_DATE_TIME >= startTime &&
-                         b.RPT_DATE_TIME <= endTime 
+                         b.RPT_DATE_TIME <= endTime
                         select b;
             return alarm.ToList();
         }
@@ -148,6 +148,24 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+        public List<ALARM> loadSetErrorAlarm(DBConnection_EF conn)
+        {
+            try
+            {
+                var alarm = from a in conn.ALARM
+                            where a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet
+                                  && a.ALAM_LVL != E_ALARM_LVL.Warn
+                            select a;
+                return alarm.ToList();
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex);
+                throw;
+            }
+        }
+
+
 
 
         public List<ALARM> loadAllAlarmByStartTimeEndTime(DBConnection_EF conn, DateTime set_time, DateTime clear_time)
@@ -156,7 +174,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             {
                 var alarm = from a in conn.ALARM
                             where ((a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrReset && (a.RPT_DATE_TIME > set_time && a.CLEAR_DATE_TIME < clear_time))
-                            || (a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet && (a.RPT_DATE_TIME > set_time)))&&(a.ALAM_LVL == E_ALARM_LVL.Error)
+                            || (a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet && (a.RPT_DATE_TIME > set_time))) && (a.ALAM_LVL == E_ALARM_LVL.Error)
                             select a;
                 return alarm.ToList();
             }

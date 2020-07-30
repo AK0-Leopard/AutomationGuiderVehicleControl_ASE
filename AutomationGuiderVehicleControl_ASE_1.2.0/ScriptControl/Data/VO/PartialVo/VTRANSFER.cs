@@ -60,6 +60,14 @@ namespace com.mirle.ibg3k0.sc
             if (port_station == null) return "";
             return SCUtility.Trim(port_station.EQPT_ID, true);
         }
+        public AEQPT getSourcePortEQ(BLL.EqptBLL eqptBLL)
+        {
+            var eq = eqptBLL.OperateCatch.GetEqpt(this.HOSTSOURCE);
+            if (eq == null) return null;
+            return eq;
+        }
+
+
         public string getTragetPortEQID(BLL.PortStationBLL portStationBLL)
         {
             var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTDESTINATION);
@@ -110,6 +118,16 @@ namespace com.mirle.ibg3k0.sc
         {
             var vh = vehicleBLL.cache.getVehicleByLocationRealID(HOSTSOURCE);
             return vh != null;
+        }
+
+        public bool IsQueueTimeOut
+        {
+            get
+            {
+                bool is_timeout = TRANSFERSTATE == E_TRAN_STATUS.Queue &&
+                                                   DateTime.Now > CMD_INSER_TIME.AddMilliseconds(SystemParameter.TransferCommandQueueTimeOut_mSec);
+                return is_timeout;
+            }
         }
 
         public override string ToString()

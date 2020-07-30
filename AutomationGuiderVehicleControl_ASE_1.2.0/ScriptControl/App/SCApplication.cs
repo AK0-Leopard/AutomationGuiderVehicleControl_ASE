@@ -1598,6 +1598,8 @@ namespace com.mirle.ibg3k0.sc.App
         public static int OpenAGVStationCoverDistance_mm = 5000;
         public static bool IsByPassAGVShelfStatus { get; private set; } = true;
 
+        public static int TransferCommandQueueTimeOut_mSec = 600000;
+
 
         public static void setSECSConversactionTimeout(int timeout)
         {
@@ -1648,6 +1650,11 @@ namespace com.mirle.ibg3k0.sc.App
         {
             IsByPassAGVShelfStatus = isByPassAGVShelfStatus;
         }
+        public static void setTransferCommandQueueTimeOut_mSec(int transferCommandQueueTimeOut_mSec)
+        {
+            TransferCommandQueueTimeOut_mSec = transferCommandQueueTimeOut_mSec;
+        }
+
     }
 
     public class HAProxyConnectionTest

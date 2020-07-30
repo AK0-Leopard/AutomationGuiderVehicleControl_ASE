@@ -559,16 +559,18 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             string alcd = SCAppConstants.AlarmStatus.convert2MCS(alarm_status);
             string alid = error_code;
-            string altx = desc;
+            string altx = $"[{SCUtility.Trim(vhID, true) }]{desc}";
             iBSEMDriver.S6F11SendUnitAlarmSet(vhID, transferID, alid, altx);
+            iBSEMDriver.S5F1SendAlarmReport(alcd, alid, altx);
             return true;
         }
         public bool ReportAlarmCleared(string vhID, string transferID, ErrorStatus alarm_status, string error_code, string desc, List<AMCSREPORTQUEUE> reportqueues)
         {
             string alcd = SCAppConstants.AlarmStatus.convert2MCS(alarm_status);
             string alid = error_code;
-            string altx = desc;
+            string altx = $"[{SCUtility.Trim(vhID, true) }]{desc}";
             iBSEMDriver.S6F11SendUnitAlarmCleared(vhID, transferID, alid, altx);
+            iBSEMDriver.S5F1SendAlarmReport(alcd, alid, altx);
             return true;
         }
 

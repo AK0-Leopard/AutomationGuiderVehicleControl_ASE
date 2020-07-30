@@ -14,12 +14,14 @@
 using com.mirle.ibg3k0.bcf.Controller;
 using com.mirle.ibg3k0.bcf.Data.TimerAction;
 using com.mirle.ibg3k0.sc.App;
+using com.mirle.ibg3k0.sc.BLL;
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data.VO;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -212,6 +214,21 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                        Data: $"start check agv station:[{agv_station.getAGVStationID()}] status...");
                     if (v_trans != null && v_trans.Count > 0)
                     {
+                        var unfinish_source_port_command = v_trans.
+                                                           Where(tran => tran.getSourcePortEQ(scApp.EqptBLL) == agv_station).
+                                                           ToList();
+                        var excute_source_port_tran = unfinish_source_port_command.Where(tran => tran.TRANSFERSTATE >= E_TRAN_STATUS.PreInitial).ToList();
+                        int excute_source_pott_count = excute_source_port_tran.Count();
+                        if (excute_source_pott_count > 0)
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
+                               Data: $"agv station:[{agv_station.getAGVStationID()}] has out of stock command excute,pass ask reserve");
+                            agv_station.IsReservation = false;
+                            agv_station.IsTransferUnloadExcuting = false;
+                            return;
+                        }
+
+
                         var unfinish_target_port_command = v_trans.
                                                            Where(tran => tran.getTragetPortEQ(scApp.EqptBLL) == agv_station).
                                                            ToList();
@@ -225,7 +242,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                             {
                                 agv_station.IsReservation = false;
                             }
-                            //continue;
+                            string reserved_time_out_alarm_code = getAGVStationReservedTimeOutCode(agv_station.getAGVStationID());
+                            scApp.LineService.ProcessAlarmReport("AGVC", reserved_time_out_alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
+                                        $"AGV Station:[{agv_station.getAGVStationID()} reserved time out]");
                             return;
                         }
                         else
@@ -245,6 +264,15 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
                                    Data: $"agv station:[{agv_station.getAGVStationID()}] is reservation");
                                 //not thing...
+                                if (agv_station.IsReservedTimeOut)
+                                {
+                                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
+                                       Data: $"agv station:[{agv_station.getAGVStationID()}] is reserved time out, reset it and then ask again...");
+                                    agv_station.IsReservation = false;
+                                    string reserved_time_out_alarm_code = getAGVStationReservedTimeOutCode(agv_station.getAGVStationID());
+                                    scApp.LineService.ProcessAlarmReport("AGVC", reserved_time_out_alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
+                                                                         $"AGV Station:[{agv_station.getAGVStationID()} reserved time out]");
+                                }
                             }
                             else
                             {
@@ -314,6 +342,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
         {
             if (current_excute_task == 0 && !is_reserve_success)
             {
+                agv_station.IsOutOfStock = true;
                 if (serviceVh != null)
                 {
                     var virtrueagv_station = agv_station.getAGVVirtruePort();
@@ -323,6 +352,77 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                        Data: $"agv station:[{agv_station.getAGVStationID()}] will cst out,service vh:{serviceVh.VEHICLE_ID} pre move to adr:{virtrueagv_station.ADR_ID}");
                 }
             }
+            else
+            {
+                agv_station.IsOutOfStock = false;
+            }
+
+            string stock_of_out_time_out_alarm_code = getAGVStationStockOfOutTimeOutCode(agv_station.getAGVStationID());
+            if (agv_station.IsOutOfStockTimeOut)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
+                   Data: $"agv station:[{agv_station.getAGVStationID()}] is out of stock time out.");
+                scApp.LineService.ProcessAlarmReport("AGVC", stock_of_out_time_out_alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
+                                                     $"AGV Station:[{agv_station.getAGVStationID()}] out of stock timeout.");
+            }
+            else
+            {
+                scApp.LineService.ProcessAlarmReport("AGVC", stock_of_out_time_out_alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
+                                                     $"AGV Station:[{agv_station.getAGVStationID()}] out of stock timeout.");
+            }
         }
+        private string getAGVStationReservedTimeOutCode(string agvStationID)
+        {
+            switch (agvStationID)
+            {
+                case "B7_OHBLINE1_ST01":
+                    return AlarmBLL.AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE1_ST01;
+                case "B7_OHBLINE1_ST02":
+                    return AlarmBLL.AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE1_ST02;
+                case "B7_OHBLINE2_ST01":
+                    return AlarmBLL.AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE2_ST01;
+                case "B7_OHBLINE2_ST02":
+                    return AlarmBLL.AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE2_ST02;
+                case "B7_OHBLOOP_ST01":
+                    return AlarmBLL.AGVC_AGVSTATION_RESERVED_TIME_OUT_LOOP_ST01;
+                case "B7_STK01_ST01":
+                    return AlarmBLL.AGVC_AGVSTATION_RESERVED_TIME_OUT_STOCK_ST01;
+                case "B7_OHBLINE3_ST01":
+                    return AlarmBLL.AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE3_ST01;
+                case "B7_OHBLINE3_ST02":
+                    return AlarmBLL.AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE3_ST02;
+                case "B7_OHBLINE3_ST03":
+                    return AlarmBLL.AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE3_ST03;
+                default:
+                    return AlarmBLL.AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE1_ST01;
+            }
+        }
+        private string getAGVStationStockOfOutTimeOutCode(string agvStationID)
+        {
+            switch (agvStationID)
+            {
+                case "B7_OHBLINE1_ST01":
+                    return AlarmBLL.AGVC_OUT_OF_STOCK_TIME_OUT_LINE1_ST01;
+                case "B7_OHBLINE1_ST02":
+                    return AlarmBLL.AGVC_OUT_OF_STOCK_TIME_OUT_LINE1_ST02;
+                case "B7_OHBLINE2_ST01":
+                    return AlarmBLL.AGVC_OUT_OF_STOCK_TIME_OUT_LINE2_ST01;
+                case "B7_OHBLINE2_ST02":
+                    return AlarmBLL.AGVC_OUT_OF_STOCK_TIME_OUT_LINE2_ST02;
+                case "B7_OHBLOOP_ST01":
+                    return AlarmBLL.AGVC_OUT_OF_STOCK_TIME_OUT_LOOP_ST01;
+                case "B7_STK01_ST01":
+                    return AlarmBLL.AGVC_OUT_OF_STOCK_TIME_OUT_STOCK_ST01;
+                case "B7_OHBLINE3_ST01":
+                    return AlarmBLL.AGVC_OUT_OF_STOCK_TIME_OUT_LINE3_ST01;
+                case "B7_OHBLINE3_ST02":
+                    return AlarmBLL.AGVC_OUT_OF_STOCK_TIME_OUT_LINE3_ST02;
+                case "B7_OHBLINE3_ST03":
+                    return AlarmBLL.AGVC_OUT_OF_STOCK_TIME_OUT_LINE3_ST03;
+                default:
+                    return AlarmBLL.AGVC_OUT_OF_STOCK_TIME_OUT_LINE1_ST01;
+            }
+        }
+
     }
 }

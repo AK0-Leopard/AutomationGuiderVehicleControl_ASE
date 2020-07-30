@@ -36,6 +36,31 @@ namespace com.mirle.ibg3k0.sc.BLL
         public const string VEHICLE_ALARM_HAPPEND = "00000";
         public const string VEHICLE_LONG_TIME_INACTION = "10000";
         public const string VEHICLE_CAN_NOT_SERVICE = "10001";
+
+        public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE1_ST01 = "10101";
+        public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE1_ST02 = "10102";
+        public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE2_ST01 = "10103";
+        public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE2_ST02 = "10104";
+        public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE2_ST03 = "10105";
+        public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LOOP_ST01 = "10106";
+        public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_STOCK_ST01 = "10107";
+        public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE3_ST01 = "10108";
+        public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE3_ST02 = "10109";
+        public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE3_ST03 = "10110";
+
+        public const string AGVC_OUT_OF_STOCK_TIME_OUT_LINE1_ST01 = "10111";
+        public const string AGVC_OUT_OF_STOCK_TIME_OUT_LINE1_ST02 = "10112";
+        public const string AGVC_OUT_OF_STOCK_TIME_OUT_LINE2_ST01 = "10113";
+        public const string AGVC_OUT_OF_STOCK_TIME_OUT_LINE2_ST02 = "10114";
+        public const string AGVC_OUT_OF_STOCK_TIME_OUT_LINE2_ST03 = "10115";
+        public const string AGVC_OUT_OF_STOCK_TIME_OUT_LOOP_ST01 = "10116";
+        public const string AGVC_OUT_OF_STOCK_TIME_OUT_STOCK_ST01 = "10117";
+        public const string AGVC_OUT_OF_STOCK_TIME_OUT_LINE3_ST01 = "10118";
+        public const string AGVC_OUT_OF_STOCK_TIME_OUT_LINE3_ST02 = "10119";
+        public const string AGVC_OUT_OF_STOCK_TIME_OUT_LINE3_ST03 = "10120";
+
+        public const string AGVC_TRAN_COMMAND_IN_QUEUE_TIME_OUT = "10121";
+
         /// <summary>
         /// The sc application
         /// </summary>
