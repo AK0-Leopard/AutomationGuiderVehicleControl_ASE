@@ -101,6 +101,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
                 [Serializable]
                 public class VIDITEM_13 : SXFY
                 {
+                    //[SecsElement(Index = 1, Type = SecsElement.SecsElementType.TYPE_2_BYTE_UNSIGNED_INTEGER, Length = 1)]
                     [SecsElement(Index = 1, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)]
                     public string TransferState;
                     [SecsElement(Index = 2)]

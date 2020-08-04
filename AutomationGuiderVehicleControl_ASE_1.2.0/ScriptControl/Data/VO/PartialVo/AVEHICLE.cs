@@ -86,6 +86,10 @@ namespace com.mirle.ibg3k0.sc
         /// 最大允許斷線時間Milliseconds
         /// </summary>
         public static UInt32 MAX_ALLOW_IDLE_TIME_MILLISECOND { get; private set; } = 300000;
+        /// <summary>
+        /// 當要求狀態失敗N次後，會重新啟動連線的機制
+        /// </summary>
+        public const int MAX_STATUS_REQUEST_FAIL_TIMES = 3;
 
         VehicleTimerAction vehicleTimer = null;
         public VehicleStateMachine vhStateMachine;
@@ -127,6 +131,7 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler<VhStopSingle> ErrorStatusChange;
         public event EventHandler Idling;
         public event EventHandler<string> CurrentExcuteCmdChange;
+        public event EventHandler<int> StatusRequestFailOverTimes;
 
         public void onExcuteCommandStatusChange()
         {
@@ -420,6 +425,19 @@ namespace com.mirle.ibg3k0.sc
         public virtual string ObsVehicleID { get; set; }
         [JsonIgnore]
         public virtual int CurrentFailOverrideTimes { get; set; } = 0;
+        private int statusRequestFailTimes = 0;
+        public virtual int StatusRequestFailTimes
+        {
+            get { return statusRequestFailTimes; }
+            set
+            {
+                statusRequestFailTimes = value;
+                if (statusRequestFailTimes >= MAX_STATUS_REQUEST_FAIL_TIMES)
+                {
+                    StatusRequestFailOverTimes?.Invoke(this, statusRequestFailTimes);
+                }
+            }
+        }
         [JsonIgnore]
         public virtual double X_Axis { get; set; }
         [JsonIgnore]
@@ -892,6 +910,26 @@ namespace com.mirle.ibg3k0.sc
             lostPackets = ITcpIpControl.NumberOfPacketsLost(bcfApp, TcpIpAgentName);
         }
 
+        public bool IsTcpIpListening(BCFApplication bcfApp)
+        {
+            bool IsListening = false;
+            int local_port = ITcpIpControl.getLocalPortNum(bcfApp, TcpIpAgentName);
+            if (local_port != 0)
+            {
+                iibg3k0.ttc.Common.TCPIP.TcpIpServer tcpip_server = bcfApp.getTcpIpServerByPortNum(local_port);
+                if (tcpip_server != null)
+                {
+                    IsListening = tcpip_server.IsListening;
+                }
+            }
+            return IsListening;
+        }
+
+
+        public int getPortNum(BCFApplication bcfApp)
+        {
+            return ITcpIpControl.getLocalPortNum(bcfApp, TcpIpAgentName);
+        }
         internal string getIPAddress(BCFApplication bcfApp)
         {
             if (SCUtility.isEmpty(TcpIpAgentName))

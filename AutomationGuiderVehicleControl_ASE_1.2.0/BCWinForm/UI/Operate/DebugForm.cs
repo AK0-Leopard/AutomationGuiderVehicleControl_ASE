@@ -48,6 +48,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_StartGenAntoCmd.Checked = DebugParameter.CanAutoRandomGeneratesCommand;
             numer_num_of_avoid_seg.Value = DebugParameter.NumberOfAvoidanceSegment;
             ck_check_port_is_ready.Checked = DebugParameter.isNeedCheckPortReady;
+            cb_reserve_pass.Checked = DebugParameter.isForcedPassReserve;
 
             List<string> lstVh = new List<string>();
             lstVh.Add(string.Empty);
@@ -438,7 +439,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             DebugParameter.IsCycleRun = false;
             DebugParameter.CanAutoRandomGeneratesCommand = false;
 
-            DebugParameter.isForcedPassReserve = false;
+            //DebugParameter.isForcedPassReserve = false;
             DebugParameter.isForcedRejectReserve = false;
             DebugParameter.isContinueByIDReadFail = false;
             DebugParameter.testRetryReserveReq = false;
@@ -1489,6 +1490,35 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 bcApp.SCApplication.LineService.ProcessAlarmReport("AGVC", "0", sc.ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
                             $"");
             });
+        }
+
+        private void lbl_listening_status_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && (ModifierKeys & Keys.Control) == Keys.Control)
+            {
+                btn_open_tcp_port.Visible = true;
+                btn_close_tcp_port.Visible = true;
+            }
+        }
+
+        private async void btn_open_tcp_port_Click(object sender, EventArgs e)
+        {
+            bool is_success = false;
+            await Task.Run(() =>
+            {
+                is_success = bcApp.SCApplication.VehicleService.startVehicleTcpIpServer(vh_id);
+            });
+            MessageBox.Show(is_success ? "OK" : "NG");
+        }
+
+        private async void btn_close_tcp_port_Click(object sender, EventArgs e)
+        {
+            bool is_success = false;
+            await Task.Run(() =>
+            {
+                is_success = bcApp.SCApplication.VehicleService.stopVehicleTcpIpServer(vh_id);
+            });
+            MessageBox.Show(is_success ? "OK" : "NG");
         }
     }
 }

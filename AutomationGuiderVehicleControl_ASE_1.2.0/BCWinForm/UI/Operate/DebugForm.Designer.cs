@@ -112,6 +112,7 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button11 = new System.Windows.Forms.Button();
             this.cb_by_pass_shelf_status = new System.Windows.Forms.CheckBox();
             this.label46 = new System.Windows.Forms.Label();
             this.cbTranMode = new System.Windows.Forms.ComboBox();
@@ -382,7 +383,10 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
+            this.btn_close_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_open_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.lbl_listening_status = new System.Windows.Forms.Label();
+            this.label96 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -657,6 +661,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.lbl_listening_status);
+            this.groupBox4.Controls.Add(this.label96);
             this.groupBox4.Controls.Add(this.ck_CST_Status_L);
             this.groupBox4.Controls.Add(this.ck_CST_Status_R);
             this.groupBox4.Controls.Add(this.btn_changeToRemove);
@@ -755,7 +761,7 @@
             // 
             this.lbl_install_status.AutoSize = true;
             this.lbl_install_status.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_install_status.Location = new System.Drawing.Point(121, 71);
+            this.lbl_install_status.Location = new System.Drawing.Point(133, 71);
             this.lbl_install_status.Name = "lbl_install_status";
             this.lbl_install_status.Size = new System.Drawing.Size(122, 24);
             this.lbl_install_status.TabIndex = 51;
@@ -764,7 +770,7 @@
             // label73
             // 
             this.label73.AutoSize = true;
-            this.label73.Location = new System.Drawing.Point(6, 71);
+            this.label73.Location = new System.Drawing.Point(18, 71);
             this.label73.Name = "label73";
             this.label73.Size = new System.Drawing.Size(120, 22);
             this.label73.TabIndex = 50;
@@ -863,7 +869,7 @@
             this.groupBox17.Controls.Add(this.label39);
             this.groupBox17.Controls.Add(this.num_cycle_run_interval_time);
             this.groupBox17.Controls.Add(this.ck_CycleRunTest);
-            this.groupBox17.Location = new System.Drawing.Point(826, 25);
+            this.groupBox17.Location = new System.Drawing.Point(850, 25);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Size = new System.Drawing.Size(224, 138);
             this.groupBox17.TabIndex = 40;
@@ -1040,7 +1046,7 @@
             this.groupBox9.Controls.Add(this.label40);
             this.groupBox9.Controls.Add(this.label42);
             this.groupBox9.Controls.Add(this.btn_func71);
-            this.groupBox9.Location = new System.Drawing.Point(253, 12);
+            this.groupBox9.Location = new System.Drawing.Point(277, 12);
             this.groupBox9.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -1142,7 +1148,7 @@
             this.groupBox8.Controls.Add(this.cb_Abort_Type);
             this.groupBox8.Controls.Add(this.lbl_cmdID);
             this.groupBox8.Controls.Add(this.button9);
-            this.groupBox8.Location = new System.Drawing.Point(496, 12);
+            this.groupBox8.Location = new System.Drawing.Point(520, 12);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(314, 165);
             this.groupBox8.TabIndex = 25;
@@ -1366,6 +1372,8 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.btn_close_tcp_port);
+            this.tabPage1.Controls.Add(this.btn_open_tcp_port);
             this.tabPage1.Controls.Add(this.button11);
             this.tabPage1.Controls.Add(this.cb_by_pass_shelf_status);
             this.tabPage1.Controls.Add(this.label46);
@@ -1384,6 +1392,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(14, 830);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(153, 46);
+            this.button11.TabIndex = 31;
+            this.button11.Text = "Alarm Clear";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click_1);
             // 
             // cb_by_pass_shelf_status
             // 
@@ -1734,7 +1752,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4110,15 +4128,47 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // button11
+            // btn_close_tcp_port
             // 
-            this.button11.Location = new System.Drawing.Point(14, 830);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(153, 46);
-            this.button11.TabIndex = 31;
-            this.button11.Text = "Alarm Clear";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click_1);
+            this.btn_close_tcp_port.Location = new System.Drawing.Point(431, 837);
+            this.btn_close_tcp_port.Name = "btn_close_tcp_port";
+            this.btn_close_tcp_port.Size = new System.Drawing.Size(166, 45);
+            this.btn_close_tcp_port.TabIndex = 53;
+            this.btn_close_tcp_port.Text = "Close Tcp Port";
+            this.btn_close_tcp_port.UseVisualStyleBackColor = true;
+            this.btn_close_tcp_port.Visible = false;
+            this.btn_close_tcp_port.Click += new System.EventHandler(this.btn_close_tcp_port_Click);
+            // 
+            // btn_open_tcp_port
+            // 
+            this.btn_open_tcp_port.Location = new System.Drawing.Point(259, 837);
+            this.btn_open_tcp_port.Name = "btn_open_tcp_port";
+            this.btn_open_tcp_port.Size = new System.Drawing.Size(166, 45);
+            this.btn_open_tcp_port.TabIndex = 52;
+            this.btn_open_tcp_port.Text = "Open Tcp Port";
+            this.btn_open_tcp_port.UseVisualStyleBackColor = true;
+            this.btn_open_tcp_port.Visible = false;
+            this.btn_open_tcp_port.Click += new System.EventHandler(this.btn_open_tcp_port_Click);
+            // 
+            // lbl_listening_status
+            // 
+            this.lbl_listening_status.AutoSize = true;
+            this.lbl_listening_status.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_listening_status.Location = new System.Drawing.Point(135, 109);
+            this.lbl_listening_status.Name = "lbl_listening_status";
+            this.lbl_listening_status.Size = new System.Drawing.Size(122, 24);
+            this.lbl_listening_status.TabIndex = 57;
+            this.lbl_listening_status.Text = "           ";
+            this.lbl_listening_status.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbl_listening_status_MouseDoubleClick);
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Location = new System.Drawing.Point(-1, 109);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(140, 22);
+            this.label96.TabIndex = 56;
+            this.label96.Text = "Is Listening:";
             // 
             // DebugForm
             // 
@@ -4567,5 +4617,9 @@
         private System.Windows.Forms.NumericUpDown num_tran_cmd_queue_time_out_ms;
         private System.Windows.Forms.Label label95;
         private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Label lbl_listening_status;
+        private System.Windows.Forms.Label label96;
+        private Components.uctlButton btn_close_tcp_port;
+        private Components.uctlButton btn_open_tcp_port;
     }
 }

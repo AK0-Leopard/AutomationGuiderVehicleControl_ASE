@@ -51,6 +51,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             var alarm = from b in conn.ALARM
                         where b.RPT_DATE_TIME >= startTime &&
                          b.RPT_DATE_TIME <= endTime
+                        orderby b.CLEAR_DATE_TIME
                         select b;
             return alarm.ToList();
         }

@@ -207,7 +207,7 @@ namespace com.mirle.ibg3k0.bc.winform.App
             scApp.stop();
             scApp.stopShareMemory();
             scApp.stopSECSAgent();
-            scApp.stopTcpIpAgent();
+            scApp.stopTcpIpServer();
 
             scApp.hAProxyConnectionTest.shutDown();
             scApp.FailOverService.DeleteMaserHeartbeat();

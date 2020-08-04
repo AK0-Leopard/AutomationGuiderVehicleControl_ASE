@@ -307,7 +307,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ReserveBLL), Device: "AGV",
                        Data: "test flag: Force reject reserve is open, will driect reply to vh can't pass",
                        VehicleID: vhID);
-                    return (false, string.Empty,  string.Empty, null);
+                    return (false, string.Empty, string.Empty, null);
                 }
 
                 if (reserveInfos == null || reserveInfos.Count == 0) return (false, string.Empty, string.Empty, null);
@@ -349,7 +349,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(ReserveBLL), Device: "AGV",
                    Data: ex,
                    Details: $"process function:{nameof(IsMultiReserveSuccess)} Exception");
-                return (false, string.Empty,string.Empty, null);
+                return (false, string.Empty, string.Empty, null);
             }
         }
 

@@ -172,7 +172,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
         private S6F11.RPTINFO.RPTITEM.VIDITEM_04 buildAlarmsSetVIDItem()
         {
-            var alarms = scApp.AlarmBLL.getCurrentAlarms();
+            //var alarms = scApp.AlarmBLL.getCurrentAlarms();
+            var alarms = scApp.AlarmBLL.getCurrentErrorAlarms();
             string[] alaem_ids = alarms.Select(alarm => SCUtility.Trim(alarm.ALAM_CODE, true)).ToArray();
             S6F11.RPTINFO.RPTITEM.VIDITEM_04 item = new S6F11.RPTINFO.RPTITEM.VIDITEM_04()
             {
@@ -254,7 +255,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             List<S6F11.RPTINFO.RPTITEM.VIDITEM_13> enhanced_transfer_cmds = new List<S6F11.RPTINFO.RPTITEM.VIDITEM_13>();
             foreach (var tran in transfers)
             {
+                string transfer_state = SECSConst.convert2MCS(tran.TRANSFERSTATE);
                 var vid_itrm_13 = new S6F11.RPTINFO.RPTITEM.VIDITEM_13();
+                vid_itrm_13.TransferState = transfer_state;
                 vid_itrm_13.CommandInfo.CommandID = SCUtility.Trim(tran.ID, true);
                 vid_itrm_13.CommandInfo.Priority = tran.PRIORITY.ToString();
                 vid_itrm_13.CommandInfo.Replace = tran.REPLACE.ToString();
@@ -317,7 +320,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         }
         private S6F11.RPTINFO.RPTITEM.VIDITEM_360 buildUnitAlarmList()
         {
-            var alarms = scApp.AlarmBLL.getCurrentAlarms();
+            //var alarms = scApp.AlarmBLL.getCurrentAlarms();
+            var alarms = scApp.AlarmBLL.getCurrentErrorAlarms();
 
             S6F11.RPTINFO.RPTITEM.VIDITEM_360 item = new S6F11.RPTINFO.RPTITEM.VIDITEM_360()
             {

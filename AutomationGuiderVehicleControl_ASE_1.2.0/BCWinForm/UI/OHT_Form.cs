@@ -75,7 +75,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             //}
             timer_TimedUpdates.Enabled = true;
             adjustmentDataGridViewWeight();
-
+            SetCurrentAlarm(null, null);
             initialEvent();
 
 

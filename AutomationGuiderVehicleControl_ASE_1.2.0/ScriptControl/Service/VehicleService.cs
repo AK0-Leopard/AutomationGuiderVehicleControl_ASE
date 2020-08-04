@@ -2630,6 +2630,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.ModeStatusChange += Vh_ModeStatusChange;
                 vh.Idling += Vh_Idling;
                 vh.CurrentExcuteCmdChange += Vh_CurrentExcuteCmdChange;
+                vh.StatusRequestFailOverTimes += Vh_StatusRequestFailOverTimes;
                 vh.SetupTimerAction();
             }
         }
@@ -2684,7 +2685,30 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-
+        private void Vh_StatusRequestFailOverTimes(object sender, int e)
+        {
+            try
+            {
+                AVEHICLE vh = sender as AVEHICLE;
+                vh.StatusRequestFailTimes = 0;
+                //1.當Status要求失敗超過3次時，要將對應的Port關閉再開啟。
+                //var endPoint = vh.getIPEndPoint(scApp.getBCFApplication());
+                int port_num = vh.getPortNum(scApp.getBCFApplication());
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: $"Over {AVEHICLE.MAX_STATUS_REQUEST_FAIL_TIMES} times request status fail, begin restart tcpip server port:{port_num}...",
+                   VehicleID: vh.VEHICLE_ID,
+                   CST_ID_L: vh.CST_ID_L,
+                   CST_ID_R: vh.CST_ID_R);
+                stopVehicleTcpIpServer(vh);
+                SpinWait.SpinUntil(() => false, 2000);
+                startVehicleTcpIpServer(vh);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: ex);
+            }
+        }
         #region Vh Event Handler
         private void Vh_ErrorStatusChange(object sender, VhStopSingle vhStopSingle)
         {
@@ -2814,9 +2838,14 @@ namespace com.mirle.ibg3k0.sc.Service
             if (vh == null) return;
             //當發生很久沒有通訊的時候，就會發送143去進行狀態的詢問，確保Control還與Vehicle連線著
             bool is_success = Send.StatusRequest(vh.VEHICLE_ID);
+            //如果連續三次 都沒有得到回覆時，就將Port關閉在重新打開
             if (!is_success)
             {
-
+                vh.StatusRequestFailTimes++;
+            }
+            else
+            {
+                vh.StatusRequestFailTimes = 0;
             }
         }
 
@@ -3160,6 +3189,77 @@ namespace com.mirle.ibg3k0.sc.Service
             //    release_adr?.Release(vh.VEHICLE_ID);
             //}
         }
+
+        public bool stopVehicleTcpIpServer(string vhID)
+        {
+            AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+            return stopVehicleTcpIpServer(vh);
+        }
+        private bool stopVehicleTcpIpServer(AVEHICLE vh)
+        {
+            if (!vh.IsTcpIpListening(scApp.getBCFApplication()))
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: $"vh:{vh.VEHICLE_ID} of tcp/ip server already stopped!,IsTcpIpListening:{vh.IsTcpIpListening(scApp.getBCFApplication())}",
+                   VehicleID: vh.VEHICLE_ID,
+                   CST_ID_L: vh.CST_ID_L,
+                   CST_ID_R: vh.CST_ID_R);
+                return false;
+            }
+
+            int port_num = vh.getPortNum(scApp.getBCFApplication());
+            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+               Data: $"Stop vh:{vh.VEHICLE_ID} of tcp/ip server, port num:{port_num}",
+               VehicleID: vh.VEHICLE_ID,
+               CST_ID_L: vh.CST_ID_L,
+               CST_ID_R: vh.CST_ID_R);
+            scApp.stopTcpIpServer(port_num);
+            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+               Data: $"Stop vh:{vh.VEHICLE_ID} of tcp/ip server finish, IsTcpIpListening:{vh.IsTcpIpListening(scApp.getBCFApplication())}",
+               VehicleID: vh.VEHICLE_ID,
+               CST_ID_L: vh.CST_ID_L,
+               CST_ID_R: vh.CST_ID_R);
+            return true;
+        }
+
+        //public bool startVehicleTcpIpServer(string vhID)
+        //{
+        //    AVEHICLE vh = scApp.VehicleBLL.cache.getVhByID(vhID);
+        //    return startVehicleTcpIpServer(vh);
+        //}
+        public bool startVehicleTcpIpServer(string vhID)
+        {
+            AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+            return startVehicleTcpIpServer(vh);
+        }
+
+        private bool startVehicleTcpIpServer(AVEHICLE vh)
+        {
+            if (vh.IsTcpIpListening(scApp.getBCFApplication()))
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: $"vh:{vh.VEHICLE_ID} of tcp/ip server already listening!,IsTcpIpListening:{vh.IsTcpIpListening(scApp.getBCFApplication())}",
+               VehicleID: vh.VEHICLE_ID,
+               CST_ID_L: vh.CST_ID_L,
+               CST_ID_R: vh.CST_ID_R);
+                return false;
+            }
+
+            int port_num = vh.getPortNum(scApp.getBCFApplication());
+            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+               Data: $"Start vh:{vh.VEHICLE_ID} of tcp/ip server, port num:{port_num}",
+               VehicleID: vh.VEHICLE_ID,
+               CST_ID_L: vh.CST_ID_L,
+               CST_ID_R: vh.CST_ID_R);
+            scApp.startTcpIpServerListen(port_num);
+            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+               Data: $"Start vh:{vh.VEHICLE_ID} of tcp/ip server finish, IsTcpIpListening:{vh.IsTcpIpListening(scApp.getBCFApplication())}",
+               VehicleID: vh.VEHICLE_ID,
+               CST_ID_L: vh.CST_ID_L,
+               CST_ID_R: vh.CST_ID_R);
+            return true;
+        }
+
         private void PublishVhInfo(object sender, EventArgs e)
         {
             try

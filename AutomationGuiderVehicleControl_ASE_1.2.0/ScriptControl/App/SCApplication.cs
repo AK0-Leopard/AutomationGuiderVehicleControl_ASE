@@ -441,7 +441,7 @@ namespace com.mirle.ibg3k0.sc.App
         }
 
 
-
+        private string[] ForceBanSections = new string[] { "20212" };
         private void init()
         {
             //mqttControl = new MQTTControl();
@@ -529,6 +529,10 @@ namespace com.mirle.ibg3k0.sc.App
                         NewRouteGuide.banRouteTwoDirect(sec.SEC_ID);//由於目前AGV的圖資資料Section=Segment，之後會將牠們分開，
                                                                     //因此先將Segment作為Sectiong使用
                 }
+            }
+            foreach (string ban_sec in ForceBanSections)
+            {
+                NewRouteGuide.banRouteTwoDirect(ban_sec);
             }
 
             //            startBLL();
@@ -1448,6 +1452,20 @@ namespace com.mirle.ibg3k0.sc.App
                 //}
             }
         }
+        /// <summary>
+        /// 啟動指定的 TcpIpServer
+        /// </summary>
+        public void startTcpIpServerListen(int portNum)
+        {
+            lock (_lock)
+            {
+                if (started == false)
+                    return;
+                bcfApplication.startTcpIpSecverListen(portNum);
+                logger.Info($"Start TcpIp Agent,Port Num:{portNum}");
+            }
+        }
+
 
         /// <summary>
         /// 啟動TcpIp Agent
@@ -1521,12 +1539,23 @@ namespace com.mirle.ibg3k0.sc.App
         /// <summary>
         /// 停止TcpIp Agent
         /// </summary>
-        public void stopTcpIpAgent()
+        public void stopTcpIpServer()
         {
             lock (_lock)
             {
                 bcfApplication.ShutdownTcpIpSecverListen();
                 logger.Info("Stop TcpIp Agent");
+            }
+        }
+        /// <summary>
+        /// 停止指定TcpIp Server
+        /// </summary>
+        public void stopTcpIpServer(int portNum)
+        {
+            lock (_lock)
+            {
+                bcfApplication.ShutdownTcpIpSecverListen(portNum);
+                logger.Info($"Stop TcpIp Agent,Port Num:{portNum}");
             }
         }
 
@@ -1739,7 +1768,8 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean isForcedRejectBlockControl = false;
         public static Boolean isTestCarrierInterfaceError = false;
 
-        public static Boolean isForcedPassReserve = false;
+        //public static Boolean isForcedPassReserve = false;
+        public static Boolean isForcedPassReserve = true;
         public static Boolean isForcedRejectReserve = false;
 
         public static Boolean isContinueByIDReadFail = false;

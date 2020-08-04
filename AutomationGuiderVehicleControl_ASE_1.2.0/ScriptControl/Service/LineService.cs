@@ -400,7 +400,8 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 string eq_id = eqptID;
                 bool is_all_alarm_clear = SCUtility.isMatche(err_code, "0") && status == ErrorStatus.ErrReset;
-                List<ALARM> alarms = null;
+                //List<ALARM> alarms = null;
+                List<ALARM> alarms = new List<ALARM>();
                 scApp.getRedisCacheManager().BeginTransaction();
                 using (TransactionScope tx = SCUtility.getTransactionScope())
                 {
@@ -423,14 +424,18 @@ namespace com.mirle.ibg3k0.sc.Service
                                     alarm = scApp.AlarmBLL.setAlarmReport(eq_id, err_code, errorDesc);
                                     //將其更新至Redis，保存目前所發生的Alarm
                                     scApp.AlarmBLL.setAlarmReport2Redis(alarm);
-                                    alarms = new List<ALARM>() { alarm };
+                                    //alarms = new List<ALARM>() { alarm };
+                                    if (alarm != null)
+                                        alarms.Add(alarm);
                                     break;
                                 case ErrorStatus.ErrReset:
                                     //將設備上報的Alarm從資料庫刪除。
                                     alarm = scApp.AlarmBLL.resetAlarmReport(eq_id, err_code);
                                     //將其更新至Redis，保存目前所發生的Alarm
                                     scApp.AlarmBLL.resetAlarmReport2Redis(alarm);
-                                    alarms = new List<ALARM>() { alarm };
+                                    //alarms = new List<ALARM>() { alarm };
+                                    if (alarm != null)
+                                        alarms.Add(alarm);
                                     break;
                             }
                         }
@@ -439,7 +444,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 scApp.getRedisCacheManager().ExecuteTransaction();
                 //通知有Alarm的資訊改變。
-                scApp.getNatsManager().PublishAsync(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, new byte[0]);
+                if (alarms != null && alarms.Count > 0)
+                    scApp.getNatsManager().PublishAsync(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, new byte[0]);
 
                 foreach (ALARM report_alarm in alarms)
                 {
@@ -480,7 +486,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 string node_id = vh.NODE_ID;
                 string vh_id = vh.VEHICLE_ID;
                 bool is_all_alarm_clear = SCUtility.isMatche(err_code, "0") && status == ErrorStatus.ErrReset;
-                List<ALARM> alarms = null;
+                //List<ALARM> alarms = null;
+                List<ALARM> alarms = new List<ALARM>();
                 scApp.getRedisCacheManager().BeginTransaction();
                 using (TransactionScope tx = SCUtility.getTransactionScope())
                 {
@@ -506,14 +513,18 @@ namespace com.mirle.ibg3k0.sc.Service
                                     alarm = scApp.AlarmBLL.setAlarmReport(node_id, vh_id, err_code, errorDesc);
                                     //將其更新至Redis，保存目前所發生的Alarm
                                     scApp.AlarmBLL.setAlarmReport2Redis(alarm);
-                                    alarms = new List<ALARM>() { alarm };
+                                    //alarms = new List<ALARM>() { alarm };
+                                    if (alarm != null)
+                                        alarms.Add(alarm);
                                     break;
                                 case ErrorStatus.ErrReset:
                                     //將設備上報的Alarm從資料庫刪除。
                                     alarm = scApp.AlarmBLL.resetAlarmReport(vh_id, err_code);
                                     //將其更新至Redis，保存目前所發生的Alarm
                                     scApp.AlarmBLL.resetAlarmReport2Redis(alarm);
-                                    alarms = new List<ALARM>() { alarm };
+                                    //alarms = new List<ALARM>() { alarm };
+                                    if (alarm != null)
+                                        alarms.Add(alarm);
                                     break;
                             }
                         }
@@ -522,7 +533,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 scApp.getRedisCacheManager().ExecuteTransaction();
                 //通知有Alarm的資訊改變。
-                scApp.getNatsManager().PublishAsync(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, new byte[0]);
+                if (alarms != null && alarms.Count > 0)
+                    scApp.getNatsManager().PublishAsync(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, new byte[0]);
 
                 foreach (ALARM report_alarm in alarms)
                 {
