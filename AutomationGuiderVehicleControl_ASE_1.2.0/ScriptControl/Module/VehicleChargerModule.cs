@@ -16,6 +16,7 @@ namespace com.mirle.ibg3k0.sc.Module
         private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private VehicleBLL vehicleBLL = null;
         private Service.VehicleService vehicleService = null;
+        private Service.LineService lineService = null;
         private SegmentBLL segmentBLL = null;
         private AddressesBLL addressesBLL = null;
         private GuideBLL guideBLL = null;
@@ -38,6 +39,8 @@ namespace com.mirle.ibg3k0.sc.Module
             eqptBLL = app.EqptBLL;
             unitBLL = app.UnitBLL;
             commObjCacheManager = app.getCommObjCacheManager();
+            lineService = app.LineService;
+
             var vhs = app.getEQObjCacheManager().getAllVehicle();
             foreach (AVEHICLE vh in vhs)
             {
@@ -146,6 +149,15 @@ namespace com.mirle.ibg3k0.sc.Module
                         }
                         break;
                 }
+                if (e == BatteryLevel.Low)
+                {
+                    lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_BATTERY_LEVEL_IS_LOW, ErrorStatus.ErrSet, $"vehicle:{vh.VEHICLE_ID} is in low battery status");
+                }
+                else
+                {
+                    lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_BATTERY_LEVEL_IS_LOW, ErrorStatus.ErrReset, $"vehicle:{vh.VEHICLE_ID} is in low battery status");
+                    lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_FIND_THE_COUPLER_TO_CHARGING, ErrorStatus.ErrReset, $"vehicle:{vh.VEHICLE_ID} can't find coupler to charging");
+                }
             }
             catch (Exception ex)
             {
@@ -252,6 +264,10 @@ namespace com.mirle.ibg3k0.sc.Module
             if (!SCUtility.isEmpty(best_coupler_adr))
             {
                 vehicleService.Command.MoveToCharge(vh.VEHICLE_ID, best_coupler_adr);
+            }
+            else
+            {
+                lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_FIND_THE_COUPLER_TO_CHARGING, ErrorStatus.ErrSet, $"vehicle:{vh.VEHICLE_ID} can't find coupler to charging");
             }
         }
         public void askVhToChargerForWait(AVEHICLE vh)

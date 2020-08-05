@@ -2798,7 +2798,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
         private long syncPoint_ProcLongTimeInaction = 0;
-        private void Vh_LongTimeInaction(object sender, string cmdID)
+        private void Vh_LongTimeInaction(object sender, List<string> cmdIDs)
         {
             AVEHICLE vh = sender as AVEHICLE;
             if (vh == null) return;
@@ -2807,16 +2807,17 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 try
                 {
+                    string cmd_ids = string.Join(",", cmdIDs);
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                       Data: $"Process vehicle long time inaction, cmd id:{cmdID}",
+                       Data: $"Process vehicle long time inaction, cmd id:{cmd_ids}",
                        VehicleID: vh.VEHICLE_ID,
                        CST_ID_L: vh.CST_ID_L,
                        CST_ID_R: vh.CST_ID_R);
 
                     //當發生命令執行過久之後要將該筆命令改成Abormal end，如果該筆命令是MCS的Command則需要將命令上報給MCS作為結束
-                    Command.Finish(cmdID, CompleteStatus.LongTimeInaction);
+                    //Command.Finish(cmdID, CompleteStatus.LongTimeInaction);
                     //要再上報Alamr Rerport給MCS
-                    scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_LONG_TIME_INACTION, ErrorStatus.ErrSet, $"vehicle long time inaction, cmd id:{cmdID}");
+                    scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_LONG_TIME_INACTION, ErrorStatus.ErrSet, $"vehicle long time inaction, cmd ids:{cmd_ids}");
                 }
                 catch (Exception ex)
                 {
@@ -3665,6 +3666,8 @@ namespace com.mirle.ibg3k0.sc.Service
                VehicleID: vh.VEHICLE_ID,
                CST_ID_L: vh.CST_ID_L,
                CST_ID_R: vh.CST_ID_R);
+            scApp.LineService.ProcessAlarmReport
+                (vh, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrReset, $"vehicle cannot service");
 
 
             SCUtility.RecodeConnectionInfo

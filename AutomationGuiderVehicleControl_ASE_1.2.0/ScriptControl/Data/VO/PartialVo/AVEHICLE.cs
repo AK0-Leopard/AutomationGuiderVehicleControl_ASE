@@ -77,11 +77,11 @@ namespace com.mirle.ibg3k0.sc
         /// <summary>
         /// 單筆命令，最大允許的搬送時間
         /// </summary>
-        public static UInt16 MAX_ALLOW_ACTION_TIME_SECOND { get; private set; } = 1200;
+        public static UInt32 MAX_ALLOW_ACTION_TIME_MILLISECOND { get; private set; } = 1200000;
         /// <summary>
         /// 最大允許斷線時間
         /// </summary>
-        public static UInt16 MAX_ALLOW_NO_CONNECTION_TIME_SECOND { get; private set; } = 30;
+        public static UInt16 MAX_ALLOW_NO_CONNECTION_TIME_SECOND { get; private set; } = 60;
         /// <summary>
         /// 最大允許斷線時間Milliseconds
         /// </summary>
@@ -94,7 +94,8 @@ namespace com.mirle.ibg3k0.sc
         VehicleTimerAction vehicleTimer = null;
         public VehicleStateMachine vhStateMachine;
         private Stopwatch CurrentCommandExcuteTime;
-        public Stopwatch IdleTime;
+        private Stopwatch IdleTimer;
+        private Stopwatch CommandActionTimer;
         public AVEHICLE()
         {
             eqptObjectCate = SCAppConstants.EQPT_OBJECT_CATE_EQPT;
@@ -102,7 +103,7 @@ namespace com.mirle.ibg3k0.sc
             vhStateMachine.OnTransitioned(TransitionedHandler);
             vhStateMachine.OnUnhandledTrigger(UnhandledTriggerHandler);
             CurrentCommandExcuteTime = new Stopwatch();
-            IdleTime = new Stopwatch();
+            IdleTimer = new Stopwatch();
         }
 
 
@@ -125,13 +126,14 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler<BatteryLevel> BatteryLevelChange;
         public event EventHandler<int> BatteryCapacityChange;
         public event EventHandler LongTimeNoCommuncation;
-        public event EventHandler<string> LongTimeInaction;
+        public event EventHandler<List<string>> LongTimeInaction;
         public event EventHandler LongTimeDisconnection;
         public event EventHandler<VHModeStatus> ModeStatusChange;
         public event EventHandler<VhStopSingle> ErrorStatusChange;
         public event EventHandler Idling;
         public event EventHandler<string> CurrentExcuteCmdChange;
         public event EventHandler<int> StatusRequestFailOverTimes;
+        public event EventHandler CanNotFindTheCharger;
 
         public void onExcuteCommandStatusChange()
         {
@@ -169,9 +171,10 @@ namespace com.mirle.ibg3k0.sc
         {
             LongTimeNoCommuncation?.Invoke(this, EventArgs.Empty);
         }
-        public void onLongTimeInaction(string cmdID)
+        public void onLongTimeInaction(List<string> cmdIDs)
         {
-            LongTimeInaction?.Invoke(this, cmdID);
+            isLongTimeInaction = true;
+            LongTimeInaction?.Invoke(this, cmdIDs);
         }
         public void onLongTimeDisConnection()
         {
@@ -193,6 +196,14 @@ namespace com.mirle.ibg3k0.sc
         public void onCurrentExcuteCmdChange(string currentExcuteCmdID)
         {
             CurrentExcuteCmdChange?.Invoke(this, currentExcuteCmdID);
+        }
+        public void onVehicleCanNotFindTheCharger()
+        {
+            if (!isCanNotFindTheCharger)
+            {
+                isCanNotFindTheCharger = true;
+                CanNotFindTheCharger?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         #endregion Event
@@ -497,6 +508,8 @@ namespace com.mirle.ibg3k0.sc
         [JsonIgnore]
         public virtual E_CMD_STATUS vh_CMD_Status { get; set; }
         public virtual bool isIdling { get; private set; }
+        public virtual bool isLongTimeInaction { get; private set; }
+        public virtual bool isCanNotFindTheCharger { get; private set; }
         public virtual bool isAuto
         {
             get
@@ -1416,9 +1429,16 @@ namespace com.mirle.ibg3k0.sc
                         //    vh.onLongTimeInaction(vh.OHTC_CMD);
                         //}
                         IdleTimeCheck();
-                        if (!vh.isIdling && vh.IdleTime.ElapsedMilliseconds > AVEHICLE.MAX_ALLOW_IDLE_TIME_MILLISECOND)
+                        if (!vh.isIdling && vh.IdleTimer.ElapsedMilliseconds > AVEHICLE.MAX_ALLOW_IDLE_TIME_MILLISECOND)
                         {
                             vh.onVehicleIdle();
+                        }
+                        ALINE line = scApp.getEQObjCacheManager().getLine();
+                        CommandActionTimeCheck(line);
+                        if (!vh.isLongTimeInaction && vh.CommandActionTimer.ElapsedMilliseconds > AVEHICLE.MAX_ALLOW_ACTION_TIME_MILLISECOND)
+                        {
+                            var currnet_excute_ids = getVhCurrentExcuteCommandID(line.CurrentExcuteCommand);
+                            vh.onLongTimeInaction(currnet_excute_ids);
                         }
                     }
                     catch (Exception ex)
@@ -1441,19 +1461,54 @@ namespace com.mirle.ibg3k0.sc
             {
                 if (vh.ACT_STATUS == VHActionStatus.NoCommand)
                 {
-                    if (!vh.IdleTime.IsRunning)
+                    if (!vh.IdleTimer.IsRunning)
                     {
-                        vh.IdleTime.Restart();
+                        vh.IdleTimer.Restart();
                     }
                 }
                 else
                 {
-                    if (vh.IdleTime.IsRunning)
+                    if (vh.IdleTimer.IsRunning)
                     {
-                        vh.IdleTime.Reset();
+                        vh.IdleTimer.Reset();
                     }
                     vh.isIdling = false;
                 }
+            }
+
+            private void CommandActionTimeCheck(ALINE line)
+            {
+                if (line == null) return;
+                var cmds = line.CurrentExcuteCommand;
+                if (cmds == null) return;
+                bool has_command_excute = getVhCurrentExcuteCommandCount(cmds);
+                if (has_command_excute)
+                {
+                    if (!vh.CommandActionTimer.IsRunning)
+                    {
+                        vh.CommandActionTimer.Restart();
+                    }
+                }
+                else
+                {
+                    if (vh.CommandActionTimer.IsRunning)
+                    {
+                        vh.CommandActionTimer.Reset();
+                    }
+                    vh.isLongTimeInaction = false;
+                }
+            }
+
+            private bool getVhCurrentExcuteCommandCount(List<ACMD> cmds)
+            {
+                return cmds.Where(cmd => SCUtility.isMatche(cmd.VH_ID, vh.VEHICLE_ID))
+                           .Count() > 0;
+            }
+            private List<string> getVhCurrentExcuteCommandID(List<ACMD> cmds)
+            {
+                return cmds.Where(cmd => SCUtility.isMatche(cmd.VH_ID, vh.VEHICLE_ID))
+                           .Select(cmd => cmd.ID)
+                           .ToList();
             }
         }
         public class ReserveUnsuccessInfo
