@@ -2691,6 +2691,8 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 AVEHICLE vh = sender as AVEHICLE;
                 vh.StatusRequestFailTimes = 0;
+                vh.stopVehicleTimer();
+
                 //1.當Status要求失敗超過3次時，要將對應的Port關閉再開啟。
                 //var endPoint = vh.getIPEndPoint(scApp.getBCFApplication());
                 int port_num = vh.getPortNum(scApp.getBCFApplication());
@@ -2777,7 +2779,6 @@ namespace com.mirle.ibg3k0.sc.Service
             if (vh == null) return;
             try
             {
-                vh.stopVehicleTimer();
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                    Data: $"Process vehicle long time disconnection",
                    VehicleID: vh.VEHICLE_ID,
@@ -2817,7 +2818,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     //當發生命令執行過久之後要將該筆命令改成Abormal end，如果該筆命令是MCS的Command則需要將命令上報給MCS作為結束
                     //Command.Finish(cmdID, CompleteStatus.LongTimeInaction);
                     //要再上報Alamr Rerport給MCS
-                    scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_LONG_TIME_INACTION, ErrorStatus.ErrSet, $"vehicle long time inaction, cmd ids:{cmd_ids}");
+                    scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_LONG_TIME_INACTION_0, ErrorStatus.ErrSet, $"vehicle long time inaction, cmd ids:{cmd_ids}");
                 }
                 catch (Exception ex)
                 {
@@ -3651,29 +3652,31 @@ namespace com.mirle.ibg3k0.sc.Service
         [ClassAOPAspect]
         public void Connection(BCFApplication bcfApp, AVEHICLE vh)
         {
-            vh.isTcpIpConnect = true;
-            vh.startVehicleTimer();
+            lock (vh.connection_sync)
+            {
+                vh.isTcpIpConnect = true;
+                vh.startVehicleTimer();
 
-            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-               Data: "Connection ! Begin synchronize with vehicle...",
-               VehicleID: vh.VEHICLE_ID,
-               CST_ID_L: vh.CST_ID_L,
-               CST_ID_R: vh.CST_ID_R);
-            VehicleInfoSynchronize(vh.VEHICLE_ID);
-            doDataSysc(vh.VEHICLE_ID);
-            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-               Data: "Connection ! End synchronize with vehicle.",
-               VehicleID: vh.VEHICLE_ID,
-               CST_ID_L: vh.CST_ID_L,
-               CST_ID_R: vh.CST_ID_R);
-            scApp.LineService.ProcessAlarmReport
-                (vh, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrReset, $"vehicle cannot service");
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: "Connection ! Begin synchronize with vehicle...",
+                   VehicleID: vh.VEHICLE_ID,
+                   CST_ID_L: vh.CST_ID_L,
+                   CST_ID_R: vh.CST_ID_R);
+                VehicleInfoSynchronize(vh.VEHICLE_ID);
+                doDataSysc(vh.VEHICLE_ID);
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: "Connection ! End synchronize with vehicle.",
+                   VehicleID: vh.VEHICLE_ID,
+                   CST_ID_L: vh.CST_ID_L,
+                   CST_ID_R: vh.CST_ID_R);
+                scApp.LineService.ProcessAlarmReport
+                    (vh, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrReset, $"vehicle cannot service");
 
-
-            SCUtility.RecodeConnectionInfo
-                (vh.VEHICLE_ID,
-                SCAppConstants.RecodeConnectionInfo_Type.Connection.ToString(),
-                vh.getDisconnectionIntervalTime(bcfApp));
+                SCUtility.RecodeConnectionInfo
+                    (vh.VEHICLE_ID,
+                    SCAppConstants.RecodeConnectionInfo_Type.Connection.ToString(),
+                    vh.getDisconnectionIntervalTime(bcfApp));
+            }
         }
         /// <summary>
         /// 與Vehicle進行資料同步。(通常使用剛與Vehicle連線時)
@@ -3689,17 +3692,20 @@ namespace com.mirle.ibg3k0.sc.Service
         [ClassAOPAspect]
         public void Disconnection(BCFApplication bcfApp, AVEHICLE vh)
         {
-            vh.isTcpIpConnect = false;
+            lock (vh.connection_sync)
+            {
+                vh.isTcpIpConnect = false;
 
-            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-               Data: "Disconnection !",
-               VehicleID: vh.VEHICLE_ID,
-               CST_ID_L: vh.CST_ID_L,
-               CST_ID_R: vh.CST_ID_R);
-            SCUtility.RecodeConnectionInfo
-                (vh.VEHICLE_ID,
-                SCAppConstants.RecodeConnectionInfo_Type.Disconnection.ToString(),
-                vh.getConnectionIntervalTime(bcfApp));
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: "Disconnection !",
+                   VehicleID: vh.VEHICLE_ID,
+                   CST_ID_L: vh.CST_ID_L,
+                   CST_ID_R: vh.CST_ID_R);
+                SCUtility.RecodeConnectionInfo
+                    (vh.VEHICLE_ID,
+                    SCAppConstants.RecodeConnectionInfo_Type.Disconnection.ToString(),
+                    vh.getConnectionIntervalTime(bcfApp));
+            }
         }
         #endregion Vh Connection / disconnention
         #region Vehicle Install/Remove

@@ -73,7 +73,7 @@ namespace com.mirle.ibg3k0.sc
         /// <summary>
         /// 最大允許沒有通訊的時間
         /// </summary>
-        public static UInt16 MAX_ALLOW_NO_COMMUNICATION_TIME_SECOND { get; private set; } = 60;
+        public static UInt16 MAX_ALLOW_NO_COMMUNICATION_TIME_SECOND { get; private set; } = 30;
         /// <summary>
         /// 單筆命令，最大允許的搬送時間
         /// </summary>
@@ -546,6 +546,9 @@ namespace com.mirle.ibg3k0.sc
 
         [JsonIgnore]
         public object PositionRefresh_Sync = new object();
+        [JsonIgnore]
+        public object connection_sync = new object();
+
         [JsonIgnore]
         public virtual ReserveUnsuccessInfo CanNotReserveInfo { get; set; }
         [JsonIgnore]
@@ -1410,6 +1413,12 @@ namespace com.mirle.ibg3k0.sc
                 {
                     try
                     {
+                        //1.檢查是否已經大於一定時間沒有進行通訊
+                        double from_last_comm_time = vh.getFromTheLastCommTime(scApp.getBCFApplication());
+                        if (from_last_comm_time > AVEHICLE.MAX_ALLOW_NO_COMMUNICATION_TIME_SECOND)
+                        {
+                            vh.onLongTimeNoCommuncation();
+                        }
                         //檢查斷線時間是否已經大於容許的最大值
                         double disconnection_time = vh.getDisconnectionIntervalTime(scApp.getBCFApplication());
                         if (disconnection_time > AVEHICLE.MAX_ALLOW_NO_CONNECTION_TIME_SECOND)
@@ -1417,12 +1426,6 @@ namespace com.mirle.ibg3k0.sc
                             vh.onLongTimeDisConnection();
                         }
                         if (!vh.isTcpIpConnect) return;
-                        //1.檢查是否已經大於一定時間沒有進行通訊
-                        double from_last_comm_time = vh.getFromTheLastCommTime(scApp.getBCFApplication());
-                        if (from_last_comm_time > AVEHICLE.MAX_ALLOW_NO_COMMUNICATION_TIME_SECOND)
-                        {
-                            vh.onLongTimeNoCommuncation();
-                        }
                         //double action_time = vh.CurrentCommandExcuteTime.Elapsed.TotalSeconds; //todo 需確認如何修改成正確的命令Timeout
                         //if (action_time > AVEHICLE.MAX_ALLOW_ACTION_TIME_SECOND)
                         //{

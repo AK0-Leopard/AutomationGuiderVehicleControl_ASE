@@ -50,6 +50,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             ck_check_port_is_ready.Checked = DebugParameter.isNeedCheckPortReady;
             cb_reserve_pass.Checked = DebugParameter.isForcedPassReserve;
 
+            cb_passCouplerStatus.Checked = DebugParameter.isPassCouplerStatus;
+            cb_passCouplerHPSafetySingnal.Checked = DebugParameter.isPassCouplerHPSafetySignal;
+
+
             List<string> lstVh = new List<string>();
             lstVh.Add(string.Empty);
             lstVh.AddRange(bcApp.SCApplication.VehicleBLL.cache.loadAllVh().Select(vh => vh.VEHICLE_ID).ToList());
@@ -1519,6 +1523,16 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 is_success = bcApp.SCApplication.VehicleService.stopVehicleTcpIpServer(vh_id);
             });
             MessageBox.Show(is_success ? "OK" : "NG");
+        }
+
+        private void cb_passCouplerStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.isPassCouplerStatus = cb_passCouplerStatus.Checked;
+        }
+
+        private void cb_passCouplerHPSafetySingnal_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.isPassCouplerHPSafetySignal = cb_passCouplerHPSafetySingnal.Checked;
         }
     }
 }

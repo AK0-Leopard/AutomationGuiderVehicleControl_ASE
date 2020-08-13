@@ -387,6 +387,8 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
+            this.cb_passCouplerStatus = new System.Windows.Forms.CheckBox();
+            this.cb_passCouplerHPSafetySingnal = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1794,7 +1796,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2938,6 +2940,8 @@
             // 
             // groupBox14
             // 
+            this.groupBox14.Controls.Add(this.cb_passCouplerStatus);
+            this.groupBox14.Controls.Add(this.cb_passCouplerHPSafetySingnal);
             this.groupBox14.Controls.Add(this.label24);
             this.groupBox14.Controls.Add(this.tb_ChargerAlive);
             this.groupBox14.Controls.Add(this.groupBox22);
@@ -2949,7 +2953,7 @@
             this.groupBox14.Controls.Add(this.groupBox20);
             this.groupBox14.Location = new System.Drawing.Point(501, 6);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(946, 722);
+            this.groupBox14.Size = new System.Drawing.Size(946, 773);
             this.groupBox14.TabIndex = 34;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Charger";
@@ -4170,6 +4174,28 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
+            // cb_passCouplerStatus
+            // 
+            this.cb_passCouplerStatus.AutoSize = true;
+            this.cb_passCouplerStatus.Location = new System.Drawing.Point(484, 741);
+            this.cb_passCouplerStatus.Name = "cb_passCouplerStatus";
+            this.cb_passCouplerStatus.Size = new System.Drawing.Size(219, 26);
+            this.cb_passCouplerStatus.TabIndex = 34;
+            this.cb_passCouplerStatus.Text = "Pass Coupler Status";
+            this.cb_passCouplerStatus.UseVisualStyleBackColor = true;
+            this.cb_passCouplerStatus.CheckedChanged += new System.EventHandler(this.cb_passCouplerStatus_CheckedChanged);
+            // 
+            // cb_passCouplerHPSafetySingnal
+            // 
+            this.cb_passCouplerHPSafetySingnal.AutoSize = true;
+            this.cb_passCouplerHPSafetySingnal.Location = new System.Drawing.Point(483, 711);
+            this.cb_passCouplerHPSafetySingnal.Name = "cb_passCouplerHPSafetySingnal";
+            this.cb_passCouplerHPSafetySingnal.Size = new System.Drawing.Size(319, 26);
+            this.cb_passCouplerHPSafetySingnal.TabIndex = 35;
+            this.cb_passCouplerHPSafetySingnal.Text = "Pass Coupler HP Safety Signal";
+            this.cb_passCouplerHPSafetySingnal.UseVisualStyleBackColor = true;
+            this.cb_passCouplerHPSafetySingnal.CheckedChanged += new System.EventHandler(this.cb_passCouplerHPSafetySingnal_CheckedChanged);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -4621,5 +4647,7 @@
         private System.Windows.Forms.Label label96;
         private Components.uctlButton btn_close_tcp_port;
         private Components.uctlButton btn_open_tcp_port;
+        private System.Windows.Forms.CheckBox cb_passCouplerStatus;
+        private System.Windows.Forms.CheckBox cb_passCouplerHPSafetySingnal;
     }
 }

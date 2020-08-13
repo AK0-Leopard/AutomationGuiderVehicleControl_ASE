@@ -62,6 +62,12 @@ namespace com.mirle.ibg3k0.sc.Module
         {
             try
             {
+                if (DebugParameter.isPassCouplerHPSafetySignal)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                       Data: $"pass coupler hp safey signal,flag:{DebugParameter.isPassCouplerHPSafetySignal}");
+                    return;
+                }
                 AUNIT charger = sender as AUNIT;
                 if (charger == null)
                 {
@@ -70,16 +76,16 @@ namespace com.mirle.ibg3k0.sc.Module
                     return;
                 }
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                   Data: $"Coupler hp safyte has changed,charger id:{charger.EQPT_ID} hp safety:{e}");
-                var couplers = addressesBLL.cache.LoadCouplerAddresses(charger.EQPT_ID);
+                   Data: $"Coupler hp safyte has changed,charger id:{charger.UNIT_ID} hp safety:{e}");
+                var couplers = addressesBLL.cache.LoadCouplerAddresses(charger.UNIT_ID);
                 var vhs = vehicleBLL.cache.loadAllVh();
                 switch (e)
                 {
                     case SCAppConstants.CouplerHPSafety.NonSafety:
-                        lineService.ProcessAlarmReport(charger.EQPT_ID, AlarmBLL.AGVC_CHARGER_HP_NOT_SAFETY, ErrorStatus.ErrSet, $"Coupler position not safety.");
+                        lineService.ProcessAlarmReport(charger.UNIT_ID, AlarmBLL.AGVC_CHARGER_HP_NOT_SAFETY, ErrorStatus.ErrSet, $"Coupler position not safety.");
                         break;
                     case SCAppConstants.CouplerHPSafety.Safyte:
-                        lineService.ProcessAlarmReport(charger.EQPT_ID, AlarmBLL.AGVC_CHARGER_HP_NOT_SAFETY, ErrorStatus.ErrReset, $"Coupler position not safety.");
+                        lineService.ProcessAlarmReport(charger.UNIT_ID, AlarmBLL.AGVC_CHARGER_HP_NOT_SAFETY, ErrorStatus.ErrReset, $"Coupler position not safety.");
                         break;
                 }
                 foreach (var coupler in couplers)
@@ -116,7 +122,7 @@ namespace com.mirle.ibg3k0.sc.Module
                                 {
                                     try
                                     {
-                                        vehicleService.Send.Pause(vh.VEHICLE_ID, pauseEvent, pauseType);
+                                        vehicleService.Send.Pause(vh_id, pauseEvent, pauseType);
                                     }
                                     catch (Exception ex)
                                     {

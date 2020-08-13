@@ -10,6 +10,7 @@ using System.Collections;
 using Newtonsoft.Json;
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.App;
+using NLog;
 
 namespace com.mirle.ibg3k0.sc
 {
@@ -19,6 +20,7 @@ namespace com.mirle.ibg3k0.sc
 
         public Boolean[] AddressTypeFlags { get; set; }
         public string[] SegmentIDs { get; set; }
+        protected NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public event EventHandler<string> VehicleRelease;
         //public AADDRESS()
@@ -134,6 +136,13 @@ namespace com.mirle.ibg3k0.sc
 
         public bool IsWork(UnitBLL unitBLL)
         {
+            if (DebugParameter.isPassCouplerStatus)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(AADDRESS), Device: "AGVC",
+                   Data: $"pass coupler status,flag:{DebugParameter.isPassCouplerStatus}");
+                return true;
+            }
+
             //return true;
             AUNIT charger = unitBLL.OperateCatch.getUnit(ChargerID);
             if (charger != null)

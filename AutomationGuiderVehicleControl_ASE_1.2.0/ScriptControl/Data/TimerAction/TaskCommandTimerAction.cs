@@ -29,7 +29,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 {
     public class TaskCommandTimerAction : ITimerAction
     {
-        const string CALL_CONTEXT_KEY_WORD_SERVICE_ID_TaskCmdTimerAction= "TaskCommandTimerAction Service";
+        const string CALL_CONTEXT_KEY_WORD_SERVICE_ID_TaskCmdTimerAction = "TaskCommandTimerAction Service";
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
         protected SCApplication scApp = null;

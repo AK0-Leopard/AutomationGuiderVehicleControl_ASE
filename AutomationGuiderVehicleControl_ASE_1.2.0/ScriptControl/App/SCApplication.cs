@@ -441,7 +441,11 @@ namespace com.mirle.ibg3k0.sc.App
         }
 
 
-        private string[] ForceBanSections = new string[] { "20212" };
+        private string[] ForceBanSections = new string[]
+        {
+            "20212",
+            "31101"
+        };
         private void init()
         {
             //mqttControl = new MQTTControl();
@@ -1789,6 +1793,8 @@ namespace com.mirle.ibg3k0.sc.App
         public static TransferModeType TransferMode = TransferModeType.Normal;
 
         public static Boolean isNeedCheckPortReady = true;
+        public static Boolean isPassCouplerHPSafetySignal = false;
+        public static Boolean isPassCouplerStatus = false;
 
     }
 }
