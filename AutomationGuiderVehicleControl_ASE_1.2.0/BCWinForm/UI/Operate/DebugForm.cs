@@ -293,9 +293,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 tb_CouplerStatus1.Text = unit.Coupler1Status.ToString();
                 tb_CouplerStatus2.Text = unit.Coupler2Status.ToString();
                 tb_CouplerStatus3.Text = unit.Coupler3Status.ToString();
-                tb_CouplerPosition1.Text = unit.coupler1Position.ToString();
-                tb_CouplerPosition2.Text = unit.coupler2Position.ToString();
-                tb_CouplerPosition3.Text = unit.coupler3Position.ToString();
+                tb_Coupler1HPSafety.Text = unit.coupler1HPSafety.ToString();
+                tb_Coupler2HPSafety.Text = unit.coupler2HPSafety.ToString();
+                tb_Coupler3HPSafety.Text = unit.coupler3HPSafety.ToString();
             }), null);
         }
         private void ChargerCurrentParameterindexChange(AUNIT unit)
@@ -369,9 +369,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 tb_CouplerStatus1.Text = unit.Coupler1Status.ToString();
                 tb_CouplerStatus2.Text = unit.Coupler2Status.ToString();
                 tb_CouplerStatus3.Text = unit.Coupler3Status.ToString();
-                tb_CouplerPosition1.Text = unit.coupler1Position.ToString();
-                tb_CouplerPosition2.Text = unit.coupler2Position.ToString();
-                tb_CouplerPosition3.Text = unit.coupler3Position.ToString();
+                tb_Coupler1HPSafety.Text = unit.coupler1HPSafety.ToString();
+                tb_Coupler2HPSafety.Text = unit.coupler2HPSafety.ToString();
+                tb_Coupler3HPSafety.Text = unit.coupler3HPSafety.ToString();
 
                 tb_ChargerCurrentParameterSettingIndex.Text = unit.ChargerCurrentParameterIndex.ToString();
                 tb_OutputVo.Text = unit.chargerOutputVoltage.ToString();

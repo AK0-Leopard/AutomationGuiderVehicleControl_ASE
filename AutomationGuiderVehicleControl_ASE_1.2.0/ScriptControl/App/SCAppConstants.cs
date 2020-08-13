@@ -1131,15 +1131,16 @@ namespace com.mirle.ibg3k0.sc.App
         #endregion UAS
         public enum CouplerStatus
         {
-            Disable = 0,
-            Enable = 1,
-            Charging = 2,
-            Error = 3
+            None = 0,
+            Manual = 1,
+            Auto = 2,
+            Charging = 3,
+            Error = 4
         }
-        public enum CouplerPosition
+        public enum CouplerHPSafety
         {
-            OP = 0,
-            HP = 1,
+            NonSafety = 0,
+            Safyte = 1,
         }
 
 

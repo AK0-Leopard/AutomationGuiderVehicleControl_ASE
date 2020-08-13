@@ -6,6 +6,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.Module
 {
@@ -53,29 +54,77 @@ namespace com.mirle.ibg3k0.sc.Module
             foreach (AUNIT charger in chargers)
             {
                 charger.CouplerStatusChanged += Charger_CouplerStatusChanged;
-                //charger.CouplerPositionAbnormalHappend += Charger_CouplerPositionAbnormalHappend;
+                charger.CouplerHPSafetyChaged += Charger_CouplerHPSafetyChaged;
             }
         }
 
-        private void Charger_CouplerPositionAbnormalHappend(object sender, EventArgs e)
+        private void Charger_CouplerHPSafetyChaged(object sender, SCAppConstants.CouplerHPSafety e)
         {
             try
             {
                 AUNIT charger = sender as AUNIT;
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                   Data: $"Charger:{charger.EQPT_ID} of coupler position error send pause command to vh...");
-                var couplers = addressesBLL.cache.LoadCouplerAddresses(charger.EQPT_ID);
-                if (couplers != null && couplers.Count > 0)
+                if (charger == null)
                 {
-                    foreach (var coupler in couplers)
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                       Data: $"charger is null");
+                    return;
+                }
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                   Data: $"Coupler hp safyte has changed,charger id:{charger.EQPT_ID} hp safety:{e}");
+                var couplers = addressesBLL.cache.LoadCouplerAddresses(charger.EQPT_ID);
+                var vhs = vehicleBLL.cache.loadAllVh();
+                switch (e)
+                {
+                    case SCAppConstants.CouplerHPSafety.NonSafety:
+                        lineService.ProcessAlarmReport(charger.EQPT_ID, AlarmBLL.AGVC_CHARGER_HP_NOT_SAFETY, ErrorStatus.ErrSet, $"Coupler position not safety.");
+                        break;
+                    case SCAppConstants.CouplerHPSafety.Safyte:
+                        lineService.ProcessAlarmReport(charger.EQPT_ID, AlarmBLL.AGVC_CHARGER_HP_NOT_SAFETY, ErrorStatus.ErrReset, $"Coupler position not safety.");
+                        break;
+                }
+                foreach (var coupler in couplers)
+                {
+                    string coupler_adr_id = coupler.ADR_ID;
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                       Data: $"Coupler hp safyte has changed,coupler adr id:{coupler_adr_id}, start check has vh can pass...");
+                    foreach (var vh in vhs)
                     {
-                        AGVStation station = eqptBLL.OperateCatch.getAGVStation(coupler.ADR_ID);
-                        if (station == null) continue;
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                           Data: $"Charger:{charger.EQPT_ID} of coupler position error send pause command to vh:{station.BindingVh}");
-                        vehicleService.Send.Pause(station.BindingVh, PauseEvent.Pause, PauseType.Normal);
-                        //var service_vh = vehicleBLL.cache.getVehicle(station.BindingVh);
-
+                        if (vh.isTcpIpConnect &&
+                            (vh.MODE_STATUS == VHModeStatus.AutoRemote ||
+                             vh.MODE_STATUS == VHModeStatus.AutoCharging ||
+                             vh.MODE_STATUS == VHModeStatus.AutoCharging)
+                           )
+                        {
+                            string vh_cur_adr_id = vh.CUR_ADR_ID;
+                            bool is_walkable = guideBLL.IsRoadWalkable(coupler_adr_id, vh_cur_adr_id);
+                            if (is_walkable)
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                                   Data: $"Coupler hp safyte has changed,coupler adr id:{coupler_adr_id} vh current adr:{vh_cur_adr_id}, is walkable start pause/continue action");
+                                string vh_id = vh.VEHICLE_ID;
+                                PauseType pauseType = PauseType.Normal;
+                                PauseEvent pauseEvent = PauseEvent.Pause;
+                                if (e == SCAppConstants.CouplerHPSafety.Safyte)
+                                {
+                                    pauseEvent = PauseEvent.Continue;
+                                }
+                                else
+                                {
+                                    pauseEvent = PauseEvent.Pause;
+                                }
+                                Task.Run(() =>
+                                {
+                                    try
+                                    {
+                                        vehicleService.Send.Pause(vh.VEHICLE_ID, pauseEvent, pauseType);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        logger.Error(ex, "Exception:");
+                                    }
+                                });
+                            }
+                        }
                     }
                 }
             }
@@ -83,7 +132,9 @@ namespace com.mirle.ibg3k0.sc.Module
             {
                 logger.Error(ex, "Exception:");
             }
+
         }
+
 
         object charger_status_notify_lock_obj = new object();
         private void Charger_CouplerStatusChanged(object sender, EventArgs e)
@@ -201,6 +252,7 @@ namespace com.mirle.ibg3k0.sc.Module
                         }
                     }
                 }
+                lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_FIND_THE_COUPLER_TO_CHARGING, ErrorStatus.ErrReset, $"vehicle:{vh.VEHICLE_ID} can't find coupler to charging");
             }
             catch (Exception ex)
             {

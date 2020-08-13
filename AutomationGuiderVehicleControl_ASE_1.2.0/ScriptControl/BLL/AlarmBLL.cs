@@ -63,6 +63,8 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public const string AGVC_TRAN_COMMAND_IN_QUEUE_TIME_OUT = "10121";
 
+        public const string AGVC_CHARGER_HP_NOT_SAFETY = "10201";
+
         /// <summary>
         /// The sc application
         /// </summary>

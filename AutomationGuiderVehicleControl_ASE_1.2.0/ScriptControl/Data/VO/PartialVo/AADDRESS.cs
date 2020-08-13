@@ -141,13 +141,13 @@ namespace com.mirle.ibg3k0.sc
                 switch (CouplerNum)
                 {
                     case CouplerNum.NumberOne:
-                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Auto ||
                                charger.Coupler1Status == SCAppConstants.CouplerStatus.Charging;
                     case CouplerNum.NumberTwo:
-                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Auto ||
                                charger.Coupler1Status == SCAppConstants.CouplerStatus.Charging;
                     case CouplerNum.NumberThree:
-                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Auto ||
                                charger.Coupler1Status == SCAppConstants.CouplerStatus.Charging;
                 }
             }
@@ -215,13 +215,13 @@ namespace com.mirle.ibg3k0.sc
                 switch (CouplerNum)
                 {
                     case CouplerNum.NumberOne:
-                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Auto ||
                                charger.Coupler1Status == SCAppConstants.CouplerStatus.Charging;
                     case CouplerNum.NumberTwo:
-                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Auto ||
                                charger.Coupler1Status == SCAppConstants.CouplerStatus.Charging;
                     case CouplerNum.NumberThree:
-                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Enable ||
+                        return charger.Coupler1Status == SCAppConstants.CouplerStatus.Auto ||
                                charger.Coupler1Status == SCAppConstants.CouplerStatus.Charging;
                 }
             }

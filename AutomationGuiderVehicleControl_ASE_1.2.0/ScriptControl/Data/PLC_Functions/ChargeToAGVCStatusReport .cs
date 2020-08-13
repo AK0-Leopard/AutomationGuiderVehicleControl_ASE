@@ -38,11 +38,11 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
         [PLCElement(ValueName = "CHARGERX_TO_AGVC_CHARGER_STATUS_REPORT_COUPLER3_STATUS")]
         public SCAppConstants.CouplerStatus Coupler3Status;
         [PLCElement(ValueName = "CHARGERX_TO_AGVC_CHARGER_STATUS_REPORT_COUPLER1_POSITION")]
-        public SCAppConstants.CouplerPosition Coupler1Position;
+        public SCAppConstants.CouplerHPSafety Coupler1Position;
         [PLCElement(ValueName = "CHARGERX_TO_AGVC_CHARGER_STATUS_REPORT_COUPLER2_POSITION")]
-        public SCAppConstants.CouplerPosition Coupler2Position;
+        public SCAppConstants.CouplerHPSafety Coupler2Position;
         [PLCElement(ValueName = "CHARGERX_TO_AGVC_CHARGER_STATUS_REPORT_COUPLER3_POSITION")]
-        public SCAppConstants.CouplerPosition Coupler3Position;
+        public SCAppConstants.CouplerHPSafety Coupler3Position;
 
         public enum RS485StatusType
         {

@@ -50,6 +50,8 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lbl_listening_status = new System.Windows.Forms.Label();
+            this.label96 = new System.Windows.Forms.Label();
             this.ck_CST_Status_L = new System.Windows.Forms.CheckBox();
             this.ck_CST_Status_R = new System.Windows.Forms.CheckBox();
             this.btn_changeToRemove = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
@@ -112,6 +114,8 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btn_close_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_open_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.button11 = new System.Windows.Forms.Button();
             this.cb_by_pass_shelf_status = new System.Windows.Forms.CheckBox();
             this.label46 = new System.Windows.Forms.Label();
@@ -303,9 +307,9 @@
             this.label66 = new System.Windows.Forms.Label();
             this.tb_OverloadCurrent = new System.Windows.Forms.TextBox();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
-            this.tb_CouplerPosition3 = new System.Windows.Forms.TextBox();
-            this.tb_CouplerPosition2 = new System.Windows.Forms.TextBox();
-            this.tb_CouplerPosition1 = new System.Windows.Forms.TextBox();
+            this.tb_Coupler3HPSafety = new System.Windows.Forms.TextBox();
+            this.tb_Coupler2HPSafety = new System.Windows.Forms.TextBox();
+            this.tb_Coupler1HPSafety = new System.Windows.Forms.TextBox();
             this.label48 = new System.Windows.Forms.Label();
             this.label49 = new System.Windows.Forms.Label();
             this.label50 = new System.Windows.Forms.Label();
@@ -383,10 +387,6 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.btn_close_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_open_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.lbl_listening_status = new System.Windows.Forms.Label();
-            this.label96 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -714,6 +714,26 @@
             this.groupBox4.TabIndex = 21;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Specify Vehicle Action";
+            // 
+            // lbl_listening_status
+            // 
+            this.lbl_listening_status.AutoSize = true;
+            this.lbl_listening_status.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_listening_status.Location = new System.Drawing.Point(135, 109);
+            this.lbl_listening_status.Name = "lbl_listening_status";
+            this.lbl_listening_status.Size = new System.Drawing.Size(122, 24);
+            this.lbl_listening_status.TabIndex = 57;
+            this.lbl_listening_status.Text = "           ";
+            this.lbl_listening_status.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbl_listening_status_MouseDoubleClick);
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Location = new System.Drawing.Point(-1, 109);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(140, 22);
+            this.label96.TabIndex = 56;
+            this.label96.Text = "Is Listening:";
             // 
             // ck_CST_Status_L
             // 
@@ -1392,6 +1412,28 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btn_close_tcp_port
+            // 
+            this.btn_close_tcp_port.Location = new System.Drawing.Point(431, 837);
+            this.btn_close_tcp_port.Name = "btn_close_tcp_port";
+            this.btn_close_tcp_port.Size = new System.Drawing.Size(166, 45);
+            this.btn_close_tcp_port.TabIndex = 53;
+            this.btn_close_tcp_port.Text = "Close Tcp Port";
+            this.btn_close_tcp_port.UseVisualStyleBackColor = true;
+            this.btn_close_tcp_port.Visible = false;
+            this.btn_close_tcp_port.Click += new System.EventHandler(this.btn_close_tcp_port_Click);
+            // 
+            // btn_open_tcp_port
+            // 
+            this.btn_open_tcp_port.Location = new System.Drawing.Point(259, 837);
+            this.btn_open_tcp_port.Name = "btn_open_tcp_port";
+            this.btn_open_tcp_port.Size = new System.Drawing.Size(166, 45);
+            this.btn_open_tcp_port.TabIndex = 52;
+            this.btn_open_tcp_port.Text = "Open Tcp Port";
+            this.btn_open_tcp_port.UseVisualStyleBackColor = true;
+            this.btn_open_tcp_port.Visible = false;
+            this.btn_open_tcp_port.Click += new System.EventHandler(this.btn_open_tcp_port_Click);
             // 
             // button11
             // 
@@ -3316,9 +3358,9 @@
             // 
             // groupBox15
             // 
-            this.groupBox15.Controls.Add(this.tb_CouplerPosition3);
-            this.groupBox15.Controls.Add(this.tb_CouplerPosition2);
-            this.groupBox15.Controls.Add(this.tb_CouplerPosition1);
+            this.groupBox15.Controls.Add(this.tb_Coupler3HPSafety);
+            this.groupBox15.Controls.Add(this.tb_Coupler2HPSafety);
+            this.groupBox15.Controls.Add(this.tb_Coupler1HPSafety);
             this.groupBox15.Controls.Add(this.label48);
             this.groupBox15.Controls.Add(this.label49);
             this.groupBox15.Controls.Add(this.label50);
@@ -3355,59 +3397,59 @@
             this.groupBox15.TabStop = false;
             this.groupBox15.Text = "Charger Status Report";
             // 
-            // tb_CouplerPosition3
+            // tb_Coupler3HPSafety
             // 
-            this.tb_CouplerPosition3.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_CouplerPosition3.Location = new System.Drawing.Point(202, 411);
-            this.tb_CouplerPosition3.Name = "tb_CouplerPosition3";
-            this.tb_CouplerPosition3.ReadOnly = true;
-            this.tb_CouplerPosition3.Size = new System.Drawing.Size(134, 23);
-            this.tb_CouplerPosition3.TabIndex = 48;
+            this.tb_Coupler3HPSafety.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_Coupler3HPSafety.Location = new System.Drawing.Point(202, 411);
+            this.tb_Coupler3HPSafety.Name = "tb_Coupler3HPSafety";
+            this.tb_Coupler3HPSafety.ReadOnly = true;
+            this.tb_Coupler3HPSafety.Size = new System.Drawing.Size(134, 23);
+            this.tb_Coupler3HPSafety.TabIndex = 48;
             // 
-            // tb_CouplerPosition2
+            // tb_Coupler2HPSafety
             // 
-            this.tb_CouplerPosition2.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_CouplerPosition2.Location = new System.Drawing.Point(202, 389);
-            this.tb_CouplerPosition2.Name = "tb_CouplerPosition2";
-            this.tb_CouplerPosition2.ReadOnly = true;
-            this.tb_CouplerPosition2.Size = new System.Drawing.Size(134, 23);
-            this.tb_CouplerPosition2.TabIndex = 47;
+            this.tb_Coupler2HPSafety.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_Coupler2HPSafety.Location = new System.Drawing.Point(202, 389);
+            this.tb_Coupler2HPSafety.Name = "tb_Coupler2HPSafety";
+            this.tb_Coupler2HPSafety.ReadOnly = true;
+            this.tb_Coupler2HPSafety.Size = new System.Drawing.Size(134, 23);
+            this.tb_Coupler2HPSafety.TabIndex = 47;
             // 
-            // tb_CouplerPosition1
+            // tb_Coupler1HPSafety
             // 
-            this.tb_CouplerPosition1.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_CouplerPosition1.Location = new System.Drawing.Point(202, 367);
-            this.tb_CouplerPosition1.Name = "tb_CouplerPosition1";
-            this.tb_CouplerPosition1.ReadOnly = true;
-            this.tb_CouplerPosition1.Size = new System.Drawing.Size(134, 23);
-            this.tb_CouplerPosition1.TabIndex = 46;
+            this.tb_Coupler1HPSafety.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_Coupler1HPSafety.Location = new System.Drawing.Point(202, 367);
+            this.tb_Coupler1HPSafety.Name = "tb_Coupler1HPSafety";
+            this.tb_Coupler1HPSafety.ReadOnly = true;
+            this.tb_Coupler1HPSafety.Size = new System.Drawing.Size(134, 23);
+            this.tb_Coupler1HPSafety.TabIndex = 46;
             // 
             // label48
             // 
             this.label48.AutoSize = true;
             this.label48.Location = new System.Drawing.Point(6, 412);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(190, 22);
+            this.label48.Size = new System.Drawing.Size(200, 22);
             this.label48.TabIndex = 45;
-            this.label48.Text = "Coupler3 Position:";
+            this.label48.Text = "Coupler3 HP Safety:";
             // 
             // label49
             // 
             this.label49.AutoSize = true;
             this.label49.Location = new System.Drawing.Point(6, 390);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(190, 22);
+            this.label49.Size = new System.Drawing.Size(200, 22);
             this.label49.TabIndex = 44;
-            this.label49.Text = "Coupler2 Position:";
+            this.label49.Text = "Coupler2 HP Safety:";
             // 
             // label50
             // 
             this.label50.AutoSize = true;
             this.label50.Location = new System.Drawing.Point(6, 368);
             this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(190, 22);
+            this.label50.Size = new System.Drawing.Size(200, 22);
             this.label50.TabIndex = 43;
-            this.label50.Text = "Coupler1 Position:";
+            this.label50.Text = "Coupler1 HP Safety:";
             // 
             // tb_ChargerStatusReportIndex
             // 
@@ -3852,7 +3894,7 @@
             this.btn_AllCouplerEnable.Name = "btn_AllCouplerEnable";
             this.btn_AllCouplerEnable.Size = new System.Drawing.Size(318, 31);
             this.btn_AllCouplerEnable.TabIndex = 1;
-            this.btn_AllCouplerEnable.Text = "ALL Coupler Enable/Disable";
+            this.btn_AllCouplerEnable.Text = "ALL Coupler Auto/Manaul";
             this.btn_AllCouplerEnable.UseVisualStyleBackColor = true;
             this.btn_AllCouplerEnable.Click += new System.EventHandler(this.btn_mtl_message_download_Click);
             // 
@@ -3942,7 +3984,7 @@
             this.btn_coulper_enable.Name = "btn_coulper_enable";
             this.btn_coulper_enable.Size = new System.Drawing.Size(311, 31);
             this.btn_coulper_enable.TabIndex = 17;
-            this.btn_coulper_enable.Text = "Coupler Enable/Disable";
+            this.btn_coulper_enable.Text = "Coupler Auto/Manual";
             this.btn_coulper_enable.UseVisualStyleBackColor = true;
             this.btn_coulper_enable.Click += new System.EventHandler(this.btn_coulper_enable_Click);
             // 
@@ -3951,9 +3993,9 @@
             this.cb_coupler_enable.AutoSize = true;
             this.cb_coupler_enable.Location = new System.Drawing.Point(13, 95);
             this.cb_coupler_enable.Name = "cb_coupler_enable";
-            this.cb_coupler_enable.Size = new System.Drawing.Size(89, 26);
+            this.cb_coupler_enable.Size = new System.Drawing.Size(69, 26);
             this.cb_coupler_enable.TabIndex = 14;
-            this.cb_coupler_enable.Text = "Enable";
+            this.cb_coupler_enable.Text = "Auto";
             this.cb_coupler_enable.UseVisualStyleBackColor = true;
             // 
             // label7
@@ -4127,48 +4169,6 @@
             this.btn_online.Text = "Online with MCS";
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
-            // 
-            // btn_close_tcp_port
-            // 
-            this.btn_close_tcp_port.Location = new System.Drawing.Point(431, 837);
-            this.btn_close_tcp_port.Name = "btn_close_tcp_port";
-            this.btn_close_tcp_port.Size = new System.Drawing.Size(166, 45);
-            this.btn_close_tcp_port.TabIndex = 53;
-            this.btn_close_tcp_port.Text = "Close Tcp Port";
-            this.btn_close_tcp_port.UseVisualStyleBackColor = true;
-            this.btn_close_tcp_port.Visible = false;
-            this.btn_close_tcp_port.Click += new System.EventHandler(this.btn_close_tcp_port_Click);
-            // 
-            // btn_open_tcp_port
-            // 
-            this.btn_open_tcp_port.Location = new System.Drawing.Point(259, 837);
-            this.btn_open_tcp_port.Name = "btn_open_tcp_port";
-            this.btn_open_tcp_port.Size = new System.Drawing.Size(166, 45);
-            this.btn_open_tcp_port.TabIndex = 52;
-            this.btn_open_tcp_port.Text = "Open Tcp Port";
-            this.btn_open_tcp_port.UseVisualStyleBackColor = true;
-            this.btn_open_tcp_port.Visible = false;
-            this.btn_open_tcp_port.Click += new System.EventHandler(this.btn_open_tcp_port_Click);
-            // 
-            // lbl_listening_status
-            // 
-            this.lbl_listening_status.AutoSize = true;
-            this.lbl_listening_status.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_listening_status.Location = new System.Drawing.Point(135, 109);
-            this.lbl_listening_status.Name = "lbl_listening_status";
-            this.lbl_listening_status.Size = new System.Drawing.Size(122, 24);
-            this.lbl_listening_status.TabIndex = 57;
-            this.lbl_listening_status.Text = "           ";
-            this.lbl_listening_status.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbl_listening_status_MouseDoubleClick);
-            // 
-            // label96
-            // 
-            this.label96.AutoSize = true;
-            this.label96.Location = new System.Drawing.Point(-1, 109);
-            this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(140, 22);
-            this.label96.TabIndex = 56;
-            this.label96.Text = "Is Listening:";
             // 
             // DebugForm
             // 
@@ -4578,9 +4578,9 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsCheckPortReady;
         private System.Windows.Forms.DataGridViewTextBoxColumn BindingVh;
         private System.Windows.Forms.CheckBox cb_by_pass_shelf_status;
-        private System.Windows.Forms.TextBox tb_CouplerPosition3;
-        private System.Windows.Forms.TextBox tb_CouplerPosition2;
-        private System.Windows.Forms.TextBox tb_CouplerPosition1;
+        private System.Windows.Forms.TextBox tb_Coupler3HPSafety;
+        private System.Windows.Forms.TextBox tb_Coupler2HPSafety;
+        private System.Windows.Forms.TextBox tb_Coupler1HPSafety;
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.Label label50;

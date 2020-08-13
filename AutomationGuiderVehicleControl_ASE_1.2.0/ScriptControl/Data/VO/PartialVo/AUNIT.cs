@@ -11,6 +11,7 @@ using com.mirle.ibg3k0.sc.ObjectRelay;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace com.mirle.ibg3k0.sc
 
         #region Event
         public event EventHandler CouplerStatusChanged;
-        public event EventHandler CouplerPositionAbnormalHappend;
+        public event EventHandler<SCAppConstants.CouplerHPSafety> CouplerHPSafetyChaged;
         #endregion Event
 
         private int chargerAlive;
@@ -158,9 +159,10 @@ namespace com.mirle.ibg3k0.sc
         {
             switch (oldStatus)
             {
-                case SCAppConstants.CouplerStatus.Enable:
+                case SCAppConstants.CouplerStatus.Auto:
                 case SCAppConstants.CouplerStatus.Charging:
-                    if (newStatus == SCAppConstants.CouplerStatus.Disable ||
+                    if (newStatus == SCAppConstants.CouplerStatus.None ||
+                       newStatus == SCAppConstants.CouplerStatus.Manual ||
                        newStatus == SCAppConstants.CouplerStatus.Error)
                     {
                         return true;
@@ -169,9 +171,10 @@ namespace com.mirle.ibg3k0.sc
                     {
                         return false;
                     }
-                case SCAppConstants.CouplerStatus.Disable:
+                case SCAppConstants.CouplerStatus.None:
+                case SCAppConstants.CouplerStatus.Manual:
                 case SCAppConstants.CouplerStatus.Error:
-                    if (newStatus == SCAppConstants.CouplerStatus.Enable ||
+                    if (newStatus == SCAppConstants.CouplerStatus.Auto ||
                        newStatus == SCAppConstants.CouplerStatus.Charging)
                     {
                         return true;
@@ -185,10 +188,45 @@ namespace com.mirle.ibg3k0.sc
         }
 
 
-        public SCAppConstants.CouplerPosition coupler1Position;
-        public SCAppConstants.CouplerPosition coupler2Position;
-        public SCAppConstants.CouplerPosition coupler3Position;
-
+        private SCAppConstants.CouplerHPSafety coupler1hpsafety;
+        public SCAppConstants.CouplerHPSafety coupler1HPSafety
+        {
+            get { return coupler1hpsafety; }
+            set
+            {
+                if (coupler1hpsafety != value)
+                {
+                    coupler1hpsafety = value;
+                    onCouplerHPSafetyChaged(value);
+                }
+            }
+        }
+        private SCAppConstants.CouplerHPSafety coupler2hpsafety;
+        public SCAppConstants.CouplerHPSafety coupler2HPSafety
+        {
+            get { return coupler2hpsafety; }
+            set
+            {
+                if (coupler2hpsafety != value)
+                {
+                    coupler2hpsafety = value;
+                    //onCouplerHPSafetyChaged();
+                }
+            }
+        }
+        private SCAppConstants.CouplerHPSafety coupler3hpsafety;
+        public SCAppConstants.CouplerHPSafety coupler3HPSafety
+        {
+            get { return coupler3hpsafety; }
+            set
+            {
+                if (coupler3hpsafety != value)
+                {
+                    coupler3hpsafety = value;
+                    //onCouplerHPSafetyChaged();
+                }
+            }
+        }
 
         public float chargerOutputVoltage;
         public float chargerOutputCurrent;
@@ -215,9 +253,9 @@ namespace com.mirle.ibg3k0.sc
         {
             CouplerStatusChanged?.Invoke(this, EventArgs.Empty);
         }
-        public void onCouplerPositionAbnormalHappend()
+        public void onCouplerHPSafetyChaged(SCAppConstants.CouplerHPSafety couplerHPSafety)
         {
-            CouplerPositionAbnormalHappend?.Invoke(this, EventArgs.Empty);
+            CouplerHPSafetyChaged?.Invoke(this, couplerHPSafety);
         }
         #endregion charger
 

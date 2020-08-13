@@ -327,15 +327,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                             string alarm_code = find_alarm_info.map.ALARM_ID;
                             string alarm_desc = find_alarm_info.map.ALARM_DESC;
                             scApp.LineService.ProcessAlarmReport(eq_id, alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet, alarm_desc);
-                            //目前先設定只有Coupler position abnormal report是Error等級
-                            if (find_alarm_info.map.ALARM_LVL == E_ALARM_LVL.Error)
-                            {
-                                AUNIT charer = scApp.UnitBLL.OperateCatch.getUnit(find_alarm_info.map.EQPT_REAL_ID);
-                                if(charer!= null)
-                                {
-                                    charer.onCouplerPositionAbnormalHappend();
-                                }
-                            }
                         }
                     }
                     foreach (string error_code in end_happend_alarm_ids)

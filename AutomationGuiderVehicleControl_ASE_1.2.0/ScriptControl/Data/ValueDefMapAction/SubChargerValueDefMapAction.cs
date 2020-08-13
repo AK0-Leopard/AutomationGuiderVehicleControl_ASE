@@ -192,9 +192,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 unit.chargerOverheatProtection = function.OverheatProtection;
                 unit.chargerRS485Status = function.RS485Status.ToString();
                 unit.setCouplerStatus(function.Coupler1Status, function.Coupler2Status, function.Coupler3Status);
-                unit.coupler1Position = function.Coupler1Position;
-                unit.coupler2Position = function.Coupler2Position;
-                unit.coupler3Position = function.Coupler3Position;
+                unit.coupler1HPSafety = function.Coupler1Position;
+                unit.coupler2HPSafety = function.Coupler2Position;
+                unit.coupler3HPSafety = function.Coupler3Position;
                 unit.ChargerStatusIndex = function.Index;
 
                 //3.logical (include db save)
