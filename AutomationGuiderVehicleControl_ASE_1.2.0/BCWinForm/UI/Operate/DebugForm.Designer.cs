@@ -265,6 +265,8 @@
             this.tb_ErrorReportCode1 = new System.Windows.Forms.TextBox();
             this.label55 = new System.Windows.Forms.Label();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.cb_passCouplerStatus = new System.Windows.Forms.CheckBox();
+            this.cb_passCouplerHPSafetySingnal = new System.Windows.Forms.CheckBox();
             this.label24 = new System.Windows.Forms.Label();
             this.tb_ChargerAlive = new System.Windows.Forms.TextBox();
             this.groupBox22 = new System.Windows.Forms.GroupBox();
@@ -387,8 +389,8 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.cb_passCouplerStatus = new System.Windows.Forms.CheckBox();
-            this.cb_passCouplerHPSafetySingnal = new System.Windows.Forms.CheckBox();
+            this.label97 = new System.Windows.Forms.Label();
+            this.num_vh_idle_time = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -435,6 +437,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_BatteryLowBoundaryValue)).BeginInit();
             this.DIO_DEVICE_TEST.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_vh_idle_time)).BeginInit();
             this.SuspendLayout();
             // 
             // cmb_tcpipctr_Vehicle
@@ -1394,6 +1397,8 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.label97);
+            this.tabPage1.Controls.Add(this.num_vh_idle_time);
             this.tabPage1.Controls.Add(this.btn_close_tcp_port);
             this.tabPage1.Controls.Add(this.btn_open_tcp_port);
             this.tabPage1.Controls.Add(this.button11);
@@ -1796,7 +1801,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2957,6 +2962,28 @@
             this.groupBox14.TabIndex = 34;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Charger";
+            // 
+            // cb_passCouplerStatus
+            // 
+            this.cb_passCouplerStatus.AutoSize = true;
+            this.cb_passCouplerStatus.Location = new System.Drawing.Point(484, 741);
+            this.cb_passCouplerStatus.Name = "cb_passCouplerStatus";
+            this.cb_passCouplerStatus.Size = new System.Drawing.Size(219, 26);
+            this.cb_passCouplerStatus.TabIndex = 34;
+            this.cb_passCouplerStatus.Text = "Pass Coupler Status";
+            this.cb_passCouplerStatus.UseVisualStyleBackColor = true;
+            this.cb_passCouplerStatus.CheckedChanged += new System.EventHandler(this.cb_passCouplerStatus_CheckedChanged);
+            // 
+            // cb_passCouplerHPSafetySingnal
+            // 
+            this.cb_passCouplerHPSafetySingnal.AutoSize = true;
+            this.cb_passCouplerHPSafetySingnal.Location = new System.Drawing.Point(483, 711);
+            this.cb_passCouplerHPSafetySingnal.Name = "cb_passCouplerHPSafetySingnal";
+            this.cb_passCouplerHPSafetySingnal.Size = new System.Drawing.Size(319, 26);
+            this.cb_passCouplerHPSafetySingnal.TabIndex = 35;
+            this.cb_passCouplerHPSafetySingnal.Text = "Pass Coupler HP Safety Signal";
+            this.cb_passCouplerHPSafetySingnal.UseVisualStyleBackColor = true;
+            this.cb_passCouplerHPSafetySingnal.CheckedChanged += new System.EventHandler(this.cb_passCouplerHPSafetySingnal_CheckedChanged);
             // 
             // label24
             // 
@@ -4174,27 +4201,37 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // cb_passCouplerStatus
+            // label97
             // 
-            this.cb_passCouplerStatus.AutoSize = true;
-            this.cb_passCouplerStatus.Location = new System.Drawing.Point(484, 741);
-            this.cb_passCouplerStatus.Name = "cb_passCouplerStatus";
-            this.cb_passCouplerStatus.Size = new System.Drawing.Size(219, 26);
-            this.cb_passCouplerStatus.TabIndex = 34;
-            this.cb_passCouplerStatus.Text = "Pass Coupler Status";
-            this.cb_passCouplerStatus.UseVisualStyleBackColor = true;
-            this.cb_passCouplerStatus.CheckedChanged += new System.EventHandler(this.cb_passCouplerStatus_CheckedChanged);
+            this.label97.AutoSize = true;
+            this.label97.Location = new System.Drawing.Point(646, 830);
+            this.label97.Name = "label97";
+            this.label97.Size = new System.Drawing.Size(170, 22);
+            this.label97.TabIndex = 54;
+            this.label97.Text = "Vh Idle Time(ms)";
             // 
-            // cb_passCouplerHPSafetySingnal
+            // num_vh_idle_time
             // 
-            this.cb_passCouplerHPSafetySingnal.AutoSize = true;
-            this.cb_passCouplerHPSafetySingnal.Location = new System.Drawing.Point(483, 711);
-            this.cb_passCouplerHPSafetySingnal.Name = "cb_passCouplerHPSafetySingnal";
-            this.cb_passCouplerHPSafetySingnal.Size = new System.Drawing.Size(319, 26);
-            this.cb_passCouplerHPSafetySingnal.TabIndex = 35;
-            this.cb_passCouplerHPSafetySingnal.Text = "Pass Coupler HP Safety Signal";
-            this.cb_passCouplerHPSafetySingnal.UseVisualStyleBackColor = true;
-            this.cb_passCouplerHPSafetySingnal.CheckedChanged += new System.EventHandler(this.cb_passCouplerHPSafetySingnal_CheckedChanged);
+            this.num_vh_idle_time.Location = new System.Drawing.Point(656, 855);
+            this.num_vh_idle_time.Maximum = new decimal(new int[] {
+            600000,
+            0,
+            0,
+            0});
+            this.num_vh_idle_time.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.num_vh_idle_time.Name = "num_vh_idle_time";
+            this.num_vh_idle_time.Size = new System.Drawing.Size(120, 30);
+            this.num_vh_idle_time.TabIndex = 55;
+            this.num_vh_idle_time.Value = new decimal(new int[] {
+            300000,
+            0,
+            0,
+            0});
+            this.num_vh_idle_time.ValueChanged += new System.EventHandler(this.num_vh_idle_time_ValueChanged);
             // 
             // DebugForm
             // 
@@ -4283,6 +4320,7 @@
             this.DIO_DEVICE_TEST.ResumeLayout(false);
             this.DIO_DEVICE_TEST.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.num_vh_idle_time)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4649,5 +4687,7 @@
         private Components.uctlButton btn_open_tcp_port;
         private System.Windows.Forms.CheckBox cb_passCouplerStatus;
         private System.Windows.Forms.CheckBox cb_passCouplerHPSafetySingnal;
+        private System.Windows.Forms.Label label97;
+        private System.Windows.Forms.NumericUpDown num_vh_idle_time;
     }
 }

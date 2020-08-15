@@ -133,6 +133,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             numer_pre_open_agv_station_distance.Value = sc.App.SystemParameter.OpenAGVStationCoverDistance_mm;
             num_tran_cmd_queue_time_out_ms.Value = sc.App.SystemParameter.TransferCommandQueueTimeOut_mSec;
             cb_by_pass_shelf_status.Checked = sc.App.SystemParameter.IsByPassAGVShelfStatus;
+            num_vh_idle_time.Value = sc.App.SystemParameter.AllowVhIdleTime_ms;
 
             agvPortStation = bcApp.SCApplication.PortStationBLL.OperateCatch.loadAllPortStation();
             dgv_cache_object_data_portstation.DataSource = agvPortStation;
@@ -1533,6 +1534,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_passCouplerHPSafetySingnal_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.isPassCouplerHPSafetySignal = cb_passCouplerHPSafetySingnal.Checked;
+        }
+
+        private void num_vh_idle_time_ValueChanged(object sender, EventArgs e)
+        {
+            sc.App.SystemParameter.setAllowIdleTime_ms((int)num_vh_idle_time.Value);
         }
     }
 }

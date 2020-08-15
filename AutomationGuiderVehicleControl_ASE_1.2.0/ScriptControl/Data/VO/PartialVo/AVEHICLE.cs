@@ -1432,7 +1432,8 @@ namespace com.mirle.ibg3k0.sc
                         //    vh.onLongTimeInaction(vh.OHTC_CMD);
                         //}
                         IdleTimeCheck();
-                        if (!vh.isIdling && vh.IdleTimer.ElapsedMilliseconds > AVEHICLE.MAX_ALLOW_IDLE_TIME_MILLISECOND)
+                        //if (!vh.isIdling && vh.IdleTimer.ElapsedMilliseconds > AVEHICLE.MAX_ALLOW_IDLE_TIME_MILLISECOND)
+                        if (!vh.isIdling && vh.IdleTimer.ElapsedMilliseconds > SystemParameter.AllowVhIdleTime_ms)
                         {
                             vh.onVehicleIdle();
                         }

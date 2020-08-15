@@ -300,8 +300,7 @@ namespace com.mirle.ibg3k0.sc.Module
             }
         }
 
-
-        private void askVhToCharging(AVEHICLE vh)
+        private (bool isSuccess, string msg) askVhToCharging(AVEHICLE vh)
         {
             string vh_current_address = vh.CUR_ADR_ID;
             AADDRESS current_adr = addressesBLL.cache.GetAddress(vh.CUR_ADR_ID);
@@ -309,10 +308,11 @@ namespace com.mirle.ibg3k0.sc.Module
                 current_adr is CouplerAddress && (current_adr as CouplerAddress).IsWork(unitBLL))
             {
                 ICpuplerType cpupler = (current_adr as CouplerAddress);
+                string meg = $"ask vh:{vh.VEHICLE_ID} to charging. but it is already in charger:{cpupler.ChargerID} ,cpupler num:{cpupler.CouplerNum}";
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                         Data: $"ask vh:{vh.VEHICLE_ID} to charging. but it is already in charger:{cpupler.ChargerID} ,cpupler num:{cpupler.CouplerNum}",
+                         Data: meg,
                          VehicleID: vh.VEHICLE_ID);
-                return;
+                return (false, meg);
             }
             bool is_need_to_long_charge = vh.IsNeedToLongCharge();
             string best_coupler_adr = findBestCoupler(vh_current_address, is_need_to_long_charge);
@@ -321,11 +321,13 @@ namespace com.mirle.ibg3k0.sc.Module
                      VehicleID: vh.VEHICLE_ID);
             if (!SCUtility.isEmpty(best_coupler_adr))
             {
-                vehicleService.Command.MoveToCharge(vh.VEHICLE_ID, best_coupler_adr);
+                bool is_success = vehicleService.Command.MoveToCharge(vh.VEHICLE_ID, best_coupler_adr);
+                return (is_success, "");
             }
             else
             {
                 lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_FIND_THE_COUPLER_TO_CHARGING, ErrorStatus.ErrSet, $"vehicle:{vh.VEHICLE_ID} can't find coupler to charging");
+                return (false, $"vehicle:{vh.VEHICLE_ID} can't find coupler to charging");
             }
         }
         public void askVhToChargerForWait(AVEHICLE vh)
@@ -334,6 +336,29 @@ namespace com.mirle.ibg3k0.sc.Module
                      Data: $"ask vh:{vh.VEHICLE_ID} to charger idle.",
                      VehicleID: vh.VEHICLE_ID);
             askVhToCharging(vh);
+        }
+
+        public void askVhToChargerForWaitByManual(string vhID)
+        {
+            CMDBLL.CommandCheckResult check_result =
+                CMDBLL.getOrSetCallContext<CMDBLL.CommandCheckResult>(CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
+            try
+            {
+                AVEHICLE vh = vehicleBLL.cache.getVehicle(vhID);
+
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                         Data: $"ask vh:{vh.VEHICLE_ID} to charger idle.",
+                         VehicleID: vh.VEHICLE_ID);
+                var ask_result = askVhToCharging(vh);
+                check_result.Result.AppendLine(ask_result.msg);
+                check_result.IsSuccess &= ask_result.isSuccess;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+                check_result.Result.AppendLine(ex.ToString());
+                check_result.IsSuccess = false;
+            }
         }
 
 

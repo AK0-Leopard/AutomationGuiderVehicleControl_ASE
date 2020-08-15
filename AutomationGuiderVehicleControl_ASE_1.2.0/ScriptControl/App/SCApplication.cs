@@ -1633,6 +1633,8 @@ namespace com.mirle.ibg3k0.sc.App
 
         public static int TransferCommandQueueTimeOut_mSec = 600000;
 
+        public static int AllowVhIdleTime_ms = 300000;
+
 
         public static void setSECSConversactionTimeout(int timeout)
         {
@@ -1686,6 +1688,10 @@ namespace com.mirle.ibg3k0.sc.App
         public static void setTransferCommandQueueTimeOut_mSec(int transferCommandQueueTimeOut_mSec)
         {
             TransferCommandQueueTimeOut_mSec = transferCommandQueueTimeOut_mSec;
+        }
+        public static void setAllowIdleTime_ms(int allowIdleTime_ms)
+        {
+            AllowVhIdleTime_ms = allowIdleTime_ms;
         }
 
     }

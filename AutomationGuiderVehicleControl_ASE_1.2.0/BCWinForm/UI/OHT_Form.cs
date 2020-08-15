@@ -320,7 +320,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             switch (cmdType)
             {
                 case E_CMD_TYPE.Move: scApp.VehicleService.Command.Move(vehicleId, dest_info.adrID); break;
-                case E_CMD_TYPE.Move_Charger: scApp.VehicleService.Command.MoveToCharge(vehicleId, dest_info.adrID); break;
+                //case E_CMD_TYPE.Move_Charger: scApp.VehicleService.Command.MoveToCharge(vehicleId, dest_info.adrID); break;
+                case E_CMD_TYPE.Move_Charger: scApp.VehicleChargerModule.askVhToChargerForWaitByManual(vehicleId); break;
                 case E_CMD_TYPE.LoadUnload: scApp.VehicleService.Command.Loadunload(vehicleId, cst_id, source_info.adrID, dest_info.adrID, source_info.portID, dest_info.portID); break;
                 case E_CMD_TYPE.Load: scApp.VehicleService.Command.Load(vehicleId, cst_id, source_info.adrID, source_info.portID); break;
                 case E_CMD_TYPE.Unload: scApp.VehicleService.Command.Unload(vehicleId, cst_id, dest_info.adrID, dest_info.portID); break;
