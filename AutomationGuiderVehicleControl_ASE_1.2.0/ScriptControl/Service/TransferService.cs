@@ -524,6 +524,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                                                 ToList();
                                 List<VTRANSFER> tran_queue_in_group = transfer_group.
                                                               Where(tran => tran.TRANSFERSTATE == E_TRAN_STATUS.Queue).
+                                                              OrderBy(tran => tran.CARRIER_INSER_TIME).
                                                               ToList();
 
 
@@ -565,7 +566,8 @@ namespace com.mirle.ibg3k0.sc.Service
                                 }
                                 else
                                 {
-                                    var find_result = FindNearestVhAndCommand(tran_queue_in_group);
+                                    //var find_result = FindNearestVhAndCommand(tran_queue_in_group);
+                                    var find_result = FindVhAndCommand(tran_queue_in_group);
                                     if (find_result.isFind)
                                     {
                                         bool is_success = AssignTransferToVehicle_V2(find_result.nearestTransfer,
@@ -974,6 +976,62 @@ namespace com.mirle.ibg3k0.sc.Service
                 port_priority_max_command = port_priority_max_command.OrderByDescending(cmd => cmd.PORT_PRIORITY).ToList();
             }
             return (port_priority_max_command != null, port_priority_max_command);
+        }
+
+        public (bool isFind, AVEHICLE nearestVh, VTRANSFER nearestTransfer) FindVhAndCommand(List<VTRANSFER> transfers)
+        {
+            List<AVEHICLE> idle_vhs = scApp.VehicleBLL.cache.loadAllVh().ToList();
+            scApp.VehicleBLL.cache.filterCanNotExcuteTranVh(ref idle_vhs, scApp.CMDBLL, E_VH_TYPE.None);
+            return FindVhAndCommand(idle_vhs, transfers);
+        }
+        private (bool isFind, AVEHICLE nearestVh, VTRANSFER nearestTransfer) FindVhAndCommand(List<AVEHICLE> vhs, List<VTRANSFER> transfers)
+        {
+            try
+            {
+                foreach (var tran in transfers)
+                {
+                    foreach (var vh in vhs)
+                    {
+                        string hostsource = tran.HOSTSOURCE;
+                        string from_adr = string.Empty;
+
+                        scApp.MapBLL.getAddressID(hostsource, out from_adr);
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: string.Empty,
+                                      Data: $"Start try find vh , command id:{tran.ID.Trim()} command source port:{tran.HOSTSOURCE?.Trim()}," +
+                                            $"vh:{vh.VEHICLE_ID} current adr:{vh.CUR_ADR_ID},from adr:{from_adr} ...",
+                                      XID: tran.ID);
+                        var result = scApp.GuideBLL.getGuideInfo(vh.CUR_ADR_ID, from_adr);
+                        if (result.isSuccess)
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: string.Empty,
+                                          Data: $"Find the vh success , command id:{tran.ID.Trim()} command source port:{tran.HOSTSOURCE?.Trim()}," +
+                                                $"vh:{vh.VEHICLE_ID} current adr:{vh.CUR_ADR_ID},from adr:{from_adr}.",
+                                          XID: tran.ID);
+                            return (true,
+                                    vh,
+                                    tran);
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: string.Empty,
+                                          Data: $"Find the vh fail continue check next vh, command id:{tran.ID.Trim()} command source port:{tran.HOSTSOURCE?.Trim()}," +
+                                                $"vh:{vh.VEHICLE_ID} current adr:{vh.CUR_ADR_ID},from adr:{from_adr}.",
+                                          XID: tran.ID);
+                        }
+                    }
+                }
+                return (false,
+                        null,
+                        null);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(CMDBLL), Device: string.Empty,
+                   Data: ex);
+                return (false,
+                        null,
+                        null);
+            }
         }
 
         /// <summary>

@@ -299,12 +299,30 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private async void btn_start_Click(object sender, EventArgs e)
         {
-            E_CMD_TYPE cmd_type;
-            if (cbm_Action_admin.Visible)
-                Enum.TryParse<E_CMD_TYPE>(cbm_Action_admin.SelectedValue.ToString(), out cmd_type);
-            else
-                Enum.TryParse<E_CMD_TYPE>(cbm_Action_op.SelectedValue.ToString(), out cmd_type);
-            await excuteCommand(cmd_type);
+            try
+            {
+                btn_start.Enabled = false;
+                E_CMD_TYPE cmd_type;
+                if (cbm_Action_admin.Visible)
+                    Enum.TryParse<E_CMD_TYPE>(cbm_Action_admin.SelectedValue.ToString(), out cmd_type);
+                else
+                    Enum.TryParse<E_CMD_TYPE>(cbm_Action_op.SelectedValue.ToString(), out cmd_type);
+                //await excuteCommand(cmd_type);
+                string from_adr = cmb_fromAddress.Text;
+                string to_adr = cmb_toAddress.Text;
+                string cst_id = txt_cst_id.Text;
+                string vh_id = cmb_Vehicle.Text;
+                var check_result = await Task.Run(() => excuteCommandNew(cmd_type, from_adr, to_adr, cst_id, vh_id));
+                if (!check_result.isSuccess)
+                {
+                    MessageBox.Show(check_result.result, "Command create fail.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex) { }
+            finally
+            {
+                btn_start.Enabled = true;
+            }
         }
         private Task excuteCommand(E_CMD_TYPE cmdType)
         {
@@ -337,6 +355,49 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 MessageBox.Show(check_result_info.ToString(), "Command create fail.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             return Task.CompletedTask;
+        }
+        private (bool isSuccess, string result) excuteCommandNew(E_CMD_TYPE cmdType, string fromAddess, string toAddress, string cstID, string vhID)
+        {
+            try
+            {
+                Console.WriteLine(Thread.CurrentThread.ManagedThreadId.ToString());
+                var source_info = getAdrPortID(fromAddess);
+                var dest_info = getAdrPortID(toAddress);
+                string cst_id = cstID;
+                string vehicleId = vhID;
+                if (BCFUtility.isEmpty(vehicleId))
+                {
+                    return (false, "No find idle vehile.");
+                }
+                switch (cmdType)
+                {
+                    case E_CMD_TYPE.Move: scApp.VehicleService.Command.Move(vehicleId, dest_info.adrID); break;
+                    //case E_CMD_TYPE.Move_Charger: scApp.VehicleService.Command.MoveToCharge(vehicleId, dest_info.adrID); break;
+                    case E_CMD_TYPE.Move_Charger: scApp.VehicleChargerModule.askVhToChargerForWaitByManual(vehicleId); break;
+                    case E_CMD_TYPE.LoadUnload: scApp.VehicleService.Command.Loadunload(vehicleId, cst_id, source_info.adrID, dest_info.adrID, source_info.portID, dest_info.portID); break;
+                    case E_CMD_TYPE.Load: scApp.VehicleService.Command.Load(vehicleId, cst_id, source_info.adrID, source_info.portID); break;
+                    case E_CMD_TYPE.Unload: scApp.VehicleService.Command.Unload(vehicleId, cst_id, dest_info.adrID, dest_info.portID); break;
+                    case E_CMD_TYPE.Home:
+                        string cmdID = scApp.SequenceBLL.getCommandID(SCAppConstants.GenOHxCCommandType.Manual);
+                        scApp.VehicleService.Send.CommandHome(vehicleId, cmdID);
+                        break;
+                }
+                sc.BLL.CMDBLL.CommandCheckResult check_result_info = sc.BLL.CMDBLL.getCallContext<sc.BLL.CMDBLL.CommandCheckResult>
+                                                                    (sc.BLL.CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
+                if (check_result_info == null)
+                {
+                    return (false, "");
+                }
+                else
+                {
+                    return (check_result_info.IsSuccess, check_result_info.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return (false, "Exception happend");
+            }
         }
         private (string adrID, string portID) getAdrPortID(string adrOrPortID)
         {
