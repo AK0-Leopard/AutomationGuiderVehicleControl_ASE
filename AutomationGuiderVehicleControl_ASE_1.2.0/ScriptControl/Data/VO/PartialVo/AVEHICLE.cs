@@ -103,6 +103,7 @@ namespace com.mirle.ibg3k0.sc
             vhStateMachine.OnTransitioned(TransitionedHandler);
             vhStateMachine.OnUnhandledTrigger(UnhandledTriggerHandler);
             CurrentCommandExcuteTime = new Stopwatch();
+            CommandActionTimer = new Stopwatch();
             IdleTimer = new Stopwatch();
         }
 

@@ -1,5 +1,4 @@
 ﻿using com.mirle.ibg3k0.bcf.App;
-using com.mirle.ibg3k0.bcf.App;
 using com.mirle.ibg3k0.bcf.Common;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.BLL;
@@ -93,7 +92,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 bool isTransferCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 try
                 {
-                    reportBLL.newReportTransferInitial(cmd.TRANSFER_ID, null);
+                    if (isTransferCmd)
+                    {
+                        reportBLL.newReportTransferInitial(cmd.TRANSFER_ID, null);
+                    }
                     List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
                     using (var tx = SCUtility.getTransactionScope())
                     {
@@ -3706,6 +3708,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     SCAppConstants.RecodeConnectionInfo_Type.Disconnection.ToString(),
                     vh.getConnectionIntervalTime(bcfApp));
             }
+            Task.Run(() => scApp.VehicleBLL.web.vehicleDisconnection());
         }
         #endregion Vh Connection / disconnention
         #region Vehicle Install/Remove

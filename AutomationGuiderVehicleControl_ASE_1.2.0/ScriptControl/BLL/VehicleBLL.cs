@@ -1279,7 +1279,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             WebClientManager webClientManager = null;
             List<string> notify_urls = new List<string>()
             {
-                "http://stk01.asek21.mirle.com.tw:15000",
+                //"http://stk01.asek21.mirle.com.tw:15000",
                  "http://agvc.asek21.mirle.com.tw:15000"
             };
             const string ERROR_HAPPEND_CONST = "99";
@@ -1323,6 +1323,35 @@ namespace com.mirle.ibg3k0.sc.BLL
                     string[] param = new string[]
                     {
                     vh_no,
+                    };
+                    foreach (string notify_url in notify_urls)
+                    {
+                        string result = webClientManager.GetInfoFromServer(notify_url, action_targets, param);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
+
+            public void vehicleDisconnection()
+            {
+                vehicleDisconnection("agv");
+            }
+            public void vehicleDisconnection(string lineName)
+            {
+                try
+                {
+                    lineName = lineName.ToLower();
+                    string notify_name = $"{lineName}_dis";
+                    string[] action_targets = new string[]
+                    {
+                    "weatherforecast"
+                    };
+                    string[] param = new string[]
+                    {
+                        notify_name,
                     };
                     foreach (string notify_url in notify_urls)
                     {
