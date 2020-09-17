@@ -202,20 +202,59 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                Data: $"vh:{service_vh.VEHICLE_ID} has error happend.pass this one ask agv station");
                             return;
                         }
-                        if (service_vh != null)
+                        if (service_vh.MODE_STATUS != ProtocolFormat.OHTMessage.VHModeStatus.AutoRemote)
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
+                               Data: $"vh:{service_vh.VEHICLE_ID} not auto remote.pass this one ask agv station");
+                            return;
+                        }
+                        //if (service_vh != null)
+                        //{
+                        if (v_trans != null && v_trans.Count > 0)
+                        {
+                            int current_vh_carrier_count = 0;
+                            if (service_vh.HAS_CST_L)
+                            {
+                                bool cst_l_is_in_commanding = v_trans.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, service_vh.CST_ID_L)).Count() > 0;
+                                //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
+                                if (!cst_l_is_in_commanding)
+                                {
+                                    current_vh_carrier_count++;
+                                }
+                            }
+                            if (service_vh.HAS_CST_R)
+                            {
+                                bool cst_r_is_in_commanding = v_trans.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, service_vh.CST_ID_R)).Count() > 0;
+                                //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
+                                if (!cst_r_is_in_commanding)
+                                {
+                                    current_vh_carrier_count++;
+                                }
+                            }
+                            current_excute_task += current_vh_carrier_count;
+                        }
+                        else
                         {
                             if (service_vh.HAS_CST_L)
                                 current_excute_task++;
                             if (service_vh.HAS_CST_R)
                                 current_excute_task++;
                         }
+                        //if (service_vh.HAS_CST_L)
+                        //    current_excute_task++;
+                        //if (service_vh.HAS_CST_R)
+                        //    current_excute_task++;
+                        //}
                     }
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
                        Data: $"start check agv station:[{agv_station.getAGVStationID()}] status...");
                     if (v_trans != null && v_trans.Count > 0)
                     {
+                        //var unfinish_source_port_command = v_trans.
+                        //                                   Where(tran => tran.getSourcePortEQ(scApp.EqptBLL) == agv_station).
+                        //                                   ToList();
                         var unfinish_source_port_command = v_trans.
-                                                           Where(tran => tran.getSourcePortEQ(scApp.EqptBLL) == agv_station).
+                                                           Where(tran => SCUtility.isMatche(tran.getSourcePortEQID(scApp.PortStationBLL), agv_station.EQPT_ID)).
                                                            ToList();
                         var excute_source_port_tran = unfinish_source_port_command.Where(tran => tran.TRANSFERSTATE >= E_TRAN_STATUS.PreInitial).ToList();
                         int excute_source_pott_count = excute_source_port_tran.Count();

@@ -412,6 +412,7 @@ namespace com.mirle.ibg3k0.sc
         public com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.VhStopSingle EARTHQUAKE_PAUSE { get; set; }
         public com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.VhStopSingle SAFETY_DOOR_PAUSE { get; set; }
         public com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.VhStopSingle RESERVE_PAUSE { get; set; }
+        public com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.VhStopSingle OP_PAUSE { get; set; }
 
         public int OBS_DIST { get; set; }
         public Nullable<System.DateTime> UPD_TIME { get; set; }
@@ -692,6 +693,13 @@ namespace com.mirle.ibg3k0.sc
             get { return HID_PAUSE == VhStopSingle.On; }
             set { }
         }
+        [JsonIgnore]
+        public virtual bool IsOPPause
+        {
+            get { return OP_PAUSE == VhStopSingle.On; }
+            set { }
+        }
+
         #endregion Pause Status
 
         public void Action()

@@ -90,10 +90,10 @@ namespace com.mirle.ibg3k0.sc
         public DbSet<ACMD_DETAIL> ACMD_DETAIL { get; set; }
         public DbSet<ATRANSFER> ATRANSFER { get; set; }
         public DbSet<ACARRIER> ACARRIER { get; set; }
-        public DbSet<VTRANSFER> VTRANSFER { get; set; }
         public DbSet<AVEHICLE> AVEHICLE { get; set; }
         public DbSet<HCMD> HCMD { get; set; }
         public DbSet<HTRANSFER> HTRANSFER { get; set; }
         public DbSet<AGROUPPORTSTATION> AGROUPPORTSTATION { get; set; }
+        public DbSet<VTRANSFER> VTRANSFER { get; set; }
     }
 }

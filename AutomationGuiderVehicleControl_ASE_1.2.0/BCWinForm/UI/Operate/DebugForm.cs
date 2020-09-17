@@ -53,6 +53,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_passCouplerStatus.Checked = DebugParameter.isPassCouplerStatus;
             cb_passCouplerHPSafetySingnal.Checked = DebugParameter.isPassCouplerHPSafetySignal;
 
+            cb_needCheckPortUpdateTime.Checked = DebugParameter.isNeedCheckPortUpDateTime;
 
             List<string> lstVh = new List<string>();
             lstVh.Add(string.Empty);
@@ -1539,6 +1540,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void num_vh_idle_time_ValueChanged(object sender, EventArgs e)
         {
             sc.App.SystemParameter.setAllowIdleTime_ms((int)num_vh_idle_time.Value);
+        }
+
+        private void cb_needCheckPortUpdateTime_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.isNeedCheckPortUpDateTime = cb_needCheckPortUpdateTime.Checked;
         }
     }
 }

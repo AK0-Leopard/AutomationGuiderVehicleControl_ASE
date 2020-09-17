@@ -101,7 +101,8 @@ namespace com.mirle.ibg3k0.sc
         public string CassetteID { get { return SCUtility.Trim(PortInfo.CassetteID, true); } }
         public void SetPortInfo(PORT_INFO newPortInfo)
         {
-            PortInfo.Timestamp = newPortInfo.Timestamp;
+            //PortInfo.Timestamp = newPortInfo.Timestamp;
+            PortInfo.Timestamp = DateTime.Now.ToString(SCAppConstants.TimestampFormat_17);
             PortInfo.IsAutoMode = newPortInfo.IsAutoMode;
             PortInfo.IsInputMode = newPortInfo.IsInputMode;
             PortInfo.IsOutputMode = newPortInfo.IsOutputMode;

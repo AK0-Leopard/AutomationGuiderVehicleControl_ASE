@@ -279,6 +279,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 ShelfStatus shelf_status_l = statusReqponse.ShelfStatusL;
                 ShelfStatus shelf_status_r = statusReqponse.ShelfStatusR;
+                VhStopSingle op_pause_status = statusReqponse.OpPauseStatus;
 
                 bool hasdifferent = vh.BATTERYCAPACITY != batteryCapacity ||
                                     vh.MODE_STATUS != modeStat ||
@@ -298,7 +299,8 @@ namespace com.mirle.ibg3k0.sc.Service
                                     vh.HAS_CST_R != has_cst_r ||
                                     vh.ShelfStatus_L != shelf_status_l ||
                                     vh.ShelfStatus_R != shelf_status_r ||
-                                    !SCUtility.isMatche(vh.PredictSections, will_pass_section_id)
+                                    !SCUtility.isMatche(vh.PredictSections, will_pass_section_id) ||
+                                    vh.OP_PAUSE != op_pause_status
                                     ;
 
                 if (!SCUtility.isMatche(current_excute_cmd_id, vh.CurrentExcuteCmdID))
@@ -318,7 +320,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     scApp.VehicleBLL.cache.updateVehicleStatus(scApp.CMDBLL, vh.VEHICLE_ID,
                                                          cst_id_l, cst_id_r, modeStat, actionStat, chargeStatus,
-                                                         blockingStat, pauseStat, obstacleStat, VhStopSingle.Off, errorStat, reserveStatus,
+                                                         blockingStat, pauseStat, obstacleStat, VhStopSingle.Off, errorStat, reserveStatus, op_pause_status,
                                                          shelf_status_l, shelf_status_r,
                                                          has_cst_l, has_cst_r,
                                                          cmd_id_1, cmd_id_2, current_excute_cmd_id,
@@ -1127,6 +1129,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                 return;
                             }
                             scApp.ReportBLL.insertMCSReport(reportqueues);
+                            scApp.ReportBLL.newSendMCSMessage(reportqueues);
                         }
                         scApp.CarrierBLL.db.updateLocationAndState(cmd.CARRIER_ID, cmd.DESTINATION_PORT, E_CARRIER_STATE.Complete);
 
@@ -1141,7 +1144,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             return;
                         }
                     }
-                    scApp.ReportBLL.newSendMCSMessage(reportqueues);
+                    //scApp.ReportBLL.newSendMCSMessage(reportqueues);
                 }
                 else
                 {
@@ -1731,6 +1734,9 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     vh.onModeStatusChange(modeStat);
                 }
+                VhStopSingle op_pause = recive_str.OpPauseStatus;
+
+
 
 
                 bool hasdifferent = vh.BATTERYCAPACITY != batteryCapacity ||
@@ -1751,13 +1757,13 @@ namespace com.mirle.ibg3k0.sc.Service
                                     vh.HAS_CST_R != has_cst_r ||
                                     vh.ShelfStatus_L != shelf_status_l ||
                                     vh.ShelfStatus_R != shelf_status_r ||
-                                    !SCUtility.isMatche(vh.PredictSections, will_pass_section_id)
-                                    ;
+                                    !SCUtility.isMatche(vh.PredictSections, will_pass_section_id) ||
+                                    vh.OP_PAUSE != op_pause;
                 if (hasdifferent)
                 {
                     scApp.VehicleBLL.cache.updateVehicleStatus(scApp.CMDBLL, vh.VEHICLE_ID,
                                                          cst_id_l, cst_id_r, modeStat, actionStat, chargeStatus,
-                                                         blockingStat, pauseStat, obstacleStat, VhStopSingle.Off, errorStat, reserveStatus,
+                                                         blockingStat, pauseStat, obstacleStat, VhStopSingle.Off, errorStat, reserveStatus, op_pause,
                                                          shelf_status_l, shelf_status_r,
                                                          has_cst_l, has_cst_r,
                                                          cmd_id_1, cmd_id_2, current_excute_cmd_id,

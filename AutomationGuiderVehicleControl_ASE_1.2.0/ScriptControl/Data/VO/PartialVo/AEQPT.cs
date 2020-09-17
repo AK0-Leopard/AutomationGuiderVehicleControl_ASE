@@ -207,11 +207,12 @@ namespace com.mirle.ibg3k0.sc
             }
         }
 
-        private Stopwatch ReservedTimer = new Stopwatch();
+        public DateTime ReservedSuccessTime { get; set; } = DateTime.MinValue;
+        private Stopwatch ReservedStopwatch = new Stopwatch();
         const int RESERVED_TIME_OUT_MS = 90000;
         public bool IsReservedTimeOut
         {
-            get { return ReservedTimer.ElapsedMilliseconds > RESERVED_TIME_OUT_MS; }
+            get { return ReservedStopwatch.ElapsedMilliseconds > RESERVED_TIME_OUT_MS; }
         }
         private bool isreservation;
         public bool IsReservation
@@ -227,11 +228,12 @@ namespace com.mirle.ibg3k0.sc
                     isreservation = value;
                     if (isreservation)
                     {
-                        ReservedTimer.Start();
+                        ReservedStopwatch.Start();
+                        ReservedSuccessTime = DateTime.Now;
                     }
                     else
                     {
-                        ReservedTimer.Reset();
+                        ReservedStopwatch.Reset();
                     }
                 }
             }
@@ -333,6 +335,8 @@ namespace com.mirle.ibg3k0.sc
         List<APORTSTATION> getAGVStationReadyLoadPorts();
         List<APORTSTATION> loadAutoAGVStationPorts();
         string BindingVh { get; }
+        DateTime ReservedSuccessTime { get; set; }
+
 
     }
 

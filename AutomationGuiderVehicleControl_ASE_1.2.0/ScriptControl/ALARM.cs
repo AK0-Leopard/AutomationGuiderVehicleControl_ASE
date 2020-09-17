@@ -21,5 +21,7 @@ namespace com.mirle.ibg3k0.sc
         public com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.ErrorStatus ALAM_STAT { get; set; }
         public string ALAM_DESC { get; set; }
         public Nullable<System.DateTime> CLEAR_DATE_TIME { get; set; }
+        public string CMD_ID_1 { get; set; }
+        public string CMD_ID_2 { get; set; }
     }
 }

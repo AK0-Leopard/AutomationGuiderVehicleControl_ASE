@@ -612,7 +612,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             public void updateVehicleStatus(CMDBLL cmdBLL, string vhID,
                                           string leftCstID, string rightCstID, VHModeStatus mode_status, VHActionStatus act_status, VhChargeStatus chargeStatus,
-                                          VhStopSingle block_pause, VhStopSingle cmd_pause, VhStopSingle obs_pause, VhStopSingle hid_pause, VhStopSingle error_status, VhStopSingle reserve_pause,
+                                          VhStopSingle block_pause, VhStopSingle cmd_pause, VhStopSingle obs_pause, VhStopSingle hid_pause, VhStopSingle error_status, VhStopSingle reserve_pause, VhStopSingle opPause,
                                           ShelfStatus left_shelf_status, ShelfStatus right_shelf_status,
                                           bool left_has_cst, bool right_has_cst,
                                           string cmdID1, string cmdID2, string currenExcuteCmdID,
@@ -635,12 +635,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                 if (!SCUtility.isMatche(vh.CMD_ID_1, cmdID1))
                 {
                     vh.CMD_ID_1 = cmdID1;
-                    //vh.TRANSFER_ID_1 = tryGetTranCommandID(cmdBLL, cmdID1);
+                    vh.TRANSFER_ID_1 = tryGetTranCommandID(cmdBLL, cmdID1);
                 }
                 if (!SCUtility.isMatche(vh.CMD_ID_2, cmdID2))
                 {
                     vh.CMD_ID_2 = cmdID2;
-                    //vh.TRANSFER_ID_2 = tryGetTranCommandID(cmdBLL, cmdID2);
+                    vh.TRANSFER_ID_2 = tryGetTranCommandID(cmdBLL, cmdID2);
                 }
                 if (!SCUtility.isMatche(vh.CurrentExcuteCmdID, currenExcuteCmdID))
                 {
@@ -653,6 +653,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
 
                 vh.BatteryCapacity = (int)batteryCapacity;
+                vh.OP_PAUSE = opPause;
                 //vh.PredictSections = willPassSection;
                 //vh.WillPassSectionID = willPassSection.ToList();
                 vh.onVehicleStatusChange();
@@ -682,7 +683,15 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             private string tryGetTranCommandID(CMDBLL cmdBLL, string cmdID)
             {
-                return cmdBLL.getTransferCmdIDByCmdID(cmdID);
+                var cmd_obj = cmdBLL.cache.getExcuteCmd(cmdID);
+                if (cmd_obj == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return SCUtility.Trim(cmd_obj.TRANSFER_ID, true);
+                }
             }
 
             public void updataVehicleMode(string vhID, VHModeStatus mode_status)

@@ -38,18 +38,18 @@
         <EntityTypeShape EntityType="OHTC_DevModel.SCALE_BASE_DATA" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.AHIDZONEDETAIL" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.ALARMRPTCOND" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="OHTC_DevModel.ALARM" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="OHTC_DevModel.ALARM" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="OHTC_DevModel.UASUSR" Width="1.5" PointX="6.75" PointY="14.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.ACASSETTE" Width="1.5" PointX="0.75" PointY="12.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.ACMD" Width="1.5" PointX="3.375" PointY="14.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.ACMD_DETAIL" Width="1.5" PointX="15.375" PointY="14.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.ATRANSFER" Width="1.5" PointX="5.375" PointY="16.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.ACARRIER" Width="1.5" PointX="9.375" PointY="12.75" />
-        <EntityTypeShape EntityType="OHTC_DevModel.VTRANSFER" Width="1.5" PointX="9.375" PointY="16.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.AVEHICLE" Width="1.5" PointX="5.375" PointY="1" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.HCMD" Width="1.5" PointX="11.375" PointY="16.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.HTRANSFER" Width="1.5" PointX="7.375" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="OHTC_DevModel.AGROUPPORTSTATION" Width="1.5" PointX="13.375" PointY="2.75" />
+        <EntityTypeShape EntityType="OHTC_DevModel.VTRANSFER" Width="1.5" PointX="0.75" PointY="17.75" />
         </Diagram>
       <Diagram DiagramId="21b451beae304df4acbd996a333e2fa5" Name="TransporterDataBase" >
         <EntityTypeShape EntityType="OHTC_DevModel.AGROUPRAILS" Width="1.5" PointX="0.75" PointY="0.75" />

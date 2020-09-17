@@ -149,9 +149,9 @@ namespace com.mirle.ibg3k0.sc.BLL
         object lock_obj_alarm = new object();
         public ALARM setAlarmReport(string eq_id, string error_code, string errorDesc)
         {
-            return setAlarmReport("", eq_id, error_code, errorDesc);
+            return setAlarmReport("", eq_id, error_code, errorDesc, "", "");
         }
-        public ALARM setAlarmReport(string nodeID, string eq_id, string error_code, string errorDesc)
+        public ALARM setAlarmReport(string nodeID, string eq_id, string error_code, string errorDesc, string cmd_id_1, string cmd_id_2)
         {
             lock (lock_obj_alarm)
             {
@@ -172,6 +172,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                     ALAM_LVL = alarmMap == null ? E_ALARM_LVL.None : alarmMap.ALARM_LVL,
                     ALAM_STAT = ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
                     ALAM_DESC = alarmMap == null ? errorDesc : alarmMap.ALARM_DESC,
+                    CMD_ID_1 = cmd_id_1,
+                    CMD_ID_2 = cmd_id_2
                 };
                 if (SCUtility.isEmpty(alarm.ALAM_DESC))
                 {

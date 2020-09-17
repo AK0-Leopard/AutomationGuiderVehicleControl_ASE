@@ -114,6 +114,8 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label97 = new System.Windows.Forms.Label();
+            this.num_vh_idle_time = new System.Windows.Forms.NumericUpDown();
             this.btn_close_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.btn_open_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.button11 = new System.Windows.Forms.Button();
@@ -389,8 +391,7 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.label97 = new System.Windows.Forms.Label();
-            this.num_vh_idle_time = new System.Windows.Forms.NumericUpDown();
+            this.cb_needCheckPortUpdateTime = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -405,6 +406,7 @@
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_vh_idle_time)).BeginInit();
             this.groupBox19.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numer_commandWaitTime)).BeginInit();
             this.grb_Reserve.SuspendLayout();
@@ -437,7 +439,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_BatteryLowBoundaryValue)).BeginInit();
             this.DIO_DEVICE_TEST.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_vh_idle_time)).BeginInit();
             this.SuspendLayout();
             // 
             // cmb_tcpipctr_Vehicle
@@ -1420,6 +1421,38 @@
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label97
+            // 
+            this.label97.AutoSize = true;
+            this.label97.Location = new System.Drawing.Point(646, 830);
+            this.label97.Name = "label97";
+            this.label97.Size = new System.Drawing.Size(170, 22);
+            this.label97.TabIndex = 54;
+            this.label97.Text = "Vh Idle Time(ms)";
+            // 
+            // num_vh_idle_time
+            // 
+            this.num_vh_idle_time.Location = new System.Drawing.Point(656, 855);
+            this.num_vh_idle_time.Maximum = new decimal(new int[] {
+            600000,
+            0,
+            0,
+            0});
+            this.num_vh_idle_time.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.num_vh_idle_time.Name = "num_vh_idle_time";
+            this.num_vh_idle_time.Size = new System.Drawing.Size(120, 30);
+            this.num_vh_idle_time.TabIndex = 55;
+            this.num_vh_idle_time.Value = new decimal(new int[] {
+            300000,
+            0,
+            0,
+            0});
+            this.num_vh_idle_time.ValueChanged += new System.EventHandler(this.num_vh_idle_time_ValueChanged);
+            // 
             // btn_close_tcp_port
             // 
             this.btn_close_tcp_port.Location = new System.Drawing.Point(431, 837);
@@ -1801,7 +1834,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -1986,6 +2019,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.cb_needCheckPortUpdateTime);
             this.tabPage3.Controls.Add(this.num_tran_cmd_queue_time_out_ms);
             this.tabPage3.Controls.Add(this.label95);
             this.tabPage3.Controls.Add(this.numer_pre_open_agv_station_distance);
@@ -2016,7 +2050,7 @@
             // 
             // num_tran_cmd_queue_time_out_ms
             // 
-            this.num_tran_cmd_queue_time_out_ms.Location = new System.Drawing.Point(8, 553);
+            this.num_tran_cmd_queue_time_out_ms.Location = new System.Drawing.Point(8, 546);
             this.num_tran_cmd_queue_time_out_ms.Maximum = new decimal(new int[] {
             6000000,
             0,
@@ -2038,7 +2072,7 @@
             // 
             // numer_pre_open_agv_station_distance
             // 
-            this.numer_pre_open_agv_station_distance.Location = new System.Drawing.Point(8, 628);
+            this.numer_pre_open_agv_station_distance.Location = new System.Drawing.Point(8, 606);
             this.numer_pre_open_agv_station_distance.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -2052,7 +2086,7 @@
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(7, 591);
+            this.label47.Location = new System.Drawing.Point(7, 581);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(360, 22);
             this.label47.TabIndex = 42;
@@ -2061,7 +2095,7 @@
             // ck_check_port_is_ready
             // 
             this.ck_check_port_is_ready.AutoSize = true;
-            this.ck_check_port_is_ready.Location = new System.Drawing.Point(13, 678);
+            this.ck_check_port_is_ready.Location = new System.Drawing.Point(8, 649);
             this.ck_check_port_is_ready.Name = "ck_check_port_is_ready";
             this.ck_check_port_is_ready.Size = new System.Drawing.Size(269, 26);
             this.ck_check_port_is_ready.TabIndex = 41;
@@ -4201,37 +4235,16 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // label97
+            // cb_needCheckPortUpdateTime
             // 
-            this.label97.AutoSize = true;
-            this.label97.Location = new System.Drawing.Point(646, 830);
-            this.label97.Name = "label97";
-            this.label97.Size = new System.Drawing.Size(170, 22);
-            this.label97.TabIndex = 54;
-            this.label97.Text = "Vh Idle Time(ms)";
-            // 
-            // num_vh_idle_time
-            // 
-            this.num_vh_idle_time.Location = new System.Drawing.Point(656, 855);
-            this.num_vh_idle_time.Maximum = new decimal(new int[] {
-            600000,
-            0,
-            0,
-            0});
-            this.num_vh_idle_time.Minimum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.num_vh_idle_time.Name = "num_vh_idle_time";
-            this.num_vh_idle_time.Size = new System.Drawing.Size(120, 30);
-            this.num_vh_idle_time.TabIndex = 55;
-            this.num_vh_idle_time.Value = new decimal(new int[] {
-            300000,
-            0,
-            0,
-            0});
-            this.num_vh_idle_time.ValueChanged += new System.EventHandler(this.num_vh_idle_time_ValueChanged);
+            this.cb_needCheckPortUpdateTime.AutoSize = true;
+            this.cb_needCheckPortUpdateTime.Location = new System.Drawing.Point(8, 678);
+            this.cb_needCheckPortUpdateTime.Name = "cb_needCheckPortUpdateTime";
+            this.cb_needCheckPortUpdateTime.Size = new System.Drawing.Size(299, 26);
+            this.cb_needCheckPortUpdateTime.TabIndex = 46;
+            this.cb_needCheckPortUpdateTime.Text = "Need Check Port Update Time";
+            this.cb_needCheckPortUpdateTime.UseVisualStyleBackColor = true;
+            this.cb_needCheckPortUpdateTime.CheckedChanged += new System.EventHandler(this.cb_needCheckPortUpdateTime_CheckedChanged);
             // 
             // DebugForm
             // 
@@ -4270,6 +4283,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_vh_idle_time)).EndInit();
             this.groupBox19.ResumeLayout(false);
             this.groupBox19.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numer_commandWaitTime)).EndInit();
@@ -4320,7 +4334,6 @@
             this.DIO_DEVICE_TEST.ResumeLayout(false);
             this.DIO_DEVICE_TEST.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.num_vh_idle_time)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4689,5 +4702,6 @@
         private System.Windows.Forms.CheckBox cb_passCouplerHPSafetySingnal;
         private System.Windows.Forms.Label label97;
         private System.Windows.Forms.NumericUpDown num_vh_idle_time;
+        private System.Windows.Forms.CheckBox cb_needCheckPortUpdateTime;
     }
 }

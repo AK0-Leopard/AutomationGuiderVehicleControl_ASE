@@ -536,6 +536,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.btn_pause.TabIndex = 3;
             this.btn_pause.Text = "Pause";
             this.btn_pause.UseVisualStyleBackColor = true;
+            this.btn_pause.Visible = false;
             this.btn_pause.Click += new System.EventHandler(this.btn_pause_Click);
             // 
             // btn_continuous
@@ -547,6 +548,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.btn_continuous.TabIndex = 3;
             this.btn_continuous.Text = "Continuous";
             this.btn_continuous.UseVisualStyleBackColor = true;
+            this.btn_continuous.Visible = false;
             this.btn_continuous.Click += new System.EventHandler(this.btn_continuous_Click);
             // 
             // btn_Avoid

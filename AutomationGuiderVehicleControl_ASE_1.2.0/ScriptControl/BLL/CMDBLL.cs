@@ -1309,7 +1309,23 @@ namespace com.mirle.ibg3k0.sc.BLL
                             return (false, "has command excute, can't assign move/move to change commmand");
                         }
                     case E_CMD_TYPE.Unload:
-                        return (true, "");//Unload一律都回覆OK，不然遇到身上已經載2個CST的，會無法下命令
+                        if (assign_cmds.Count == 0)
+                        {
+                            return (true, "");
+                        }
+                        else
+                        {
+                            bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
+                            if (has_move_command)
+                            {
+                                return (false, "has move command excute, can't assign transfer commmand");
+                            }
+                            else
+                            {
+                                return (true, "");
+                            }
+                        }
+                    //return (true, "");//Unload一律都回覆OK，不然遇到身上已經載2個CST的，會無法下命令
                     default:
                         //if (assign_cmds.Count == 0)
                         if (assign_cmds.Count == 0)
@@ -2061,7 +2077,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         return null;
                     var has_unfinish_cmd_by_vh = current_unfinish_cmd.Where(cmd => SCUtility.isMatche(cmd.ID, cmdID)
                                                                                 && cmd.CMD_STATUS < E_CMD_STATUS.Aborting).
-                                                                      SingleOrDefault();
+                                                                                FirstOrDefault();
                     return has_unfinish_cmd_by_vh;
                 }
                 catch (Exception ex)

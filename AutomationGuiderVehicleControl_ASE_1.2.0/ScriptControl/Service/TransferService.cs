@@ -1415,6 +1415,14 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 foreach (var port in port_stations)
                 {
+                    if (DebugParameter.isNeedCheckPortUpDateTime &&
+                        port.Timestamp < unload_agv_station.ReservedSuccessTime)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferService), Device: DEVICE_NAME_AGV,
+                           Data: $"port id:[{port.PORT_ID}] not update ready, update time:[{port.Timestamp.ToString(SCAppConstants.DateTimeFormat_23)}]," +
+                                 $"last reserved success time:[{unload_agv_station.ReservedSuccessTime.ToString(SCAppConstants.DateTimeFormat_23)}]");
+                        continue;
+                    }
                     bool has_command_excute = cmdBLL.hasExcuteCMDByDestinationPort(port.PORT_ID);
                     if (!has_command_excute)
                     {

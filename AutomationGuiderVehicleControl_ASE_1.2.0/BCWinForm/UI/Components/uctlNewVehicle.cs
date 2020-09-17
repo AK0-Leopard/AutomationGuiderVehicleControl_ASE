@@ -46,7 +46,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
             BLOCK,
             PAUSE_SAFETY,
             PAUSE_EARTHQUAKE,
-            RESERVE
+            RESERVE,
+            OP_PAUSE
         }
         public enum E_ACTION_STATUS
         {
@@ -135,6 +136,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
                     case E_ALERT_STATUS.PAUSE_SAFETY: ImgAlertStatus = Resources.Pause__Safety_; break;
                     case E_ALERT_STATUS.PAUSE_EARTHQUAKE: ImgAlertStatus = Resources.Pause__Earthquake_; break;
                     case E_ALERT_STATUS.RESERVE: ImgAlertStatus = Resources.Pause__Block_; break;
+                    case E_ALERT_STATUS.OP_PAUSE: ImgAlertStatus = Resources.Action__Parked_; break;
                 }
             }
         }
@@ -590,6 +592,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
             {
                 AlertStatus = E_ALERT_STATUS.RESERVE;
             }
+            else if (vh.IsOPPause)
+            {
+                AlertStatus = E_ALERT_STATUS.OP_PAUSE;
+            }
             else
             {
                 AlertStatus = E_ALERT_STATUS.NOTHING;
@@ -654,7 +660,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
             string replaced_cur_adr = curAdrID;
             try
             {
-                replaced_cur_adr = $"1{replaced_cur_adr.Substring(1, curAdrID.Length-1)}";
+                replaced_cur_adr = $"1{replaced_cur_adr.Substring(1, curAdrID.Length - 1)}";
             }
             catch (Exception ex)
             {

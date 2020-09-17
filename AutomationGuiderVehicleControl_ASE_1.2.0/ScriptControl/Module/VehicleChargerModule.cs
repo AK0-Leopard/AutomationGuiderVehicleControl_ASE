@@ -118,17 +118,17 @@ namespace com.mirle.ibg3k0.sc.Module
                                 {
                                     pauseEvent = PauseEvent.Pause;
                                 }
-                                Task.Run(() =>
-                                {
-                                    try
-                                    {
-                                        vehicleService.Send.Pause(vh_id, pauseEvent, pauseType);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        logger.Error(ex, "Exception:");
-                                    }
-                                });
+                                //Task.Run(() =>
+                                //{
+                                //    try
+                                //    {
+                                //        vehicleService.Send.Pause(vh_id, pauseEvent, pauseType);
+                                //    }
+                                //    catch (Exception ex)
+                                //    {
+                                //        logger.Error(ex, "Exception:");
+                                //    }
+                                //});
                             }
                         }
                     }

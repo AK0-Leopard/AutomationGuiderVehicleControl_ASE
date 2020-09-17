@@ -31,12 +31,12 @@ namespace com.mirle.ibg3k0.sc
         public int REPLACE { get; set; }
         public int PRIORITY_SUM { get; set; }
         public string RESULT_CODE { get; set; }
+        public string EXCUTE_CMD_ID { get; set; }
         public Nullable<System.DateTime> CARRIER_INSER_TIME { get; set; }
         public string CARRIER_LOCATION { get; set; }
         public Nullable<System.DateTime> CARRIER_INSTALLED_TIME { get; set; }
-        public string VH_ID { get; set; }
-        public string EXCUTE_CMD_ID { get; set; }
-        public Nullable<com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.CompleteStatus> COMPLETE_STATUS { get; set; }
         public Nullable<com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.E_ID_READ_STSTUS> CARRIER_READ_STATUS { get; set; }
+        public string VH_ID { get; set; }
+        public Nullable<com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.CompleteStatus> COMPLETE_STATUS { get; set; }
     }
 }

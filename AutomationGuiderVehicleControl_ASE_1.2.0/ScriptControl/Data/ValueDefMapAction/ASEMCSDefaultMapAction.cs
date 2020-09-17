@@ -1724,7 +1724,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 vid_collection.VID_82_AlarmText.AlarmText = alarmTest;
                 vid_collection.VID_54_CarrierID.CarrierID = carrier_id;
                 vid_collection.VID_56_CarrierLoc.CarrierLoc = carrier_loc;
-                AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Alarm_Set, vid_collection);
+                //AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Alarm_Set, vid_collection);
+                AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Alarm_Cleared, vid_collection);
                 if (reportQueues == null)
                 {
                     S6F11SendMessage(mcs_queue);

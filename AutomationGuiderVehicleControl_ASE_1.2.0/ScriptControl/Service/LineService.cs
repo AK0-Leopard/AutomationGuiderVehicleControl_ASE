@@ -485,6 +485,8 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 string node_id = vh.NODE_ID;
                 string vh_id = vh.VEHICLE_ID;
+                string mcd_cmd_id_1 = SCUtility.Trim(vh.TRANSFER_ID_1, true);
+                string mcs_cmd_id_2 = SCUtility.Trim(vh.TRANSFER_ID_2, true);
                 bool is_all_alarm_clear = SCUtility.isMatche(err_code, "0") && status == ErrorStatus.ErrReset;
                 //List<ALARM> alarms = null;
                 List<ALARM> alarms = new List<ALARM>();
@@ -510,7 +512,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             {
                                 case ErrorStatus.ErrSet:
                                     //將設備上報的Alarm填入資料庫。
-                                    alarm = scApp.AlarmBLL.setAlarmReport(node_id, vh_id, err_code, errorDesc);
+                                    alarm = scApp.AlarmBLL.setAlarmReport(node_id, vh_id, err_code, errorDesc, mcd_cmd_id_1, mcs_cmd_id_2);
                                     //將其更新至Redis，保存目前所發生的Alarm
                                     scApp.AlarmBLL.setAlarmReport2Redis(alarm);
                                     //alarms = new List<ALARM>() { alarm };

@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 01/20/2020 13:51:12
--- Generated from EDMX file: D:\C#\AutomationGuiderVehicleControl_ASE\AutomationGuiderVehicleControl_ASE_1.2.0\ScriptControl\OHTCContext.edmx
+-- Date Created: 09/01/2020 16:29:57
+-- Generated from EDMX file: C:\Git\AK0-Leopard\AutomationGuiderVehicleControl_ASE\AutomationGuiderVehicleControl_ASE_1.2.0\ScriptControl\OHTCContext.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [AGVC_ASE_K21];
+USE [AGVC_ASE_K21_v4];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -22,41 +22,35 @@ GO
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[AADDRESS]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AADDRESS];
-GO
-IF OBJECT_ID(N'[dbo].[AADDRESS_DATA]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AADDRESS_DATA];
-GO
 IF OBJECT_ID(N'[dbo].[ABASEDATA_VER]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ABASEDATA_VER];
 GO
 IF OBJECT_ID(N'[dbo].[ABLOCKZONEDETAIL]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ABLOCKZONEDETAIL];
 GO
+IF OBJECT_ID(N'[dbo].[AGROUPRAILS]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AGROUPRAILS];
+GO
+IF OBJECT_ID(N'[dbo].[AMAIN_VER]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AMAIN_VER];
+GO
+IF OBJECT_ID(N'[dbo].[APOINT]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[APOINT];
+GO
+IF OBJECT_ID(N'[dbo].[ARAIL]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ARAIL];
+GO
+IF OBJECT_ID(N'[dbo].[ASUB_VER]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ASUB_VER];
+GO
+IF OBJECT_ID(N'[dbo].[BLOCKZONEQUEUE]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[BLOCKZONEQUEUE];
+GO
 IF OBJECT_ID(N'[dbo].[ABLOCKZONEMASTER]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ABLOCKZONEMASTER];
 GO
-IF OBJECT_ID(N'[dbo].[ABUFFER]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ABUFFER];
-GO
-IF OBJECT_ID(N'[dbo].[ACASSETTE]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ACASSETTE];
-GO
-IF OBJECT_ID(N'[dbo].[ACEID]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ACEID];
-GO
-IF OBJECT_ID(N'[dbo].[ACMD_MCS]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ACMD_MCS];
-GO
-IF OBJECT_ID(N'[dbo].[ACMD_OHTC]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ACMD_OHTC];
-GO
-IF OBJECT_ID(N'[dbo].[ACMD_OHTC_DETAIL]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ACMD_OHTC_DETAIL];
-GO
-IF OBJECT_ID(N'[dbo].[ACRATE]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ACRATE];
+IF OBJECT_ID(N'[dbo].[ASEQUENCE]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ASEQUENCE];
 GO
 IF OBJECT_ID(N'[dbo].[ACYCLEZONEDETAIL]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ACYCLEZONEDETAIL];
@@ -67,11 +61,47 @@ GO
 IF OBJECT_ID(N'[dbo].[ACYCLEZONETYPE]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ACYCLEZONETYPE];
 GO
-IF OBJECT_ID(N'[dbo].[AECDATAMAP]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AECDATAMAP];
+IF OBJECT_ID(N'[dbo].[ACEID]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ACEID];
+GO
+IF OBJECT_ID(N'[dbo].[ARPTID]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ARPTID];
+GO
+IF OBJECT_ID(N'[dbo].[ANETWORKQUALITY]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ANETWORKQUALITY];
+GO
+IF OBJECT_ID(N'[dbo].[APORTICON]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[APORTICON];
+GO
+IF OBJECT_ID(N'[dbo].[BCSTAT]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[BCSTAT];
 GO
 IF OBJECT_ID(N'[dbo].[AEQPT]', 'U') IS NOT NULL
     DROP TABLE [dbo].[AEQPT];
+GO
+IF OBJECT_ID(N'[dbo].[ALINE]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ALINE];
+GO
+IF OBJECT_ID(N'[dbo].[AZONE]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AZONE];
+GO
+IF OBJECT_ID(N'[dbo].[ANODE]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ANODE];
+GO
+IF OBJECT_ID(N'[dbo].[AUNIT]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AUNIT];
+GO
+IF OBJECT_ID(N'[dbo].[ABUFFER]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ABUFFER];
+GO
+IF OBJECT_ID(N'[dbo].[ACASSETTE]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ACASSETTE];
+GO
+IF OBJECT_ID(N'[dbo].[ACRATE]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ACRATE];
+GO
+IF OBJECT_ID(N'[dbo].[AECDATAMAP]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AECDATAMAP];
 GO
 IF OBJECT_ID(N'[dbo].[AEVENTRPTCOND]', 'U') IS NOT NULL
     DROP TABLE [dbo].[AEVENTRPTCOND];
@@ -79,41 +109,44 @@ GO
 IF OBJECT_ID(N'[dbo].[AFLOW_REL]', 'U') IS NOT NULL
     DROP TABLE [dbo].[AFLOW_REL];
 GO
-IF OBJECT_ID(N'[dbo].[AGROUPRAILS]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AGROUPRAILS];
-GO
-IF OBJECT_ID(N'[dbo].[AHIDZONEDETAIL]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AHIDZONEDETAIL];
-GO
-IF OBJECT_ID(N'[dbo].[AHIDZONEMASTER]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AHIDZONEMASTER];
-GO
-IF OBJECT_ID(N'[dbo].[AHIDZONEQUEUE]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AHIDZONEQUEUE];
-GO
-IF OBJECT_ID(N'[dbo].[ALARM]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ALARM];
-GO
-IF OBJECT_ID(N'[dbo].[ALARMRPTCOND]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ALARMRPTCOND];
-GO
-IF OBJECT_ID(N'[dbo].[ALINE]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ALINE];
+IF OBJECT_ID(N'[dbo].[UASFNC]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UASFNC];
 GO
 IF OBJECT_ID(N'[dbo].[ALOT]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ALOT];
 GO
-IF OBJECT_ID(N'[dbo].[AMAIN_VER]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AMAIN_VER];
+IF OBJECT_ID(N'[dbo].[HOPERATION]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[HOPERATION];
+GO
+IF OBJECT_ID(N'[dbo].[ASHEET]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ASHEET];
+GO
+IF OBJECT_ID(N'[dbo].[HASHEET]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[HASHEET];
+GO
+IF OBJECT_ID(N'[dbo].[ATRACEITEM]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ATRACEITEM];
+GO
+IF OBJECT_ID(N'[dbo].[ATRACESET]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ATRACESET];
+GO
+IF OBJECT_ID(N'[dbo].[UASUSRGRP]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UASUSRGRP];
+GO
+IF OBJECT_ID(N'[dbo].[UASUFNC]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UASUFNC];
+GO
+IF OBJECT_ID(N'[dbo].[APORTSTATION]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[APORTSTATION];
+GO
+IF OBJECT_ID(N'[dbo].[APORT]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[APORT];
 GO
 IF OBJECT_ID(N'[dbo].[AMCSREPORTQUEUE]', 'U') IS NOT NULL
     DROP TABLE [dbo].[AMCSREPORTQUEUE];
 GO
-IF OBJECT_ID(N'[dbo].[ANETWORKQUALITY]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ANETWORKQUALITY];
-GO
-IF OBJECT_ID(N'[dbo].[ANODE]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ANODE];
+IF OBJECT_ID(N'[dbo].[AADDRESS_DATA]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AADDRESS_DATA];
 GO
 IF OBJECT_ID(N'[dbo].[APARKZONEDETAIL]', 'U') IS NOT NULL
     DROP TABLE [dbo].[APARKZONEDETAIL];
@@ -124,107 +157,77 @@ GO
 IF OBJECT_ID(N'[dbo].[APARKZONETYPE]', 'U') IS NOT NULL
     DROP TABLE [dbo].[APARKZONETYPE];
 GO
-IF OBJECT_ID(N'[dbo].[APOINT]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[APOINT];
-GO
-IF OBJECT_ID(N'[dbo].[APORT]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[APORT];
-GO
 IF OBJECT_ID(N'[dbo].[APORT_POSITION_TEACHING_DATA]', 'U') IS NOT NULL
     DROP TABLE [dbo].[APORT_POSITION_TEACHING_DATA];
-GO
-IF OBJECT_ID(N'[dbo].[APORTICON]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[APORTICON];
-GO
-IF OBJECT_ID(N'[dbo].[APORTSTATION]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[APORTSTATION];
-GO
-IF OBJECT_ID(N'[dbo].[ARAIL]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ARAIL];
-GO
-IF OBJECT_ID(N'[dbo].[ARPTID]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ARPTID];
-GO
-IF OBJECT_ID(N'[dbo].[ASECTION]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ASECTION];
-GO
-IF OBJECT_ID(N'[dbo].[ASECTION_CONTROL_100]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ASECTION_CONTROL_100];
-GO
-IF OBJECT_ID(N'[dbo].[ASEGMENT]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ASEGMENT];
-GO
-IF OBJECT_ID(N'[dbo].[ASEQUENCE]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ASEQUENCE];
-GO
-IF OBJECT_ID(N'[dbo].[ASHEET]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ASHEET];
-GO
-IF OBJECT_ID(N'[dbo].[ASUB_VER]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ASUB_VER];
-GO
-IF OBJECT_ID(N'[dbo].[ASYSEXCUTEQUALITY]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ASYSEXCUTEQUALITY];
-GO
-IF OBJECT_ID(N'[dbo].[ATRACEITEM]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ATRACEITEM];
-GO
-IF OBJECT_ID(N'[dbo].[ATRACESET]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ATRACESET];
-GO
-IF OBJECT_ID(N'[dbo].[AUNIT]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AUNIT];
-GO
-IF OBJECT_ID(N'[dbo].[AVEHICLE]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AVEHICLE];
 GO
 IF OBJECT_ID(N'[dbo].[AVEHICLE_CONTROL_100]', 'U') IS NOT NULL
     DROP TABLE [dbo].[AVEHICLE_CONTROL_100];
 GO
-IF OBJECT_ID(N'[dbo].[AVIDINFO]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AVIDINFO];
-GO
-IF OBJECT_ID(N'[dbo].[AZONE]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AZONE];
-GO
-IF OBJECT_ID(N'[dbo].[BCSTAT]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[BCSTAT];
-GO
-IF OBJECT_ID(N'[dbo].[BLOCKZONEQUEUE]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[BLOCKZONEQUEUE];
-GO
 IF OBJECT_ID(N'[dbo].[CONTROL_DATA]', 'U') IS NOT NULL
     DROP TABLE [dbo].[CONTROL_DATA];
-GO
-IF OBJECT_ID(N'[dbo].[HASHEET]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[HASHEET];
-GO
-IF OBJECT_ID(N'[dbo].[HCMD_MCS]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[HCMD_MCS];
-GO
-IF OBJECT_ID(N'[dbo].[HOPERATION]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[HOPERATION];
 GO
 IF OBJECT_ID(N'[dbo].[SCALE_BASE_DATA]', 'U') IS NOT NULL
     DROP TABLE [dbo].[SCALE_BASE_DATA];
 GO
-IF OBJECT_ID(N'[dbo].[UASFNC]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UASFNC];
+IF OBJECT_ID(N'[dbo].[ASYSEXCUTEQUALITY]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ASYSEXCUTEQUALITY];
 GO
-IF OBJECT_ID(N'[dbo].[UASUFNC]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UASUFNC];
+IF OBJECT_ID(N'[dbo].[AHIDZONEDETAIL]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AHIDZONEDETAIL];
+GO
+IF OBJECT_ID(N'[dbo].[AHIDZONEMASTER]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AHIDZONEMASTER];
+GO
+IF OBJECT_ID(N'[dbo].[AHIDZONEQUEUE]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AHIDZONEQUEUE];
+GO
+IF OBJECT_ID(N'[dbo].[ALARMRPTCOND]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ALARMRPTCOND];
+GO
+IF OBJECT_ID(N'[dbo].[ASECTION_CONTROL_100]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ASECTION_CONTROL_100];
+GO
+IF OBJECT_ID(N'[dbo].[VSECTION_100]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[VSECTION_100];
+GO
+IF OBJECT_ID(N'[dbo].[ASECTION]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ASECTION];
+GO
+IF OBJECT_ID(N'[dbo].[ASEGMENT]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ASEGMENT];
+GO
+IF OBJECT_ID(N'[dbo].[AADDRESS]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AADDRESS];
+GO
+IF OBJECT_ID(N'[dbo].[ALARM]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ALARM];
 GO
 IF OBJECT_ID(N'[dbo].[UASUSR]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UASUSR];
 GO
-IF OBJECT_ID(N'[dbo].[UASUSRGRP]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UASUSRGRP];
+IF OBJECT_ID(N'[dbo].[ACMD]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ACMD];
 GO
-IF OBJECT_ID(N'[OHTC_DevModelStoreContainer].[VSECTION_100]', 'U') IS NOT NULL
-    DROP TABLE [OHTC_DevModelStoreContainer].[VSECTION_100];
+IF OBJECT_ID(N'[dbo].[ACMD_DETAIL]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ACMD_DETAIL];
 GO
-IF OBJECT_ID(N'[OHTC_DevModelStoreContainer].[VACMD_MCS]', 'U') IS NOT NULL
-    DROP TABLE [OHTC_DevModelStoreContainer].[VACMD_MCS];
+IF OBJECT_ID(N'[dbo].[ATRANSFER]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ATRANSFER];
+GO
+IF OBJECT_ID(N'[dbo].[ACARRIER]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ACARRIER];
+GO
+IF OBJECT_ID(N'[dbo].[AVEHICLE]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AVEHICLE];
+GO
+IF OBJECT_ID(N'[dbo].[HCMD]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[HCMD];
+GO
+IF OBJECT_ID(N'[dbo].[HTRANSFER]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[HTRANSFER];
+GO
+IF OBJECT_ID(N'[dbo].[AGROUPPORTSTATION]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AGROUPPORTSTATION];
 GO
 
 -- --------------------------------------------------
@@ -371,27 +374,6 @@ CREATE TABLE [dbo].[ACYCLEZONETYPE] (
 );
 GO
 
--- Creating table 'ACMD_OHTC'
-CREATE TABLE [dbo].[ACMD_OHTC] (
-    [CMD_ID] char(64)  NOT NULL,
-    [VH_ID] char(5)  NOT NULL,
-    [CARRIER_ID] char(40)  NULL,
-    [CMD_ID_MCS] char(64)  NULL,
-    [CMD_TPYE] int  NOT NULL,
-    [SOURCE] char(64)  NULL,
-    [DESTINATION] char(64)  NULL,
-    [PRIORITY] int  NOT NULL,
-    [CMD_START_TIME] datetime  NULL,
-    [CMD_END_TIME] datetime  NULL,
-    [CMD_STAUS] int  NOT NULL,
-    [CMD_PROGRESS] int  NOT NULL,
-    [INTERRUPTED_REASON] int  NULL,
-    [ESTIMATED_TIME] int  NOT NULL,
-    [ESTIMATED_EXCESS_TIME] int  NOT NULL,
-    [REAL_CMP_TIME] int  NULL
-);
-GO
-
 -- Creating table 'ACEID'
 CREATE TABLE [dbo].[ACEID] (
     [CEID] char(3)  NOT NULL,
@@ -412,31 +394,9 @@ CREATE TABLE [dbo].[ARPTID] (
 );
 GO
 
--- Creating table 'AVIDINFO'
-CREATE TABLE [dbo].[AVIDINFO] (
-    [EQ_ID] char(5)  NOT NULL,
-    [MCS_CARRIER_ID] char(64)  NULL,
-    [CARRIER_ID] char(64)  NULL,
-    [CARRIER_LOC] char(64)  NULL,
-    [CARRIER_INSTALLED_TIME] datetime  NULL,
-    [COMMAND_ID] char(64)  NULL,
-    [SOURCEPORT] char(64)  NULL,
-    [DESTPORT] char(64)  NULL,
-    [PRIORITY] int  NOT NULL,
-    [RESULT_CODE] int  NOT NULL,
-    [VEHICLE_STATE] int  NOT NULL,
-    [COMMAND_TYPE] char(64)  NULL,
-    [ALARM_ID] char(64)  NULL,
-    [ALARM_TEXT] char(64)  NULL,
-    [UNIT_ID] char(64)  NULL,
-    [PORT_ID] char(64)  NULL,
-    [REPLACE] int  NOT NULL
-);
-GO
-
 -- Creating table 'ANETWORKQUALITY'
 CREATE TABLE [dbo].[ANETWORKQUALITY] (
-    [VEICLE_ID] char(5)  NOT NULL,
+    [VEHICLE_ID] char(5)  NOT NULL,
     [ADR_ID] char(5)  NOT NULL,
     [SEC_ID] char(5)  NOT NULL,
     [ACC_SEC_DIST] int  NOT NULL,
@@ -709,7 +669,7 @@ GO
 
 -- Creating table 'APORTSTATION'
 CREATE TABLE [dbo].[APORTSTATION] (
-    [PORT_ID] char(15)  NOT NULL,
+    [PORT_ID] char(64)  NOT NULL,
     [ADR_ID] char(5)  NULL,
     [LD_VH_TYPE] int  NOT NULL,
     [ULD_VH_TYPE] int  NOT NULL,
@@ -717,7 +677,8 @@ CREATE TABLE [dbo].[APORTSTATION] (
     [PORT_TYPE] int  NOT NULL,
     [PORT_STATUS] int  NOT NULL,
     [PORT_DIR] int  NOT NULL,
-    [PORT_SERVICE_STATUS] int  NOT NULL
+    [PORT_SERVICE_STATUS] int  NOT NULL,
+    [GROUP_ID] char(20)  NULL
 );
 GO
 
@@ -757,25 +718,6 @@ CREATE TABLE [dbo].[AADDRESS_DATA] (
     [VEHOCLE_ID] char(5)  NOT NULL,
     [RESOLUTION] int  NOT NULL,
     [LOACTION] int  NOT NULL
-);
-GO
-
--- Creating table 'ACMD_OHTC_DETAIL'
-CREATE TABLE [dbo].[ACMD_OHTC_DETAIL] (
-    [CMD_ID] char(64)  NOT NULL,
-    [SEQ_NO] int  NOT NULL,
-    [ADD_ID] char(5)  NOT NULL,
-    [ADD_ENTRY_TIME] datetime  NULL,
-    [SEC_ID] char(10)  NOT NULL,
-    [SEC_ENTRY_TIME] datetime  NULL,
-    [SEC_LEAVE_TIME] datetime  NULL,
-    [LOAD_START_TIME] datetime  NULL,
-    [LOAD_END_TIME] datetime  NULL,
-    [UNLOAD_START_TIME] datetime  NULL,
-    [UNLOAD_END_TIME] datetime  NULL,
-    [ESTIMATED_TIME] int  NOT NULL,
-    [IS_PASS] bit  NOT NULL,
-    [SEG_NUM] char(10)  NOT NULL
 );
 GO
 
@@ -935,54 +877,6 @@ CREATE TABLE [dbo].[ASYSEXCUTEQUALITY] (
 );
 GO
 
--- Creating table 'AVEHICLE'
-CREATE TABLE [dbo].[AVEHICLE] (
-    [VEHICLE_ID] char(5)  NOT NULL,
-    [VEHICLE_TYPE] int  NOT NULL,
-    [CUR_SEG_ID] char(5)  NULL,
-    [CUR_SEC_ID] char(5)  NULL,
-    [CUR_ADR_ID] char(5)  NULL,
-    [SEC_ENTRY_TIME] datetime  NULL,
-    [ACC_SEC_DIST] float  NOT NULL,
-    [MODE_STATUS] int  NOT NULL,
-    [ACT_STATUS] int  NOT NULL,
-    [MCS_CMD] char(64)  NULL,
-    [OHTC_CMD] char(64)  NULL,
-    [BLOCK_PAUSE] int  NOT NULL,
-    [CMD_PAUSE] int  NOT NULL,
-    [OBS_PAUSE] int  NOT NULL,
-    [HID_PAUSE] int  NOT NULL,
-    [ERROR] int  NOT NULL,
-    [EARTHQUAKE_PAUSE] int  NOT NULL,
-    [SAFETY_DOOR_PAUSE] int  NOT NULL,
-    [OHXC_OBS_PAUSE] int  NOT NULL,
-    [OHXC_BLOCK_PAUSE] int  NOT NULL,
-    [OBS_DIST] int  NOT NULL,
-    [HAS_CST] int  NOT NULL,
-    [CST_ID] char(64)  NULL,
-    [UPD_TIME] datetime  NULL,
-    [VEHICLE_ACC_DIST] int  NOT NULL,
-    [MANT_ACC_DIST] int  NOT NULL,
-    [MANT_DATE] datetime  NULL,
-    [GRIP_COUNT] int  NOT NULL,
-    [GRIP_MANT_COUNT] int  NOT NULL,
-    [GRIP_MANT_DATE] datetime  NULL,
-    [NODE_ADR] char(5)  NULL,
-    [IS_PARKING] bit  NOT NULL,
-    [PARK_TIME] datetime  NULL,
-    [PARK_ADR_ID] char(5)  NULL,
-    [IS_CYCLING] bit  NOT NULL,
-    [CYCLERUN_TIME] datetime  NULL,
-    [CYCLERUN_ID] char(10)  NULL,
-    [BATTERYCAPACITY] int  NOT NULL,
-    [LAST_FULLY_CHARGED_TIME] datetime  NULL,
-    [STEERINGWHEELANGLE] int  NOT NULL,
-    [IS_INSTALLED] bit  NOT NULL,
-    [INSTALLED_TIME] datetime  NULL,
-    [REMOVED_TIME] datetime  NULL
-);
-GO
-
 -- Creating table 'AHIDZONEDETAIL'
 CREATE TABLE [dbo].[AHIDZONEDETAIL] (
     [ENTRY_SEC_ID] char(5)  NOT NULL,
@@ -1124,7 +1018,16 @@ CREATE TABLE [dbo].[ASECTION] (
     [SEC_COST_From2To] int  NOT NULL,
     [SEC_COST_To2From] int  NOT NULL,
     [ISBANEND_From2To] bit  NOT NULL,
-    [ISBANEND_To2From] bit  NOT NULL
+    [ISBANEND_To2From] bit  NOT NULL,
+    [STATUS] int  NOT NULL,
+    [NOTE] nchar(40)  NULL,
+    [PRE_DISABLE_FLAG] bit  NOT NULL,
+    [PRE_DISABLE_TIME] datetime  NULL,
+    [DISABLE_TIME] datetime  NULL,
+    [DISABLE_FLAG_USER] bit  NOT NULL,
+    [DISABLE_FLAG_SAFETY] bit  NOT NULL,
+    [DISABLE_FLAG_CHARGE] bit  NOT NULL,
+    [DISABLE_FLAG_SYSTEM] bit  NOT NULL
 );
 GO
 
@@ -1195,27 +1098,6 @@ CREATE TABLE [dbo].[ALARM] (
 );
 GO
 
--- Creating table 'HCMD_MCS'
-CREATE TABLE [dbo].[HCMD_MCS] (
-    [CMD_ID] char(64)  NOT NULL,
-    [CARRIER_ID] char(40)  NOT NULL,
-    [TRANSFERSTATE] int  NOT NULL,
-    [COMMANDSTATE] int  NOT NULL,
-    [HOSTSOURCE] char(64)  NULL,
-    [HOSTDESTINATION] char(64)  NOT NULL,
-    [PRIORITY] int  NOT NULL,
-    [CHECKCODE] char(2)  NOT NULL,
-    [PAUSEFLAG] char(1)  NOT NULL,
-    [CMD_INSER_TIME] datetime  NOT NULL,
-    [CMD_START_TIME] datetime  NULL,
-    [CMD_FINISH_TIME] datetime  NULL,
-    [TIME_PRIORITY] int  NOT NULL,
-    [PORT_PRIORITY] int  NOT NULL,
-    [REPLACE] int  NOT NULL,
-    [PRIORITY_SUM] int  NOT NULL
-);
-GO
-
 -- Creating table 'UASUSR'
 CREATE TABLE [dbo].[UASUSR] (
     [USER_ID] char(20)  NOT NULL,
@@ -1230,36 +1112,57 @@ CREATE TABLE [dbo].[UASUSR] (
 );
 GO
 
--- Creating table 'ACMD_MCS'
-CREATE TABLE [dbo].[ACMD_MCS] (
-    [CMD_ID] char(64)  NOT NULL,
-    [CARRIER_ID] char(40)  NOT NULL,
-    [TRANSFERSTATE] int  NOT NULL,
-    [COMMANDSTATE] int  NOT NULL,
-    [HOSTSOURCE] char(64)  NULL,
-    [HOSTDESTINATION] char(64)  NOT NULL,
+-- Creating table 'ACMD'
+CREATE TABLE [dbo].[ACMD] (
+    [ID] char(64)  NOT NULL,
+    [VH_ID] char(5)  NOT NULL,
+    [CARRIER_ID] char(64)  NULL,
+    [CMD_TYPE] int  NOT NULL,
+    [SOURCE] char(64)  NULL,
+    [DESTINATION] char(64)  NULL,
     [PRIORITY] int  NOT NULL,
-    [CHECKCODE] char(2)  NOT NULL,
-    [PAUSEFLAG] char(1)  NOT NULL,
-    [CMD_INSER_TIME] datetime  NOT NULL,
     [CMD_START_TIME] datetime  NULL,
-    [CMD_FINISH_TIME] datetime  NULL,
-    [TIME_PRIORITY] int  NOT NULL,
-    [PORT_PRIORITY] int  NOT NULL,
-    [REPLACE] int  NOT NULL,
-    [PRIORITY_SUM] int  NOT NULL
+    [CMD_END_TIME] datetime  NULL,
+    [CMD_PROGRESS] int  NOT NULL,
+    [INTERRUPTED_REASON] int  NULL,
+    [ESTIMATED_TIME] int  NOT NULL,
+    [ESTIMATED_EXCESS_TIME] int  NOT NULL,
+    [TRANSFER_ID] char(64)  NULL,
+    [CMD_INSER_TIME] datetime  NOT NULL,
+    [SOURCE_PORT] char(64)  NULL,
+    [DESTINATION_PORT] char(64)  NULL,
+    [CMD_STATUS] int  NOT NULL,
+    [COMPLETE_STATUS] int  NULL
 );
 GO
 
--- Creating table 'VACMD_MCS'
-CREATE TABLE [dbo].[VACMD_MCS] (
+-- Creating table 'ACMD_DETAIL'
+CREATE TABLE [dbo].[ACMD_DETAIL] (
     [CMD_ID] char(64)  NOT NULL,
-    [CARRIER_ID] char(40)  NOT NULL,
+    [SEQ_NO] int  NOT NULL,
+    [ADD_ID] char(5)  NOT NULL,
+    [ADD_ENTRY_TIME] datetime  NULL,
+    [SEC_ID] char(10)  NOT NULL,
+    [SEG_NUM] char(10)  NOT NULL,
+    [SEC_ENTRY_TIME] datetime  NULL,
+    [SEC_LEAVE_TIME] datetime  NULL,
+    [LOAD_START_TIME] datetime  NULL,
+    [LOAD_END_TIME] datetime  NULL,
+    [UNLOAD_START_TIME] datetime  NULL,
+    [UNLOAD_END_TIME] datetime  NULL,
+    [ESTIMATED_TIME] int  NOT NULL,
+    [IS_PASS] bit  NOT NULL
+);
+GO
+
+-- Creating table 'ATRANSFER'
+CREATE TABLE [dbo].[ATRANSFER] (
+    [ID] char(64)  NOT NULL,
+    [CARRIER_ID] char(64)  NOT NULL,
     [TRANSFERSTATE] int  NOT NULL,
     [COMMANDSTATE] int  NOT NULL,
     [HOSTSOURCE] char(64)  NULL,
     [HOSTDESTINATION] char(64)  NOT NULL,
-    [PRIORITY_SUM] int  NULL,
     [PRIORITY] int  NOT NULL,
     [CHECKCODE] char(2)  NOT NULL,
     [PAUSEFLAG] char(1)  NOT NULL,
@@ -1269,8 +1172,99 @@ CREATE TABLE [dbo].[VACMD_MCS] (
     [TIME_PRIORITY] int  NOT NULL,
     [PORT_PRIORITY] int  NOT NULL,
     [REPLACE] int  NOT NULL,
-    [OHTC_CMD] char(64)  NULL,
-    [VH_ID] char(5)  NULL
+    [PRIORITY_SUM] int  NOT NULL,
+    [EXCUTE_CMD_ID] char(64)  NULL,
+    [RESULT_CODE] char(2)  NULL,
+    [LOT_ID] char(64)  NULL
+);
+GO
+
+-- Creating table 'ACARRIER'
+CREATE TABLE [dbo].[ACARRIER] (
+    [ID] char(64)  NOT NULL,
+    [INSER_TIME] datetime  NOT NULL,
+    [LOCATION] char(64)  NULL,
+    [INSTALLED_TIME] datetime  NULL,
+    [RENAME_ID] char(64)  NULL,
+    [STATE] int  NOT NULL,
+    [LOT_ID] char(64)  NULL,
+    [TYPE] char(2)  NULL,
+    [READ_STATUS] int  NULL,
+    [FINISH_TIME] datetime  NULL,
+    [HOSTSOURCE] char(64)  NULL,
+    [HOSTDESTINATION] char(64)  NULL
+);
+GO
+
+-- Creating table 'AVEHICLE'
+CREATE TABLE [dbo].[AVEHICLE] (
+    [VEHICLE_ID] char(5)  NOT NULL,
+    [VEHICLE_TYPE] int  NOT NULL,
+    [VEHICLE_ACC_DIST] int  NOT NULL,
+    [MANT_ACC_DIST] int  NOT NULL,
+    [MANT_DATE] datetime  NULL,
+    [GRIP_COUNT] int  NOT NULL,
+    [GRIP_MANT_COUNT] int  NOT NULL,
+    [GRIP_MANT_DATE] datetime  NULL,
+    [LAST_FULLY_CHARGED_TIME] datetime  NULL,
+    [IS_INSTALLED] bit  NOT NULL,
+    [INSTALLED_TIME] datetime  NULL,
+    [REMOVED_TIME] datetime  NULL
+);
+GO
+
+-- Creating table 'HCMD'
+CREATE TABLE [dbo].[HCMD] (
+    [ID] char(64)  NOT NULL,
+    [VH_ID] char(5)  NULL,
+    [CARRIER_ID] char(64)  NULL,
+    [TRANSFER_ID] char(64)  NULL,
+    [CMD_TYPE] int  NULL,
+    [SOURCE] char(64)  NULL,
+    [DESTINATION] char(64)  NULL,
+    [PRIORITY] int  NULL,
+    [CMD_INSER_TIME] datetime  NOT NULL,
+    [CMD_START_TIME] datetime  NULL,
+    [CMD_END_TIME] datetime  NULL,
+    [CMD_STATUS] int  NULL,
+    [CMD_PROGRESS] int  NULL,
+    [INTERRUPTED_REASON] int  NULL,
+    [ESTIMATED_TIME] int  NULL,
+    [ESTIMATED_EXCESS_TIME] int  NULL,
+    [SOURCE_PORT] char(64)  NULL,
+    [DESTINATION_PORT] char(64)  NULL,
+    [COMPLETE_STATUS] int  NULL
+);
+GO
+
+-- Creating table 'HTRANSFER'
+CREATE TABLE [dbo].[HTRANSFER] (
+    [ID] char(64)  NOT NULL,
+    [CARRIER_ID] char(64)  NOT NULL,
+    [LOT_ID] char(64)  NULL,
+    [TRANSFERSTATE] int  NOT NULL,
+    [COMMANDSTATE] int  NOT NULL,
+    [HOSTSOURCE] char(64)  NULL,
+    [HOSTDESTINATION] char(64)  NOT NULL,
+    [PRIORITY] int  NOT NULL,
+    [CHECKCODE] char(2)  NOT NULL,
+    [PAUSEFLAG] char(1)  NOT NULL,
+    [CMD_INSER_TIME] datetime  NOT NULL,
+    [CMD_START_TIME] datetime  NULL,
+    [CMD_FINISH_TIME] datetime  NULL,
+    [TIME_PRIORITY] int  NOT NULL,
+    [PORT_PRIORITY] int  NOT NULL,
+    [REPLACE] int  NOT NULL,
+    [PRIORITY_SUM] int  NOT NULL,
+    [EXCUTE_CMD_ID] char(64)  NULL,
+    [RESULT_CODE] char(2)  NULL
+);
+GO
+
+-- Creating table 'AGROUPPORTSTATION'
+CREATE TABLE [dbo].[AGROUPPORTSTATION] (
+    [GROUP_ID] char(20)  NOT NULL,
+    [TYPE] int  NOT NULL
 );
 GO
 
@@ -1356,12 +1350,6 @@ ADD CONSTRAINT [PK_ACYCLEZONETYPE]
     PRIMARY KEY CLUSTERED ([CYCLE_TYPE_ID] ASC);
 GO
 
--- Creating primary key on [CMD_ID] in table 'ACMD_OHTC'
-ALTER TABLE [dbo].[ACMD_OHTC]
-ADD CONSTRAINT [PK_ACMD_OHTC]
-    PRIMARY KEY CLUSTERED ([CMD_ID] ASC);
-GO
-
 -- Creating primary key on [CEID], [RPTID] in table 'ACEID'
 ALTER TABLE [dbo].[ACEID]
 ADD CONSTRAINT [PK_ACEID]
@@ -1374,16 +1362,10 @@ ADD CONSTRAINT [PK_ARPTID]
     PRIMARY KEY CLUSTERED ([RPTID], [VID] ASC);
 GO
 
--- Creating primary key on [EQ_ID] in table 'AVIDINFO'
-ALTER TABLE [dbo].[AVIDINFO]
-ADD CONSTRAINT [PK_AVIDINFO]
-    PRIMARY KEY CLUSTERED ([EQ_ID] ASC);
-GO
-
--- Creating primary key on [VEICLE_ID], [ADR_ID], [SEC_ID], [UPD_TIME] in table 'ANETWORKQUALITY'
+-- Creating primary key on [ADR_ID], [SEC_ID], [UPD_TIME], [VEHICLE_ID] in table 'ANETWORKQUALITY'
 ALTER TABLE [dbo].[ANETWORKQUALITY]
 ADD CONSTRAINT [PK_ANETWORKQUALITY]
-    PRIMARY KEY CLUSTERED ([VEICLE_ID], [ADR_ID], [SEC_ID], [UPD_TIME] ASC);
+    PRIMARY KEY CLUSTERED ([ADR_ID], [SEC_ID], [UPD_TIME], [VEHICLE_ID] ASC);
 GO
 
 -- Creating primary key on [PORT_ID] in table 'APORTICON'
@@ -1542,12 +1524,6 @@ ADD CONSTRAINT [PK_AADDRESS_DATA]
     PRIMARY KEY CLUSTERED ([ADR_ID], [VEHOCLE_ID] ASC);
 GO
 
--- Creating primary key on [CMD_ID], [SEQ_NO] in table 'ACMD_OHTC_DETAIL'
-ALTER TABLE [dbo].[ACMD_OHTC_DETAIL]
-ADD CONSTRAINT [PK_ACMD_OHTC_DETAIL]
-    PRIMARY KEY CLUSTERED ([CMD_ID], [SEQ_NO] ASC);
-GO
-
 -- Creating primary key on [PARK_ZONE_ID], [ADR_ID] in table 'APARKZONEDETAIL'
 ALTER TABLE [dbo].[APARKZONEDETAIL]
 ADD CONSTRAINT [PK_APARKZONEDETAIL]
@@ -1594,12 +1570,6 @@ GO
 ALTER TABLE [dbo].[ASYSEXCUTEQUALITY]
 ADD CONSTRAINT [PK_ASYSEXCUTEQUALITY]
     PRIMARY KEY CLUSTERED ([CMD_ID_MCS] ASC);
-GO
-
--- Creating primary key on [VEHICLE_ID] in table 'AVEHICLE'
-ALTER TABLE [dbo].[AVEHICLE]
-ADD CONSTRAINT [PK_AVEHICLE]
-    PRIMARY KEY CLUSTERED ([VEHICLE_ID] ASC);
 GO
 
 -- Creating primary key on [ENTRY_SEC_ID], [SEC_ID] in table 'AHIDZONEDETAIL'
@@ -1662,28 +1632,58 @@ ADD CONSTRAINT [PK_ALARM]
     PRIMARY KEY CLUSTERED ([EQPT_ID], [RPT_DATE_TIME], [ALAM_CODE] ASC);
 GO
 
--- Creating primary key on [CMD_ID], [CMD_INSER_TIME] in table 'HCMD_MCS'
-ALTER TABLE [dbo].[HCMD_MCS]
-ADD CONSTRAINT [PK_HCMD_MCS]
-    PRIMARY KEY CLUSTERED ([CMD_ID], [CMD_INSER_TIME] ASC);
-GO
-
 -- Creating primary key on [USER_ID] in table 'UASUSR'
 ALTER TABLE [dbo].[UASUSR]
 ADD CONSTRAINT [PK_UASUSR]
     PRIMARY KEY CLUSTERED ([USER_ID] ASC);
 GO
 
--- Creating primary key on [CMD_ID] in table 'ACMD_MCS'
-ALTER TABLE [dbo].[ACMD_MCS]
-ADD CONSTRAINT [PK_ACMD_MCS]
-    PRIMARY KEY CLUSTERED ([CMD_ID] ASC);
+-- Creating primary key on [ID] in table 'ACMD'
+ALTER TABLE [dbo].[ACMD]
+ADD CONSTRAINT [PK_ACMD]
+    PRIMARY KEY CLUSTERED ([ID] ASC);
 GO
 
--- Creating primary key on [CMD_ID], [CARRIER_ID], [TRANSFERSTATE], [COMMANDSTATE], [HOSTDESTINATION], [PRIORITY], [CHECKCODE], [PAUSEFLAG], [CMD_INSER_TIME], [TIME_PRIORITY], [PORT_PRIORITY], [REPLACE] in table 'VACMD_MCS'
-ALTER TABLE [dbo].[VACMD_MCS]
-ADD CONSTRAINT [PK_VACMD_MCS]
-    PRIMARY KEY CLUSTERED ([CMD_ID], [CARRIER_ID], [TRANSFERSTATE], [COMMANDSTATE], [HOSTDESTINATION], [PRIORITY], [CHECKCODE], [PAUSEFLAG], [CMD_INSER_TIME], [TIME_PRIORITY], [PORT_PRIORITY], [REPLACE] ASC);
+-- Creating primary key on [CMD_ID], [SEQ_NO] in table 'ACMD_DETAIL'
+ALTER TABLE [dbo].[ACMD_DETAIL]
+ADD CONSTRAINT [PK_ACMD_DETAIL]
+    PRIMARY KEY CLUSTERED ([CMD_ID], [SEQ_NO] ASC);
+GO
+
+-- Creating primary key on [ID] in table 'ATRANSFER'
+ALTER TABLE [dbo].[ATRANSFER]
+ADD CONSTRAINT [PK_ATRANSFER]
+    PRIMARY KEY CLUSTERED ([ID] ASC);
+GO
+
+-- Creating primary key on [ID] in table 'ACARRIER'
+ALTER TABLE [dbo].[ACARRIER]
+ADD CONSTRAINT [PK_ACARRIER]
+    PRIMARY KEY CLUSTERED ([ID] ASC);
+GO
+
+-- Creating primary key on [VEHICLE_ID] in table 'AVEHICLE'
+ALTER TABLE [dbo].[AVEHICLE]
+ADD CONSTRAINT [PK_AVEHICLE]
+    PRIMARY KEY CLUSTERED ([VEHICLE_ID] ASC);
+GO
+
+-- Creating primary key on [ID], [CMD_INSER_TIME] in table 'HCMD'
+ALTER TABLE [dbo].[HCMD]
+ADD CONSTRAINT [PK_HCMD]
+    PRIMARY KEY CLUSTERED ([ID], [CMD_INSER_TIME] ASC);
+GO
+
+-- Creating primary key on [ID], [CMD_INSER_TIME] in table 'HTRANSFER'
+ALTER TABLE [dbo].[HTRANSFER]
+ADD CONSTRAINT [PK_HTRANSFER]
+    PRIMARY KEY CLUSTERED ([ID], [CMD_INSER_TIME] ASC);
+GO
+
+-- Creating primary key on [GROUP_ID] in table 'AGROUPPORTSTATION'
+ALTER TABLE [dbo].[AGROUPPORTSTATION]
+ADD CONSTRAINT [PK_AGROUPPORTSTATION]
+    PRIMARY KEY CLUSTERED ([GROUP_ID] ASC);
 GO
 
 -- --------------------------------------------------
