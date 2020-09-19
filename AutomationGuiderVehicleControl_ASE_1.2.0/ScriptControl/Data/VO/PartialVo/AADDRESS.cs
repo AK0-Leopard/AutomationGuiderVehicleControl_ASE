@@ -58,9 +58,9 @@ namespace com.mirle.ibg3k0.sc
         public bool IsCoupler
         //{ get { return false; } }
         { get { return AddressTypeFlags[BIT_INDEX_COUPLER]; } }
-        [JsonIgnore]
-        public bool IsPort
-        { get { return false; } }
+        //[JsonIgnore]
+        //public bool IsPort
+        //{ get { return false; } }
         [JsonIgnore]
         public bool IsControl
         { get { return false; } }
@@ -81,6 +81,13 @@ namespace com.mirle.ibg3k0.sc
             {
                 return false;
             }
+        }
+
+        public bool IsPort(BLL.PortStationBLL portStationBLL)
+        {
+            var ports = portStationBLL.OperateCatch.getPortStationByAdrID(ADR_ID);
+            return ports != null && ports.Count() > 0;
+
         }
 
         //public bool canAvoidVehicle

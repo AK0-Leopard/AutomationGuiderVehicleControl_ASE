@@ -63,7 +63,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             string[] allvh = loadVhID();
             string[] allAdr = loadAllAdr();
             string[] allNodeAdr = loadAllNodeAdr();
-            string[] allPortAdr = loadAllPortAdr();
+            //string[] allPortAdr = loadAllPortAdr();
             string[] allSectionID = loadAllSectionID();
             setCombobox(cmb_fromto_AdrToAdr_From, allAdr.ToArray());
             setCombobox(cmb_fromto_AdrToAdr_To, allAdr.ToArray());
@@ -158,12 +158,12 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             allNodeAdrID = mainForm.BCApp.SCApplication.AddressesBLL.cache.GetAddresses().Where(adr => adr.IsSegment).Select(adr => adr.ADR_ID).ToArray();
             return allNodeAdrID;
         }
-        private string[] loadAllPortAdr()
-        {
-            string[] allPortAdrID = null;
-            allPortAdrID = mainForm.BCApp.SCApplication.AddressesBLL.cache.GetAddresses().Where(adr => adr.IsPort).Select(adr => adr.ADR_ID).ToArray();
-            return allPortAdrID;
-        }
+        //private string[] loadAllPortAdr()
+        //{
+        //    string[] allPortAdrID = null;
+        //    allPortAdrID = mainForm.BCApp.SCApplication.AddressesBLL.cache.GetAddresses().Where(adr => adr.IsPort).Select(adr => adr.ADR_ID).ToArray();
+        //    return allPortAdrID;
+        //}
         private string[] loadAllSectionID()
         {
             string[] allSectionID = null;

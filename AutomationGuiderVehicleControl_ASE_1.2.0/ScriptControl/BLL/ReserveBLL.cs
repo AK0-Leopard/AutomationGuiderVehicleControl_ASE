@@ -170,7 +170,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             return mapAPI.GetVehicleObjectByID(vhID);
         }
 
-        public HltResult TryAddReservedSection(string vhID, string sectionID, HltDirection sensorDir = HltDirection.NESW, HltDirection forkDir = HltDirection.NESW, bool isAsk = false)
+        public HltResult TryAddReservedSection(string vhID, string sectionID, HltDirection sensorDir = HltDirection.None, HltDirection forkDir = HltDirection.None, bool isAsk = false)
         {
             //int sec_id = 0;
             //int.TryParse(sectionID, out sec_id);
@@ -289,16 +289,29 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
         public (bool isSuccess, string reservedVhID, string reservedFailSection, RepeatedField<ReserveInfo> reserveSuccessInfos) IsMultiReserveSuccess
-                (string vhID, RepeatedField<ReserveInfo> reserveInfos, bool isAsk = false)
+                (SCApplication scApp, string vhID, RepeatedField<ReserveInfo> reserveInfos, bool isAsk = false)
         {
             try
             {
-                if (DebugParameter.isForcedPassReserve)
+                if (SCUtility.isMatche(vhID, "AGV06") || SCUtility.isMatche(vhID, "AGV09"))
                 {
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ReserveBLL), Device: "AGV",
-                       Data: "test flag: Force pass reserve is open, will driect reply to vh pass",
-                       VehicleID: vhID);
-                    return (true, string.Empty, string.Empty, reserveInfos);
+                    if (DebugParameter.isForcedPassReserve_AGV0609)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ReserveBLL), Device: "AGV",
+                           Data: "test flag(AGV06,09): Force pass reserve is open, will driect reply to vh pass",
+                           VehicleID: vhID);
+                        return (true, string.Empty, string.Empty, reserveInfos);
+                    }
+                }
+                else
+                {
+                    if (DebugParameter.isForcedPassReserve)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ReserveBLL), Device: "AGV",
+                           Data: "test flag: Force pass reserve is open, will driect reply to vh pass",
+                           VehicleID: vhID);
+                        return (true, string.Empty, string.Empty, reserveInfos);
+                    }
                 }
 
                 //強制拒絕Reserve的要求
@@ -321,13 +334,27 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     string reserve_section_id = reserve_info.ReserveSectionID;
 
-                    Mirle.Hlts.Utils.HltDirection hltDirection = Mirle.Hlts.Utils.HltDirection.Forward;
+                    var reserve_enhance_check_result = IsReserveBlockSuccess(scApp, vhID, reserve_section_id);
+                    //var reserve_enhance_check_result = IsReserveBlockSuccessNew(vh, reserve_section_id, drive_dirction);
+                    if (!reserve_enhance_check_result.isSuccess)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(ReserveBLL), Device: "AGV",
+                           Data: $"vh:{vhID} Try add reserve enhance section:{reserve_section_id} fail. reserved vh id:{reserve_enhance_check_result.reservedVhID}",
+                           VehicleID: vhID);
+                        has_success |= false;
+                        final_blocked_vh_id = reserve_enhance_check_result.reservedVhID;
+                        reserve_fail_section = reserve_section_id;
+
+                        break;
+                    }
+
+                    Mirle.Hlts.Utils.HltDirection hltDirection = Mirle.Hlts.Utils.HltDirection.None;
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(ReserveBLL), Device: "AGV",
                        Data: $"vh:{vhID} Try add(Only ask) reserve section:{reserve_section_id} ,hlt dir:{hltDirection}...",
                        VehicleID: vhID);
                     result = TryAddReservedSection(vhID, reserve_section_id,
                                                    sensorDir: hltDirection,
-                                                   isAsk: true);
+                                                   isAsk: isAsk);
                     if (result.OK)
                     {
                         reserve_success_section.Add(reserve_info);
@@ -337,7 +364,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     {
                         has_success |= false;
                         final_blocked_vh_id = result.VehicleID;
-                        reserve_fail_section = reserve_info.ReserveSectionID;
+                        reserve_fail_section = reserve_section_id;
                         break;
                     }
                 }
@@ -351,6 +378,45 @@ namespace com.mirle.ibg3k0.sc.BLL
                    Details: $"process function:{nameof(IsMultiReserveSuccess)} Exception");
                 return (false, string.Empty, string.Empty, null);
             }
+        }
+
+        private (bool isSuccess, string reservedVhID) IsReserveBlockSuccess(SCApplication scApp, string vhID, string reserveSectionID)
+        {
+            AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+            string vh_id = vh.VEHICLE_ID;
+            string cur_sec_id = SCUtility.Trim(vh.CUR_SEC_ID, true);
+            var block_control_check_result = scApp.getCommObjCacheManager().IsBlockControlSection(reserveSectionID);
+            if (block_control_check_result.isBlockControlSec)
+            {
+                var current_vh_section_is_in_req_block_control_check_result =
+                    scApp.getCommObjCacheManager().IsBlockControlSection(block_control_check_result.enhanceInfo.BlockID, cur_sec_id);
+                if (current_vh_section_is_in_req_block_control_check_result.isBlockControlSec)
+                {
+                    return (true, "");
+                }
+
+                List<string> reserve_enhance_sections = block_control_check_result.enhanceInfo.EnhanceControlSections.ToList();
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(ReserveBLL), Device: "AGV",
+                   Data: $"reserve section:{reserveSectionID} is reserve enhance section, group:{string.Join(",", reserve_enhance_sections)}",
+                   VehicleID: vh_id);
+
+
+                foreach (var enhance_section in reserve_enhance_sections)
+                {
+                    var check_one_direct_result = scApp.ReserveBLL.TryAddReservedSection(vh_id, enhance_section,
+                                                                    sensorDir: HltDirection.None,
+                                                                    isAsk: true);
+                    if (!check_one_direct_result.OK)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(ReserveBLL), Device: "AGV",
+                           Data: $"vh:{vh_id} Try add reserve section:{reserveSectionID} , it is reserve enhance section" +
+                                 $"try to reserve section:{reserveSectionID} fail,result:{check_one_direct_result}.",
+                           VehicleID: vh_id);
+                        return (false, check_one_direct_result.VehicleID);
+                    }
+                }
+            }
+            return (true, "");
         }
 
     }

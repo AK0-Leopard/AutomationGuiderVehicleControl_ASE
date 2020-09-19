@@ -553,7 +553,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             // btn_Avoid
             // 
-            this.btn_Avoid.Enabled = false;
             this.btn_Avoid.ForeColor = System.Drawing.Color.Black;
             this.btn_Avoid.Location = new System.Drawing.Point(24, 501);
             this.btn_Avoid.Name = "btn_Avoid";
@@ -561,7 +560,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.btn_Avoid.TabIndex = 2;
             this.btn_Avoid.Text = "Avoid";
             this.btn_Avoid.UseVisualStyleBackColor = true;
-            this.btn_Avoid.Visible = false;
             this.btn_Avoid.Click += new System.EventHandler(this.btn_Avoid_Click);
             // 
             // btn_start

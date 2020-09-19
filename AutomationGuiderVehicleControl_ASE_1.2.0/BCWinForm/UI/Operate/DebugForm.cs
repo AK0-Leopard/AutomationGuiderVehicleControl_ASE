@@ -49,6 +49,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             numer_num_of_avoid_seg.Value = DebugParameter.NumberOfAvoidanceSegment;
             ck_check_port_is_ready.Checked = DebugParameter.isNeedCheckPortReady;
             cb_reserve_pass.Checked = DebugParameter.isForcedPassReserve;
+            cb_reserve_pass_agv0609.Checked = DebugParameter.isForcedPassReserve_AGV0609;
 
             cb_passCouplerStatus.Checked = DebugParameter.isPassCouplerStatus;
             cb_passCouplerHPSafetySingnal.Checked = DebugParameter.isPassCouplerHPSafetySignal;
@@ -1545,6 +1546,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_needCheckPortUpdateTime_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.isNeedCheckPortUpDateTime = cb_needCheckPortUpdateTime.Checked;
+        }
+
+        private void cb_reserve_pass_agv0609_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.isForcedPassReserve_AGV0609 = cb_reserve_pass_agv0609.Checked;
         }
     }
 }

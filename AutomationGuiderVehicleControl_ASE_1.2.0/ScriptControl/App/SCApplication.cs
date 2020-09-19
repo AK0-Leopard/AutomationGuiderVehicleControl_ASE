@@ -1780,6 +1780,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         //public static Boolean isForcedPassReserve = false;
         public static Boolean isForcedPassReserve = true;
+        public static Boolean isForcedPassReserve_AGV0609 = false;
         public static Boolean isForcedRejectReserve = false;
 
         public static Boolean isContinueByIDReadFail = false;

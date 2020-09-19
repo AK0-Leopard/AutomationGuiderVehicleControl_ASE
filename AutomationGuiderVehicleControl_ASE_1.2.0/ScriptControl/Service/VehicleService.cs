@@ -1392,11 +1392,10 @@ namespace com.mirle.ibg3k0.sc.Service
                    CST_ID_L: vh.CST_ID_L,
                    CST_ID_R: vh.CST_ID_R);
 
-
                 lock (reserve_lock)
                 {
                     //var ReserveResult = scApp.ReserveBLL.IsReserveSuccessNew(vh.VEHICLE_ID, reserveInfos);
-                    var ReserveResult = scApp.ReserveBLL.IsMultiReserveSuccess(vh.VEHICLE_ID, reserveInfos);
+                    var ReserveResult = scApp.ReserveBLL.IsMultiReserveSuccess(scApp, vh.VEHICLE_ID, reserveInfos);
                     if (ReserveResult.isSuccess)
                     {
                         scApp.VehicleBLL.cache.ResetCanNotReserveInfo(vh.VEHICLE_ID);//TODO Mark check
@@ -1417,7 +1416,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                     replyTranEventReport(bcfApp, EventType.ReserveReq, vh, seqNum, cmdID,
                                          reserveSuccess: ReserveResult.isSuccess,
-                                         reserveInfos: reserveInfos);
+                                         reserveInfos: ReserveResult.reserveSuccessInfos);
                 }
             }
             private bool replyTranEventReport(BCFApplication bcfApp, EventType eventType, AVEHICLE vh, int seq_num, string cmdID,
@@ -1534,10 +1533,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 int total_cost = 0;
                 bool is_need_check_reserve_status = true;
                 List<string> need_by_pass_sec_ids = new List<string>();
-                if (needByPassSecIDs != null)
-                {
-                    need_by_pass_sec_ids.AddRange(needByPassSecIDs);
-                }
+                //if (needByPassSecIDs != null)
+                //{
+                //    need_by_pass_sec_ids.AddRange(needByPassSecIDs);
+                //}
                 do
                 {
                     //如果有找到路徑則確認一下段是否可以預約的到
@@ -2197,6 +2196,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                            Data: $"Try to notify vh avoid...,requestVh:{requestVhID} reservedVh:{reservedVhID}",
                            VehicleID: requestVhID);
+                        if (SCUtility.isEmpty(reservedVhID)) return;
                         AVEHICLE reserved_vh = scApp.VehicleBLL.cache.getVehicle(reservedVhID);
                         AVEHICLE request_vh = scApp.VehicleBLL.cache.getVehicle(requestVhID);
 
@@ -2225,7 +2225,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             else
                             {
                                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                                   Data: $"find not conflict section:{findResult.notConflictSection.SEC_ID}.avoid address:{findResult.avoidAdr}",
+                                   Data: $"find not conflict section:{findResult.notConflictSection?.SEC_ID}.avoid address:{findResult.avoidAdr}",
                                    VehicleID: requestVhID);
                             }
 
@@ -2382,6 +2382,11 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 string will_pass_vh_cur_adr = willPassVh.CUR_ADR_ID;
                 string find_avoid_vh_cur_adr = findAvoidAdrOfVh.CUR_ADR_ID;
+                var block_control_check_result = scApp.getCommObjCacheManager().IsBlockControlSection(findAvoidAdrOfVh.CUR_SEC_ID);
+                if (block_control_check_result.isBlockControlSec)
+                {
+                    return (true, new ASECTION(), "", block_control_check_result.enhanceInfo.WayOutAddress);
+                }
                 ASECTION find_avoid_vh_current_section = scApp.SectionBLL.cache.GetSection(findAvoidAdrOfVh.CUR_SEC_ID);
                 //先找出哪個Address是距離即將到來的車子比較遠，即反方向
                 string first_search_adr = findTheOppositeOfAddress(will_pass_vh_cur_adr, find_avoid_vh_current_section);
@@ -2446,7 +2451,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     var hlt_vh_obj = scApp.ReserveBLL.GetHltVehicle(findAvoidAdrVh.VEHICLE_ID);
                     string virtual_vh_id = $"{VehicleVirtualSymbol}_{findAvoidAdrVh.VEHICLE_ID}";
                     scApp.ReserveBLL.TryAddVehicleOrUpdate(virtual_vh_id, "", hlt_vh_obj.X, hlt_vh_obj.Y, hlt_vh_obj.Angle, 0,
-                        sensorDir: Mirle.Hlts.Utils.HltDirection.ForwardReverse,
+                        sensorDir: Mirle.Hlts.Utils.HltDirection.None,
                           forkDir: Mirle.Hlts.Utils.HltDirection.None);
                     virtual_vh_ids.Add(virtual_vh_id);
                     do
@@ -2533,6 +2538,15 @@ namespace com.mirle.ibg3k0.sc.Service
                                 //}
                                 //取得沒有相交的Section後，在確認是否該Orther end point是一個可以避車且不是R2000的任一端點，如果是的話就可以拿來作為一個避車點
                                 AADDRESS orther_end_address = scApp.AddressesBLL.cache.GetAddress(orther_end_point);
+                                if (!orther_end_address.IsPort(scApp.PortStationBLL))
+                                {
+                                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                       Data: $"sec id:{SCUtility.Trim(sec.SEC_ID)} of orther end point:{orther_end_point} is not can avoid address(not port), continue find next address{orther_end_point}",
+                                       VehicleID: willPassVh.VEHICLE_ID);
+                                    next_search_address_temp.Add((orther_end_point, sec));
+                                    continue;
+                                }
+
                                 //if (!orther_end_address.canAvoidVhecle)
                                 if (!orther_end_address.canAvoidVehicle(scApp.SectionBLL))
                                 {

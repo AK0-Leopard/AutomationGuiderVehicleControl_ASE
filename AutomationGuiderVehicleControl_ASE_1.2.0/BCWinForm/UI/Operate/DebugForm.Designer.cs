@@ -171,6 +171,7 @@
             this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btn_refresf_portsation_info = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.cb_needCheckPortUpdateTime = new System.Windows.Forms.CheckBox();
             this.num_tran_cmd_queue_time_out_ms = new System.Windows.Forms.NumericUpDown();
             this.label95 = new System.Windows.Forms.Label();
             this.numer_pre_open_agv_station_distance = new System.Windows.Forms.NumericUpDown();
@@ -391,7 +392,7 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.cb_needCheckPortUpdateTime = new System.Windows.Forms.CheckBox();
+            this.cb_reserve_pass_agv0609 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1683,11 +1684,12 @@
             // 
             // grb_Reserve
             // 
+            this.grb_Reserve.Controls.Add(this.cb_reserve_pass_agv0609);
             this.grb_Reserve.Controls.Add(this.cb_reserve_pass);
             this.grb_Reserve.Controls.Add(this.cb_reserve_reject);
             this.grb_Reserve.Location = new System.Drawing.Point(1131, 149);
             this.grb_Reserve.Name = "grb_Reserve";
-            this.grb_Reserve.Size = new System.Drawing.Size(253, 102);
+            this.grb_Reserve.Size = new System.Drawing.Size(335, 102);
             this.grb_Reserve.TabIndex = 26;
             this.grb_Reserve.TabStop = false;
             this.grb_Reserve.Text = "Reserve Control";
@@ -1695,7 +1697,7 @@
             // cb_reserve_pass
             // 
             this.cb_reserve_pass.AutoSize = true;
-            this.cb_reserve_pass.Location = new System.Drawing.Point(25, 61);
+            this.cb_reserve_pass.Location = new System.Drawing.Point(25, 44);
             this.cb_reserve_pass.Name = "cb_reserve_pass";
             this.cb_reserve_pass.Size = new System.Drawing.Size(209, 26);
             this.cb_reserve_pass.TabIndex = 1;
@@ -1706,7 +1708,7 @@
             // cb_reserve_reject
             // 
             this.cb_reserve_reject.AutoSize = true;
-            this.cb_reserve_reject.Location = new System.Drawing.Point(25, 34);
+            this.cb_reserve_reject.Location = new System.Drawing.Point(25, 17);
             this.cb_reserve_reject.Name = "cb_reserve_reject";
             this.cb_reserve_reject.Size = new System.Drawing.Size(229, 26);
             this.cb_reserve_reject.TabIndex = 0;
@@ -1834,7 +1836,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2047,6 +2049,17 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Test Tool";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // cb_needCheckPortUpdateTime
+            // 
+            this.cb_needCheckPortUpdateTime.AutoSize = true;
+            this.cb_needCheckPortUpdateTime.Location = new System.Drawing.Point(8, 678);
+            this.cb_needCheckPortUpdateTime.Name = "cb_needCheckPortUpdateTime";
+            this.cb_needCheckPortUpdateTime.Size = new System.Drawing.Size(299, 26);
+            this.cb_needCheckPortUpdateTime.TabIndex = 46;
+            this.cb_needCheckPortUpdateTime.Text = "Need Check Port Update Time";
+            this.cb_needCheckPortUpdateTime.UseVisualStyleBackColor = true;
+            this.cb_needCheckPortUpdateTime.CheckedChanged += new System.EventHandler(this.cb_needCheckPortUpdateTime_CheckedChanged);
             // 
             // num_tran_cmd_queue_time_out_ms
             // 
@@ -4235,16 +4248,16 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // cb_needCheckPortUpdateTime
+            // cb_reserve_pass_agv0609
             // 
-            this.cb_needCheckPortUpdateTime.AutoSize = true;
-            this.cb_needCheckPortUpdateTime.Location = new System.Drawing.Point(8, 678);
-            this.cb_needCheckPortUpdateTime.Name = "cb_needCheckPortUpdateTime";
-            this.cb_needCheckPortUpdateTime.Size = new System.Drawing.Size(299, 26);
-            this.cb_needCheckPortUpdateTime.TabIndex = 46;
-            this.cb_needCheckPortUpdateTime.Text = "Need Check Port Update Time";
-            this.cb_needCheckPortUpdateTime.UseVisualStyleBackColor = true;
-            this.cb_needCheckPortUpdateTime.CheckedChanged += new System.EventHandler(this.cb_needCheckPortUpdateTime_CheckedChanged);
+            this.cb_reserve_pass_agv0609.AutoSize = true;
+            this.cb_reserve_pass_agv0609.Location = new System.Drawing.Point(25, 70);
+            this.cb_reserve_pass_agv0609.Name = "cb_reserve_pass_agv0609";
+            this.cb_reserve_pass_agv0609.Size = new System.Drawing.Size(299, 26);
+            this.cb_reserve_pass_agv0609.TabIndex = 2;
+            this.cb_reserve_pass_agv0609.Text = "Force Reserve Pass(AGV06/9)";
+            this.cb_reserve_pass_agv0609.UseVisualStyleBackColor = true;
+            this.cb_reserve_pass_agv0609.CheckedChanged += new System.EventHandler(this.cb_reserve_pass_agv0609_CheckedChanged);
             // 
             // DebugForm
             // 
@@ -4703,5 +4716,6 @@
         private System.Windows.Forms.Label label97;
         private System.Windows.Forms.NumericUpDown num_vh_idle_time;
         private System.Windows.Forms.CheckBox cb_needCheckPortUpdateTime;
+        private System.Windows.Forms.CheckBox cb_reserve_pass_agv0609;
     }
 }

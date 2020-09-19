@@ -1010,11 +1010,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void SystemParameter_AutoOverrideChange(object sender, bool e)
         {
-            Adapter.Invoke((obj) =>
-            {
-                cb_autoOverride.Checked = e;
-                btn_Avoid.Enabled = !e;
-            }, null);
+            //Adapter.Invoke((obj) =>
+            //{
+            //    cb_autoOverride.Checked = e;
+            //    btn_Avoid.Enabled = !e;
+            //}, null);
         }
 
     }

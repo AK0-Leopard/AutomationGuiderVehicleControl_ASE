@@ -578,13 +578,14 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 }
             }
         }
-        private void CycleRunOnlyMoveByZone()
+        private void CycleRunOnlyMoveByZone_Old()
         {
             List<AZONE> zones = scApp.ZoneBLL.cache.LoadZones();
             foreach (var zone in zones)
             {
                 (bool is_success, object result) find_idle_vh_result = findIdleForCycleVehicle(zone.ZONE_ID).Result;
                 if (!find_idle_vh_result.is_success) continue;
+
                 AVEHICLE find_vh = find_idle_vh_result.result as AVEHICLE;
                 (bool is_success, object result) find_cycle_run_port = findInculdCycleTestPort(zone.ZONE_ID, find_vh.CUR_ADR_ID).Result;
                 if (!find_cycle_run_port.is_success) continue;
@@ -592,18 +593,57 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 bool is_success = find_idle_vh_result.is_success && find_cycle_run_port.is_success;
                 if (is_success)
                 {
-                    AVEHICLE idle_vh = find_idle_vh_result.result as AVEHICLE;
+                    //AVEHICLE idle_vh = find_idle_vh_result.result as AVEHICLE;
+                    List<AVEHICLE> idle_vhs = find_idle_vh_result.result as List<AVEHICLE>;
                     APORTSTATION choose_port = find_cycle_run_port.result as APORTSTATION;
-
-                    if (scApp.GuideBLL.IsRoadWalkable(idle_vh.CUR_ADR_ID, choose_port.ADR_ID))
+                    foreach (var idle_vh in idle_vhs)
                     {
-                        scApp.VehicleService.Command.Move(idle_vh.VEHICLE_ID, choose_port.ADR_ID);
-                        choose_port.TestTimes++;
+                        if (scApp.GuideBLL.IsRoadWalkable(idle_vh.CUR_ADR_ID, choose_port.ADR_ID))
+                        {
+                            scApp.VehicleService.Command.Move(idle_vh.VEHICLE_ID, choose_port.ADR_ID);
+                            choose_port.TestTimes++;
+                            return;
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(RandomGeneratesCommandTimerActionTiming), Device: string.Empty,
+                               Data: $"Can't find the path.");
+                        }
                     }
-                    else
+                }
+            }
+        }
+        private void CycleRunOnlyMoveByZone()
+        {
+            List<AZONE> zones = scApp.ZoneBLL.cache.LoadZones();
+            foreach (var zone in zones)
+            {
+                (bool is_success, object result) find_idle_vh_result = findIdleForCycleVehicle(zone.ZONE_ID).Result;
+                if (!find_idle_vh_result.is_success) continue;
+
+                bool is_success = find_idle_vh_result.is_success;
+                if (is_success)
+                {
+                    //AVEHICLE idle_vh = find_idle_vh_result.result as AVEHICLE;
+                    List<AVEHICLE> idle_vhs = find_idle_vh_result.result as List<AVEHICLE>;
+                    foreach (var idle_vh in idle_vhs)
                     {
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(RandomGeneratesCommandTimerActionTiming), Device: string.Empty,
-                           Data: $"Can't find the path.");
+                        (bool is_success, object result) find_cycle_run_port = findInculdCycleTestPort(zone.ZONE_ID, idle_vh.CUR_ADR_ID).Result;
+                        if (!find_cycle_run_port.is_success) continue;
+
+                        APORTSTATION choose_port = find_cycle_run_port.result as APORTSTATION;
+
+                        if (scApp.GuideBLL.IsRoadWalkable(idle_vh.CUR_ADR_ID, choose_port.ADR_ID))
+                        {
+                            scApp.VehicleService.Command.Move(idle_vh.VEHICLE_ID, choose_port.ADR_ID);
+                            choose_port.TestTimes++;
+                            return;
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(RandomGeneratesCommandTimerActionTiming), Device: string.Empty,
+                               Data: $"Can't find the path.");
+                        }
                     }
                 }
             }
@@ -676,13 +716,13 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                             vh.ACT_STATUS == ProtocolFormat.OHTMessage.VHActionStatus.NoCommand &&
                             //scApp.CMDBLL.canAssignCmdNew(vh.VEHICLE_ID, E_CMD_TYPE.Move).canAssign).
                             scApp.CMDBLL.canAssignCmdNew(vh, E_CMD_TYPE.Move).canAssign).
-                         FirstOrDefault();
+                         ToList();
             if (result == null)
             {
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(RandomGeneratesCommandTimerActionTiming), Device: string.Empty,
                    Data: $"Can't find idle vh.,{zoneID}");
             }
-            return Task.FromResult((result != null, (object)result));
+            return Task.FromResult((result != null && result.Count != 0, (object)result));
         }
 
         private bool IsInZone(AVEHICLE vh, string zoneID)

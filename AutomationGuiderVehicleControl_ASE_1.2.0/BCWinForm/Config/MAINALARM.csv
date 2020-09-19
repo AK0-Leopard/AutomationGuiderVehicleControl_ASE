@@ -1,6 +1,4 @@
 CODE,DESCRIPTION,ACTION
-10000,Vehicle long time inaction, cmd ids: {0} ,
-10001,Vehicle cannot service,
-10002,Vehicle is in low battery status,
-10003,Vehicle can't find coupler to charging,
-10004,Send transfer command to vehicle fail cmd id:[{0}] reason:[{1}],
+WE001,Wait message reply time out.VH:{0} Packet ID:{1} Seq No:{2} ,
+WE002,Send message error happend.VH:{0} Packet ID:{1} Seq No:{2} ,
+AE001,Can't find the way to transfer. VH:{0} OhxC Cmd ID:{1},
