@@ -475,29 +475,29 @@ namespace com.mirle.ibg3k0.sc.Module
                     AVEHICLE ChargingVh = vehicleBLL.cache.getVhOnAddress(coupler_address.ADR_ID);
 
                     //1.如果N分鐘前，都沒有充飽過，就要等他充飽以後才可以再叫他回去工作
-                    if (ChargingVh.LAST_FULLY_CHARGED_TIME.HasValue &&
-                       DateTime.Now > ChargingVh.LAST_FULLY_CHARGED_TIME?.AddMinutes(SystemParameter.TheLongestFullyChargedIntervalTime_Mim))
-                    {
-                        if (ChargingVh.BatteryLevel == BatteryLevel.Full
-                            && ChargingVh.MODE_STATUS == VHModeStatus.AutoCharging)
-                        {
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                                     Data: $"ask vh:{ChargingVh.VEHICLE_ID} recover to auto remmote " +
-                                     $"and unban segment id:{string.Join(",", coupler_address.TrafficControlSegment)} ",
-                                     VehicleID: ChargingVh.VEHICLE_ID);
-                            vehicleService.changeVhStatusToAutoRemote(ChargingVh.VEHICLE_ID);
-                            RoadControl(ChargingVh.VEHICLE_ID, ChargingVh.CUR_ADR_ID, true);
-                        }
-                        else
-                        {
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                                     Data: $"ChargingVh:{ChargingVh},Not yet charging condition." +
-                                           $"a.charged time interval(min){SystemParameter.TheLongestFullyChargedIntervalTime_Mim}" +
-                                           $"b.current battrty level:{ChargingVh.BatteryLevel} (need to be full)",
-                                     VehicleID: ChargingVh.VEHICLE_ID);
-                        }
-                    }
-                    else
+                    //if (ChargingVh.LAST_FULLY_CHARGED_TIME.HasValue &&
+                    //   DateTime.Now > ChargingVh.LAST_FULLY_CHARGED_TIME?.AddMinutes(SystemParameter.TheLongestFullyChargedIntervalTime_Mim))
+                    //{
+                    //    if (ChargingVh.BatteryLevel == BatteryLevel.Full
+                    //        && ChargingVh.MODE_STATUS == VHModeStatus.AutoCharging)
+                    //    {
+                    //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                    //                 Data: $"ask vh:{ChargingVh.VEHICLE_ID} recover to auto remmote " +
+                    //                 $"and unban segment id:{string.Join(",", coupler_address.TrafficControlSegment)} ",
+                    //                 VehicleID: ChargingVh.VEHICLE_ID);
+                    //        vehicleService.changeVhStatusToAutoRemote(ChargingVh.VEHICLE_ID);
+                    //        RoadControl(ChargingVh.VEHICLE_ID, ChargingVh.CUR_ADR_ID, true);
+                    //    }
+                    //    else
+                    //    {
+                    //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                    //                 Data: $"ChargingVh:{ChargingVh},Not yet charging condition." +
+                    //                       $"a.charged time interval(min){SystemParameter.TheLongestFullyChargedIntervalTime_Mim}" +
+                    //                       $"b.current battrty level:{ChargingVh.BatteryLevel} (need to be full)",
+                    //                 VehicleID: ChargingVh.VEHICLE_ID);
+                    //    }
+                    //}
+                    //else
                     {
                         //if (ChargingVh.BatteryLevel > BatteryLevel.Low &&
                         //    ChargingVh.MODE_STATUS == VHModeStatus.AutoCharging)

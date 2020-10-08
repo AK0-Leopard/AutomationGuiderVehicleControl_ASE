@@ -529,101 +529,109 @@ namespace com.mirle.ibg3k0.sc.Service
                             }
                         }
 
-                        //如果是在找Source非EQ Port的命令時，要用Port Priority做排序來幫助雙車(6/9)在跑時，如果370過於忙碌，都沒有車子可以去服務450的問題
-                        var source_not_agv_st_in_queue_transfer = in_queue_transfer.Where(tran => !(tran.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType))
-                                                             .OrderByDescending(tran => tran.PORT_PRIORITY)
-                                                             .ToList();
-
-                        foreach (VTRANSFER first_waitting_excute_mcs_cmd in source_not_agv_st_in_queue_transfer)
+                        try
                         {
-                            string hostsource = first_waitting_excute_mcs_cmd.HOSTSOURCE;
-                            string hostdest = first_waitting_excute_mcs_cmd.HOSTDESTINATION;
-                            string from_adr = string.Empty;
-                            string to_adr = string.Empty;
-                            AVEHICLE bestSuitableVh = null;
-                            E_VH_TYPE vh_type = E_VH_TYPE.None;
+                            //如果是在找Source非EQ Port的命令時，要用Port Priority做排序來幫助雙車(6/9)在跑時，如果370過於忙碌，都沒有車子可以去服務450的問題
+                            var source_not_agv_st_in_queue_transfer = in_queue_transfer.Where(tran => !(tran.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType))
+                                                                 .OrderByDescending(tran => tran.PORT_PRIORITY)
+                                                                 .ToList();
 
-                            //確認 source 是否為Port
-                            bool source_is_a_port = scApp.PortStationBLL.OperateCatch.IsExist(hostsource);
-                            if (source_is_a_port)
+                            foreach (VTRANSFER first_waitting_excute_mcs_cmd in source_not_agv_st_in_queue_transfer)
                             {
-                                //需確認是否已經有其他車在搬送同SourcePort的CST，且還沒到Transferring
-                                scApp.MapBLL.getAddressID(hostsource, out from_adr, out vh_type);
-                                var check_has_some_source_vh_excuting = findOtherSameSourcePortCmdExcuteAndVhCanService(hostsource, excuting_transfer);
-                                if (check_has_some_source_vh_excuting.hasFind)
+                                string hostsource = first_waitting_excute_mcs_cmd.HOSTSOURCE;
+                                string hostdest = first_waitting_excute_mcs_cmd.HOSTDESTINATION;
+                                string from_adr = string.Empty;
+                                string to_adr = string.Empty;
+                                AVEHICLE bestSuitableVh = null;
+                                E_VH_TYPE vh_type = E_VH_TYPE.None;
+
+                                //確認 source 是否為Port
+                                bool source_is_a_port = scApp.PortStationBLL.OperateCatch.IsExist(hostsource);
+                                if (source_is_a_port)
                                 {
-                                    bestSuitableVh = check_has_some_source_vh_excuting.vh;
+                                    //需確認是否已經有其他車在搬送同SourcePort的CST，且還沒到Transferring
+                                    scApp.MapBLL.getAddressID(hostsource, out from_adr, out vh_type);
+                                    var check_has_some_source_vh_excuting = findOtherSameSourcePortCmdExcuteAndVhCanService(hostsource, excuting_transfer);
+                                    if (check_has_some_source_vh_excuting.hasFind)
+                                    {
+                                        bestSuitableVh = check_has_some_source_vh_excuting.vh;
+                                    }
+                                    else
+                                    {
+                                        bestSuitableVh = scApp.VehicleBLL.cache.findBestSuitableVhStepByStepFromAdr(scApp.GuideBLL, scApp.CMDBLL, from_adr, vh_type);
+                                        if (bestSuitableVh != null)
+                                        {
+                                            var check_has_orther_vhs_in_block_result = HasOtherVhInTargetBlockOrWillGoTo(bestSuitableVh.VEHICLE_ID, from_adr);
+                                            if (check_has_orther_vhs_in_block_result.hasOtherVh)
+                                            {
+                                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: string.Empty,
+                                                              Data: $"Try find the vh:[{bestSuitableVh.VEHICLE_ID}] to block load cst , but has other vh in this block (Finial).",
+                                                              XID: first_waitting_excute_mcs_cmd.ID);
+                                                List<string> other_in_block_vhs = check_has_orther_vhs_in_block_result.vhs;
+                                                foreach (string vh_id in other_in_block_vhs)
+                                                {
+                                                    AVEHICLE in_block_vh = scApp.VehicleBLL.cache.getVehicle(vh_id);
+                                                    if (scApp.VehicleBLL.cache.canAssignTransferCmd(scApp.CMDBLL, in_block_vh))
+                                                    {
+                                                        bool is_success = AssignTransferToVehicle_V2(first_waitting_excute_mcs_cmd,
+                                                                                                     in_block_vh);
+                                                        if (is_success)
+                                                        {
+                                                            scApp.VehicleService.Command.Scan();
+                                                            return;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: string.Empty,
+                                                                      Data: $"In block vh:[{bestSuitableVh.VEHICLE_ID}] not ready to assign transfer command.",
+                                                                      XID: first_waitting_excute_mcs_cmd.ID);
+                                                    }
+                                                }
+                                                continue;
+                                            }
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    bestSuitableVh = scApp.VehicleBLL.cache.findBestSuitableVhStepByStepFromAdr(scApp.GuideBLL, scApp.CMDBLL, from_adr, vh_type);
-
-                                    var check_has_orther_vhs_in_block_result = HasOtherVhInTargetBlockOrWillGoTo(bestSuitableVh.VEHICLE_ID, from_adr);
-                                    if (check_has_orther_vhs_in_block_result.hasOtherVh)
+                                    //bestSuitableVh = scApp.VehicleBLL.cache.getVehicleByRealID(hostsource);
+                                    bestSuitableVh = scApp.VehicleBLL.cache.getVehicleByLocationRealID(hostsource);
+                                    if (bestSuitableVh.IsError ||
+                                        bestSuitableVh.MODE_STATUS != VHModeStatus.AutoRemote)
                                     {
-                                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: string.Empty,
-                                                      Data: $"Try find the vh:[{bestSuitableVh.VEHICLE_ID}] to block load cst , but has other vh in this block (Finial).",
-                                                      XID: first_waitting_excute_mcs_cmd.ID);
-                                        List<string> other_in_block_vhs = check_has_orther_vhs_in_block_result.vhs;
-                                        foreach (string vh_id in other_in_block_vhs)
-                                        {
-                                            AVEHICLE in_block_vh = scApp.VehicleBLL.cache.getVehicle(vh_id);
-                                            if (scApp.VehicleBLL.cache.canAssignTransferCmd(scApp.CMDBLL, in_block_vh))
-                                            {
-                                                bool is_success = AssignTransferToVehicle_V2(first_waitting_excute_mcs_cmd,
-                                                                                             in_block_vh);
-                                                if (is_success)
-                                                {
-                                                    scApp.VehicleService.Command.Scan();
-                                                    return;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: string.Empty,
-                                                              Data: $"In block vh:[{bestSuitableVh.VEHICLE_ID}] not ready to assign transfer command.",
-                                                              XID: first_waitting_excute_mcs_cmd.ID);
-                                            }
-                                        }
+                                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                           Data: $"Has transfer command:{SCUtility.Trim(first_waitting_excute_mcs_cmd.ID, true)} for vh:{bestSuitableVh.VEHICLE_ID}" +
+                                                 $"but it error happend or not auto remote.",
+                                           VehicleID: bestSuitableVh.VEHICLE_ID);
                                         continue;
                                     }
                                 }
-                            }
-                            else
-                            {
-                                //bestSuitableVh = scApp.VehicleBLL.cache.getVehicleByRealID(hostsource);
-                                bestSuitableVh = scApp.VehicleBLL.cache.getVehicleByLocationRealID(hostsource);
-                                if (bestSuitableVh.IsError ||
-                                    bestSuitableVh.MODE_STATUS != VHModeStatus.AutoRemote)
-                                {
-                                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                                       Data: $"Has transfer command:{SCUtility.Trim(first_waitting_excute_mcs_cmd.ID, true)} for vh:{bestSuitableVh.VEHICLE_ID}" +
-                                             $"but it error happend or not auto remote.",
-                                       VehicleID: bestSuitableVh.VEHICLE_ID);
-                                    continue;
-                                }
-                            }
 
 
 
-                            if (bestSuitableVh != null)
-                            {
-                                if (AssignTransferToVehicle_V2(first_waitting_excute_mcs_cmd, bestSuitableVh))
+                                if (bestSuitableVh != null)
                                 {
-                                    scApp.VehicleService.Command.Scan();
-                                    return;
-                                }
-                                else
-                                {
-                                    //CMDBLL.CommandCheckResult check_result = CMDBLL.getOrSetCallContext<CMDBLL.CommandCheckResult>(CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
-                                    //LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(TransferService), Device: DEVICE_NAME_AGV,
-                                    //   Data: $"Assign transfer command fail.transfer id:{first_waitting_excute_mcs_cmd.ID}",
-                                    //   Details: check_result.ToString(),
-                                    //   XID: check_result.Num);
+                                    if (AssignTransferToVehicle_V2(first_waitting_excute_mcs_cmd, bestSuitableVh))
+                                    {
+                                        scApp.VehicleService.Command.Scan();
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        //CMDBLL.CommandCheckResult check_result = CMDBLL.getOrSetCallContext<CMDBLL.CommandCheckResult>(CMDBLL.CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
+                                        //LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(TransferService), Device: DEVICE_NAME_AGV,
+                                        //   Data: $"Assign transfer command fail.transfer id:{first_waitting_excute_mcs_cmd.ID}",
+                                        //   Details: check_result.ToString(),
+                                        //   XID: check_result.Num);
+                                    }
                                 }
                             }
                         }
-
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex, "Exception");
+                        }
                         //1.確認是否有要回AGV Station的命令
                         //2.有的話要確認一下，是否已有預約成功
                         //3.預約成功後則看該Station是否已經可以讓AGV執行Double Unload。

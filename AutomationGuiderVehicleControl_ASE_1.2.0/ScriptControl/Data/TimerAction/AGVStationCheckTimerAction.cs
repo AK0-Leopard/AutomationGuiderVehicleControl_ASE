@@ -381,7 +381,24 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             foreach (var vh in vhs)
             {
                 bool can_assign_tran_cmd = scApp.VehicleBLL.cache.canAssignTransferCmd(scApp.CMDBLL, vh, true);
-                if (!can_assign_tran_cmd) continue;
+                if (!can_assign_tran_cmd)
+                {
+                    //但是AGV車上有一顆該Station的CST命令，就應該讓他去詢問
+                    if (v_trans != null && v_trans.Count > 0)
+                    {
+                        var on_vh_cmd_and_is_go_to_this_st =
+                            v_trans.Where(v_tran =>
+                                          v_tran.TRANSFERSTATE == E_TRAN_STATUS.Queue &&
+                                          (SCUtility.isMatche(v_tran.CARRIER_ID, vh.CST_ID_L) || SCUtility.isMatche(v_tran.CARRIER_ID, vh.CST_ID_R)) &&
+                                          SCUtility.isMatche(v_tran.HOSTDESTINATION, agv_station.getAGVStationID()))
+                                          .FirstOrDefault();
+                        if (on_vh_cmd_and_is_go_to_this_st != null)
+                        {
+                            return true;
+                        }
+                    }
+                    continue;
+                }
 
                 var path_check_result = scApp.GuideBLL.getGuideInfo(vh.CUR_ADR_ID, agv_station.AddressID);
                 if (path_check_result.isSuccess)
