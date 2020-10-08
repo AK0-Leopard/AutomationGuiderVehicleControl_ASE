@@ -574,6 +574,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 bool is_success = true;
                 var finish_result = service.Command.Finish(cmd_id, completeStatus, travel_dis);
                 is_success = is_success && finish_result.isSuccess;
+
                 is_success = is_success && reply_ID_32_TRANS_COMPLETE_RESPONSE(vh, seq_num, finish_cmd_id, finish_result.transferID);
                 if (is_success)
                 {
@@ -595,6 +596,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 sendCommandCompleteEventToNats(vh.VEHICLE_ID, recive_str);
                 scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
                 vh.VhAvoidInfo = null;
+                vh.ToSectionID = string.Empty;
 
                 if (scApp.getEQObjCacheManager().getLine().SCStats == ALINE.TSCState.PAUSING)
                 {
@@ -606,6 +608,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 //tryAskVh2ChargerIdle(vh);
             }
+
+
 
             /// <summary>
             /// 如果等待時間超過了"MAX_WAIT_COMMAND_TIME"，
@@ -685,6 +689,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 string last_adr_id = vh.CUR_ADR_ID;
                 string last_sec_id = vh.CUR_SEC_ID;
                 uint sec_dis = receiveStr.SecDistance;
+
+                scApp.ReportBLL.newReportRunTimetatus(vh.VEHICLE_ID);
             }
             const int TOLERANCE_SCOPE = 50;
             private const ushort SEQNUM_MAX = 999;
@@ -1073,7 +1079,10 @@ namespace com.mirle.ibg3k0.sc.Service
                             }
                             scApp.ReportBLL.insertMCSReport(reportqueues);
                         }
+                        PortInfo portInfo = new PortInfo()
+                        {
 
+                        };
                         Boolean resp_cmp = replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
 
                         if (resp_cmp)
@@ -1485,7 +1494,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     vh.VhAvoidInfo = null;
                     var shortest_path = guide_infos.OrderBy(info => info.Distance).First();
-                    scApp.VehicleBLL.cache.setWillPassSectionInfo(vh.VEHICLE_ID, shortest_path.GuideSections.ToList());
+                    scApp.VehicleBLL.cache.setWillPassSectionInfo(vh.VEHICLE_ID, shortest_path.GuideSections.ToList(), shortest_path.GuideAddresses.ToList());
                 }
             }
             private (bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost)
@@ -1922,27 +1931,41 @@ namespace com.mirle.ibg3k0.sc.Service
                 bool is_success = false;
                 ACMD cmd_obj = null;
                 is_success = scApp.CMDBLL.doCreatCommand(vhID, out cmd_obj, cmd_type: E_CMD_TYPE.Move, destination: destination);
+                if (is_success)
+                    setPreExcuteTranCmdID(vhID, "");
                 //return scApp.CMDBLL.doCreatCommand(vhID, cmd_type: E_CMD_TYPE.Move, destination: destination);
                 return (is_success, cmd_obj);
             }
             public bool MoveToCharge(string vhID, string destination)
             {
-                return scApp.CMDBLL.doCreatCommand(vhID, cmd_type: E_CMD_TYPE.Move_Charger, destination: destination);
+                bool is_success = scApp.CMDBLL.doCreatCommand(vhID, cmd_type: E_CMD_TYPE.Move_Charger, destination: destination);
+                if (is_success)
+                    setPreExcuteTranCmdID(vhID, "");
+                return is_success;
             }
             public bool Load(string vhID, string cstID, string source, string sourcePortID)
             {
-                return scApp.CMDBLL.doCreatCommand(vhID, carrier_id: cstID, cmd_type: E_CMD_TYPE.Load, source: source,
+                bool is_success = scApp.CMDBLL.doCreatCommand(vhID, carrier_id: cstID, cmd_type: E_CMD_TYPE.Load, source: source,
                                                    sourcePort: sourcePortID);
+                if (is_success)
+                    setPreExcuteTranCmdID(vhID, "");
+                return is_success;
             }
             public bool Unload(string vhID, string cstID, string destination, string destinationPortID)
             {
-                return scApp.CMDBLL.doCreatCommand(vhID, carrier_id: cstID, cmd_type: E_CMD_TYPE.Unload, destination: destination,
+                bool is_success = scApp.CMDBLL.doCreatCommand(vhID, carrier_id: cstID, cmd_type: E_CMD_TYPE.Unload, destination: destination,
                                                    destinationPort: destinationPortID);
+                if (is_success)
+                    setPreExcuteTranCmdID(vhID, "");
+                return is_success;
             }
             public bool Loadunload(string vhID, string cstID, string source, string destination, string sourcePortID, string destinationPortID)
             {
-                return scApp.CMDBLL.doCreatCommand(vhID, carrier_id: cstID, cmd_type: E_CMD_TYPE.LoadUnload, source: source, destination: destination,
+                bool is_success = scApp.CMDBLL.doCreatCommand(vhID, carrier_id: cstID, cmd_type: E_CMD_TYPE.LoadUnload, source: source, destination: destination,
                                                    sourcePort: sourcePortID, destinationPort: destinationPortID);
+                if (is_success)
+                    setPreExcuteTranCmdID(vhID, "");
+                return is_success;
             }
 
 
@@ -2169,6 +2192,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 //如果一樣 則代表已經在待命位上
                 if (SCUtility.isMatche(vh_current_adr, cmd_source_adr)) return;
                 var creat_result = service.Command.Move(assignVH.VEHICLE_ID, cmd.SOURCE);
+                if (creat_result.isSuccess)
+                    setPreExcuteTranCmdID(assignVH.VEHICLE_ID, cmd.TRANSFER_ID);
                 //if (creat_result.isSuccess)
                 //{
                 //    bool is_success = service.Send.Command(assignVH, creat_result.moveCmd);
@@ -2177,6 +2202,12 @@ namespace com.mirle.ibg3k0.sc.Service
                 //        CommandInitialFail(cmd);
                 //    }
                 //}
+            }
+            public void setPreExcuteTranCmdID(string vhID, string transferID)
+            {
+                AVEHICLE assignVH = scApp.VehicleBLL.cache.getVehicle(vhID);
+                if (assignVH == null) return;
+                assignVH.PreExcute_Transfer_ID = SCUtility.Trim(transferID, true);
             }
         }
         public class AvoidProcessor
@@ -2371,8 +2402,8 @@ namespace com.mirle.ibg3k0.sc.Service
                     bool is_can = reservedVh.isTcpIpConnect &&
                            (reservedVh.MODE_STATUS == VHModeStatus.AutoRemote || reservedVh.MODE_STATUS == VHModeStatus.AutoCharging) &&
                            reservedVh.ACT_STATUS == VHActionStatus.NoCommand &&
-                           !scApp.CMDBLL.isCMD_OHTCQueueByVh(reservedVh.VEHICLE_ID) &&
-                           !scApp.CMDBLL.HasCMD_MCSInQueue();
+                           !scApp.CMDBLL.isCMD_OHTCQueueByVh(reservedVh.VEHICLE_ID);
+                    //!scApp.CMDBLL.HasCMD_MCSInQueue();
                     return (is_can, CAN_NOT_AVOID_RESULT.Normal);
                 }
 
@@ -2385,7 +2416,21 @@ namespace com.mirle.ibg3k0.sc.Service
                 var block_control_check_result = scApp.getCommObjCacheManager().IsBlockControlSection(findAvoidAdrOfVh.CUR_SEC_ID);
                 if (block_control_check_result.isBlockControlSec)
                 {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                       Data: $"find avoid vh:{findAvoidAdrOfVh.VEHICLE_ID} is in block, find avoid adr id:{block_control_check_result.enhanceInfo.WayOutAddress}",
+                       VehicleID: findAvoidAdrOfVh.VEHICLE_ID);
                     return (true, new ASECTION(), "", block_control_check_result.enhanceInfo.WayOutAddress);
+                }
+                else
+                {
+                    var is_find_closest = findClosestAvoidAdr(find_avoid_vh_cur_adr);
+                    if (is_find_closest.isFind)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"find avoid vh:{findAvoidAdrOfVh.VEHICLE_ID} is not in block, find closest avoid adr id:{is_find_closest.canAvoidAdrID}",
+                           VehicleID: findAvoidAdrOfVh.VEHICLE_ID);
+                        return (true, new ASECTION(), "", is_find_closest.canAvoidAdrID);
+                    }
                 }
                 ASECTION find_avoid_vh_current_section = scApp.SectionBLL.cache.GetSection(findAvoidAdrOfVh.CUR_SEC_ID);
                 //先找出哪個Address是距離即將到來的車子比較遠，即反方向
@@ -2403,6 +2448,34 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 return searchResult;
             }
+            private (bool isFind, string canAvoidAdrID) findClosestAvoidAdr(string vhCurAdrID)
+            {
+                double minimum_cost = double.MaxValue;
+                string closest_avoid_adr = "";
+                var can_avoid_adrs = scApp.AddressesBLL.cache.LoadCanAvoidAddresses();
+                foreach (var adr in can_avoid_adrs)
+                {
+                    if (SCUtility.isMatche(adr.ADR_ID, vhCurAdrID))
+                        continue;
+                    double total_section_distance = 0;
+                    var result = scApp.GuideBLL.getGuideInfo(vhCurAdrID, adr.ADR_ID);
+                    if (result.isSuccess)
+                    {
+                        total_section_distance = result.totalCost;
+                    }
+                    else
+                    {
+                        total_section_distance = double.MaxValue;
+                    }
+                    if (total_section_distance < minimum_cost)
+                    {
+                        minimum_cost = total_section_distance;
+                        closest_avoid_adr = SCUtility.Trim(adr.ADR_ID, true);
+                    }
+                }
+                return (!SCUtility.isEmpty(closest_avoid_adr), closest_avoid_adr);
+            }
+
             private string findTheOppositeOfAddress(string req_vh_cur_adr, ASECTION reserved_vh_current_section)
             {
                 string opposite_address = "";
@@ -2548,41 +2621,41 @@ namespace com.mirle.ibg3k0.sc.Service
                                 }
 
                                 //if (!orther_end_address.canAvoidVhecle)
-                                if (!orther_end_address.canAvoidVehicle(scApp.SectionBLL))
-                                {
-                                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                                       Data: $"sec id:{SCUtility.Trim(sec.SEC_ID)} of orther end point:{orther_end_point} is not can avoid address, continue find next address{orther_end_point}",
-                                       VehicleID: willPassVh.VEHICLE_ID);
-                                    next_search_address_temp.Add((orther_end_point, sec));
-                                    continue;
-                                }
+                                //if (!orther_end_address.canAvoidVehicle(scApp.SectionBLL))
+                                //{
+                                //    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                //       Data: $"sec id:{SCUtility.Trim(sec.SEC_ID)} of orther end point:{orther_end_point} is not can avoid address, continue find next address{orther_end_point}",
+                                //       VehicleID: willPassVh.VEHICLE_ID);
+                                //    next_search_address_temp.Add((orther_end_point, sec));
+                                //    continue;
+                                //}
                                 //找到以後嘗試去預約看看，確保該路徑是否還會干涉到該台VH
                                 //還是有干涉到的話就繼續往下找
-                                var reserve_check_result = scApp.ReserveBLL.TryAddReservedSection(findAvoidAdrVh.VEHICLE_ID, sec.SEC_ID, isAsk: true);
-                                if (!reserve_check_result.OK &&
-                                    !reserve_check_result.VehicleID.StartsWith(VehicleVirtualSymbol))
-                                {
-                                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                                       Data: $"sec id:{SCUtility.Trim(sec.SEC_ID)} try to reserve fail,result:{reserve_check_result.Description}.",
-                                       VehicleID: willPassVh.VEHICLE_ID);
-                                    if (isForceCrossing)
-                                        next_search_address_temp.Add((orther_end_point, sec));
-                                    else
-                                    {
-                                        AVEHICLE obstruct_vh = scApp.VehicleBLL.cache.getVehicle(reserve_check_result.VehicleID);
-                                        if (obstruct_vh != null && !SCUtility.isMatche(sec.SEC_ID, obstruct_vh.CUR_SEC_ID))
-                                        {
-                                            next_search_address_temp.Add((orther_end_point, sec));
-                                        }
-                                    }
-                                    continue;
-                                }
-                                else
-                                {
-                                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                                       Data: $"sec id:{SCUtility.Trim(sec.SEC_ID)} try to reserve success,result:{reserve_check_result.Description}.",
-                                       VehicleID: willPassVh.VEHICLE_ID);
-                                }
+                                //var reserve_check_result = scApp.ReserveBLL.TryAddReservedSection(findAvoidAdrVh.VEHICLE_ID, sec.SEC_ID, isAsk: true);
+                                //if (!reserve_check_result.OK &&
+                                //    !reserve_check_result.VehicleID.StartsWith(VehicleVirtualSymbol))
+                                //{
+                                //    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                //       Data: $"sec id:{SCUtility.Trim(sec.SEC_ID)} try to reserve fail,result:{reserve_check_result.Description}.",
+                                //       VehicleID: willPassVh.VEHICLE_ID);
+                                //    if (isForceCrossing)
+                                //        next_search_address_temp.Add((orther_end_point, sec));
+                                //    else
+                                //    {
+                                //        AVEHICLE obstruct_vh = scApp.VehicleBLL.cache.getVehicle(reserve_check_result.VehicleID);
+                                //        if (obstruct_vh != null && !SCUtility.isMatche(sec.SEC_ID, obstruct_vh.CUR_SEC_ID))
+                                //        {
+                                //            next_search_address_temp.Add((orther_end_point, sec));
+                                //        }
+                                //    }
+                                //    continue;
+                                //}
+                                //else
+                                //{
+                                //    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                //       Data: $"sec id:{SCUtility.Trim(sec.SEC_ID)} try to reserve success,result:{reserve_check_result.Description}.",
+                                //       VehicleID: willPassVh.VEHICLE_ID);
+                                //}
                                 not_conflict_section = sec;
                                 avoid_address = orther_end_point;
                                 return (true, not_conflict_section, search_info.next_address, avoid_address);
@@ -2784,6 +2857,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     doDataSysc(vh.VEHICLE_ID);
                     Send.AlarmReset(vh.VEHICLE_ID);
+                }
+                if (e == VHModeStatus.Manual)
+                {
+                    vh.ToSectionID = string.Empty;
                 }
             }
             catch (Exception ex)
@@ -3717,6 +3794,7 @@ namespace com.mirle.ibg3k0.sc.Service
             lock (vh.connection_sync)
             {
                 vh.isTcpIpConnect = false;
+                vh.ToSectionID = string.Empty;
 
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                    Data: "Disconnection !",

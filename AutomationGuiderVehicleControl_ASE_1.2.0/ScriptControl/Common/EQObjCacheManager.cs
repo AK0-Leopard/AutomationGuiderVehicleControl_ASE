@@ -752,10 +752,10 @@ namespace com.mirle.ibg3k0.sc.Common
                         }
                         else
                         {
-                            if (recoverFromDB)
-                            {
-                                put(tmpPortStation);
-                            }
+                            put(tmpPortStation);
+                            //if (recoverFromDB)
+                            //{
+                            //}
                         }
                     }
                 }
@@ -1487,14 +1487,15 @@ namespace com.mirle.ibg3k0.sc.Common
         public void put(APORTSTATION portStation)
         {
             if (portStation == null) { return; }
-            APORTSTATION port_station_do = getPortStation(portStation.PORT_ID);
-            if (port_station_do == null) { return; }
-            lock (_lockPorStationtDic[port_station_do.PORT_ID])
+            APORTSTATION port_station_vo = getPortStation(portStation.PORT_ID);
+            if (port_station_vo == null) { return; }
+            lock (_lockPorStationtDic[port_station_vo.PORT_ID])
             {
                 //setValueToPropety<APORTSTATION>(ref portStation, ref port_station);
-                portStation.PORT_SERVICE_STATUS = port_station_do.PORT_SERVICE_STATUS;
-                portStation.PORT_STATUS = port_station_do.PORT_STATUS;
-                portStation.PRIORITY = port_station_do.PRIORITY;
+                //portStation.PORT_SERVICE_STATUS = port_station_do.PORT_SERVICE_STATUS;
+                //portStation.PORT_STATUS = port_station_do.PORT_STATUS;
+
+                port_station_vo.PRIORITY = portStation.PRIORITY;
             }
         }
         #endregion

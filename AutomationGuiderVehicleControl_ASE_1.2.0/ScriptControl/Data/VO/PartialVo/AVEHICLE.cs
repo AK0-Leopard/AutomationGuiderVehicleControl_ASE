@@ -335,7 +335,7 @@ namespace com.mirle.ibg3k0.sc
         public string TRANSFER_ID_2 { get; set; }
         public string CMD_ID_2 { get; set; }
         public string CurrentExcuteCmdID { get; set; }
-
+        public string PreExcute_Transfer_ID { get; set; }
         public List<Location> CarrierLocation { get; private set; }
 
         public string LocationRealID_R
@@ -430,6 +430,8 @@ namespace com.mirle.ibg3k0.sc
         public virtual string FromAdr { get; set; } = string.Empty;
         [JsonIgnore]
         public virtual string ToAdr { get; set; } = string.Empty;
+        [JsonIgnore]
+        public virtual string ToSectionID { get; set; } = string.Empty;
         [JsonIgnore]
         public virtual DriveDirction CurrentDriveDirction { get; set; }
         [JsonIgnore]
@@ -557,7 +559,7 @@ namespace com.mirle.ibg3k0.sc
         public virtual AvoidInfo VhAvoidInfo { get; set; }
         [JsonIgnore]
         public virtual List<string> WillPassSectionID { get; set; }
-        public virtual List<string> WillPassAddressID { get; set; }
+        public virtual string sWillPassAddressIDs { get; set; }
 
         #region Lock Object
         public object creatCmdAsyncObj = new object();

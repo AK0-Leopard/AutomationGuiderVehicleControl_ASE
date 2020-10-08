@@ -351,6 +351,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
         public const string CEID_Carrier_Installed = "151";
         public const string CEID_Carrier_Removed = "164";
         //Vehicle Status Transition Events 
+        public const string CEID_Vehicle_RuntimeStatus = "200";
         public const string CEID_Vehicle_Assigned = "201";
         public const string CEID_Vehicle_Unassigned = "202";
         public const string CEID_Vehicle_Acquire_Started = "203";
@@ -426,6 +427,9 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
         public const string VID_VehicleNextPosition = "725";
         public const string VID_VehiclecCommunication = "726";
         public const string VID_VehcileControlMode = "727";
+        public const string VID_PortsLocationList = "728";
+        public const string VID_PortLocInfo = "729";
+        public const string VID_PortPosition = "730";
 
 
 

@@ -268,7 +268,33 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isSuccess;
 
         }
+        public bool updateCMD_MCS_TimePriority(string tranID, int timePriority, int sumPriority)
+        {
+            bool isSuccess = false;
+            ATRANSFER tran = new ATRANSFER();
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    tran.ID = tranID;
+                    con.ATRANSFER.Attach(tran);
+                    tran.TIME_PRIORITY = timePriority;
+                    tran.PRIORITY_SUM = sumPriority;
+                    con.Entry(tran).Property(p => p.TIME_PRIORITY).IsModified = true;
+                    con.Entry(tran).Property(p => p.PRIORITY_SUM).IsModified = true;
+                    cmd_mcsDao.update(con, tran);
+                    con.Entry(tran).State = EntityState.Detached;
+                    isSuccess = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exection:");
+                isSuccess = false;
+            }
 
+            return isSuccess;
+        }
         public bool updateCMD_MCS_TimePriority(ATRANSFER mcs_cmd, int time_priority)
         {
             bool isSuccess = true;
@@ -1249,6 +1275,10 @@ namespace com.mirle.ibg3k0.sc.BLL
         //}
         public (bool canAssign, string result) canAssignCmdNew(AVEHICLE vh, E_CMD_TYPE cmdType)
         {
+            return canAssignCmdNew(vh, cmdType, false);
+        }
+        public (bool canAssign, string result) canAssignCmdNew(AVEHICLE vh, E_CMD_TYPE cmdType, bool isPassMoveCommand)
+        {
             try
             {
                 string vh_id = vh.VEHICLE_ID;
@@ -1327,7 +1357,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                         }
                     //return (true, "");//Unload一律都回覆OK，不然遇到身上已經載2個CST的，會無法下命令
                     default:
-                        //if (assign_cmds.Count == 0)
                         if (assign_cmds.Count == 0)
                         {
                             if (current_can_assign_command_count == 0)
@@ -1344,7 +1373,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                             bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
                             if (has_move_command)
                             {
-                                return (false, "has move command excute, can't assign transfer commmand");
+                                if (isPassMoveCommand)
+                                {
+                                    return (true, "");
+                                }
+                                else
+                                {
+                                    return (false, "has move command excute, can't assign transfer commmand");
+                                }
                             }
                             else
                             {

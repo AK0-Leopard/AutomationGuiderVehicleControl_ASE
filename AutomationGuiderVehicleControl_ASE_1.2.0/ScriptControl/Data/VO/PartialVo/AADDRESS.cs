@@ -17,6 +17,7 @@ namespace com.mirle.ibg3k0.sc
     public partial class AADDRESS
     {
         private const int BIT_INDEX_COUPLER = 0;
+        private const int BIT_INDEX_CANAVOID = 1;
 
         public Boolean[] AddressTypeFlags { get; set; }
         public string[] SegmentIDs { get; set; }
@@ -72,6 +73,10 @@ namespace com.mirle.ibg3k0.sc
                 return false;
             }
         }
+        [JsonIgnore]
+        public bool CanAvoid
+        //{ get { return false; } }
+        { get { return AddressTypeFlags[BIT_INDEX_CANAVOID]; } }
 
 
         [JsonIgnore]
@@ -85,9 +90,27 @@ namespace com.mirle.ibg3k0.sc
 
         public bool IsPort(BLL.PortStationBLL portStationBLL)
         {
-            var ports = portStationBLL.OperateCatch.getPortStationByAdrID(ADR_ID);
+            List<APORTSTATION> ports = portStationBLL.OperateCatch.getPortStationByAdrID(ADR_ID);
+            //if (ports == null || ports.Count() == 0)
+            //{
+            //    string virtual_adr = replaceFirstChar(ADR_ID);
+            //    ports = portStationBLL.OperateCatch.getPortStationByAdrID(virtual_adr);
+            //}
             return ports != null && ports.Count() > 0;
 
+        }
+        private string replaceFirstChar(string curAdrID)
+        {
+            string replaced_cur_adr = curAdrID;
+            try
+            {
+                replaced_cur_adr = $"9{replaced_cur_adr.Substring(1, curAdrID.Length - 1)}";
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+            return replaced_cur_adr;
         }
 
         //public bool canAvoidVehicle

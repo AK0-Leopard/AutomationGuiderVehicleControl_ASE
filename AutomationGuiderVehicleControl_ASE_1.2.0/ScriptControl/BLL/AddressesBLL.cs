@@ -53,6 +53,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                     OrderBy(adr => adr.DISTANCE).
                     ToList();
             }
+            public List<AADDRESS> LoadCanAvoidAddresses()
+            {
+                return CommObjCacheManager.getAddresses().
+                    Where(adr => adr.CanAvoid).
+                    ToList();
+            }
             public List<CouplerAddress> GetCouplerAddresses()
             {
                 List<CouplerAddress> CouplerAddresses = CommObjCacheManager.getCouplerAddresses();

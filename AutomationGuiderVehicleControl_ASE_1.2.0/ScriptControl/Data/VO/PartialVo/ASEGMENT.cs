@@ -55,6 +55,7 @@ namespace com.mirle.ibg3k0.sc
         private List<ASECTION> getSectionByOrder(List<ASECTION> sections)
         {
             if (sections.Count == 1) return sections;
+            if (SCUtility.isMatche(SEG_ID, "900")) return new List<ASECTION>();
             List<ASECTION> order_sections = new List<ASECTION>();
             string next_from_adr = RealFromAddress;
             for (int i = 0; i < sections.Count; i++)
@@ -63,7 +64,7 @@ namespace com.mirle.ibg3k0.sc
                 ASECTION section = sections.Where(s => s.REAL_FROM_ADR_ID.Trim() == next_from_adr.Trim()).SingleOrDefault();
                 order_sections.Add(section);
                 //next_from_adr = section.TO_ADR_ID;
-                if(section== null)
+                if (section == null)
                 {
 
                 }

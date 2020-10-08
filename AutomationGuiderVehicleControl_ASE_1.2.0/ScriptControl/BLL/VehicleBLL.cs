@@ -248,9 +248,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             double current_y_axis = report_obj.YAxis;
             double dir_angle = report_obj.DirectionAngle;
             double vh_angle = report_obj.VehicleAngle;
-            DriveDirction drive_dirction = report_obj.DrivingDirection;
+            //DriveDirction drive_dirction = report_obj.DrivingDirection;
             double speed = report_obj.Speed;
             speed = speed == 0 ? 1 : speed;
+            DriveDirction drive_dirction = getDrivingDirection(current_sec_id, vh.sWillPassAddressIDs);
             double dri_speed = drive_dirction == DriveDirction.DriveDirReverse ? -speed : speed;
             //如果這次上報的x、y 為0，則繼續拿上一次地來更新
             //x_axis = x_axis == 0 ? vh.X_Axis : x_axis;
@@ -324,31 +325,20 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
             }
         }
-        private int getDirection(string currentSecID, List<string> willPassSection)
+        public DriveDirction getDrivingDirection(string currentSec, string currentGuideAddress)
         {
-            if (willPassSection == null || willPassSection.Count == 0)
+            if (currentGuideAddress == null) return DriveDirction.DriveDirNone;
+            var sec = scApp.ReserveBLL.GetHltMapSections(currentSec);
+            if (sec == null)
             {
                 return 0;
             }
-            int currentSectionIndex = willPassSection.IndexOf(currentSecID);
-            if (willPassSection.Count < currentSectionIndex)
-            {
-                string next_section_id = willPassSection[currentSectionIndex + 1];
-                ASECTION current_sec = scApp.SectionBLL.cache.GetSection(currentSecID);
-                ASECTION next_sec = scApp.SectionBLL.cache.GetSection(next_section_id);
-                if (SCUtility.isMatche(current_sec.REAL_TO_ADR_ID, next_sec.REAL_FROM_ADR_ID))
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 1;
-                }
-            }
-            else
-            {
-                return 0;
-            }
+            string from_to_addresses = $"{SCUtility.Trim(sec.StartAddressID)},{SCUtility.Trim(sec.EndAddressID)}";
+
+            string current_guide_Addresses = string.Join(",", currentGuideAddress);
+
+            return current_guide_Addresses.Contains(from_to_addresses) ?
+                   DriveDirction.DriveDirForward : DriveDirction.DriveDirReverse;
         }
 
 
@@ -658,11 +648,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                 //vh.WillPassSectionID = willPassSection.ToList();
                 vh.onVehicleStatusChange();
             }
-            public void setWillPassSectionInfo(string vhID, List<string> willPassSection)
+            public void setWillPassSectionInfo(string vhID, List<string> willPassSection, List<string> willPassAddresses)
             {
                 var vh = eqObjCacheManager.getVehicletByVHID(vhID);
                 vh.PredictSections = willPassSection.ToArray();
                 vh.WillPassSectionID = willPassSection;
+                vh.sWillPassAddressIDs = string.Join(",", willPassAddresses);
+                vh.ToAdr = willPassAddresses.Last();
+                vh.ToSectionID = willPassSection.Last();
             }
             public void removeAlreadyPassedSection(string vhID, string sectionID)
             {
@@ -981,6 +974,32 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
                 foreach (AVEHICLE vh in vhs.ToList())
                 {
+                    if (vh.MODE_STATUS != VHModeStatus.AutoRemote)
+                    {
+                        vhs.Remove(vh);
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
+                           Data: $"vh id:{vh.VEHICLE_ID} current mode status is {vh.MODE_STATUS}," +
+                                 $"so filter it out",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                    }
+                }
+                foreach (AVEHICLE vh in vhs.ToList())
+                {
+                    if (SCUtility.isEmpty(vh.CUR_ADR_ID))
+                    {
+                        vhs.Remove(vh);
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
+                           Data: $"vh id:{vh.VEHICLE_ID} current address is empty," +
+                                 $"so filter it out",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                    }
+                }
+                foreach (AVEHICLE vh in vhs.ToList())
+                {
                     //if (!SCUtility.isEmpty(vh.TRANSFER_ID_1) &&
                     //    !SCUtility.isEmpty(vh.TRANSFER_ID_2))
                     //var chack_can_assign_cmd_result = cmdBLL.canAssignCmdNew(vh.VEHICLE_ID, E_CMD_TYPE.LoadUnload);
@@ -1010,35 +1029,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                 //           CST_ID_R: vh.CST_ID_R);
                 //    }
                 //}
-                foreach (AVEHICLE vh in vhs.ToList())
-                {
-                    if (vh.MODE_STATUS != VHModeStatus.AutoRemote)
-                    {
-                        vhs.Remove(vh);
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
-                           Data: $"vh id:{vh.VEHICLE_ID} current mode status is {vh.MODE_STATUS}," +
-                                 $"so filter it out",
-                           VehicleID: vh.VEHICLE_ID,
-                           CST_ID_L: vh.CST_ID_L,
-                           CST_ID_R: vh.CST_ID_R);
-                    }
-                }
-                foreach (AVEHICLE vh in vhs.ToList())
-                {
-                    if (SCUtility.isEmpty(vh.CUR_ADR_ID))
-                    {
-                        vhs.Remove(vh);
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
-                           Data: $"vh id:{vh.VEHICLE_ID} current address is empty," +
-                                 $"so filter it out",
-                           VehicleID: vh.VEHICLE_ID,
-                           CST_ID_L: vh.CST_ID_L,
-                           CST_ID_R: vh.CST_ID_R);
-                    }
-                }
+
             }
 
             public bool canAssignTransferCmd(CMDBLL cmdBLL, AVEHICLE vh)
+            {
+                return canAssignTransferCmd(cmdBLL, vh, false);
+            }
+            public bool canAssignTransferCmd(CMDBLL cmdBLL, AVEHICLE vh, bool isPassMoveCommand)
             {
                 if (!vh.isTcpIpConnect)
                 {
@@ -1090,7 +1088,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                        CST_ID_R: vh.CST_ID_R);
                     return false;
                 }
-                var chack_can_assign_cmd_result = cmdBLL.canAssignCmdNew(vh, E_CMD_TYPE.LoadUnload);
+                var chack_can_assign_cmd_result = cmdBLL.canAssignCmdNew(vh, E_CMD_TYPE.LoadUnload, isPassMoveCommand);
                 if (!chack_can_assign_cmd_result.canAssign)
                 {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",

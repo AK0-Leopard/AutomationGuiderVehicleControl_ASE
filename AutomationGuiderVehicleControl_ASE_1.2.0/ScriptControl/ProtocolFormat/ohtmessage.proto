@@ -410,6 +410,14 @@ enum CompleteStatus {
 	AGVLocation_None=2;
   }
 
+
+  message PortInfo {
+   string ID = 1;
+   bool IsInputMode = 2;
+   bool IsOutputMode = 3;
+   bool IsAGVPortReady = 4;
+  }
+   
    message ID_136_TRANS_EVENT_REP {
     EventType EventType = 1;
 	repeated ReserveInfo ReserveInfos = 2;
@@ -433,6 +441,7 @@ enum CompleteStatus {
 	int32 ReplyCode = 6;	
 	repeated ReserveInfo ReserveInfos = 7;
 	string Cmd_ID = 8;
+	repeated PortInfo PortInfos = 9; 
   }
 
 
@@ -572,6 +581,8 @@ enum CompleteStatus {
 	ShelfStatus ShelfStatus_R = 39;
 	string CurrentExcuteCmdId = 40;
 	VhStopSingle OpPauseStatus = 41;
+	string CmdId3 = 42;
+	CommandState CmsState_3 = 43;
   }
 
   message ID_144_STATUS_CHANGE_REP {
@@ -616,6 +627,8 @@ enum CompleteStatus {
 	ShelfStatus ShelfStatus_R = 39;
 	string CurrentExcuteCmdId = 40;
 	VhStopSingle OpPauseStatus = 41;
+	string CmdId3 = 42;
+	CommandState CmsState_3 = 43;
   }
   message ID_44_STATUS_CHANGE_RESPONSE {
 	int32 ReplyCode = 1;

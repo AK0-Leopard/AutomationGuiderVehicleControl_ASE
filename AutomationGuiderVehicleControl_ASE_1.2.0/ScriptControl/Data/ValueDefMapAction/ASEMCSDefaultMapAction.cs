@@ -153,6 +153,16 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         line.CurrentPortStateChecked = true;
                         s1f4.SV[i] = buildUnitAlarmList();
                     }
+                    else if (s1f3.SVID[i] == SECSConst.VID_MonitoredVehicles)
+                    {
+                        line.CurrentPortStateChecked = true;
+                        s1f4.SV[i] = buildMonitoredVehicleInfo();
+                    }
+                    else if (s1f3.SVID[i] == SECSConst.VID_PortsLocationList)
+                    {
+                        line.CurrentPortStateChecked = true;
+                        s1f4.SV[i] = buildPortLocationInfos();
+                    }
                     else
                     {
                         s1f4.SV[i] = new SXFY();
@@ -328,6 +338,87 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 EqPortInfos = new S6F11.RPTINFO.RPTITEM.UNITALARMINFO[0]
             };
             return item;
+        }
+
+        private S6F11.RPTINFO.RPTITEM.VIDITEM_723 buildMonitoredVehicleInfo()
+        {
+            var vhs = scApp.VehicleBLL.cache.loadAllVh();
+            int vh_count = vhs.Count;
+            S6F11.RPTINFO.RPTITEM.VIDITEM_723 items = new S6F11.RPTINFO.RPTITEM.VIDITEM_723();
+            items.MonitoredVehicles = new S6F11.RPTINFO.RPTITEM.MONITOREDVEHICLEINFO[vh_count];
+
+            //foreach (var vh in vhs)
+            for (int i = 0; i < vh_count; i++)
+            {
+                var vh = vhs[i];
+                string vh_real_id = vh.Real_ID;
+                string vh_last_position = "";
+                string vh_current_position = $"[{vh.X_Axis},{vh.Y_Axis}]";
+                string vh_next_position = "";
+                string vh_state = SECSConst.convert2MCS(vh.State, vh.ChargeStatus);
+                string vh_communication = SECSConst.convert2MCS(vh.isTcpIpConnect, vh.IsCommunication(scApp.getBCFApplication()));
+                string vh_control_mode = SECSConst.convert2MCS(vh.isTcpIpConnect, vh.MODE_STATUS);
+
+                S6F11.RPTINFO.RPTITEM.MONITOREDVEHICLEINFO item = new S6F11.RPTINFO.RPTITEM.MONITOREDVEHICLEINFO();
+                item.VehicleID = vh_real_id;
+                item.VehicleLastPosition = vh_current_position;
+                item.VehicleCurrentPosition = vh_current_position;
+                item.VehicleNextPosition = vh_current_position;
+                item.VehicleStatus = vh_state;
+                item.VehiclecCommunication = vh_communication;
+                item.VehcileControlMode = vh_control_mode;
+                items.MonitoredVehicles[i] = item;
+            }
+
+
+
+            return items;
+        }
+
+        private S6F11.RPTINFO.RPTITEM.VIDITEM_728 buildPortLocationInfos()
+        {
+            var ports = scApp.PortStationBLL.OperateCatch.loadAllPortStation();
+            int port_count = ports.Count;
+            S6F11.RPTINFO.RPTITEM.VIDITEM_728 items = new S6F11.RPTINFO.RPTITEM.VIDITEM_728();
+            List<S6F11.RPTINFO.RPTITEM.PORTLOCATIONINFO> port_location_info = new List<S6F11.RPTINFO.RPTITEM.PORTLOCATIONINFO>();
+            foreach (var port in ports)
+            {
+                string port_id = port.PORT_ID;
+                string port_position = "";
+                var get_result = tryGetPortPositionByAddressID(port.ADR_ID);
+                if (get_result.is_exist)
+                {
+                    port_position = get_result.port_position;
+                }
+                else
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(ASEMCSDefaultMapAction), Device: DEVICE_NAME_MCS,
+                                  Data: $"Port ID:{port_id} of adr:{port.ADR_ID} no define x、y");
+                    continue;
+                }
+                port_location_info.Add(new S6F11.RPTINFO.RPTITEM.PORTLOCATIONINFO()
+                {
+                    PortID = port_id,
+                    PortPosition = port_position
+                });
+
+            }
+            items.PortsLocationList = port_location_info.ToArray();
+
+
+            return items;
+        }
+
+        private (bool is_exist, string port_position) tryGetPortPositionByAddressID(string adrID)
+        {
+            (bool isSuccess, double x, double y, bool isTR50) get_result =
+                default((bool isSuccess, double x, double y, bool isTR50));
+            try
+            {
+                get_result = scApp.ReserveBLL.GetHltMapAddress(adrID);
+            }
+            catch { }
+            return (get_result.isSuccess, $"[{get_result.x},{get_result.y}]");
         }
         protected override void S1F15OffLineRequest(object sender, SECSEventArgs e)
         {
@@ -2151,6 +2242,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             string vh_battery_value = "";
             string vh_communication = "";
             string vh_control_mode = "";
+            string vh_last_position = "";
             if (vh != null)
             {
                 vh_real_id = vh?.Real_ID;
@@ -2158,6 +2250,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 vh_battery_value = vh.BatteryCapacity.ToString();
                 vh_communication = SECSConst.convert2MCS(vh.isTcpIpConnect, vh.IsCommunication(scApp.getBCFApplication()));
                 vh_control_mode = SECSConst.convert2MCS(vh.isTcpIpConnect, vh.MODE_STATUS);
+                vh_last_position = $"[{vh.X_Axis},{vh.Y_Axis}]";
             }
 
             string eqp_name = line.LINE_ID;
@@ -2249,7 +2342,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
             vid_collection.VID_101_BatteryValue.BatteryValue = vh_battery_value;
 
-            vid_collection.VID_102_VehicleLastPosition.VehicleLastPosition = "";
+            //vid_collection.VID_102_VehicleLastPosition.VehicleLastPosition = "";
+
+            vid_collection.VID_102_VehicleLastPosition.VehicleLastPosition = vh_last_position;
 
             vid_collection.VID_114_SpecVersion.SpecVersion = "E82";
 
@@ -2533,6 +2628,44 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             vid_collection.VID_70_VehicleID.VehicleID = vhID;
 
             AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Vehicle_Removed, vid_collection);
+            if (reportQueues == null)
+            {
+                S6F11SendMessage(mcs_queue);
+            }
+            else
+            {
+                reportQueues.Add(mcs_queue);
+            }
+            return true;
+        }
+
+        public override bool S6F11SendRunTimeStatus(string vhID, List<AMCSREPORTQUEUE> reportQueues = null)
+        {
+            if (!isSend()) return true;
+            var vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+            string vh_real_id = "";
+            string vh_state = "";
+            string vh_battery_value = "";
+            string vh_communication = "";
+            string vh_control_mode = "";
+            string vh_last_position = "";
+            if (vh != null)
+            {
+                vh_real_id = vh?.Real_ID;
+                vh_state = SECSConst.convert2MCS(vh.State, vh.ChargeStatus);
+                vh_battery_value = vh.BatteryCapacity.ToString();
+                vh_communication = SECSConst.convert2MCS(vh.isTcpIpConnect, vh.IsCommunication(scApp.getBCFApplication()));
+                vh_control_mode = SECSConst.convert2MCS(vh.isTcpIpConnect, vh.MODE_STATUS);
+                vh_last_position = $"[{vh.X_Axis},{vh.Y_Axis}]";
+            }
+            VIDCollection vid_collection = new VIDCollection();
+
+            vid_collection.VID_70_VehicleID.VehicleID = vh_real_id;
+            vid_collection.VID_72_VehicleState.VehicleState = vh_state;
+            vid_collection.VID_102_VehicleLastPosition.VehicleLastPosition = vh_last_position;
+            vid_collection.VID_101_BatteryValue.BatteryValue = vh_battery_value;
+
+            AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Vehicle_RuntimeStatus, vid_collection);
             if (reportQueues == null)
             {
                 S6F11SendMessage(mcs_queue);

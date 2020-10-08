@@ -250,6 +250,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 catch (Exception ex)
                 {
                     logger.Error(ex, $"Exception:{url}");
+                    throw ex;
                 }
                 //return SCUtility.isMatche(result, UNLOAD_CHECK_RESULT_OK);
                 return result.Contains(UNLOAD_CHECK_RESULT_OK);

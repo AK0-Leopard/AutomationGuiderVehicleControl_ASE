@@ -63,7 +63,12 @@ namespace com.mirle.ibg3k0.sc
             if (eq == null) return null;
             return eq;
         }
-
+        public string TragetSection(BLL.SectionBLL sectionBLL)
+        {
+            var sections = sectionBLL.cache.GetSectionsByAddress(DESTINATION);
+            if (sections == null || sections.Count == 0) return "";
+            return sc.Common.SCUtility.Trim(sections.First().SEC_ID, true);
+        }
 
         public HCMD ToHCMD()
         {

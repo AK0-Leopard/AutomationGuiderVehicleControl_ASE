@@ -78,8 +78,21 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public (bool isSuccess, double x, double y, bool isTR50) GetHltMapAddress(string adrID)
         {
+            bool is_exist = false;
+            double x = double.MaxValue;
+            double y = double.MaxValue;
+            bool is_tr_50 = false;
             var adr_obj = mapAPI.GetAddressObjectByID(adrID);
-            return (adr_obj != null, adr_obj.X, adr_obj.Y, adr_obj.IsTR50);
+
+            if (adr_obj != null)
+            {
+                is_exist = true;
+                x = adr_obj.X;
+                y = adr_obj.Y;
+                is_tr_50 = adr_obj.IsTR50;
+            }
+
+            return (is_exist, x, y, is_tr_50);
         }
         public HltResult TryAddVehicleOrUpdateResetSensorForkDir(string vhID)
         {
@@ -418,6 +431,13 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return (true, "");
         }
+
+        public virtual HltMapSection GetHltMapSections(string secID)
+        {
+            var sec_obj = mapAPI.HltMapSections.Where(sec => SCUtility.isMatche(sec.ID, secID)).FirstOrDefault();
+            return (sec_obj);
+        }
+
 
     }
 

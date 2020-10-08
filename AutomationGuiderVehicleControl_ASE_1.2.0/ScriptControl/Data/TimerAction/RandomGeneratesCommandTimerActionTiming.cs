@@ -359,16 +359,16 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
                     switch (DebugParameter.CycleRunType)
                     {
-                        case DebugParameter.CycleRunTestType.Normal:
-                            CycleRunTest();
-                            break;
-                        case DebugParameter.CycleRunTestType.IgnorePortStatus:
-                            CycleRunIgnorePortStatus();
-                            break;
-                        case DebugParameter.CycleRunTestType.OnlyMove:
-                            //CycleRunOnlyMove();
-                            CycleRunOnlyMove();
-                            break;
+                        //case DebugParameter.CycleRunTestType.Normal:
+                        //    CycleRunTest();
+                        //    break;
+                        //case DebugParameter.CycleRunTestType.IgnorePortStatus:
+                        //    CycleRunIgnorePortStatus();
+                        //    break;
+                        //case DebugParameter.CycleRunTestType.OnlyMove:
+                        //    //CycleRunOnlyMove();
+                        //    CycleRunOnlyMove();
+                        //    break;
                         case DebugParameter.CycleRunTestType.MoveBySelectPort:
                             CycleRunOnlyMoveByZone();
                             break;
@@ -431,22 +431,25 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 bool is_success = check_results.Where(result => result.is_success == false).Count() == 0;
                 if (is_success)
                 {
-                    AVEHICLE idle_vh = check_results[0].result as AVEHICLE;
+                    //AVEHICLE idle_vh = check_results[0].result as AVEHICLE;
+                    List<AVEHICLE> idle_vhs = check_results[0].result as List<AVEHICLE>;
                     APORTSTATION can_unload_agv_station_port = check_results[1].result as APORTSTATION;
                     APORTSTATION can_load_agv_station_port = check_results[2].result as APORTSTATION;
-
-                    if (scApp.GuideBLL.IsRoadWalkable(idle_vh.CUR_ADR_ID, can_load_agv_station_port.ADR_ID) &&
-                        scApp.GuideBLL.IsRoadWalkable(can_load_agv_station_port.ADR_ID, can_unload_agv_station_port.ADR_ID))
+                    foreach (var idle_vh in idle_vhs)
                     {
-                        scApp.VehicleService.Command.Loadunload(idle_vh.VEHICLE_ID,
-                        can_load_agv_station_port.CassetteID,
-                        can_load_agv_station_port.ADR_ID, can_unload_agv_station_port.ADR_ID,
-                        can_load_agv_station_port.PORT_ID, can_unload_agv_station_port.PORT_ID);
-                    }
-                    else
-                    {
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(RandomGeneratesCommandTimerActionTiming), Device: string.Empty,
-                           Data: $"Can't find the path.");
+                        if (scApp.GuideBLL.IsRoadWalkable(idle_vh.CUR_ADR_ID, can_load_agv_station_port.ADR_ID) &&
+                            scApp.GuideBLL.IsRoadWalkable(can_load_agv_station_port.ADR_ID, can_unload_agv_station_port.ADR_ID))
+                        {
+                            scApp.VehicleService.Command.Loadunload(idle_vh.VEHICLE_ID,
+                            can_load_agv_station_port.CassetteID,
+                            can_load_agv_station_port.ADR_ID, can_unload_agv_station_port.ADR_ID,
+                            can_load_agv_station_port.PORT_ID, can_unload_agv_station_port.PORT_ID);
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(RandomGeneratesCommandTimerActionTiming), Device: string.Empty,
+                               Data: $"Can't find the path.");
+                        }
                     }
                 }
             }

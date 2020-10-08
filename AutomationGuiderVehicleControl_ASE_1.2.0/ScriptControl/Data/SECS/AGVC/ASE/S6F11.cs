@@ -472,6 +472,36 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
                     public string VehcileControlMode;
                 }
                 [Serializable]
+                public class VIDITEM_728 : SXFY
+                {
+                    [SecsElement(Index = 1, ListSpreadOut = true)]
+                    public PORTLOCATIONINFO[] PortsLocationList = new PORTLOCATIONINFO[0];
+                }
+
+                [Serializable]
+                public class VIDITEM_729 : SXFY
+                {
+                    [SecsElement(Index = 1, ListSpreadOut = true)]
+                    public PORTLOCATIONINFO PortLocationInfo = new PORTLOCATIONINFO();
+                }
+
+                [Serializable]
+                public class VIDITEM_730 : SXFY
+                {
+                    [SecsElement(Index = 1, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)]
+                    public string PortPosition;
+                }
+
+                [Serializable]
+                public class PORTLOCATIONINFO : SXFY
+                {
+                    [SecsElement(Index = 1, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)]
+                    public string PortID;
+                    [SecsElement(Index = 2, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)]
+                    public string PortPosition;
+                }
+
+                [Serializable]
                 public class MONITOREDVEHICLEINFO : SXFY
                 {
                     [SecsElement(Index = 1, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 32)]
