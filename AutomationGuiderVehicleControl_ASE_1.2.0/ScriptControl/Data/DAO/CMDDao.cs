@@ -101,6 +101,17 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                         select cmd.ID;
             return query.ToList();
         }
+        public List<string> loadAssignCmdIDIgnoreMove(DBConnection_EF con, string vh_id)
+        {
+            var query = from cmd in con.ACMD
+                        where cmd.VH_ID == vh_id.Trim() &&
+                              cmd.CMD_STATUS < E_CMD_STATUS.NormalEnd &&
+                              cmd.CMD_TYPE != E_CMD_TYPE.Move &&
+                              cmd.CMD_TYPE != E_CMD_TYPE.Move_Charger
+                        orderby cmd.CMD_INSER_TIME
+                        select cmd.ID;
+            return query.ToList();
+        }
 
         public ACMD getByID(DBConnection_EF con, String cmd_id)
         {

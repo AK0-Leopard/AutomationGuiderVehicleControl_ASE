@@ -48,14 +48,23 @@ namespace com.mirle.ibg3k0.sc.BLL
                              ToList();
                 return eqpts;
             }
-            public AGVStation getAGVStation(string addressID)
+            public AGVStation getAGVStation(string portID)
             {
                 var eqpt = CacheManager.getAllEquipment().
-                             Where(e => (e is AGVStation) && 
-                                        SCUtility.isMatche((e as AGVStation).AddressID, addressID)).
+                             Where(e => (e is AGVStation) &&
+                                        SCUtility.isMatche((e as AGVStation).EQPT_ID, portID)).
                              Select(e => e as AGVStation).
                              FirstOrDefault();
                 return eqpt;
+            }
+
+            public bool IsAGVStation(string portID)
+            {
+                var eqpt = CacheManager.getAllEquipment().
+                             Where(e => (e is AGVStation) &&
+                                        SCUtility.isMatche((e as AGVStation).EQPT_ID, portID)).
+                             FirstOrDefault();
+                return eqpt != null;
             }
 
             public SCAppConstants.EqptType GetEqptType(string eqptID)

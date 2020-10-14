@@ -118,5 +118,33 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             return isSuccess;
         }
+        public bool doUpdatePortUnloadVhType(string portID, E_VH_TYPE vhType)
+        {
+            bool isSuccess = true;
+            try
+            {
+                if (isSuccess)
+                {
+                    using (TransactionScope tx = SCUtility.getTransactionScope())
+                    {
+                        using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                        {
+                            isSuccess = scApp.PortStationBLL.OperateDB.updatePortUnloadVhType(portID, vhType);
+                            if (isSuccess)
+                            {
+                                tx.Complete();
+                                scApp.PortStationBLL.OperateCatch.updatePortUnloadVhType(portID, vhType);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                logger.Error(ex, "Execption:");
+            }
+            return isSuccess;
+        }
     }
 }

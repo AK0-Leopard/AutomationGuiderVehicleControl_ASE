@@ -82,6 +82,7 @@ namespace com.mirle.ibg3k0.sc
         public List<AUNIT> UnitList;
 
         public string proc_Formaat = "";
+        public string recipe_Parameter_Format = "";
 
         public override void doShareMemoryInit(BCFAppConstants.RUN_LEVEL runLevel)
         {
@@ -279,6 +280,7 @@ namespace com.mirle.ibg3k0.sc
         {
             if (portStationList == null) return null;
             return portStationList.
+                   Where(port_station => !port_station.PORT_ID.Contains("_ST0")).
                    ToList();
         }
         public List<APORTSTATION> getAGVStationReadyLoadPorts()
@@ -314,6 +316,65 @@ namespace com.mirle.ibg3k0.sc
                    OrderBy(port_station => port_station.PORT_ID).
                    ToList();
         }
+        public E_AGVStationTranMode TransferMode { get; set; }
+
+        public E_AGVStationDeliveryMode DeliveryMode { get { return GetDeliveryMode(); } }
+
+        E_AGVStationDeliveryMode GetDeliveryMode()
+        {
+            var port_station = getAGVVirtruePort();
+            if (port_station == null)
+            {
+                return E_AGVStationDeliveryMode.Normal;
+            }
+            else
+            {
+                switch (port_station.ULD_VH_TYPE)
+                {
+
+                    case E_VH_TYPE.Swap:
+                        return E_AGVStationDeliveryMode.Swap;
+                    default:
+                        return E_AGVStationDeliveryMode.Normal;
+                }
+            }
+        }
+        //        E_AGVStationDeliveryMode GetDeliveryMode()
+        //{
+        //    if (SCUtility.isEmpty(recipe_Parameter_Format))
+        //    {
+        //        return E_AGVStationDeliveryMode.Normal;
+        //    }
+        //    int i_delivery_mode = 0;
+        //    if (!int.TryParse(recipe_Parameter_Format, out i_delivery_mode))
+        //    {
+        //        return E_AGVStationDeliveryMode.Normal;
+        //    }
+        //    E_AGVStationDeliveryMode delivery_mode = (E_AGVStationDeliveryMode)i_delivery_mode;
+        //    if (!Enum.IsDefined(typeof(E_AGVStationDeliveryMode), delivery_mode))
+        //    {
+        //        return E_AGVStationDeliveryMode.Normal;
+        //    }
+        //    return delivery_mode;
+        //}
+
+        private bool isemergency;
+        public bool IsEmergency
+        {
+            get
+            {
+                return isemergency;
+            }
+            set
+            {
+                if (isemergency != value)
+                {
+                    isemergency = value;
+                }
+            }
+        }
+        public DateTime LastAskTime { get; set; }
+        public string sLastAskTime { get { return LastAskTime.ToString(SCAppConstants.DateTimeFormat_19);  }  }
     }
 
 
@@ -336,8 +397,27 @@ namespace com.mirle.ibg3k0.sc
         List<APORTSTATION> loadAutoAGVStationPorts();
         string BindingVh { get; }
         DateTime ReservedSuccessTime { get; set; }
+        E_AGVStationTranMode TransferMode { get; set; }
+
+        E_AGVStationDeliveryMode DeliveryMode { get; }
+        bool IsEmergency { get; set; }
+
+        DateTime LastAskTime { get; set; }
+        string sLastAskTime { get; }
+    }
+
+    public enum E_AGVStationDeliveryMode
+    {
+        Normal,
+        Swap
+    }
 
 
+    public enum E_AGVStationTranMode
+    {
+        None,
+        MoreIn,
+        MoreOut
     }
 
 

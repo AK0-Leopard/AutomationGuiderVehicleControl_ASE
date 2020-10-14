@@ -587,7 +587,8 @@ namespace com.mirle.ibg3k0.sc.BLL
             if (port != null)
             {
                 adr = port.ADR_ID.Trim();
-                vh_type = port.ULD_VH_TYPE;
+                //vh_type = port.ULD_VH_TYPE;
+                vh_type = E_VH_TYPE.None;
                 return true;
             }
             else

@@ -430,6 +430,7 @@ enum CompleteStatus {
 	BCRReadResult BCRReadResult =9;
 	string Cmd_ID =10;
 	AGVLocation Location = 11;
+	string CurrentPortID = 12;
   }
 
   message ID_36_TRANS_EVENT_RESPONSE {
@@ -583,6 +584,8 @@ enum CompleteStatus {
 	VhStopSingle OpPauseStatus = 41;
 	string CmdId3 = 42;
 	CommandState CmsState_3 = 43;
+	string CmdId4 = 44;
+	CommandState CmsState_4 = 45;
   }
 
   message ID_144_STATUS_CHANGE_REP {
@@ -629,6 +632,8 @@ enum CompleteStatus {
 	VhStopSingle OpPauseStatus = 41;
 	string CmdId3 = 42;
 	CommandState CmsState_3 = 43;
+	string CmdId4 = 44;
+	CommandState CmsState_4 = 45;
   }
   message ID_44_STATUS_CHANGE_RESPONSE {
 	int32 ReplyCode = 1;
@@ -832,6 +837,12 @@ enum CompleteStatus {
 	uint32 BatteryCapacity = 54;
 	VhChargeStatus ChargeStatus = 55;
 	int32 BatteryTemperature = 56;
+
+	string TransferCmdID3 = 57;
+	string TransferCmdID4 = 58;
+	string CmdID3 = 59;
+	string CmdID4 = 60;
+
   }
 
 

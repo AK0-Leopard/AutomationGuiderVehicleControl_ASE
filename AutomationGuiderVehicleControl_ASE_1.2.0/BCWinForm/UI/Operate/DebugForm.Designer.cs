@@ -50,7 +50,10 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnVhTypeUpdate = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.label98 = new System.Windows.Forms.Label();
             this.lbl_listening_status = new System.Windows.Forms.Label();
+            this.cmbVhType = new System.Windows.Forms.ComboBox();
             this.label96 = new System.Windows.Forms.Label();
             this.ck_CST_Status_L = new System.Windows.Forms.CheckBox();
             this.ck_CST_Status_R = new System.Windows.Forms.CheckBox();
@@ -138,6 +141,7 @@
             this.ck_continue_bcrreadfail = new System.Windows.Forms.CheckBox();
             this.cmb_cycle_run_type = new System.Windows.Forms.ComboBox();
             this.grb_Reserve = new System.Windows.Forms.GroupBox();
+            this.cb_reserve_pass_agv0609 = new System.Windows.Forms.CheckBox();
             this.cb_reserve_pass = new System.Windows.Forms.CheckBox();
             this.cb_reserve_reject = new System.Windows.Forms.CheckBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -171,6 +175,9 @@
             this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btn_refresf_portsation_info = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnUpdateUnloadVhType = new System.Windows.Forms.Button();
+            this.cmbUnloadVhType = new System.Windows.Forms.ComboBox();
+            this.label99 = new System.Windows.Forms.Label();
             this.cb_needCheckPortUpdateTime = new System.Windows.Forms.CheckBox();
             this.num_tran_cmd_queue_time_out_ms = new System.Windows.Forms.NumericUpDown();
             this.label95 = new System.Windows.Forms.Label();
@@ -179,13 +186,6 @@
             this.ck_check_port_is_ready = new System.Windows.Forms.CheckBox();
             this.btn_refresh_agvstationInfo = new System.Windows.Forms.Button();
             this.dgv_AGVStationInfo = new System.Windows.Forms.DataGridView();
-            this.AGVStationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HasPortAuto = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.IsReservation = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.IsTransferUnloadExcuting = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.IsReadySingleUnload = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.IsCheckPortReady = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.BindingVh = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cb_canUnloadToAGVStation = new System.Windows.Forms.CheckBox();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.btn_cmp_vh_complete = new System.Windows.Forms.Button();
@@ -392,7 +392,19 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.cb_reserve_pass_agv0609 = new System.Windows.Forms.CheckBox();
+            this.cmbStationPortID = new System.Windows.Forms.ComboBox();
+            this.label100 = new System.Windows.Forms.Label();
+            this.AGVStationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HasPortAuto = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsReservation = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.TransferMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsReadySingleUnload = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsCheckPortReady = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsEmergency = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.LastAskTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsTransferUnloadExcuting = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.BindingVh = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeliveryMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -668,7 +680,10 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.btnVhTypeUpdate);
+            this.groupBox4.Controls.Add(this.label98);
             this.groupBox4.Controls.Add(this.lbl_listening_status);
+            this.groupBox4.Controls.Add(this.cmbVhType);
             this.groupBox4.Controls.Add(this.label96);
             this.groupBox4.Controls.Add(this.ck_CST_Status_L);
             this.groupBox4.Controls.Add(this.ck_CST_Status_R);
@@ -722,6 +737,26 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Specify Vehicle Action";
             // 
+            // btnVhTypeUpdate
+            // 
+            this.btnVhTypeUpdate.Location = new System.Drawing.Point(972, 346);
+            this.btnVhTypeUpdate.Name = "btnVhTypeUpdate";
+            this.btnVhTypeUpdate.Size = new System.Drawing.Size(141, 30);
+            this.btnVhTypeUpdate.TabIndex = 58;
+            this.btnVhTypeUpdate.Text = "Update";
+            this.btnVhTypeUpdate.UseVisualStyleBackColor = true;
+            this.btnVhTypeUpdate.Click += new System.EventHandler(this.vhType_Update_Click);
+            // 
+            // label98
+            // 
+            this.label98.AutoSize = true;
+            this.label98.Location = new System.Drawing.Point(972, 287);
+            this.label98.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label98.Name = "label98";
+            this.label98.Size = new System.Drawing.Size(80, 22);
+            this.label98.TabIndex = 17;
+            this.label98.Text = "vh type";
+            // 
             // lbl_listening_status
             // 
             this.lbl_listening_status.AutoSize = true;
@@ -732,6 +767,15 @@
             this.lbl_listening_status.TabIndex = 57;
             this.lbl_listening_status.Text = "           ";
             this.lbl_listening_status.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbl_listening_status_MouseDoubleClick);
+            // 
+            // cmbVhType
+            // 
+            this.cmbVhType.FormattingEnabled = true;
+            this.cmbVhType.Location = new System.Drawing.Point(972, 310);
+            this.cmbVhType.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.cmbVhType.Name = "cmbVhType";
+            this.cmbVhType.Size = new System.Drawing.Size(141, 30);
+            this.cmbVhType.TabIndex = 16;
             // 
             // label96
             // 
@@ -768,7 +812,7 @@
             // 
             this.btn_changeToRemove.Location = new System.Drawing.Point(823, 312);
             this.btn_changeToRemove.Name = "btn_changeToRemove";
-            this.btn_changeToRemove.Size = new System.Drawing.Size(165, 30);
+            this.btn_changeToRemove.Size = new System.Drawing.Size(141, 30);
             this.btn_changeToRemove.TabIndex = 53;
             this.btn_changeToRemove.Text = "Remove";
             this.btn_changeToRemove.UseVisualStyleBackColor = true;
@@ -778,7 +822,7 @@
             // 
             this.btn_changeToInstall.Location = new System.Drawing.Point(823, 346);
             this.btn_changeToInstall.Name = "btn_changeToInstall";
-            this.btn_changeToInstall.Size = new System.Drawing.Size(165, 32);
+            this.btn_changeToInstall.Size = new System.Drawing.Size(141, 32);
             this.btn_changeToInstall.TabIndex = 52;
             this.btn_changeToInstall.Text = "Install";
             this.btn_changeToInstall.UseVisualStyleBackColor = true;
@@ -807,7 +851,7 @@
             // 
             this.btn_auto_local.Location = new System.Drawing.Point(823, 424);
             this.btn_auto_local.Name = "btn_auto_local";
-            this.btn_auto_local.Size = new System.Drawing.Size(165, 28);
+            this.btn_auto_local.Size = new System.Drawing.Size(141, 28);
             this.btn_auto_local.TabIndex = 47;
             this.btn_auto_local.Text = "Auto Local";
             this.btn_auto_local.UseVisualStyleBackColor = true;
@@ -817,7 +861,7 @@
             // 
             this.btn_auto_charge.Location = new System.Drawing.Point(823, 458);
             this.btn_auto_charge.Name = "btn_auto_charge";
-            this.btn_auto_charge.Size = new System.Drawing.Size(165, 28);
+            this.btn_auto_charge.Size = new System.Drawing.Size(141, 28);
             this.btn_auto_charge.TabIndex = 46;
             this.btn_auto_charge.Text = "Auto Charge";
             this.btn_auto_charge.UseVisualStyleBackColor = true;
@@ -950,7 +994,7 @@
             // 
             this.btn_auto_remote.Location = new System.Drawing.Point(823, 392);
             this.btn_auto_remote.Name = "btn_auto_remote";
-            this.btn_auto_remote.Size = new System.Drawing.Size(165, 28);
+            this.btn_auto_remote.Size = new System.Drawing.Size(141, 28);
             this.btn_auto_remote.TabIndex = 38;
             this.btn_auto_remote.Text = "Auto Remote";
             this.btn_auto_remote.UseVisualStyleBackColor = true;
@@ -1694,6 +1738,17 @@
             this.grb_Reserve.TabStop = false;
             this.grb_Reserve.Text = "Reserve Control";
             // 
+            // cb_reserve_pass_agv0609
+            // 
+            this.cb_reserve_pass_agv0609.AutoSize = true;
+            this.cb_reserve_pass_agv0609.Location = new System.Drawing.Point(25, 70);
+            this.cb_reserve_pass_agv0609.Name = "cb_reserve_pass_agv0609";
+            this.cb_reserve_pass_agv0609.Size = new System.Drawing.Size(299, 26);
+            this.cb_reserve_pass_agv0609.TabIndex = 2;
+            this.cb_reserve_pass_agv0609.Text = "Force Reserve Pass(AGV06/9)";
+            this.cb_reserve_pass_agv0609.UseVisualStyleBackColor = true;
+            this.cb_reserve_pass_agv0609.CheckedChanged += new System.EventHandler(this.cb_reserve_pass_agv0609_CheckedChanged);
+            // 
             // cb_reserve_pass
             // 
             this.cb_reserve_pass.AutoSize = true;
@@ -2021,6 +2076,11 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label100);
+            this.tabPage3.Controls.Add(this.cmbStationPortID);
+            this.tabPage3.Controls.Add(this.btnUpdateUnloadVhType);
+            this.tabPage3.Controls.Add(this.cmbUnloadVhType);
+            this.tabPage3.Controls.Add(this.label99);
             this.tabPage3.Controls.Add(this.cb_needCheckPortUpdateTime);
             this.tabPage3.Controls.Add(this.num_tran_cmd_queue_time_out_ms);
             this.tabPage3.Controls.Add(this.label95);
@@ -2049,6 +2109,34 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Test Tool";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btnUpdateUnloadVhType
+            // 
+            this.btnUpdateUnloadVhType.Location = new System.Drawing.Point(1373, 674);
+            this.btnUpdateUnloadVhType.Name = "btnUpdateUnloadVhType";
+            this.btnUpdateUnloadVhType.Size = new System.Drawing.Size(98, 30);
+            this.btnUpdateUnloadVhType.TabIndex = 49;
+            this.btnUpdateUnloadVhType.Text = "Update";
+            this.btnUpdateUnloadVhType.UseVisualStyleBackColor = true;
+            this.btnUpdateUnloadVhType.Click += new System.EventHandler(this.btnUpdateUnloadVhType_Click);
+            // 
+            // cmbUnloadVhType
+            // 
+            this.cmbUnloadVhType.FormattingEnabled = true;
+            this.cmbUnloadVhType.Location = new System.Drawing.Point(1226, 674);
+            this.cmbUnloadVhType.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.cmbUnloadVhType.Name = "cmbUnloadVhType";
+            this.cmbUnloadVhType.Size = new System.Drawing.Size(141, 30);
+            this.cmbUnloadVhType.TabIndex = 48;
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(1207, 648);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(160, 22);
+            this.label99.TabIndex = 47;
+            this.label99.Text = " Unload Vh type";
             // 
             // cb_needCheckPortUpdateTime
             // 
@@ -2118,7 +2206,7 @@
             // 
             // btn_refresh_agvstationInfo
             // 
-            this.btn_refresh_agvstationInfo.Location = new System.Drawing.Point(1250, 710);
+            this.btn_refresh_agvstationInfo.Location = new System.Drawing.Point(1373, 710);
             this.btn_refresh_agvstationInfo.Name = "btn_refresh_agvstationInfo";
             this.btn_refresh_agvstationInfo.Size = new System.Drawing.Size(98, 47);
             this.btn_refresh_agvstationInfo.TabIndex = 40;
@@ -2134,64 +2222,20 @@
             this.AGVStationID,
             this.HasPortAuto,
             this.IsReservation,
-            this.IsTransferUnloadExcuting,
+            this.TransferMode,
             this.IsReadySingleUnload,
             this.IsCheckPortReady,
-            this.BindingVh});
+            this.IsEmergency,
+            this.LastAskTime,
+            this.IsTransferUnloadExcuting,
+            this.BindingVh,
+            this.DeliveryMode});
             this.dgv_AGVStationInfo.Location = new System.Drawing.Point(12, 710);
             this.dgv_AGVStationInfo.Name = "dgv_AGVStationInfo";
             this.dgv_AGVStationInfo.RowTemplate.Height = 24;
-            this.dgv_AGVStationInfo.Size = new System.Drawing.Size(1232, 198);
+            this.dgv_AGVStationInfo.Size = new System.Drawing.Size(1355, 198);
             this.dgv_AGVStationInfo.TabIndex = 39;
-            // 
-            // AGVStationID
-            // 
-            this.AGVStationID.DataPropertyName = "AGVStationID";
-            this.AGVStationID.HeaderText = "AGVStationID";
-            this.AGVStationID.Name = "AGVStationID";
-            this.AGVStationID.Width = 155;
-            // 
-            // HasPortAuto
-            // 
-            this.HasPortAuto.DataPropertyName = "HasPortAuto";
-            this.HasPortAuto.HeaderText = "HasPortAuto";
-            this.HasPortAuto.Name = "HasPortAuto";
-            this.HasPortAuto.Width = 126;
-            // 
-            // IsReservation
-            // 
-            this.IsReservation.DataPropertyName = "IsReservation";
-            this.IsReservation.HeaderText = "IsReservation";
-            this.IsReservation.Name = "IsReservation";
-            this.IsReservation.Width = 146;
-            // 
-            // IsTransferUnloadExcuting
-            // 
-            this.IsTransferUnloadExcuting.DataPropertyName = "IsTransferUnloadExcuting";
-            this.IsTransferUnloadExcuting.HeaderText = "IsTransferUnloadExcuting";
-            this.IsTransferUnloadExcuting.Name = "IsTransferUnloadExcuting";
-            this.IsTransferUnloadExcuting.Width = 256;
-            // 
-            // IsReadySingleUnload
-            // 
-            this.IsReadySingleUnload.DataPropertyName = "IsReadySingleUnload";
-            this.IsReadySingleUnload.HeaderText = "IsReadySingleUnload";
-            this.IsReadySingleUnload.Name = "IsReadySingleUnload";
-            this.IsReadySingleUnload.Width = 206;
-            // 
-            // IsCheckPortReady
-            // 
-            this.IsCheckPortReady.DataPropertyName = "IsCheckPortReady";
-            this.IsCheckPortReady.HeaderText = "IsCheckPortReady";
-            this.IsCheckPortReady.Name = "IsCheckPortReady";
-            this.IsCheckPortReady.Width = 176;
-            // 
-            // BindingVh
-            // 
-            this.BindingVh.DataPropertyName = "BindingVh";
-            this.BindingVh.HeaderText = "BindingVh";
-            this.BindingVh.Name = "BindingVh";
-            this.BindingVh.Width = 125;
+            this.dgv_AGVStationInfo.SelectionChanged += new System.EventHandler(this.dgv_AGVStationInfo_SelectionChanged);
             // 
             // cb_canUnloadToAGVStation
             // 
@@ -4248,16 +4292,104 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // cb_reserve_pass_agv0609
+            // cmbStationPortID
             // 
-            this.cb_reserve_pass_agv0609.AutoSize = true;
-            this.cb_reserve_pass_agv0609.Location = new System.Drawing.Point(25, 70);
-            this.cb_reserve_pass_agv0609.Name = "cb_reserve_pass_agv0609";
-            this.cb_reserve_pass_agv0609.Size = new System.Drawing.Size(299, 26);
-            this.cb_reserve_pass_agv0609.TabIndex = 2;
-            this.cb_reserve_pass_agv0609.Text = "Force Reserve Pass(AGV06/9)";
-            this.cb_reserve_pass_agv0609.UseVisualStyleBackColor = true;
-            this.cb_reserve_pass_agv0609.CheckedChanged += new System.EventHandler(this.cb_reserve_pass_agv0609_CheckedChanged);
+            this.cmbStationPortID.FormattingEnabled = true;
+            this.cmbStationPortID.Location = new System.Drawing.Point(1073, 675);
+            this.cmbStationPortID.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.cmbStationPortID.Name = "cmbStationPortID";
+            this.cmbStationPortID.Size = new System.Drawing.Size(143, 30);
+            this.cmbStationPortID.TabIndex = 50;
+            this.cmbStationPortID.SelectedIndexChanged += new System.EventHandler(this.cmbStationPortID_SelectedIndexChanged);
+            // 
+            // label100
+            // 
+            this.label100.AutoSize = true;
+            this.label100.Location = new System.Drawing.Point(1069, 650);
+            this.label100.Name = "label100";
+            this.label100.Size = new System.Drawing.Size(80, 22);
+            this.label100.TabIndex = 51;
+            this.label100.Text = "Port ID";
+            // 
+            // AGVStationID
+            // 
+            this.AGVStationID.DataPropertyName = "AGVStationID";
+            this.AGVStationID.HeaderText = "AGVStationID";
+            this.AGVStationID.Name = "AGVStationID";
+            this.AGVStationID.Width = 155;
+            // 
+            // HasPortAuto
+            // 
+            this.HasPortAuto.DataPropertyName = "HasPortAuto";
+            this.HasPortAuto.HeaderText = "HasPortAuto";
+            this.HasPortAuto.Name = "HasPortAuto";
+            this.HasPortAuto.Width = 126;
+            // 
+            // IsReservation
+            // 
+            this.IsReservation.DataPropertyName = "IsReservation";
+            this.IsReservation.HeaderText = "IsReservation";
+            this.IsReservation.Name = "IsReservation";
+            this.IsReservation.Width = 146;
+            // 
+            // TransferMode
+            // 
+            this.TransferMode.DataPropertyName = "TransferMode";
+            this.TransferMode.HeaderText = "TransferMode";
+            this.TransferMode.Name = "TransferMode";
+            this.TransferMode.ReadOnly = true;
+            this.TransferMode.Width = 155;
+            // 
+            // IsReadySingleUnload
+            // 
+            this.IsReadySingleUnload.DataPropertyName = "IsReadySingleUnload";
+            this.IsReadySingleUnload.HeaderText = "IsReadySingleUnload";
+            this.IsReadySingleUnload.Name = "IsReadySingleUnload";
+            this.IsReadySingleUnload.Width = 206;
+            // 
+            // IsCheckPortReady
+            // 
+            this.IsCheckPortReady.DataPropertyName = "IsCheckPortReady";
+            this.IsCheckPortReady.HeaderText = "IsCheckPortReady";
+            this.IsCheckPortReady.Name = "IsCheckPortReady";
+            this.IsCheckPortReady.Width = 176;
+            // 
+            // IsEmergency
+            // 
+            this.IsEmergency.DataPropertyName = "IsEmergency";
+            this.IsEmergency.HeaderText = "IsEmergency";
+            this.IsEmergency.Name = "IsEmergency";
+            this.IsEmergency.Width = 126;
+            // 
+            // LastAskTime
+            // 
+            this.LastAskTime.DataPropertyName = "sLastAskTime";
+            this.LastAskTime.HeaderText = "LastAskTime";
+            this.LastAskTime.Name = "LastAskTime";
+            this.LastAskTime.ReadOnly = true;
+            this.LastAskTime.Width = 145;
+            // 
+            // IsTransferUnloadExcuting
+            // 
+            this.IsTransferUnloadExcuting.DataPropertyName = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.HeaderText = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.Name = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.Width = 256;
+            // 
+            // BindingVh
+            // 
+            this.BindingVh.DataPropertyName = "BindingVh";
+            this.BindingVh.HeaderText = "BindingVh";
+            this.BindingVh.Name = "BindingVh";
+            this.BindingVh.Width = 125;
+            // 
+            // DeliveryMode
+            // 
+            this.DeliveryMode.DataPropertyName = "DeliveryMode";
+            this.DeliveryMode.HeaderText = "DeliveryMode";
+            this.DeliveryMode.Name = "DeliveryMode";
+            this.DeliveryMode.ReadOnly = true;
+            this.DeliveryMode.Width = 155;
             // 
             // DebugForm
             // 
@@ -4660,13 +4792,6 @@
         private System.Windows.Forms.CheckBox ck_check_port_is_ready;
         private System.Windows.Forms.NumericUpDown numer_pre_open_agv_station_distance;
         private System.Windows.Forms.Label label47;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AGVStationID;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn HasPortAuto;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsReservation;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsTransferUnloadExcuting;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsReadySingleUnload;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsCheckPortReady;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BindingVh;
         private System.Windows.Forms.CheckBox cb_by_pass_shelf_status;
         private System.Windows.Forms.TextBox tb_Coupler3HPSafety;
         private System.Windows.Forms.TextBox tb_Coupler2HPSafety;
@@ -4717,5 +4842,24 @@
         private System.Windows.Forms.NumericUpDown num_vh_idle_time;
         private System.Windows.Forms.CheckBox cb_needCheckPortUpdateTime;
         private System.Windows.Forms.CheckBox cb_reserve_pass_agv0609;
+        private System.Windows.Forms.Label label98;
+        private System.Windows.Forms.ComboBox cmbVhType;
+        private Components.uctlButton btnVhTypeUpdate;
+        private System.Windows.Forms.Label label99;
+        private System.Windows.Forms.Button btnUpdateUnloadVhType;
+        private System.Windows.Forms.ComboBox cmbUnloadVhType;
+        private System.Windows.Forms.ComboBox cmbStationPortID;
+        private System.Windows.Forms.Label label100;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AGVStationID;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn HasPortAuto;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsReservation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TransferMode;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsReadySingleUnload;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsCheckPortReady;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsEmergency;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastAskTime;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsTransferUnloadExcuting;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BindingVh;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeliveryMode;
     }
 }

@@ -246,6 +246,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
                        Data: $"Try to reserve agv station to unload,uri:{agv_url} station id:{agv_station_id} unfinishCmdCount:{unfinishCmdCount} isEmergency:{isEmergency},result:{result}");
                     result = result.ToUpper();
+                    agvStation.LastAskTime = DateTime.Now;
                 }
                 catch (Exception ex)
                 {
@@ -254,6 +255,80 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
                 //return SCUtility.isMatche(result, UNLOAD_CHECK_RESULT_OK);
                 return result.Contains(UNLOAD_CHECK_RESULT_OK);
+            }
+
+            public (bool isCan, E_AGVStationTranMode tranMode) checkExcuteUnloadTransferToAGVStationStatus(IAGVStationType agvStation, int unfinishCmdCount, bool isEmergency)
+            {
+                //if (DebugParameter.CanUnloadToAGVStationTest)
+                //    return true;
+                //else
+                //    return false;
+                string result = "";
+                string url = "";
+                (bool isCan, E_AGVStationTranMode tranMode) parsing_result = (false, E_AGVStationTranMode.None);
+                try
+                {
+                    string agv_url = agvStation.RemoveURI;
+                    url = SCUtility.Trim(agv_url, true);
+                    string agv_station_id = agvStation.getAGVStationID();
+                    string[] action_targets = new string[]
+                    {
+                    "TransferManagement",
+                    "TransferCheck",
+                    "Swap",
+                    "AGVStation"
+                    };
+                    string[] param = new string[]
+                    {
+                    agv_station_id,
+                    $"?{nameof(unfinishCmdCount)}={unfinishCmdCount}",
+                    $"&{nameof(isEmergency)}={isEmergency}",
+                    };
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
+                       Data: $"Try to reserve agv station to unload,uri:{agv_url} station id:{agv_station_id} unfinishCmdCount:{unfinishCmdCount} isEmergency:{isEmergency}...");
+                    result = webClientManager.GetInfoFromServer(agv_url, action_targets, param);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
+                       Data: $"Try to reserve agv station to unload,uri:{agv_url} station id:{agv_station_id} unfinishCmdCount:{unfinishCmdCount} isEmergency:{isEmergency},result:{result}");
+                    result = result.ToUpper();
+                    parsing_result = ParsingCheckAGVStationStatusResult(result);
+                    agvStation.LastAskTime = DateTime.Now;
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, $"Exception:{url}");
+                    throw ex;
+                }
+                //return SCUtility.isMatche(result, UNLOAD_CHECK_RESULT_OK);
+
+
+
+                return (parsing_result.isCan, parsing_result.tranMode);
+            }
+
+            private (bool isCan, E_AGVStationTranMode tranMode) ParsingCheckAGVStationStatusResult(string checkResult)
+            {
+                bool is_can = false;
+                E_AGVStationTranMode tran_mode = default(E_AGVStationTranMode);
+                if (!checkResult.Contains(","))
+                {
+                    return (false, E_AGVStationTranMode.None);
+                }
+                string[] s_result_array = checkResult.Split(',');
+                string s_is_can = s_result_array[0];
+                string s_tran_mode = s_result_array[1];
+                string first_s_tran_mode_num = s_tran_mode.First().ToString();
+                int i_tran_mode = 0;
+                is_can = s_is_can.Contains(UNLOAD_CHECK_RESULT_OK);
+                if (!int.TryParse(first_s_tran_mode_num, out i_tran_mode))
+                {
+                    return (is_can, E_AGVStationTranMode.MoreOut);
+                }
+                tran_mode = (E_AGVStationTranMode)i_tran_mode;
+                if (!Enum.IsDefined(typeof(E_AGVStationTranMode), tran_mode))
+                {
+                    return (is_can, E_AGVStationTranMode.MoreOut);
+                }
+                return (is_can, tran_mode);
             }
 
             List<string> notify_urls = new List<string>()

@@ -416,6 +416,7 @@ namespace com.mirle.ibg3k0.sc.Common
                         eqTemp.UnitList = unit_lsit_temp;
                         eqTemp.Type = eqptType;
                         eqTemp.proc_Formaat = procDataFormat;
+                        eqTemp.recipe_Parameter_Format = recipeParameterFormat;
 
                         //AEQPT eqTemp = new AEQPT()
                         //{
@@ -665,10 +666,10 @@ namespace com.mirle.ibg3k0.sc.Common
                         }
                         else
                         {
-                            if (recoverFromDB)
-                            {
-                                put(tempVh);
-                            }
+                            //if (recoverFromDB)
+                            //{
+                            put(tempVh);
+                            //}
                         }
                     }
                     if (!scApp.getRedisCacheManager().KeyExists(SCAppConstants.REDIS_LIST_KEY_VEHICLES))
@@ -1401,14 +1402,14 @@ namespace com.mirle.ibg3k0.sc.Common
             {
                 return;
             }
-            lock (_lockVhDic[vh.VEHICLE_ID])
+            //lock (_lockVhDic[vh.VEHICLE_ID])
+            //{
+            if (vh != source_vh)
             {
-                if (vh != source_vh)
-                {
-                    //setValueToPropety<AVEHICLE>(ref source_vh, ref vh);
-                    update(source_vh);
-                }
+                //setValueToPropety<AVEHICLE>(ref source_vh, ref vh);
+                update(source_vh);
             }
+            //}
         }
         private void update(AVEHICLE vh_bo)
         {
@@ -1496,6 +1497,7 @@ namespace com.mirle.ibg3k0.sc.Common
                 //portStation.PORT_STATUS = port_station_do.PORT_STATUS;
 
                 port_station_vo.PRIORITY = portStation.PRIORITY;
+                port_station_vo.ULD_VH_TYPE = portStation.ULD_VH_TYPE;
             }
         }
         #endregion

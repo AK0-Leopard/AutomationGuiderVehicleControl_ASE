@@ -66,7 +66,14 @@ namespace com.mirle.ibg3k0.sc
             if (eq == null) return null;
             return eq;
         }
-
+        public string getSourcePortNodeID(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTSOURCE);
+            if (port_station == null) return "";
+            var eq = port_station.GetEqpt(eqptBLL);
+            if (eq == null) return "";
+            return SCUtility.Trim(eq.NODE_ID, true);
+        }
 
         public string getTragetPortEQID(BLL.PortStationBLL portStationBLL)
         {
@@ -94,6 +101,14 @@ namespace com.mirle.ibg3k0.sc
             if (port_station == null) return null;
             return port_station.GetEqpt(eqptBLL);
         }
+        public string getTragetPortNodeID(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTDESTINATION);
+            if (port_station == null) return "";
+            var eq = port_station.GetEqpt(eqptBLL);
+            if (eq == null) return "";
+            return SCUtility.Trim(eq.NODE_ID, true);
+        }
         public AEQPT getTragetPortEQ(BLL.EqptBLL eqptBLL)
         {
             var eq = eqptBLL.OperateCatch.GetEqpt(this.HOSTDESTINATION);
@@ -101,12 +116,6 @@ namespace com.mirle.ibg3k0.sc
             return eq;
         }
 
-        public bool IsTargetPortAGVStation(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
-        {
-            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTDESTINATION);
-            if (port_station == null) return false;
-            return port_station.GetEqptType(eqptBLL) == SCAppConstants.EqptType.AGVStation;
-        }
         public bool IsTargetPortAGVStation(BLL.EqptBLL eqptBLL)
         {
             var eq = eqptBLL.OperateCatch.GetEqpt(this.HOSTDESTINATION);
@@ -118,6 +127,11 @@ namespace com.mirle.ibg3k0.sc
         {
             var vh = vehicleBLL.cache.getVehicleByLocationRealID(HOSTSOURCE);
             return vh != null;
+        }
+
+        public BLL.CMDBLL.CommandTranDir GetTransferDir()
+        {
+            return BLL.CMDBLL.GetTransferDir(this);
         }
 
         public bool IsQueueTimeOut

@@ -23,8 +23,12 @@ namespace com.mirle.ibg3k0.sc.Common
         public string CST_R { get { return vh?.CST_ID_R; } }
         public string CMD_1 { get { return vh?.CMD_ID_1; } }
         public string CMD_2 { get { return vh?.CMD_ID_2; } }
+        public string CMD_3 { get { return vh?.CMD_ID_3; } }
+        public string CMD_4 { get { return vh?.CMD_ID_4; } }
         public string TRAN_CMD_ID_1 { get { return vh?.TRANSFER_ID_1; } }
         public string TRAN_CMD_ID_2 { get { return vh?.TRANSFER_ID_2; } }
+        public string TRAN_CMD_ID_3 { get { return vh?.TRANSFER_ID_3; } }
+        public string TRAN_CMD_ID_4 { get { return vh?.TRANSFER_ID_4; } }
         public string ADR_ID { get { return vh?.CUR_ADR_ID; } }
         public string SEC_ID { get { return vh?.CUR_SEC_ID; } }
         public string SEC_DIS { get { return vh?.ACC_SEC_DIST.ToString(); } }

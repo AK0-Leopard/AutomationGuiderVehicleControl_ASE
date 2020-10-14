@@ -18,8 +18,8 @@ namespace com.mirle.ibg3k0.sc.BLL
 {
     public class CMDBLL
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-        CMDDao cmd_ohtcDAO = null;
+        protected static Logger logger = LogManager.GetCurrentClassLogger();
+        protected CMDDao cmd_ohtcDAO = null;
         CMD_DetailDao cmd_ohtc_detailDAO = null;
         TransferDao cmd_mcsDao = null;
         VTransferDao vcmd_mcsDao = null;
@@ -27,6 +27,9 @@ namespace com.mirle.ibg3k0.sc.BLL
         HTransferDao hTransferDao = null;
         TestTranTaskDao testTranTaskDao = null;
         ReturnCodeMapDao return_code_mapDao = null;
+        ICommandChecker commandCheckerNormal = null;
+        ICommandChecker commandCheckerSwap = null;
+
 
         public Cache cache { get; private set; }
 
@@ -34,7 +37,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         protected static Logger logger_VhRouteLog = LogManager.GetLogger("VhRoute");
         private string[] ByPassSegment = null;
         ParkZoneTypeDao parkZoneTypeDao = null;
-        private SCApplication scApp = null;
+        protected static SCApplication scApp = null;
 
 
 
@@ -56,6 +59,9 @@ namespace com.mirle.ibg3k0.sc.BLL
             return_code_mapDao = scApp.ReturnCodeMapDao;
 
             cache = new Cache(app);
+            commandCheckerNormal = new CommandCheckerNormal(scApp);
+            commandCheckerSwap = new CommandCheckerSwap(scApp);
+
         }
 
 
@@ -778,13 +784,50 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             //if (!canAssignCmd(vh_id))
             //var checkAssignCmdResult = canAssignCmdNew(vh_id, cmd.CMD_TYPE);
-            var checkAssignCmdResult = canAssignCmdNew(vh, cmd.CMD_TYPE);
+            //var checkAssignCmdResult = canAssignCmdNew(vh, cmd.CMD_TYPE);
+            CommandTranDir transferDir = GetTransferDir(cmd.SOURCE_PORT, cmd.DESTINATION_PORT);
+            //var checkAssignCmdResult = ICanAssignCmd(vh, cmd.CMD_TYPE, transferDir);
+            var checkAssignCmdResult = CanAssignCmd(vh, cmd.CMD_TYPE, transferDir);
             if (!checkAssignCmdResult.canAssign)
             {
                 check_result.Result.AppendLine(checkAssignCmdResult.result);
                 check_result.IsSuccess = false;
             }
             return check_result.IsSuccess;
+        }
+
+        public static CommandTranDir GetTransferDir(VTRANSFER vTran)
+        {
+            string source_port = SCUtility.Trim(vTran.HOSTSOURCE, true);
+            string dest_port = SCUtility.Trim(vTran.HOSTDESTINATION, true);
+            bool is_agv_st_source_port = scApp.PortStationBLL.OperateCatch.IsAGVStationPort(scApp.EqptBLL, source_port);
+            if (is_agv_st_source_port)
+            {
+                return CommandTranDir.OutAGVStation;
+            }
+
+            bool is_agv_st_destination_port = scApp.PortStationBLL.OperateCatch.IsAGVStationPort(scApp.EqptBLL, dest_port);
+            if (is_agv_st_destination_port)
+            {
+                return CommandTranDir.InAGVStation;
+            }
+            return CommandTranDir.OutAGVStation; //當 source port並非st 且 dest 也非st時將它作為出庫的命令
+        }
+
+        public static CommandTranDir GetTransferDir(string sourcePort, string destPort)
+        {
+            bool is_agv_st_source_port = scApp.PortStationBLL.OperateCatch.IsAGVStationPort(scApp.EqptBLL, sourcePort);
+            if (is_agv_st_source_port)
+            {
+                return CommandTranDir.OutAGVStation;
+            }
+
+            bool is_agv_st_destination_port = scApp.PortStationBLL.OperateCatch.IsAGVStationPort(scApp.EqptBLL, destPort);
+            if (is_agv_st_destination_port)
+            {
+                return CommandTranDir.InAGVStation;
+            }
+            return CommandTranDir.None;
         }
 
         public bool doCreatCommand(string vh_id, string cmd_id_mcs = "", string carrier_id = "", E_CMD_TYPE cmd_type = E_CMD_TYPE.Move,
@@ -858,7 +901,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
 
                 //var check_can_assign_result = canAssignCmdNew(vh_id, cmd_type);
-                var check_can_assign_result = canAssignCmdNew(vh, cmd_type);
+                //var check_can_assign_result = canAssignCmdNew(vh, cmd_type);
+                CommandTranDir transferDir = GetTransferDir(sourcePort, destinationPort);
+                //var check_can_assign_result = ICanAssignCmd(vh, cmd_type, transferDir);
+                var check_can_assign_result = CanAssignCmd(vh, cmd_type, transferDir);
+
                 if (!check_can_assign_result.canAssign)
                 {
                     check_result.Result.AppendLine(check_can_assign_result.result);
@@ -928,7 +975,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
 
 
-        private bool IsCommandWalkable(string vh_id, E_CMD_TYPE cmd_type, string vh_current_adr, string source, string destination, out string result)
+        protected bool IsCommandWalkable(string vh_id, E_CMD_TYPE cmd_type, string vh_current_adr, string source, string destination, out string result)
         {
             bool is_walk_able = true;
             switch (cmd_type)
@@ -985,7 +1032,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
 
 
-        private bool creatCommand_OHTC(string vh_id, string cmd_id_mcs, string carrier_id, E_CMD_TYPE cmd_type,
+        protected bool creatCommand_OHTC(string vh_id, string cmd_id_mcs, string carrier_id, E_CMD_TYPE cmd_type,
                                               string source, string destination, int priority, int estimated_time, SCAppConstants.GenOHxCCommandType gen_cmd_type,
                                               out ACMD cmd_ohtc,
                                               string sourcePort = "", string destinationPort = "")
@@ -1258,7 +1305,18 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return (assign_cmd_ids != null && assign_cmd_ids.Count > 0, assign_cmd_ids);
         }
-        private const int MAX_ASSIGN_CMD_COUNT = 2;
+        public (bool hasAssign, List<string> assignCmdIDs) hasAssignCmdIgnoreMove(AVEHICLE vh)
+        {
+            string vh_id = vh.VEHICLE_ID;
+            List<string> assign_cmd_ids = null;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                assign_cmd_ids = cmd_ohtcDAO.loadAssignCmdIDIgnoreMove(con, vh_id);
+            }
+            return (assign_cmd_ids != null && assign_cmd_ids.Count > 0, assign_cmd_ids);
+        }
+        public const int MAX_ASSIGN_CMD_COUNT = 2;
+        public const int MAX_ASSIGN_CMD_COUNT_FOR_SWAP = 4;
         //private int CurrentCanAssignMAXCount = 2;
         //public void setCurrentCanAssignCmdCount(ShelfStatus shelfStatusL, ShelfStatus shelfStatusR)
         //{
@@ -1273,11 +1331,8 @@ namespace com.mirle.ibg3k0.sc.BLL
         //    }
         //    CurrentCanAssignMAXCount = can_assign_coun;
         //}
+
         public (bool canAssign, string result) canAssignCmdNew(AVEHICLE vh, E_CMD_TYPE cmdType)
-        {
-            return canAssignCmdNew(vh, cmdType, false);
-        }
-        public (bool canAssign, string result) canAssignCmdNew(AVEHICLE vh, E_CMD_TYPE cmdType, bool isPassMoveCommand)
         {
             try
             {
@@ -1319,7 +1374,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 else
                 {
                     //current_can_assign_command_count = CurrentCanAssignMAXCount - current_vh_carrier_count;
-                    current_can_assign_command_count = vh.CurrentCanAssignMAXCount - current_vh_carrier_count;
+                    current_can_assign_command_count = vh.CurrentAvailableShelf - current_vh_carrier_count;
                 }
 
                 //if (assign_cmds.Count == 0)
@@ -1373,14 +1428,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
                             if (has_move_command)
                             {
-                                if (isPassMoveCommand)
-                                {
-                                    return (true, "");
-                                }
-                                else
-                                {
-                                    return (false, "has move command excute, can't assign transfer commmand");
-                                }
+                                return (false, "has move command excute, can't assign transfer commmand");
                             }
                             else
                             {
@@ -1406,6 +1454,163 @@ namespace com.mirle.ibg3k0.sc.BLL
             //}
         }
 
+        public (bool canAssign, string result) canAssignCmdSwap(AVEHICLE vh, E_CMD_TYPE cmdType, bool is_agv_st_will_go_source_port, bool is_agv_st_will_go_destination_port)
+        {
+            try
+            {
+                string vh_id = vh.VEHICLE_ID;
+                List<ACMD> assign_cmds = null;
+                //1.如果是Move則需要在沒有執行任何命令下才可以指派
+                //2.如果是Trasfer命令，則需要在
+                //  a.沒有Move命令下才可以指派
+                //  b.AGV車上需要有足夠的周轉空間
+                //    b-1.周轉空間=0，無法指派新命令
+                //    b-2.周轉空間=1，僅能指派一筆load from st & 一筆unload to st
+                //    b-3.周轉空間=2，可以指派最多兩筆Load from & 兩筆unload to station
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    assign_cmds = cmd_ohtcDAO.loadAssignCmd(con, vh_id);
+                }
+                int current_vh_carrier_count = 0;
+                if (vh.HAS_CST_L)
+                {
+                    bool cst_l_is_in_commanding = assign_cmds.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, vh.CST_ID_L)).Count() > 0;
+                    //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
+                    if (!cst_l_is_in_commanding)
+                    {
+                        current_vh_carrier_count++;
+                    }
+                }
+                if (vh.HAS_CST_R)
+                {
+                    bool cst_r_is_in_commanding = assign_cmds.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, vh.CST_ID_R)).Count() > 0;
+                    //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
+                    if (!cst_r_is_in_commanding)
+                    {
+                        current_vh_carrier_count++;
+                    }
+                }
+                //int current_can_assign_command_count = CurrentCanAssignMAXCount - current_vh_carrier_count;
+                int current_can_turnover_shelf_space_count = MAX_ASSIGN_CMD_COUNT - current_vh_carrier_count;
+                if (SystemParameter.IsByPassAGVShelfStatus)
+                {
+                    current_can_turnover_shelf_space_count = MAX_ASSIGN_CMD_COUNT - current_vh_carrier_count;
+                }
+                else
+                {
+                    //current_can_assign_command_count = CurrentCanAssignMAXCount - current_vh_carrier_count;
+                    current_can_turnover_shelf_space_count = vh.CurrentAvailableShelf - current_vh_carrier_count;
+                }
+
+                //if (assign_cmds.Count == 0)
+                //    return (true, "");
+                //else
+                //{
+                switch (cmdType)
+                {
+                    case E_CMD_TYPE.Move:
+                    case E_CMD_TYPE.Move_Charger:
+                        if (assign_cmds.Count == 0)
+                        {
+                            return (true, "");
+                        }
+                        else
+                        {
+                            return (false, "has command excute, can't assign move/move to change commmand");
+                        }
+                    case E_CMD_TYPE.Unload:
+                        if (assign_cmds.Count == 0)
+                        {
+                            return (true, "");
+                        }
+                        else
+                        {
+                            bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
+                            if (has_move_command)
+                            {
+                                return (false, "has move command excute, can't assign transfer commmand");
+                            }
+                            else
+                            {
+                                return (true, "");
+                            }
+                        }
+                    //return (true, "");//Unload一律都回覆OK，不然遇到身上已經載2個CST的，會無法下命令
+                    default:
+                        if (current_can_turnover_shelf_space_count <= 0)
+                        {
+                            return (false, $"currrent agv of trunover shelf space count:{current_can_turnover_shelf_space_count}");
+                        }
+
+                        if (assign_cmds.Count == 0)
+                        {
+                            return (true, "");
+                        }
+                        else
+                        {
+                            bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
+                            if (has_move_command)
+                            {
+                                return (false, "has move command excute, can't assign transfer commmand");
+                            }
+                            else
+                            {
+                                int current_assign_source_is_agv_st_cmd_count =
+                                    assign_cmds.Where(cmd => cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL)).Count();
+                                int current_assign_destination_agv_st_cmd_count =
+                                    assign_cmds.Where(cmd => cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL)).Count();
+                                //bool is_agv_st_will_go_source_port = portStationBLL.OperateCatch.IsAGVStationPort(eqptBLL, Source);
+                                //bool is_agv_st_will_go_destination_port = portStationBLL.OperateCatch.IsAGVStationPort(eqptBLL, Destination);
+                                if (current_can_turnover_shelf_space_count == 1)
+                                {
+                                    if (is_agv_st_will_go_source_port)
+                                    {
+                                        if (current_assign_source_is_agv_st_cmd_count >= 1)
+                                        {
+                                            return (false, $"want to assign source port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                           $"and current assign source is agv st. count:{current_assign_source_is_agv_st_cmd_count},can't assign transfer command.");
+                                        }
+                                    }
+                                    else if (is_agv_st_will_go_destination_port)
+                                    {
+                                        if (current_assign_destination_agv_st_cmd_count >= 1)
+                                        {
+                                            return (false, $"want to assign destination port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                           $"and current assign destination is agv st. count:{current_assign_destination_agv_st_cmd_count},can't assign transfer command.");
+                                        }
+                                    }
+                                }
+                                else if (current_can_turnover_shelf_space_count > 1)
+                                {
+                                    if (is_agv_st_will_go_source_port)
+                                    {
+                                        if (current_assign_source_is_agv_st_cmd_count >= 2)
+                                        {
+                                            return (false, $"want to assign source port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                           $"and current assign source is agv st. count:{current_assign_source_is_agv_st_cmd_count},can't assign transfer command.");
+                                        }
+                                    }
+                                    else if (is_agv_st_will_go_destination_port)
+                                    {
+                                        if (current_assign_destination_agv_st_cmd_count >= 2)
+                                        {
+                                            return (false, $"want to assign destination port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                           $"and current assign destination is agv st. count:{current_assign_destination_agv_st_cmd_count},can't assign transfer command.");
+                                        }
+                                    }
+                                }
+                                return (true, "");
+                            }
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return (false, ex.ToString());
+            }
+            //}
+        }
         //public bool canSendCmd(string vhID)
         public bool canSendCmd(AVEHICLE vh)
         {
@@ -1422,7 +1627,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             else
             {
                 //current_can_assign_command_count = CurrentCanAssignMAXCount;
-                current_can_assign_command_count = vh.CurrentCanAssignMAXCount;
+                current_can_assign_command_count = vh.CurrentAvailableShelf;
             }
             //return count < CurrentCanAssignMAXCount;
             return count < current_can_assign_command_count;
@@ -1479,6 +1684,29 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return cmds;
         }
+
+        public (bool canAssign, string result) CanAssignCmd(AVEHICLE vh, E_CMD_TYPE cmdType, CommandTranDir transferDir)
+        {
+            var command_checker = GetCommandChecker(vh);
+            return command_checker.CanAssignCommand(vh, cmdType, transferDir);
+        }
+        public ICommandChecker GetCommandChecker(AVEHICLE vh)
+        {
+            switch (vh.VEHICLE_TYPE)
+            {
+                case E_VH_TYPE.Swap:
+                    return commandCheckerSwap;
+                default:
+                    return commandCheckerNormal;
+            }
+        }
+
+        public bool canSendCmdNew(AVEHICLE vh)
+        {
+            var command_checker = GetCommandChecker(vh);
+            return command_checker.canSendCmdNew(vh);
+        }
+
 
 
 
@@ -2125,6 +2353,363 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         }
 
-
+        public enum CommandTranDir
+        {
+            None,
+            InAGVStation,
+            OutAGVStation
+        }
     }
+    public interface ICommandChecker
+    {
+        (bool canAssign, string result) CanAssignCommand(AVEHICLE vh, E_CMD_TYPE cmdType, CMDBLL.CommandTranDir transferDir);
+        bool canSendCmdNew(AVEHICLE vh);
+    }
+
+    public class CommandCheckerNormal : ICommandChecker
+    {
+        protected static Logger logger = LogManager.GetCurrentClassLogger();
+        SCApplication scApp = null;
+        public CommandCheckerNormal(SCApplication _scApp)
+        {
+            scApp = _scApp;
+        }
+        public bool canSendCmdNew(AVEHICLE vh)
+        {
+            int count = 0;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                count = scApp.CMDCDao.getVhExcuteCMDConut(con, vh.VEHICLE_ID);
+            }
+            int current_can_assign_command_count = CMDBLL.MAX_ASSIGN_CMD_COUNT;
+            if (SystemParameter.IsByPassAGVShelfStatus)
+            {
+                current_can_assign_command_count = CMDBLL.MAX_ASSIGN_CMD_COUNT;
+            }
+            else
+            {
+                //current_can_assign_command_count = CurrentCanAssignMAXCount;
+                current_can_assign_command_count = vh.CurrentAvailableShelf;
+            }
+            //return count < CurrentCanAssignMAXCount;
+            return count < current_can_assign_command_count;
+        }
+        public (bool canAssign, string result) CanAssignCommand(AVEHICLE vh, E_CMD_TYPE cmdType, CMDBLL.CommandTranDir transferDir)
+        {
+            try
+            {
+                string vh_id = vh.VEHICLE_ID;
+                List<ACMD> assign_cmds = null;
+                //1.如果是Move則需要在沒有執行任何命令下才可以指派
+                //2.如果是Trasfer命令，則需要在
+                //  a.沒有Move命令下才可以指派
+                //  b.已經指派的命令要小於2
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    assign_cmds = scApp.CMDCDao.loadAssignCmd(con, vh_id);
+                }
+                int current_vh_carrier_count = 0;
+                if (vh.HAS_CST_L)
+                {
+                    bool cst_l_is_in_commanding = assign_cmds.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, vh.CST_ID_L)).Count() > 0;
+                    //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
+                    if (!cst_l_is_in_commanding)
+                    {
+                        current_vh_carrier_count++;
+                    }
+                }
+                if (vh.HAS_CST_R)
+                {
+                    bool cst_r_is_in_commanding = assign_cmds.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, vh.CST_ID_R)).Count() > 0;
+                    //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
+                    if (!cst_r_is_in_commanding)
+                    {
+                        current_vh_carrier_count++;
+                    }
+                }
+                //int current_can_assign_command_count = CurrentCanAssignMAXCount - current_vh_carrier_count;
+                int current_can_assign_command_count = CMDBLL.MAX_ASSIGN_CMD_COUNT - current_vh_carrier_count;
+                if (SystemParameter.IsByPassAGVShelfStatus)
+                {
+                    current_can_assign_command_count = CMDBLL.MAX_ASSIGN_CMD_COUNT - current_vh_carrier_count;
+                }
+                else
+                {
+                    //current_can_assign_command_count = CurrentCanAssignMAXCount - current_vh_carrier_count;
+                    current_can_assign_command_count = vh.CurrentAvailableShelf - current_vh_carrier_count;
+                }
+
+                //if (assign_cmds.Count == 0)
+                //    return (true, "");
+                //else
+                //{
+                switch (cmdType)
+                {
+                    case E_CMD_TYPE.Move:
+                    case E_CMD_TYPE.Move_Charger:
+                        if (assign_cmds.Count == 0)
+                        {
+                            return (true, "");
+                        }
+                        else
+                        {
+                            return (false, "has command excute, can't assign move/move to change commmand");
+                        }
+                    case E_CMD_TYPE.Unload:
+                        if (assign_cmds.Count == 0)
+                        {
+                            return (true, "");
+                        }
+                        else
+                        {
+                            bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
+                            if (has_move_command)
+                            {
+                                return (false, "has move command excute, can't assign transfer commmand");
+                            }
+                            else
+                            {
+                                return (true, "");
+                            }
+                        }
+                    //return (true, "");//Unload一律都回覆OK，不然遇到身上已經載2個CST的，會無法下命令
+                    default:
+                        if (assign_cmds.Count == 0)
+                        {
+                            if (current_can_assign_command_count == 0)
+                            {
+                                return (false, $"currrent can assign cmd count:{current_can_assign_command_count}");
+                            }
+                            else
+                            {
+                                return (true, "");
+                            }
+                        }
+                        else
+                        {
+                            bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
+                            if (has_move_command)
+                            {
+                                return (false, "has move command excute, can't assign transfer commmand");
+                            }
+                            else
+                            {
+                                //if (assign_cmds.Count < MAX_ASSIGN_COM_COUNT)
+                                if (assign_cmds.Count < current_can_assign_command_count)
+                                {
+                                    return (true, "");
+                                }
+                                else
+                                {
+                                    return (false, $"vh:{vh_id} can assign count:[{current_can_assign_command_count}], has [{assign_cmds.Count}] commands excute and current carrier [{current_vh_carrier_count}] cst," +
+                                                   $" can't assign transfer commmand");
+                                }
+                            }
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return (false, ex.ToString());
+            }
+        }
+    }
+
+
+    public class CommandCheckerSwap : ICommandChecker
+    {
+        protected static Logger logger = LogManager.GetCurrentClassLogger();
+        SCApplication scApp = null;
+        public CommandCheckerSwap(SCApplication _scApp)
+        {
+            scApp = _scApp;
+        }
+        public bool canSendCmdNew(AVEHICLE vh)
+        {
+            int count = 0;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                count = scApp.CMDCDao.getVhExcuteCMDConut(con, vh.VEHICLE_ID);
+            }
+            int current_can_assign_command_count = CMDBLL.MAX_ASSIGN_CMD_COUNT_FOR_SWAP;
+            if (SystemParameter.IsByPassAGVShelfStatus)
+            {
+                current_can_assign_command_count = CMDBLL.MAX_ASSIGN_CMD_COUNT_FOR_SWAP;
+            }
+            else
+            {
+                //current_can_assign_command_count = CurrentCanAssignMAXCount;
+                if (vh.CurrentAvailableShelf == 1)
+                {
+                    current_can_assign_command_count = 2;
+                }
+                else
+                {
+                    current_can_assign_command_count = 4;
+                }
+            }
+            //return count < CurrentCanAssignMAXCount;
+            return count < current_can_assign_command_count;
+        }
+        public (bool canAssign, string result) CanAssignCommand(AVEHICLE vh, E_CMD_TYPE cmdType, CMDBLL.CommandTranDir transferDir)
+        {
+            try
+            {
+                string vh_id = vh.VEHICLE_ID;
+                List<ACMD> assign_cmds = null;
+                //1.如果是Move則需要在沒有執行任何命令下才可以指派
+                //2.如果是Trasfer命令，則需要在
+                //  a.沒有Move命令下才可以指派
+                //  b.AGV車上需要有足夠的周轉空間
+                //    b-1.周轉空間=0，無法指派新命令
+                //    b-2.周轉空間=1，僅能指派一筆load from st & 一筆unload to st
+                //    b-3.周轉空間=2，可以指派最多兩筆Load from & 兩筆unload to station
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    assign_cmds = scApp.CMDCDao.loadAssignCmd(con, vh_id);
+                }
+                int current_vh_carrier_count = 0;
+                if (vh.HAS_CST_L)
+                {
+                    bool cst_l_is_in_commanding = assign_cmds.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, vh.CST_ID_L)).Count() > 0;
+                    //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
+                    if (!cst_l_is_in_commanding)
+                    {
+                        current_vh_carrier_count++;
+                    }
+                }
+                if (vh.HAS_CST_R)
+                {
+                    bool cst_r_is_in_commanding = assign_cmds.Where(cmd => SCUtility.isMatche(cmd.CARRIER_ID, vh.CST_ID_R)).Count() > 0;
+                    //如果身上的CST 不再執行的命令中，則需要用CST 來佔一個Command的位置
+                    if (!cst_r_is_in_commanding)
+                    {
+                        current_vh_carrier_count++;
+                    }
+                }
+                //int current_can_assign_command_count = CurrentCanAssignMAXCount - current_vh_carrier_count;
+                int current_can_turnover_shelf_space_count = CMDBLL.MAX_ASSIGN_CMD_COUNT - current_vh_carrier_count;
+                if (SystemParameter.IsByPassAGVShelfStatus)
+                {
+                    current_can_turnover_shelf_space_count = CMDBLL.MAX_ASSIGN_CMD_COUNT - current_vh_carrier_count;
+                }
+                else
+                {
+                    //current_can_assign_command_count = CurrentCanAssignMAXCount - current_vh_carrier_count;
+                    current_can_turnover_shelf_space_count = vh.CurrentAvailableShelf - current_vh_carrier_count;
+                }
+
+                //if (assign_cmds.Count == 0)
+                //    return (true, "");
+                //else
+                //{
+                switch (cmdType)
+                {
+                    case E_CMD_TYPE.Move:
+                    case E_CMD_TYPE.Move_Charger:
+                        if (assign_cmds.Count == 0)
+                        {
+                            return (true, "");
+                        }
+                        else
+                        {
+                            return (false, "has command excute, can't assign move/move to change commmand");
+                        }
+                    case E_CMD_TYPE.Unload:
+                        if (assign_cmds.Count == 0)
+                        {
+                            return (true, "");
+                        }
+                        else
+                        {
+                            bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
+                            if (has_move_command)
+                            {
+                                return (false, "has move command excute, can't assign transfer commmand");
+                            }
+                            else
+                            {
+                                return (true, "");
+                            }
+                        }
+                    //return (true, "");//Unload一律都回覆OK，不然遇到身上已經載2個CST的，會無法下命令
+                    default:
+                        if (current_can_turnover_shelf_space_count <= 0)
+                        {
+                            return (false, $"currrent agv of trunover shelf space count:{current_can_turnover_shelf_space_count}");
+                        }
+
+                        if (assign_cmds.Count == 0)
+                        {
+                            return (true, "");
+                        }
+                        else
+                        {
+                            bool has_move_command = assign_cmds.Where(cmd => cmd.IsMoveCommand).Count() != 0;
+                            if (has_move_command)
+                            {
+                                return (false, "has move command excute, can't assign transfer commmand");
+                            }
+                            else
+                            {
+                                int current_assign_source_is_agv_st_cmd_count =
+                                    assign_cmds.Where(cmd => cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL)).Count();
+                                int current_assign_destination_agv_st_cmd_count =
+                                    assign_cmds.Where(cmd => cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL)).Count();
+                                //bool is_agv_st_will_go_source_port = portStationBLL.OperateCatch.IsAGVStationPort(eqptBLL, Source);
+                                //bool is_agv_st_will_go_destination_port = portStationBLL.OperateCatch.IsAGVStationPort(eqptBLL, Destination);
+                                if (current_can_turnover_shelf_space_count == 1)
+                                {
+                                    switch (transferDir)
+                                    {
+                                        case CMDBLL.CommandTranDir.InAGVStation:
+                                            if (current_assign_destination_agv_st_cmd_count >= 1)
+                                            {
+                                                return (false, $"want to assign destination port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                               $"and current assign destination is agv st. count:{current_assign_destination_agv_st_cmd_count},can't assign transfer command.");
+                                            }
+                                            break;
+                                        case CMDBLL.CommandTranDir.OutAGVStation:
+                                            if (current_assign_source_is_agv_st_cmd_count >= 1)
+                                            {
+                                                return (false, $"want to assign source port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                               $"and current assign source is agv st. count:{current_assign_source_is_agv_st_cmd_count},can't assign transfer command.");
+                                            }
+                                            break;
+                                    }
+                                }
+                                else if (current_can_turnover_shelf_space_count > 1)
+                                {
+                                    switch (transferDir)
+                                    {
+                                        case CMDBLL.CommandTranDir.InAGVStation:
+                                            if (current_assign_destination_agv_st_cmd_count >= 2)
+                                            {
+                                                return (false, $"want to assign destination port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                               $"and current assign destination is agv st. count:{current_assign_destination_agv_st_cmd_count},can't assign transfer command.");
+                                            }
+                                            break;
+                                        case CMDBLL.CommandTranDir.OutAGVStation:
+                                            if (current_assign_source_is_agv_st_cmd_count >= 2)
+                                            {
+                                                return (false, $"want to assign source port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                               $"and current assign source is agv st. count:{current_assign_source_is_agv_st_cmd_count},can't assign transfer command.");
+                                            }
+                                            break;
+                                    }
+                                }
+                                return (true, "");
+                            }
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return (false, ex.ToString());
+            }
+        }
+    }
+
 }

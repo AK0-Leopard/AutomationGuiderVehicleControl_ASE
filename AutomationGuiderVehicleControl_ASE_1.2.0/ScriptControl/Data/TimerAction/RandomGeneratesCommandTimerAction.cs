@@ -157,7 +157,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             Console.WriteLine(string.Format("Car Type:{0},Index:{1}", car_type, task_RandomIndex));
             TranTask tranTask = lstTranTask[task_RandomIndex];
             //Task.Run(() => mcsManager.sendTranCmd(tranTask.SourcePort, tranTask.DestinationPort));
-            sendTranCmd("CST02", tranTask.SourcePort, tranTask.DestinationPort);
+            //sendTranCmd("CST02", tranTask.SourcePort, tranTask.DestinationPort);
         }
 
         private void Taichung()
@@ -223,22 +223,13 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
                 if (is_find)
                 {
-                    sendTranCmd(carrier_id, tranTask.SourcePort, tranTask.DestinationPort);
+                    //sendTranCmd(carrier_id, tranTask.SourcePort, tranTask.DestinationPort);
                     //SpinWait.SpinUntil(() => false, 1000);
                     //sendTranCmd(carrier_id, tranTask.DestinationPort, tranTask.SourcePort);
                 }
             }
         }
 
-        public void sendTranCmd(string carrier_id, string source_port, string destn_port)
-        {
-            string cmdType = string.Concat(source_port, "To", destn_port);
-            string cmdID = DateTime.Now.ToString("yyyyMMddHHmmssfffff");
-            //scApp.CMDBLL.doTransferCommand(cmdID, "0", "0", carrier_id, source_port, destn_port, SECSConst.HCACK_Confirm);
-            SpinWait.SpinUntil(() => false, 5000);
-            //scApp.CMDBLL.checkMCSTransferCommand();
-            scApp.TransferService.Scan();
-        }
         public void creatMoveCommand(string vhID, string targetAdr)
         {
             //scApp.CMDBLL.doCreatCommand(vhID, string.Empty, string.Empty,

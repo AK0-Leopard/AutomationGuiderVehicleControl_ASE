@@ -170,6 +170,29 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
                 return true;
             }
+            public bool updatePortUnloadVhType(string portID, E_VH_TYPE vhType)
+            {
+                try
+                {
+                    APORTSTATION port_statino = new APORTSTATION();
+                    port_statino.PORT_ID = portID;
+                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                    {
+                        con.APORTSTATION.Attach(port_statino);
+                        port_statino.ULD_VH_TYPE = vhType;
+
+                        con.Entry(port_statino).Property(p => p.ULD_VH_TYPE).IsModified = true;
+
+                        portStationDao.update(con, port_statino);
+                        con.Entry(port_statino).State = EntityState.Detached;
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+                return true;
+            }
         }
         public class Catch
         {
@@ -278,6 +301,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                 if (port_station == null) return false;
                 return port_station.GetEqptType(eqptBLL) == SCAppConstants.EqptType.Equipment;
             }
+            public bool IsAGVStationPort(EqptBLL eqptBLL, string portID)
+            {
+                APORTSTATION port_station = CacheManager.getPortStation(portID);
+                if (port_station == null) return false;
+                return port_station.GetEqptType(eqptBLL) == SCAppConstants.EqptType.AGVStation;
+            }
 
             public bool updatePriority(string portID, int priority)
             {
@@ -314,6 +343,20 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     APORTSTATION port_station = CacheManager.getPortStation(portID);
                     port_station.PORT_STATUS = status;
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    return false;
+                }
+                return true;
+            }
+            public bool updatePortUnloadVhType(string portID, E_VH_TYPE vhType)
+            {
+                try
+                {
+                    APORTSTATION port_station = CacheManager.getPortStation(portID);
+                    port_station.ULD_VH_TYPE = vhType;
                 }
                 catch (Exception ex)
                 {

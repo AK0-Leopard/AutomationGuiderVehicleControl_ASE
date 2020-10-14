@@ -81,7 +81,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_Abort_Type.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.CancelActionType));
             cmb_cycle_run_type.DataSource = Enum.GetValues(typeof(DebugParameter.CycleRunTestType));
             cbTranMode.DataSource = Enum.GetValues(typeof(DebugParameter.TransferModeType));
-
+            cmbVhType.DataSource = Enum.GetValues(typeof(E_VH_TYPE));
+            cmbUnloadVhType.DataSource = Enum.GetValues(typeof(E_VH_TYPE));
 
             mcsMapAction = SCApplication.getInstance().getEQObjCacheManager().getLine().getMapActionByIdentityKey(typeof(ASEMCSDefaultMapAction).Name) as ASEMCSDefaultMapAction;
 
@@ -142,6 +143,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             agvStations = bcApp.SCApplication.EqptBLL.OperateCatch.loadAllAGVStation();
             dgv_AGVStationInfo.DataSource = agvStations;
+            string[] agv_station_ids = agvStations.Select(station => station.EQPT_ID).ToArray();
+            BCUtility.setComboboxDataSource(cmbStationPortID, agv_station_ids.ToArray());
 
             tabControl1.TabPages.RemoveAt(1);
 
@@ -484,6 +487,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 command_ids = bcApp.SCApplication.CMDBLL.loadUnfinishCmd(vh_id)?.Select(cmd => cmd.ID).ToArray();
             });
             BCUtility.setComboboxDataSource(cmb_command_ids, command_ids);
+            cmbVhType.SelectedItem = noticeCar?.VEHICLE_TYPE;
         }
 
         private void uctl_Btn1_Click(object sender, EventArgs e)
@@ -1551,6 +1555,50 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_reserve_pass_agv0609_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.isForcedPassReserve_AGV0609 = cb_reserve_pass_agv0609.Checked;
+        }
+
+        private async void vhType_Update_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                E_VH_TYPE vh_type;
+                Enum.TryParse(cmbVhType.SelectedValue.ToString(), out vh_type);
+                btnVhTypeUpdate.Enabled = false;
+                await Task.Run(() => bcApp.SCApplication.VehicleService.updateVhType(vh_id, vh_type));
+                cmbVhType.SelectedItem = noticeCar.VEHICLE_TYPE;
+            }
+            finally
+            {
+                btnVhTypeUpdate.Enabled = true;
+            }
+        }
+
+        private async void btnUpdateUnloadVhType_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string port_id = cmbStationPortID.Text;
+                E_VH_TYPE vh_type;
+                Enum.TryParse(cmbUnloadVhType.SelectedValue.ToString(), out vh_type);
+                btnUpdateUnloadVhType.Enabled = false;
+                await Task.Run(() => bcApp.SCApplication.PortStationService.doUpdatePortUnloadVhType(port_id, vh_type));
+            }
+            finally
+            {
+                btnUpdateUnloadVhType.Enabled = true;
+            }
+        }
+
+        private void dgv_AGVStationInfo_SelectionChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbStationPortID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string port_id = cmbStationPortID.Text;
+            var port_st_obj = bcApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(port_id);
+            cmbUnloadVhType.SelectedItem = port_st_obj.ULD_VH_TYPE;
         }
     }
 }

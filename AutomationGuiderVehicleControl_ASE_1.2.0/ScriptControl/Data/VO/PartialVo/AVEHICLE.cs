@@ -334,6 +334,10 @@ namespace com.mirle.ibg3k0.sc
         public string CMD_ID_1 { get; set; }
         public string TRANSFER_ID_2 { get; set; }
         public string CMD_ID_2 { get; set; }
+        public string TRANSFER_ID_3 { get; set; }
+        public string CMD_ID_3 { get; set; }
+        public string TRANSFER_ID_4 { get; set; }
+        public string CMD_ID_4 { get; set; }
         public string CurrentExcuteCmdID { get; set; }
         public string PreExcute_Transfer_ID { get; set; }
         public List<Location> CarrierLocation { get; private set; }
@@ -376,19 +380,19 @@ namespace com.mirle.ibg3k0.sc
             get { return CarrierLocation[VEHICLE_CARRIER_LOCATION_L_INDEX].ShelfStatus; }
             set { CarrierLocation[VEHICLE_CARRIER_LOCATION_L_INDEX].setShelfStatus(value); }
         }
-        public int CurrentCanAssignMAXCount { get; private set; } = 2;
+        public int CurrentAvailableShelf { get; private set; } = 2;
         public void setCurrentCanAssignCmdCount(ShelfStatus shelfStatusL, ShelfStatus shelfStatusR)
         {
-            int can_assign_coun = 0;
+            int available_count = 0;
             if (shelfStatusR == ShelfStatus.Enable)
             {
-                can_assign_coun++;
+                available_count++;
             }
             if (shelfStatusL == ShelfStatus.Enable)
             {
-                can_assign_coun++;
+                available_count++;
             }
-            CurrentCanAssignMAXCount = can_assign_coun;
+            CurrentAvailableShelf = available_count;
         }
         public string getLoctionRealID(AGVLocation location)
         {
@@ -950,6 +954,73 @@ namespace com.mirle.ibg3k0.sc
                 }
             }
             return IsListening;
+        }
+
+        public bool IsStanby(BLL.CMDBLL cmdBLL)
+        {
+            if (!this.isTcpIpConnect)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
+                   Data: $"vh id:{this.VEHICLE_ID} of tcp ip connection is :{this.isTcpIpConnect}" +
+                         $"so filter it out",
+                   VehicleID: this.VEHICLE_ID,
+                   CST_ID_L: this.CST_ID_L,
+                   CST_ID_R: this.CST_ID_R);
+                return false;
+            }
+            if (this.IsError)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
+                   Data: $"vh id:{this.VEHICLE_ID} of error flag is :{this.IsError}" +
+                         $"so filter it out",
+                   VehicleID: this.VEHICLE_ID,
+                   CST_ID_L: this.CST_ID_L,
+                   CST_ID_R: this.CST_ID_R);
+                return false;
+            }
+            if (this.BatteryLevel == BatteryLevel.Low)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
+                   Data: $"vh id:{this.VEHICLE_ID} of BatteryLevel:{this.BatteryLevel} , BatteryCapacity:{this.BatteryCapacity}," +
+                         $"so filter it out",
+                   VehicleID: this.VEHICLE_ID,
+                   CST_ID_L: this.CST_ID_L,
+                   CST_ID_R: this.CST_ID_R);
+                return false;
+            }
+            if (this.MODE_STATUS != VHModeStatus.AutoRemote)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
+                   Data: $"vh id:{this.VEHICLE_ID} current mode status is {this.MODE_STATUS}," +
+                         $"so filter it out",
+                   VehicleID: this.VEHICLE_ID,
+                   CST_ID_L: this.CST_ID_L,
+                   CST_ID_R: this.CST_ID_R);
+                return false;
+            }
+            if (SCUtility.isEmpty(this.CUR_ADR_ID))
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
+                   Data: $"vh id:{this.VEHICLE_ID} current address is empty," +
+                         $"so filter it out",
+                   VehicleID: this.VEHICLE_ID,
+                   CST_ID_L: this.CST_ID_L,
+                   CST_ID_R: this.CST_ID_R);
+                return false;
+            }
+
+            var has_assign_cmd = cmdBLL.hasAssignCmdIgnoreMove(this);
+            if (has_assign_cmd.hasAssign)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
+                   Data: $"vh id:{this.VEHICLE_ID} has assign command cmd ids:{string.Join(",", has_assign_cmd.assignCmdIDs)}," +
+                         $"so filter it out",
+                   VehicleID: this.VEHICLE_ID,
+                   CST_ID_L: this.CST_ID_L,
+                   CST_ID_R: this.CST_ID_R);
+                return false;
+            }
+            return true;
         }
 
 

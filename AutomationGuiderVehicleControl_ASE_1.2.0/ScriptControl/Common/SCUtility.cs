@@ -844,8 +844,12 @@ namespace com.mirle.ibg3k0.sc.Common
             logEntry.CST_R = Trim(vh_DO.CST_ID_R, true);
             logEntry.CMD_1 = Trim(vh_DO.CMD_ID_1, true);
             logEntry.CMD_2 = Trim(vh_DO.CMD_ID_2, true);
+            logEntry.CMD_3 = Trim(vh_DO.CMD_ID_3, true);
+            logEntry.CMD_4 = Trim(vh_DO.CMD_ID_4, true);
             logEntry.TRAN_CMD_ID_1 = Trim(vh_DO.TRANSFER_ID_1, true);
             logEntry.TRAN_CMD_ID_2 = Trim(vh_DO.TRANSFER_ID_2, true);
+            logEntry.TRAN_CMD_ID_3 = Trim(vh_DO.TRANSFER_ID_3, true);
+            logEntry.TRAN_CMD_ID_4 = Trim(vh_DO.TRANSFER_ID_4, true);
             logEntry.ADR_ID = Trim(vh_DO.CUR_ADR_ID, true);
             logEntry.SEC_ID = Trim(vh_DO.CUR_SEC_ID, true);
             logEntry.SEC_DIS = vh_DO.ACC_SEC_DIST;

@@ -105,6 +105,34 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
                 NotifyPropertyChanged(BCFUtility.getPropertyName(() => this.TRANSFER_ID_2));
             }
         }
+        [DisplayName("Transfer cmd 3")]
+        public string TRANSFER_ID_3
+        {
+            get
+            {
+                return vehicle.TRANSFER_ID_3 == null ?
+                    string.Empty : vehicle.TRANSFER_ID_3.Trim();
+            }
+            set
+            {
+                vehicle.TRANSFER_ID_3 = value;
+                NotifyPropertyChanged(BCFUtility.getPropertyName(() => this.TRANSFER_ID_3));
+            }
+        }
+        [DisplayName("Transfer cmd 4")]
+        public string TRANSFER_ID_4
+        {
+            get
+            {
+                return vehicle.TRANSFER_ID_4 == null ?
+                    string.Empty : vehicle.TRANSFER_ID_4.Trim();
+            }
+            set
+            {
+                vehicle.TRANSFER_ID_4 = value;
+                NotifyPropertyChanged(BCFUtility.getPropertyName(() => this.TRANSFER_ID_4));
+            }
+        }
         [DisplayName("Command ID 1")]
         public string CMD_ID_1
         {
@@ -131,6 +159,34 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
             {
                 vehicle.CMD_ID_2 = value;
                 NotifyPropertyChanged(BCFUtility.getPropertyName(() => this.CMD_ID_2));
+            }
+        }
+        [DisplayName("Commnad ID 3")]
+        public string CMD_ID_3
+        {
+            get
+            {
+                return vehicle.CMD_ID_3 == null ?
+                    string.Empty : vehicle.CMD_ID_3.Trim();
+            }
+            set
+            {
+                vehicle.CMD_ID_3 = value;
+                NotifyPropertyChanged(BCFUtility.getPropertyName(() => this.CMD_ID_3));
+            }
+        }
+        [DisplayName("Commnad ID 4")]
+        public string CMD_ID_4
+        {
+            get
+            {
+                return vehicle.CMD_ID_4 == null ?
+                    string.Empty : vehicle.CMD_ID_4.Trim();
+            }
+            set
+            {
+                vehicle.CMD_ID_4 = value;
+                NotifyPropertyChanged(BCFUtility.getPropertyName(() => this.CMD_ID_4));
             }
         }
         //[DisplayName("CST ID")]
@@ -369,6 +425,17 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
                 NotifyPropertyChanged(BCFUtility.getPropertyName(() => this.UPD_TIME));
             }
         }
+        [DisplayName("Type")]
+        public E_VH_TYPE VEHICLE_TYPE
+        {
+            get { return vehicle.VEHICLE_TYPE; }
+            set
+            {
+                vehicle.VEHICLE_TYPE = value;
+                NotifyPropertyChanged(BCFUtility.getPropertyName(() => this.VEHICLE_TYPE));
+            }
+        }
+
         //[DisplayName("Cycle Zone ID")]
         //public string cYCLERUN_ID
         //{

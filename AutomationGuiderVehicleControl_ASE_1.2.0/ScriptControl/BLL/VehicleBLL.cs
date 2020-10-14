@@ -71,6 +71,11 @@ namespace com.mirle.ibg3k0.sc.BLL
             db.updataVehicleRemove(vh_id);
             cache.updataVehicleRemove(vh_id);
         }
+        public void updataVehicleType(string vh_id, E_VH_TYPE vhType)
+        {
+            db.updataVehicleType(vh_id, vhType);
+            cache.updataVehicleType(vh_id, vhType);
+        }
         public VHModeStatus DecideVhModeStatus(string vhID, VHModeStatus vh_current_mode_status, uint batteryCapacity)
         {
             AVEHICLE eqpt = cache.getVehicle(vhID);
@@ -376,8 +381,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                 ACTSTATUS = vh.ACT_STATUS,
                 TransferCmdID1 = vh.TRANSFER_ID_1 == null ? string.Empty : vh.TRANSFER_ID_1,
                 TransferCmdID2 = vh.TRANSFER_ID_2 == null ? string.Empty : vh.TRANSFER_ID_2,
+                TransferCmdID3 = vh.TRANSFER_ID_3 == null ? string.Empty : vh.TRANSFER_ID_3,
+                TransferCmdID4 = vh.TRANSFER_ID_4 == null ? string.Empty : vh.TRANSFER_ID_4,
                 CmdID1 = vh.CMD_ID_1 == null ? string.Empty : vh.CMD_ID_1,
                 CmdID2 = vh.CMD_ID_2 == null ? string.Empty : vh.CMD_ID_2,
+                CmdID3 = vh.CMD_ID_3 == null ? string.Empty : vh.CMD_ID_3,
+                CmdID4 = vh.CMD_ID_4 == null ? string.Empty : vh.CMD_ID_4,
                 PAUSESTATUS = vh.PauseStatus,
                 CMDPAUSE = vh.CMD_PAUSE,
                 BLOCKPAUSE = vh.BLOCK_PAUSE,
@@ -453,8 +462,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                         ACT_STATUS = 0,
                         TRANSFER_ID_1 = string.Empty,
                         TRANSFER_ID_2 = string.Empty,
+                        TRANSFER_ID_3 = string.Empty,
+                        TRANSFER_ID_4 = string.Empty,
                         CMD_ID_1 = string.Empty,
                         CMD_ID_2 = string.Empty,
+                        CMD_ID_3 = string.Empty,
+                        CMD_ID_4 = string.Empty,
                         BLOCK_PAUSE = 0,
                         CMD_PAUSE = 0,
                         OBS_PAUSE = 0,
@@ -569,6 +582,29 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
                 return isSuccess;
             }
+            public bool updataVehicleType(string vhID, E_VH_TYPE vhType)
+            {
+                bool isSuccess = false;
+                AVEHICLE vh = VehiclPool.GetObject();
+                try
+                {
+                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                    {
+                        vh.VEHICLE_ID = vhID;
+                        con.AVEHICLE.Attach(vh);
+                        vh.VEHICLE_TYPE = vhType;
+                        con.Entry(vh).Property(p => p.VEHICLE_TYPE).IsModified = true;
+                        vehicleDAO.doUpdate(con, vh);
+                        con.Entry(vh).State = EntityState.Detached;
+                        isSuccess = true;
+                    }
+                }
+                finally
+                {
+                    VehiclPool.PutObject(vh);
+                }
+                return isSuccess;
+            }
             public AVEHICLE getVehicleByIDFromDB(string vh_id, bool isAttached = false)
             {
                 AVEHICLE vh = null;
@@ -605,7 +641,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                           VhStopSingle block_pause, VhStopSingle cmd_pause, VhStopSingle obs_pause, VhStopSingle hid_pause, VhStopSingle error_status, VhStopSingle reserve_pause, VhStopSingle opPause,
                                           ShelfStatus left_shelf_status, ShelfStatus right_shelf_status,
                                           bool left_has_cst, bool right_has_cst,
-                                          string cmdID1, string cmdID2, string currenExcuteCmdID,
+                                          string cmdID1, string cmdID2, string cmdID3, string cmdID4, string currenExcuteCmdID,
                                           uint batteryCapacity, string[] willPassSection)
             {
                 var vh = eqObjCacheManager.getVehicletByVHID(vhID);
@@ -631,6 +667,16 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     vh.CMD_ID_2 = cmdID2;
                     vh.TRANSFER_ID_2 = tryGetTranCommandID(cmdBLL, cmdID2);
+                }
+                if (!SCUtility.isMatche(vh.CMD_ID_3, cmdID3))
+                {
+                    vh.CMD_ID_3 = cmdID3;
+                    vh.TRANSFER_ID_3 = tryGetTranCommandID(cmdBLL, cmdID3);
+                }
+                if (!SCUtility.isMatche(vh.CMD_ID_4, cmdID4))
+                {
+                    vh.CMD_ID_4 = cmdID4;
+                    vh.TRANSFER_ID_4 = tryGetTranCommandID(cmdBLL, cmdID4);
                 }
                 if (!SCUtility.isMatche(vh.CurrentExcuteCmdID, currenExcuteCmdID))
                 {
@@ -734,6 +780,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                 vh.REMOVED_TIME = DateTime.Now;
                 vh.VehicleRemove();
             }
+
+            public void updataVehicleType(string vhID, E_VH_TYPE vhType)
+            {
+                var vh = eqObjCacheManager.getVehicletByVHID(vhID);
+                vh.VEHICLE_TYPE = vhType;
+                vh.VehicleRemove();
+            }
+
             public void updateVheiclePosition_CacheManager(string vhID, string adr_id, string sec_id, string seg_id, double sce_dis, DriveDirction driveDirction, double xAxis, double yAxis, double dirctionAngle, double vehicleAngle)
             {
                 var vh = eqObjCacheManager.getVehicletByVHID(vhID);
@@ -1004,6 +1058,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                     //    !SCUtility.isEmpty(vh.TRANSFER_ID_2))
                     //var chack_can_assign_cmd_result = cmdBLL.canAssignCmdNew(vh.VEHICLE_ID, E_CMD_TYPE.LoadUnload);
                     //var chack_can_assign_cmd_result = cmdBLL.canAssignCmdNew(vh, E_CMD_TYPE.LoadUnload);
+
+                    //只要有在執行命令就代表這不能服務新的命令
                     var has_assign_cmd = cmdBLL.hasAssignCmd(vh);
                     if (has_assign_cmd.hasAssign)
                     {
@@ -1032,11 +1088,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             }
 
-            public bool canAssignTransferCmd(CMDBLL cmdBLL, AVEHICLE vh)
-            {
-                return canAssignTransferCmd(cmdBLL, vh, false);
-            }
-            public bool canAssignTransferCmd(CMDBLL cmdBLL, AVEHICLE vh, bool isPassMoveCommand)
+            public bool canAssignTransferCmd(CMDBLL cmdBLL, AVEHICLE vh, BLL.CMDBLL.CommandTranDir transferDir = CMDBLL.CommandTranDir.None)
             {
                 if (!vh.isTcpIpConnect)
                 {
@@ -1088,7 +1140,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                        CST_ID_R: vh.CST_ID_R);
                     return false;
                 }
-                var chack_can_assign_cmd_result = cmdBLL.canAssignCmdNew(vh, E_CMD_TYPE.LoadUnload, isPassMoveCommand);
+                //var chack_can_assign_cmd_result = cmdBLL.canAssignCmdNew(vh, E_CMD_TYPE.LoadUnload);
+                //var chack_can_assign_cmd_result = cmdBLL.ICanAssignCmd(vh, E_CMD_TYPE.LoadUnload, transferDir);
+                var chack_can_assign_cmd_result = cmdBLL.CanAssignCmd(vh, E_CMD_TYPE.LoadUnload, transferDir);
                 if (!chack_can_assign_cmd_result.canAssign)
                 {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
@@ -1180,19 +1234,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                    vh.BatteryLevel != BatteryLevel.Low).
                        Count();
             }
-            public UInt16 getVhCurrentStatusInIdleCount(CMDBLL cmdBll)
-            {
-                var vhs = eqObjCacheManager.getAllVehicle();
-                return (UInt16)vhs.
-                       Where(vh => vh.isTcpIpConnect &&
-                                   vh.MODE_STATUS == VHModeStatus.AutoRemote &&
-                                   vh.ACT_STATUS == VHActionStatus.NoCommand &&
-                                   !vh.IsError &&
-                                   //vh.BatteryLevel != BatteryLevel.Low &&
-                                   cmdBll.canAssignCmdNew(vh, E_CMD_TYPE.LoadUnload).canAssign).
-                       //cmdBll.canAssignCmdNew(vh.VEHICLE_ID, E_CMD_TYPE.LoadUnload).canAssign).
-                       Count();
-            }
+
             public UInt16 getVhCurrentStatusInErrorCount()
             {
                 var vhs = eqObjCacheManager.getAllVehicle();
@@ -1374,4 +1416,6 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
     }
+
+
 }
