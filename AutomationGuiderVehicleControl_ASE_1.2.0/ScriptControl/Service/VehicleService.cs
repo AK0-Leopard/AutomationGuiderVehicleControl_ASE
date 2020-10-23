@@ -1065,6 +1065,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 ACMD cmd = scApp.CMDBLL.GetCMD_OHTCByID(cmdID);
                 bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 RepeatedField<PortInfo> virtual_agv_station_port_infos = null;
+
+
                 if (scApp.EqptBLL.OperateCatch.IsAGVStation(currentPortID))
                 {
                     var agv_st_ports = scApp.EqptBLL.OperateCatch.getAGVStation(currentPortID).getAGVStationPorts();
@@ -1128,9 +1130,51 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 scApp.VehicleBLL.doUnloadArrivals(vh.VEHICLE_ID, cmdID);
                 scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
+                checkIsAGVStationToCloseReservedFlag(vh, currentPortID);
             }
+
+            private void checkIsAGVStationToCloseReservedFlag(AVEHICLE vh, string currentPortID)
+            {
+                try
+                {
+                    bool is_agv_station = scApp.EqptBLL.OperateCatch.IsAGVStation(currentPortID);
+                    if (is_agv_station)
+                    {
+                        var agv_station = scApp.EqptBLL.OperateCatch.getAGVStation(currentPortID);
+                        agv_station.IsReservation = false;
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"Closed agv station:{currentPortID} reserved flag by agv unload arrive,flag:{agv_station.IsReservation}.",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                        return;
+                    }
+                    bool is_agv_station_port = scApp.PortStationBLL.OperateCatch.IsAGVStationPort(scApp.EqptBLL, currentPortID);
+                    if (is_agv_station_port)
+                    {
+                        var agv_station_port = scApp.PortStationBLL.OperateCatch.getPortStation(currentPortID);
+                        var agv_station = agv_station_port.GetEqpt(scApp.EqptBLL) as AGVStation;
+                        if (agv_station == null)
+                        {
+                            return;
+                        }
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"Closed agv station:{agv_station.EQPT_ID} reserved flag by agv unload arrive,flag:{agv_station.IsReservation}.",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                        agv_station.IsReservation = false;
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception:");
+                }
+            }
+
             private void TranEventReport_UnloadComplete(BCFApplication bcfApp, AVEHICLE vh, int seqNum
-                                                    , EventType eventType, string cmdID, string currentPortID)
+                                                , EventType eventType, string cmdID, string currentPortID)
             {
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                            Data: $"Process report {eventType}",
