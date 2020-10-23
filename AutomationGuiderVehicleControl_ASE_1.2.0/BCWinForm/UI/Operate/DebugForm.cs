@@ -1600,5 +1600,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             var port_st_obj = bcApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(port_id);
             cmbUnloadVhType.SelectedItem = port_st_obj.ULD_VH_TYPE;
         }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            lbl_guideTimes.Text = DebugParameter.GuideSearchTimes.ToString();
+            lbl_guideQuickTimes.Text = DebugParameter.GuideQuickSearchTimes.ToString();
+        }
     }
 }

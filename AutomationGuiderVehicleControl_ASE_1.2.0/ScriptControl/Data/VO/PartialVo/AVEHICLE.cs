@@ -1010,10 +1010,10 @@ namespace com.mirle.ibg3k0.sc
             }
 
             var has_assign_cmd = cmdBLL.hasAssignCmdIgnoreMove(this);
-            if (has_assign_cmd.hasAssign)
+            if (has_assign_cmd)
             {
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
-                   Data: $"vh id:{this.VEHICLE_ID} has assign command cmd ids:{string.Join(",", has_assign_cmd.assignCmdIDs)}," +
+                   Data: $"vh id:{this.VEHICLE_ID} has assign command cmd," +
                          $"so filter it out",
                    VehicleID: this.VEHICLE_ID,
                    CST_ID_L: this.CST_ID_L,

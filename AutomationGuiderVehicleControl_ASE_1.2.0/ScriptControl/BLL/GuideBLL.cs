@@ -4,6 +4,7 @@ using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 using com.mirle.ibg3k0.sc.RouteKit;
 using NLog;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -978,29 +979,74 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
+        private ConcurrentDictionary<string, GuideQuickSearch> dicGuideQuickSearch =
+                 new ConcurrentDictionary<string, GuideQuickSearch>();
         public bool IsRoadWalkable(string startAddress, string targetAddress)
+        {
+            return IsRoadWalkable(startAddress, targetAddress, out int total_cost);
+        }
+        public bool IsRoadWalkable(string startAddress, string targetAddress, out int totalCost)
         {
             try
             {
                 if (SCUtility.isMatche(startAddress, targetAddress))
-                    return true;
-
-                var guide_info = getGuideInfo(startAddress, targetAddress);
-                //if ((guide_info.guideAddressIds != null && guide_info.guideAddressIds.Count != 0) &&
-                //    ((guide_info.guideSectionIds != null && guide_info.guideSectionIds.Count != 0)))
-                if (guide_info.isSuccess)
                 {
+                    totalCost = 0;
                     return true;
+                }
+                string key = $"{SCUtility.Trim(startAddress, true)},{SCUtility.Trim(targetAddress, true)}";
+
+                bool is_exist = dicGuideQuickSearch.TryGetValue(key, out GuideQuickSearch guideQuickSearch);
+                if (is_exist)
+                {
+                    totalCost = guideQuickSearch.totalCost;
+                    DebugParameter.GuideQuickSearchTimes++;
+                    return guideQuickSearch.isWalker;
                 }
                 else
                 {
-                    return false;
+                    var guide_info = getGuideInfo(startAddress, targetAddress);
+                    dicGuideQuickSearch.TryAdd(key, new GuideQuickSearch(guide_info.isSuccess, guide_info.totalCost));
+                    //if ((guide_info.guideAddressIds != null && guide_info.guideAddressIds.Count != 0) &&
+                    //    ((guide_info.guideSectionIds != null && guide_info.guideSectionIds.Count != 0)))
+                    DebugParameter.GuideSearchTimes++;
+                    if (guide_info.isSuccess)
+                    {
+                        totalCost = guide_info.totalCost;
+                        return true;
+                    }
+                    else
+                    {
+                        totalCost = int.MaxValue;
+                        return false;
+                    }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                logger.Error(ex, "Exception");
+                totalCost = int.MaxValue;
                 return false;
             }
+        }
+        public void clearAllDirGuideQuickSearchInfo()
+        {
+            DebugParameter.GuideQuickSearchTimes=0;
+            DebugParameter.GuideSearchTimes=0;
+
+            dicGuideQuickSearch.Clear();
+        }
+
+        public class GuideQuickSearch
+        {
+            public bool isWalker;
+            public int totalCost;
+            public GuideQuickSearch(bool _isWalker, int _totalCost)
+            {
+                isWalker = _isWalker;
+                totalCost = _totalCost;
+            }
+
         }
 
         public bool IsBanRoute(List<ReserveInfo> reserveInfos)

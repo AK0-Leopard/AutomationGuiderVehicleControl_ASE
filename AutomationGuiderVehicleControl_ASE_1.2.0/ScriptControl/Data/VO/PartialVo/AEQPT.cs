@@ -373,6 +373,7 @@ namespace com.mirle.ibg3k0.sc
                 }
             }
         }
+        public bool ForceEmergency { get; set; }
         public DateTime LastAskTime { get; set; }
         public string sLastAskTime { get { return LastAskTime.ToString(SCAppConstants.DateTimeFormat_19);  }  }
     }
@@ -401,6 +402,7 @@ namespace com.mirle.ibg3k0.sc
 
         E_AGVStationDeliveryMode DeliveryMode { get; }
         bool IsEmergency { get; set; }
+        bool ForceEmergency { get; set; }
 
         DateTime LastAskTime { get; set; }
         string sLastAskTime { get; }

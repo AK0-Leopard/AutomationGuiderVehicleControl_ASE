@@ -413,13 +413,19 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             (bool isSuccess, double x, double y, bool isTR50) get_result =
                 default((bool isSuccess, double x, double y, bool isTR50));
+            double t_x = 0;
+            double max_x = 0;
+
             try
             {
+                max_x = scApp.ReserveBLL.GetMaxHltMapAddress_x();
                 get_result = scApp.ReserveBLL.GetHltMapAddress(adrID);
+                t_x = (get_result.x * -1) + max_x;
             }
             catch { }
-            return (get_result.isSuccess, $"[{get_result.x},{get_result.y}]");
+            return (get_result.isSuccess, $"[{t_x},{get_result.y}]");
         }
+
         protected override void S1F15OffLineRequest(object sender, SECSEventArgs e)
         {
             try
@@ -2250,7 +2256,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 vh_battery_value = vh.BatteryCapacity.ToString();
                 vh_communication = SECSConst.convert2MCS(vh.isTcpIpConnect, vh.IsCommunication(scApp.getBCFApplication()));
                 vh_control_mode = SECSConst.convert2MCS(vh.isTcpIpConnect, vh.MODE_STATUS);
-                vh_last_position = $"[{vh.X_Axis},{vh.Y_Axis}]";
+                double max_x = scApp.ReserveBLL.GetMaxHltMapAddress_x();
+                double t_x = (vh.X_Axis * -1) + max_x;
+                //vh_last_position = $"[{vh.X_Axis},{vh.Y_Axis}]";
+                vh_last_position = $"[{t_x},{vh.Y_Axis}]";
             }
 
             string eqp_name = line.LINE_ID;
@@ -2656,7 +2665,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 vh_battery_value = vh.BatteryCapacity.ToString();
                 vh_communication = SECSConst.convert2MCS(vh.isTcpIpConnect, vh.IsCommunication(scApp.getBCFApplication()));
                 vh_control_mode = SECSConst.convert2MCS(vh.isTcpIpConnect, vh.MODE_STATUS);
-                vh_last_position = $"[{vh.X_Axis},{vh.Y_Axis}]";
+                double max_x = scApp.ReserveBLL.GetMaxHltMapAddress_x();
+                double t_x = (vh.X_Axis * -1) + max_x;
+                //vh_last_position = $"[{vh.X_Axis},{vh.Y_Axis}]";
+                vh_last_position = $"[{t_x},{vh.Y_Axis}]";
             }
             VIDCollection vid_collection = new VIDCollection();
 

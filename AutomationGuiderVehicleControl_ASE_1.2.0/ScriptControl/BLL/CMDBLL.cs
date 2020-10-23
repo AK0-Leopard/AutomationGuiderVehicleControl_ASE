@@ -1305,15 +1305,15 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return (assign_cmd_ids != null && assign_cmd_ids.Count > 0, assign_cmd_ids);
         }
-        public (bool hasAssign, List<string> assignCmdIDs) hasAssignCmdIgnoreMove(AVEHICLE vh)
+        public bool hasAssignCmdIgnoreMove(AVEHICLE vh)
         {
             string vh_id = vh.VEHICLE_ID;
-            List<string> assign_cmd_ids = null;
+            int assign_cmd_count = 0;
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
             {
-                assign_cmd_ids = cmd_ohtcDAO.loadAssignCmdIDIgnoreMove(con, vh_id);
+                assign_cmd_count = cmd_ohtcDAO.loadAssignCmdIDIgnoreMove(con, vh_id);
             }
-            return (assign_cmd_ids != null && assign_cmd_ids.Count > 0, assign_cmd_ids);
+            return assign_cmd_count > 0;
         }
         public const int MAX_ASSIGN_CMD_COUNT = 2;
         public const int MAX_ASSIGN_CMD_COUNT_FOR_SWAP = 4;

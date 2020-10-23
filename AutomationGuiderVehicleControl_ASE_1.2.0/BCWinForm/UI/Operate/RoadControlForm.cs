@@ -66,6 +66,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                     }
                 }
             }
+            bcApp.SCApplication.GuideBLL.clearAllDirGuideQuickSearchInfo();
             dgv_segment.Refresh();
             RefreshMapColor();
             // Task.Run(() => checkSegmentStatus());
@@ -94,6 +95,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
                 }
             }
+            bcApp.SCApplication.GuideBLL.clearAllDirGuideQuickSearchInfo();
             dgv_segment.Refresh();
             RefreshMapColor();
         }
@@ -116,6 +118,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                     }
                 }
             }
+            bcApp.SCApplication.GuideBLL.clearAllDirGuideQuickSearchInfo();
             dgv_segment.Refresh();
             RefreshMapColor();
         }

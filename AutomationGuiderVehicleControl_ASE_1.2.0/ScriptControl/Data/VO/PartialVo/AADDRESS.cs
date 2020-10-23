@@ -154,13 +154,15 @@ namespace com.mirle.ibg3k0.sc
 
         public void setDistanceWithTargetAdr(GuideBLL guideBLL, string targetAdr)
         {
-            if (!guideBLL.IsRoadWalkable(this.ADR_ID, targetAdr))
+            //if (!guideBLL.IsRoadWalkable(this.ADR_ID, targetAdr))
+            if (!guideBLL.IsRoadWalkable(this.ADR_ID, targetAdr, out int totalCost))
             {
                 DistanceWithTargetAdr = int.MaxValue;
             }
             else
             {
-                DistanceWithTargetAdr = guideBLL.getGuideInfo(this.ADR_ID, targetAdr).totalCost;
+                //DistanceWithTargetAdr = guideBLL.getGuideInfo(this.ADR_ID, targetAdr).totalCost;
+                DistanceWithTargetAdr = totalCost;
             }
         }
 

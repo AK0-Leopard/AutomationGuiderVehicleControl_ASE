@@ -76,6 +76,15 @@ namespace com.mirle.ibg3k0.sc.BLL
             return mapAPI.MapBitmapSource;
         }
 
+        double MAX_X = double.MinValue;
+        public double GetMaxHltMapAddress_x()
+        {
+            if (MAX_X == double.MinValue)
+                return mapAPI.HltMapAddresses.Max(adr => adr.X);
+            else
+                return MAX_X;
+        }
+
         public (bool isSuccess, double x, double y, bool isTR50) GetHltMapAddress(string adrID)
         {
             bool is_exist = false;

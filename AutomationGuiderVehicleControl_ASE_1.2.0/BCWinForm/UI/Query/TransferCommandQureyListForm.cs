@@ -114,9 +114,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 if (selection_index == -1) return;
                 btn_force_finish.Enabled = false;
                 var mcs_cmd = cmdMCSshowList[selection_index];
-
-                ACMD cmd = mainform.BCApp.SCApplication.CMDBLL.GetCommandByTransferCmdID(mcs_cmd.CMD_ID);
-                ATRANSFER transfer = mainform.BCApp.SCApplication.CMDBLL.GetTransferByID(mcs_cmd.CMD_ID);
+                ACMD cmd;
+                ATRANSFER transfer;
+                (cmd, transfer) = await Task.Run(() => GetRealCommandInfo(mcs_cmd));
                 if (transfer == null)
                 {
                     MessageBox.Show($"Transfer cmd ID:{SCUtility.Trim(mcs_cmd.CMD_ID, true)} not exist.", "Check command fail.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -183,6 +183,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             {
                 btn_force_finish.Enabled = true;
             }
+        }
+
+        private (ACMD cmd, ATRANSFER transfer) GetRealCommandInfo(TRANSFERObjToShow mcs_cmd)
+        {
+            ACMD cmd; ATRANSFER transfer;
+            cmd = mainform.BCApp.SCApplication.CMDBLL.GetCommandByTransferCmdID(mcs_cmd.CMD_ID);
+            transfer = mainform.BCApp.SCApplication.CMDBLL.GetTransferByID(mcs_cmd.CMD_ID);
+            return (cmd, transfer);
         }
 
         private void TransferCommandQureyListForm_FormClosed(object sender, FormClosedEventArgs e)

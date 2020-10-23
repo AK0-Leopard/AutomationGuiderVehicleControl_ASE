@@ -709,15 +709,17 @@ namespace com.mirle.ibg3k0.sc.Service
                                   Data: $"Start calculation distance, command id:{tran.ID.Trim()} command source port:{tran.HOSTSOURCE?.Trim()}," +
                                         $"first transfer of source port:{first_tran_source_port_id} , prepare sencond port:{second_tran_source_port_id}...",
                                   XID: tran.ID);
-                    var result = scApp.GuideBLL.getGuideInfo(first_tran_from_adr_id, second_tran_from_adr_id);
+                    //var result = scApp.GuideBLL.getGuideInfo(first_tran_from_adr_id, second_tran_from_adr_id);
+                    var result = scApp.GuideBLL.IsRoadWalkable(first_tran_from_adr_id, second_tran_from_adr_id, out int totalCost);
                     //double total_section_distance = result.guideSectionIds != null && result.guideSectionIds.Count > 0 ?
                     //                                scApp.SectionBLL.cache.GetSectionsDistance(result.guideSectionIds) : 0;
                     double total_section_distance = 0;
-                    if (result.isSuccess)
+                    //if (result.isSuccess)
+                    if (result)
                     {
                         //total_section_distance = result.guideSectionIds != null && result.guideSectionIds.Count > 0 ?
                         //                                scApp.SectionBLL.cache.GetSectionsDistance(result.guideSectionIds) : 0;
-                        total_section_distance = result.totalCost;
+                        total_section_distance = totalCost;
                     }
                     else
                     {
@@ -771,15 +773,16 @@ namespace com.mirle.ibg3k0.sc.Service
                                   Data: $"Start calculation distance, command id:{tran.ID.Trim()} command source port:{tran.HOSTDESTINATION?.Trim()}," +
                                         $"first transfer of dest port:{first_tran_dest_port_id} , prepare sencond source port:{second_tran_source_port_id}...",
                                   XID: tran.ID);
-                    var result = scApp.GuideBLL.getGuideInfo(first_tran_dest_adr_id, second_tran_source_adr_id);
+                    //var result = scApp.GuideBLL.getGuideInfo(first_tran_dest_adr_id, second_tran_source_adr_id);
+                    var result = scApp.GuideBLL.IsRoadWalkable(first_tran_dest_adr_id, second_tran_source_adr_id, out int totalCost);
                     //double total_section_distance = result.guideSectionIds != null && result.guideSectionIds.Count > 0 ?
                     //                                scApp.SectionBLL.cache.GetSectionsDistance(result.guideSectionIds) : 0;
                     double total_section_distance = 0;
-                    if (result.isSuccess)
+                    if (result)
                     {
                         //total_section_distance = result.guideSectionIds != null && result.guideSectionIds.Count > 0 ?
                         //                                scApp.SectionBLL.cache.GetSectionsDistance(result.guideSectionIds) : 0;
-                        total_section_distance = result.totalCost;
+                        total_section_distance = totalCost;
                     }
                     else
                     {
@@ -893,8 +896,9 @@ namespace com.mirle.ibg3k0.sc.Service
                                       Data: $"Start try find vh , command id:{tran.ID.Trim()} command source port:{tran.HOSTSOURCE?.Trim()}," +
                                             $"vh:{vh.VEHICLE_ID} current adr:{vh.CUR_ADR_ID},from adr:{from_adr} ...",
                                       XID: tran.ID);
-                        var result = scApp.GuideBLL.getGuideInfo(vh.CUR_ADR_ID, from_adr);
-                        if (result.isSuccess)
+                        //var result = scApp.GuideBLL.getGuideInfo(vh.CUR_ADR_ID, from_adr);
+                        var result = scApp.GuideBLL.IsRoadWalkable(vh.CUR_ADR_ID, from_adr);
+                        if (result)
                         {
                             LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: string.Empty,
                                           Data: $"Find the vh success , command id:{tran.ID.Trim()} command source port:{tran.HOSTSOURCE?.Trim()}," +
@@ -945,11 +949,13 @@ namespace com.mirle.ibg3k0.sc.Service
                                       Data: $"Start try find vh , command id:{tran.ID.Trim()} command source port:{tran.HOSTSOURCE?.Trim()}," +
                                             $"vh:{vh.VEHICLE_ID} current adr:{vh.CUR_ADR_ID},from adr:{from_adr} ...",
                                       XID: tran.ID);
-                        var result = scApp.GuideBLL.getGuideInfo(vh.CUR_ADR_ID, from_adr);
+                        //var result = scApp.GuideBLL.getGuideInfo(vh.CUR_ADR_ID, from_adr);
+                        bool result = scApp.GuideBLL.IsRoadWalkable(vh.CUR_ADR_ID, from_adr, out int totalCost);
                         double total_section_distance = 0;
-                        if (result.isSuccess)
+                        if (result)
                         {
-                            total_section_distance = result.totalCost;
+                            //total_section_distance = result.totalCost;
+                            total_section_distance = totalCost;
                         }
                         else
                         {
@@ -1859,7 +1865,7 @@ namespace com.mirle.ibg3k0.sc.Service
             bool is_success = false;
 
             List<VTRANSFER> can_excute_after_on_the_way_tran = excutingTransfers.
-                                                    Where(tr => tr.COMMANDSTATE < ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE).
+                                                    //Where(tr => tr.COMMANDSTATE < ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE).
                                                     ToList();
 
             foreach (var excute_tran in can_excute_after_on_the_way_tran)
@@ -1927,7 +1933,8 @@ namespace com.mirle.ibg3k0.sc.Service
             AVEHICLE best_suitable_vh = null;
             VTRANSFER best_suitable_transfer = null;
             bool is_success = false;
-            List<VTRANSFER> can_excute_after_on_the_way_tran = excutingTransfers.Where(tran => tran.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType).ToList();
+            List<VTRANSFER> can_excute_after_on_the_way_tran = excutingTransfers.Where(tran => tran.getTragetPortEQ(scApp.EqptBLL) is IAGVStationType
+                                                                                            && tran.COMMANDSTATE > ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE).ToList();
 
             foreach (var excute_tran in can_excute_after_on_the_way_tran)
             {

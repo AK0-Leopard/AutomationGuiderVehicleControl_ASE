@@ -2506,10 +2506,12 @@ namespace com.mirle.ibg3k0.sc.Service
                     if (SCUtility.isMatche(adr.ADR_ID, vhCurAdrID))
                         continue;
                     double total_section_distance = 0;
-                    var result = scApp.GuideBLL.getGuideInfo(vhCurAdrID, adr.ADR_ID);
-                    if (result.isSuccess)
+                    //var result = scApp.GuideBLL.getGuideInfo(vhCurAdrID, adr.ADR_ID);
+                    var result = scApp.GuideBLL.IsRoadWalkable(vhCurAdrID, adr.ADR_ID, out int totalCost);
+                    if (result)
                     {
-                        total_section_distance = result.totalCost;
+                        //total_section_distance = result.totalCost;
+                        total_section_distance = totalCost;
                     }
                     else
                     {
@@ -2528,16 +2530,20 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 string opposite_address = "";
                 int from_distance = 0;
-                var from_adr_guide_result = scApp.GuideBLL.getGuideInfo(req_vh_cur_adr, reserved_vh_current_section.FROM_ADR_ID);
-                if (from_adr_guide_result.isSuccess)
+                //var from_adr_guide_result = scApp.GuideBLL.getGuideInfo(req_vh_cur_adr, reserved_vh_current_section.FROM_ADR_ID);
+                var from_adr_guide_result = scApp.GuideBLL.IsRoadWalkable(req_vh_cur_adr, reserved_vh_current_section.FROM_ADR_ID, out int totalCost_vh_fromAdr);
+                if (from_adr_guide_result)
                 {
-                    from_distance = from_adr_guide_result.totalCost;
+                    //from_distance = from_adr_guide_result.totalCost;
+                    from_distance = totalCost_vh_fromAdr;
                 }
                 int to_distance = 0;
-                var to_adr_guide_result = scApp.GuideBLL.getGuideInfo(req_vh_cur_adr, reserved_vh_current_section.TO_ADR_ID);
-                if (to_adr_guide_result.isSuccess)
+                //var to_adr_guide_result = scApp.GuideBLL.getGuideInfo(req_vh_cur_adr, reserved_vh_current_section.TO_ADR_ID);
+                var to_adr_guide_result = scApp.GuideBLL.IsRoadWalkable(req_vh_cur_adr, reserved_vh_current_section.TO_ADR_ID, out int totalCost_vh_toAdr);
+                if (to_adr_guide_result)
                 {
-                    to_distance = to_adr_guide_result.totalCost;
+                    //to_distance = to_adr_guide_result.totalCost;
+                    to_distance = totalCost_vh_toAdr;
                 }
                 if (from_distance > to_distance)
                 {

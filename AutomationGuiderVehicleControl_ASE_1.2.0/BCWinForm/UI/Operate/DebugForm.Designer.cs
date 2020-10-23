@@ -175,6 +175,13 @@
             this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btn_refresf_portsation_info = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.lbl_guideQuickTimes = new System.Windows.Forms.Label();
+            this.lbl_guideTimes = new System.Windows.Forms.Label();
+            this.label102 = new System.Windows.Forms.Label();
+            this.label101 = new System.Windows.Forms.Label();
+            this.button12 = new System.Windows.Forms.Button();
+            this.label100 = new System.Windows.Forms.Label();
+            this.cmbStationPortID = new System.Windows.Forms.ComboBox();
             this.btnUpdateUnloadVhType = new System.Windows.Forms.Button();
             this.cmbUnloadVhType = new System.Windows.Forms.ComboBox();
             this.label99 = new System.Windows.Forms.Label();
@@ -392,8 +399,6 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.cmbStationPortID = new System.Windows.Forms.ComboBox();
-            this.label100 = new System.Windows.Forms.Label();
             this.AGVStationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HasPortAuto = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.IsReservation = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -405,6 +410,7 @@
             this.IsTransferUnloadExcuting = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.BindingVh = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DeliveryMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ForceEmergency = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1891,7 +1897,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2076,6 +2082,11 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.lbl_guideQuickTimes);
+            this.tabPage3.Controls.Add(this.lbl_guideTimes);
+            this.tabPage3.Controls.Add(this.label102);
+            this.tabPage3.Controls.Add(this.label101);
+            this.tabPage3.Controls.Add(this.button12);
             this.tabPage3.Controls.Add(this.label100);
             this.tabPage3.Controls.Add(this.cmbStationPortID);
             this.tabPage3.Controls.Add(this.btnUpdateUnloadVhType);
@@ -2109,6 +2120,71 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Test Tool";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // lbl_guideQuickTimes
+            // 
+            this.lbl_guideQuickTimes.AutoSize = true;
+            this.lbl_guideQuickTimes.Location = new System.Drawing.Point(1186, 41);
+            this.lbl_guideQuickTimes.Name = "lbl_guideQuickTimes";
+            this.lbl_guideQuickTimes.Size = new System.Drawing.Size(40, 22);
+            this.lbl_guideQuickTimes.TabIndex = 56;
+            this.lbl_guideQuickTimes.Text = "   ";
+            // 
+            // lbl_guideTimes
+            // 
+            this.lbl_guideTimes.AutoSize = true;
+            this.lbl_guideTimes.Location = new System.Drawing.Point(1186, 10);
+            this.lbl_guideTimes.Name = "lbl_guideTimes";
+            this.lbl_guideTimes.Size = new System.Drawing.Size(80, 22);
+            this.lbl_guideTimes.TabIndex = 55;
+            this.lbl_guideTimes.Text = "       ";
+            // 
+            // label102
+            // 
+            this.label102.AutoSize = true;
+            this.label102.Location = new System.Drawing.Point(990, 41);
+            this.label102.Name = "label102";
+            this.label102.Size = new System.Drawing.Size(190, 22);
+            this.label102.TabIndex = 54;
+            this.label102.Text = "Guide Quick Times:";
+            // 
+            // label101
+            // 
+            this.label101.AutoSize = true;
+            this.label101.Location = new System.Drawing.Point(1050, 10);
+            this.label101.Name = "label101";
+            this.label101.Size = new System.Drawing.Size(130, 22);
+            this.label101.TabIndex = 53;
+            this.label101.Text = "Guide times:";
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(1272, 18);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(89, 36);
+            this.button12.TabIndex = 52;
+            this.button12.Text = "Refresh";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // label100
+            // 
+            this.label100.AutoSize = true;
+            this.label100.Location = new System.Drawing.Point(986, 648);
+            this.label100.Name = "label100";
+            this.label100.Size = new System.Drawing.Size(80, 22);
+            this.label100.TabIndex = 51;
+            this.label100.Text = "Port ID";
+            // 
+            // cmbStationPortID
+            // 
+            this.cmbStationPortID.FormattingEnabled = true;
+            this.cmbStationPortID.Location = new System.Drawing.Point(988, 675);
+            this.cmbStationPortID.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.cmbStationPortID.Name = "cmbStationPortID";
+            this.cmbStationPortID.Size = new System.Drawing.Size(228, 30);
+            this.cmbStationPortID.TabIndex = 50;
+            this.cmbStationPortID.SelectedIndexChanged += new System.EventHandler(this.cmbStationPortID_SelectedIndexChanged);
             // 
             // btnUpdateUnloadVhType
             // 
@@ -2229,7 +2305,8 @@
             this.LastAskTime,
             this.IsTransferUnloadExcuting,
             this.BindingVh,
-            this.DeliveryMode});
+            this.DeliveryMode,
+            this.ForceEmergency});
             this.dgv_AGVStationInfo.Location = new System.Drawing.Point(12, 710);
             this.dgv_AGVStationInfo.Name = "dgv_AGVStationInfo";
             this.dgv_AGVStationInfo.RowTemplate.Height = 24;
@@ -2276,7 +2353,7 @@
             this.groupBox18.Controls.Add(this.cmb_mcsReportTestVHID);
             this.groupBox18.Location = new System.Drawing.Point(392, 6);
             this.groupBox18.Name = "groupBox18";
-            this.groupBox18.Size = new System.Drawing.Size(650, 698);
+            this.groupBox18.Size = new System.Drawing.Size(588, 698);
             this.groupBox18.TabIndex = 37;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "MCS Report Test";
@@ -2303,7 +2380,7 @@
             // 
             // btn_idReadError
             // 
-            this.btn_idReadError.Location = new System.Drawing.Point(439, 510);
+            this.btn_idReadError.Location = new System.Drawing.Point(234, 546);
             this.btn_idReadError.Name = "btn_idReadError";
             this.btn_idReadError.Size = new System.Drawing.Size(201, 30);
             this.btn_idReadError.TabIndex = 51;
@@ -2324,7 +2401,7 @@
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(435, 26);
+            this.label43.Location = new System.Drawing.Point(405, 26);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(70, 22);
             this.label43.TabIndex = 49;
@@ -2332,7 +2409,7 @@
             // 
             // txt_mcsReportTestCmdID
             // 
-            this.txt_mcsReportTestCmdID.Location = new System.Drawing.Point(465, 51);
+            this.txt_mcsReportTestCmdID.Location = new System.Drawing.Point(435, 51);
             this.txt_mcsReportTestCmdID.Name = "txt_mcsReportTestCmdID";
             this.txt_mcsReportTestCmdID.Size = new System.Drawing.Size(147, 30);
             this.txt_mcsReportTestCmdID.TabIndex = 48;
@@ -2341,7 +2418,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(248, 26);
+            this.label16.Location = new System.Drawing.Point(218, 26);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(70, 22);
             this.label16.TabIndex = 47;
@@ -2349,7 +2426,7 @@
             // 
             // txt_mcsReportTestCstID
             // 
-            this.txt_mcsReportTestCstID.Location = new System.Drawing.Point(286, 51);
+            this.txt_mcsReportTestCstID.Location = new System.Drawing.Point(256, 51);
             this.txt_mcsReportTestCstID.Name = "txt_mcsReportTestCstID";
             this.txt_mcsReportTestCstID.Size = new System.Drawing.Size(147, 30);
             this.txt_mcsReportTestCstID.TabIndex = 46;
@@ -2377,7 +2454,7 @@
             // 
             // btn_bcrReadError
             // 
-            this.btn_bcrReadError.Location = new System.Drawing.Point(439, 164);
+            this.btn_bcrReadError.Location = new System.Drawing.Point(238, 187);
             this.btn_bcrReadError.Name = "btn_bcrReadError";
             this.btn_bcrReadError.Size = new System.Drawing.Size(199, 30);
             this.btn_bcrReadError.TabIndex = 43;
@@ -2387,7 +2464,7 @@
             // 
             // btn_bcrReadMismatch
             // 
-            this.btn_bcrReadMismatch.Location = new System.Drawing.Point(234, 164);
+            this.btn_bcrReadMismatch.Location = new System.Drawing.Point(236, 151);
             this.btn_bcrReadMismatch.Name = "btn_bcrReadMismatch";
             this.btn_bcrReadMismatch.Size = new System.Drawing.Size(199, 30);
             this.btn_bcrReadMismatch.TabIndex = 42;
@@ -4292,25 +4369,6 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // cmbStationPortID
-            // 
-            this.cmbStationPortID.FormattingEnabled = true;
-            this.cmbStationPortID.Location = new System.Drawing.Point(1073, 675);
-            this.cmbStationPortID.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.cmbStationPortID.Name = "cmbStationPortID";
-            this.cmbStationPortID.Size = new System.Drawing.Size(143, 30);
-            this.cmbStationPortID.TabIndex = 50;
-            this.cmbStationPortID.SelectedIndexChanged += new System.EventHandler(this.cmbStationPortID_SelectedIndexChanged);
-            // 
-            // label100
-            // 
-            this.label100.AutoSize = true;
-            this.label100.Location = new System.Drawing.Point(1069, 650);
-            this.label100.Name = "label100";
-            this.label100.Size = new System.Drawing.Size(80, 22);
-            this.label100.TabIndex = 51;
-            this.label100.Text = "Port ID";
-            // 
             // AGVStationID
             // 
             this.AGVStationID.DataPropertyName = "AGVStationID";
@@ -4390,6 +4448,14 @@
             this.DeliveryMode.Name = "DeliveryMode";
             this.DeliveryMode.ReadOnly = true;
             this.DeliveryMode.Width = 155;
+            // 
+            // ForceEmergency
+            // 
+            this.ForceEmergency.DataPropertyName = "ForceEmergency";
+            this.ForceEmergency.HeaderText = "ForceEmergency";
+            this.ForceEmergency.Name = "ForceEmergency";
+            this.ForceEmergency.ReadOnly = true;
+            this.ForceEmergency.Width = 156;
             // 
             // DebugForm
             // 
@@ -4850,6 +4916,11 @@
         private System.Windows.Forms.ComboBox cmbUnloadVhType;
         private System.Windows.Forms.ComboBox cmbStationPortID;
         private System.Windows.Forms.Label label100;
+        private System.Windows.Forms.Label lbl_guideQuickTimes;
+        private System.Windows.Forms.Label lbl_guideTimes;
+        private System.Windows.Forms.Label label102;
+        private System.Windows.Forms.Label label101;
+        private System.Windows.Forms.Button button12;
         private System.Windows.Forms.DataGridViewTextBoxColumn AGVStationID;
         private System.Windows.Forms.DataGridViewCheckBoxColumn HasPortAuto;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsReservation;
@@ -4861,5 +4932,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsTransferUnloadExcuting;
         private System.Windows.Forms.DataGridViewTextBoxColumn BindingVh;
         private System.Windows.Forms.DataGridViewTextBoxColumn DeliveryMode;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ForceEmergency;
     }
 }

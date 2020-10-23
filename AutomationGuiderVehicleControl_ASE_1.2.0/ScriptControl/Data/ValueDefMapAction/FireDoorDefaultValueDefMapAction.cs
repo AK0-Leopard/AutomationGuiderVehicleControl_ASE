@@ -234,6 +234,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         seg.STATUS = ban_result.segment.STATUS;
                     }
                 }
+                scApp.GuideBLL.clearAllDirGuideQuickSearchInfo();
+
             }
             else
             {

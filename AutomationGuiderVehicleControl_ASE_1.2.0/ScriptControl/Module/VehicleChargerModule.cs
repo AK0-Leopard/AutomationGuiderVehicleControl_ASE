@@ -298,6 +298,7 @@ namespace com.mirle.ibg3k0.sc.Module
                 else
                     vehicleService.doEnableDisableSegment(segment, E_PORT_STATUS.OutOfService);
             }
+            guideBLL.clearAllDirGuideQuickSearchInfo();
         }
 
         private (bool isSuccess, string msg) askVhToCharging(AVEHICLE vh)

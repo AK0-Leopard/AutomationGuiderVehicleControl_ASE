@@ -100,6 +100,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                Data: $"Check agv station has null.");
                             continue;
                         }
+                        //testGuideInfo();
+
 
                         switch (agv_station.DeliveryMode)
                         {
@@ -199,6 +201,18 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             {
                 logger.Error(ex, "Exception");
             }
+        }
+
+        private void testGuideInfo()
+        {
+            var getAddresses = scApp.AddressesBLL.cache.GetAddresses();
+            Random rnd_Index = new Random(Guid.NewGuid().GetHashCode());
+            int task_RandomIndex1 = rnd_Index.Next(getAddresses.Count - 1);
+            int task_RandomIndex2 = rnd_Index.Next(getAddresses.Count - 1);
+            var addres1 = getAddresses[task_RandomIndex1];
+            var addres2 = getAddresses[task_RandomIndex2];
+            bool is_walkable = scApp.GuideBLL.IsRoadWalkable(addres1.ADR_ID, addres2.ADR_ID);
+
         }
 
         private void agvStationCheck(List<VTRANSFER> v_trans, AGVStation agv_station)
@@ -387,7 +401,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 }
             }
         }
-        private bool checkHasVhCanServiceAGVStation(List<VTRANSFER> v_trans, AGVStation agv_station)
+        private (bool hasVh, AVEHICLE canServiceVh) checkHasVhCanServiceAGVStation(List<VTRANSFER> v_trans, AGVStation agv_station)
         {
             List<AVEHICLE> vhs = scApp.VehicleBLL.cache.loadAllVh().ToList();
             //scApp.VehicleBLL.cache.filterCanNotExcuteTranVh(ref idle_vhs, scApp.CMDBLL, E_VH_TYPE.None);
@@ -414,22 +428,11 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     continue;
                 }
 
-                var path_check_result = scApp.GuideBLL.getGuideInfo(vh.CUR_ADR_ID, agv_station.AddressID);
-                if (path_check_result.isSuccess)
+                //var path_check_result = scApp.GuideBLL.getGuideInfo(vh.CUR_ADR_ID, agv_station.AddressID);
+                var is_walkable = scApp.GuideBLL.IsRoadWalkable(vh.CUR_ADR_ID, agv_station.AddressID);
+                if (is_walkable)
                 {
-                    if (v_trans != null && v_trans.Count > 0)
-                    {
-                        var on_vh_cmd_and_is_go_to_this_st =
-                            v_trans.Where(v_tran =>
-                                          v_tran.TRANSFERSTATE == E_TRAN_STATUS.Queue &&
-                                          (SCUtility.isMatche(v_tran.CARRIER_ID, vh.CST_ID_L) || SCUtility.isMatche(v_tran.CARRIER_ID, vh.CST_ID_R)) &&
-                                          SCUtility.isMatche(v_tran.HOSTDESTINATION, agv_station.getAGVStationID()))
-                                          .FirstOrDefault();
-                        if (on_vh_cmd_and_is_go_to_this_st != null)
-                        {
-                            return true;
-                        }
-                    }
+
                     //確認身上沒有無命令的CST
                     if (hasNotCmdCstInVh(v_trans, vh.CST_ID_L))
                     {
@@ -443,7 +446,22 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                       Data: $"Has no transfer command of cst in vh:[{vh.VEHICLE_ID}] cst id:{vh.CST_ID_R},pass this one to service st.:{agv_station.getAGVStationID()}.");
                         continue;
                     }
-                    return (true);
+
+                    if (v_trans != null && v_trans.Count > 0)
+                    {
+                        var on_vh_cmd_and_is_go_to_this_st =
+                            v_trans.Where(v_tran =>
+                                          v_tran.TRANSFERSTATE == E_TRAN_STATUS.Queue &&
+                                          (SCUtility.isMatche(v_tran.CARRIER_ID, vh.CST_ID_L) || SCUtility.isMatche(v_tran.CARRIER_ID, vh.CST_ID_R)) &&
+                                          SCUtility.isMatche(v_tran.HOSTDESTINATION, agv_station.getAGVStationID()))
+                                          .FirstOrDefault();
+                        if (on_vh_cmd_and_is_go_to_this_st != null)
+                        {
+                            return (true, vh);
+                        }
+                    }
+
+                    return (true, vh);
                 }
                 else
                 {
@@ -451,7 +469,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                   Data: $"vh:[{vh.VEHICLE_ID}] current adr:[{vh.CUR_ADR_ID}] no path go to agv st.[{agv_station.getAGVStationID()}({agv_station.AddressID})],can not service it.");
                 }
             }
-            return false;
+            return (false, null);
         }
         /// <summary>
         /// 用來確認是否有無命令的CST停留在車子上
@@ -477,8 +495,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                        Data: $"start check agv station:[{agv_station.getAGVStationID()}] status(not binding vh)...");
                     //1.是否有車子可以來服務這個port
                     //2.可以服務這個port的車，車上是否有都無命令的cst在車上=>有，對該port不進行詢問
-                    bool has_vh_can_service = checkHasVhCanServiceAGVStation(v_trans, agv_station);
-                    if (!has_vh_can_service)
+                    var check_has_vh_can_service_result = checkHasVhCanServiceAGVStation(v_trans, agv_station);
+                    if (!check_has_vh_can_service_result.hasVh)
                     {
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: "AGVC",
                                       Data: $"No vh can service agv station:{agv_station.getAGVStationID()}, pass this one ask");
@@ -629,8 +647,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                        Data: $"start check agv station:[{agv_station.getAGVStationID()}] status(swap mode)...");
                     //1.是否有車子可以來服務這個port(沒有在執行移動命令以外的車子)
                     //2.可以服務這個port的車，車上是否有都無命令的cst在車上=>有，對該port不進行詢問
-                    bool has_vh_can_service = checkHasVhCanServiceAGVStation(v_trans, agv_station);
-                    if (!has_vh_can_service)
+                    //bool has_vh_can_service = checkHasVhCanServiceAGVStation(v_trans, agv_station);
+                    var check_has_vh_can_service_result = checkHasVhCanServiceAGVStation(v_trans, agv_station);
+                    if (!check_has_vh_can_service_result.hasVh)
                     {
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: "AGVC",
                                       Data: $"No vh can service agv station:{agv_station.getAGVStationID()}, pass this one ask");
@@ -652,10 +671,23 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                         if (excute_target_pott_count > 0)
                         {
                             agv_station.IsTransferUnloadExcuting = true;
-                            if (excute_target_pott_count >= 2)
+
+                            if (agv_station.DeliveryMode == E_AGVStationDeliveryMode.Swap &&
+                                agv_station.TransferMode == E_AGVStationTranMode.MoreOut)
                             {
-                                agv_station.IsReservation = false;
+                                if (excute_target_pott_count >= 1)
+                                {
+                                    agv_station.IsReservation = false;
+                                }
                             }
+                            else
+                            {
+                                if (excute_target_pott_count >= 2)
+                                {
+                                    agv_station.IsReservation = false;
+                                }
+                            }
+
                             string reserved_time_out_alarm_code = getAGVStationReservedTimeOutCode(agv_station.getAGVStationID());
                             scApp.LineService.ProcessAlarmReport("AGVC", reserved_time_out_alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
                                         $"AGV Station:[{agv_station.getAGVStationID()} reserved time out]");
@@ -670,6 +702,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                 agv_station.TransferMode = E_AGVStationTranMode.None;
                             }
                         }
+
 
                         var queue_target_port_tran = unfinish_target_port_command.Where(tran => tran.TRANSFERSTATE == E_TRAN_STATUS.Queue).ToList();
                         if (queue_target_port_tran.Count() > 0)
@@ -694,9 +727,12 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                 int current_excute_task = 0;
                                 current_excute_task = unfinish_target_port_command.Count();
                                 //bool is_reserve_success = scApp.TransferBLL.web.canExcuteUnloadTransferToAGVStation(agv_station, unfinish_target_port_command.Count(), false);
+                                bool is_need_emergency = isNeedEmergency(check_has_vh_can_service_result.canServiceVh, unfinish_target_port_command);
+                                agv_station.IsEmergency = is_need_emergency;
+
                                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
-                                   Data: $"start try to reserve agv station:[{agv_station.getAGVStationID()}] ...");
-                                var check_result = scApp.TransferBLL.web.checkExcuteUnloadTransferToAGVStationStatus(agv_station, current_excute_task, false);
+                                   Data: $"start try to reserve agv station:[{agv_station.getAGVStationID()}],need emergency:{is_need_emergency}, force emergency:{agv_station.ForceEmergency} ...");
+                                var check_result = scApp.TransferBLL.web.checkExcuteUnloadTransferToAGVStationStatus(agv_station, current_excute_task, is_need_emergency || agv_station.ForceEmergency);
                                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
                                    Data: $"start try to reserve agv station:[{agv_station.getAGVStationID()}] ,reserve result is can:{check_result.isCan} ,tran mode:{check_result.tranMode}");
                                 if (check_result.isCan)
@@ -742,21 +778,101 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             }
         }
 
+        private bool isNeedEmergency(AVEHICLE vh, List<VTRANSFER> queueTargetPortTran)
+        {
+            if (vh == null)
+                return false;
+            if (queueTargetPortTran == null || queueTargetPortTran.Count == 0)
+                return false;
+            if (!SystemParameter.IsByPassAGVShelfStatus)
+            {
+                if (vh.ShelfStatus_L == ProtocolFormat.OHTMessage.ShelfStatus.Disable)
+                {
+                    return true;
+                }
+                if (vh.ShelfStatus_R == ProtocolFormat.OHTMessage.ShelfStatus.Disable)
+                {
+                    return true;
+                }
+            }
+            bool has_l_tran_cmd = queueTargetPortTran.Where(tran => SCUtility.isMatche(tran.HOSTSOURCE, vh.LocationRealID_L)).Count() > 0;
+            bool has_r_tran_cmd = queueTargetPortTran.Where(tran => SCUtility.isMatche(tran.HOSTSOURCE, vh.LocationRealID_R)).Count() > 0;
+            if (has_l_tran_cmd && has_r_tran_cmd)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+
         private void checkCanCloseReservationFlagWhenNoVhCanService(List<VTRANSFER> v_trans, AGVStation agv_station)
         {
             if (agv_station.IsReservation)
             {
                 if (v_trans != null && v_trans.Count > 0)
                 {
+                    //var unfinish_target_port_command = v_trans.
+                    //                                   Where(tran => tran.getTragetPortEQ(scApp.EqptBLL) == agv_station).
+                    //                                   ToList();
+                    //if (unfinish_target_port_command.Count == 0)
+                    //{
+                    //    agv_station.IsReservation = false;
+                    //    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: "AGVC",
+                    //                  Data: $"No vh can service agv station:{agv_station.getAGVStationID()} and no command is this one port, so close reservation. ");
+                    //}
+                    //var excute_target_port_tran = unfinish_target_port_command.Where(tran => tran.TRANSFERSTATE >= E_TRAN_STATUS.PreInitial).ToList();
+                    //if (excute_target_port_tran >= 2)
+                    //{
+                    //    agv_station.IsReservation = false;
+                    //}
                     var unfinish_target_port_command = v_trans.
-                                                       Where(tran => tran.getTragetPortEQ(scApp.EqptBLL) == agv_station).
-                                                       ToList();
+                                                         Where(tran => tran.getTragetPortEQ(scApp.EqptBLL) == agv_station).
+                                                         ToList();
                     if (unfinish_target_port_command.Count == 0)
                     {
-                        agv_station.IsTransferUnloadExcuting = false;
                         agv_station.IsReservation = false;
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: "AGVC",
-                                      Data: $"No vh can service agv station:{agv_station.getAGVStationID()} and no command si this one port, so close reservation. ");
+                                      Data: $"No vh can service agv station:{agv_station.getAGVStationID()} and no command is this one port, so close reservation. ");
+                    }
+                    else
+                    {
+                        var excute_target_port_tran = unfinish_target_port_command.Where(tran => tran.TRANSFERSTATE >= E_TRAN_STATUS.PreInitial).ToList();
+                        int excute_target_pott_count = excute_target_port_tran.Count();
+                        if (excute_target_pott_count > 0)
+                        {
+                            agv_station.IsTransferUnloadExcuting = true;
+                            if (agv_station.DeliveryMode == E_AGVStationDeliveryMode.Swap &&
+                                agv_station.TransferMode == E_AGVStationTranMode.MoreOut)
+                            {
+                                if (excute_target_pott_count >= 1)
+                                {
+                                    agv_station.IsReservation = false;
+                                }
+                            }
+                            else
+                            {
+                                if (excute_target_pott_count >= 2)
+                                {
+                                    agv_station.IsReservation = false;
+                                }
+                            }
+                            string reserved_time_out_alarm_code = getAGVStationReservedTimeOutCode(agv_station.getAGVStationID());
+                            //scApp.LineService.ProcessAlarmReport("AGVC", reserved_time_out_alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
+                            //            $"AGV Station:[{agv_station.getAGVStationID()} reserved time out]");
+                            return;
+                        }
+                        else
+                        {
+                            if (agv_station.IsTransferUnloadExcuting)
+                            {
+                                agv_station.IsTransferUnloadExcuting = false;
+                                agv_station.IsReservation = false;
+                            }
+                        }
                     }
                 }
                 else
@@ -764,6 +880,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     agv_station.IsTransferUnloadExcuting = false;
                     agv_station.IsReservation = false;
                 }
+
+
             }
             else
             {

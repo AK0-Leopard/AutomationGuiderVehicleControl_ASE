@@ -658,6 +658,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                 vh.CST_ID_R = rightCstID;
                 vh.HAS_CST_L = left_has_cst;
                 vh.HAS_CST_R = right_has_cst;
+                vh.ShelfStatus_L = left_shelf_status;
+                vh.ShelfStatus_R = right_shelf_status;
+
                 if (!SCUtility.isMatche(vh.CMD_ID_1, cmdID1))
                 {
                     vh.CMD_ID_1 = cmdID1;
@@ -957,11 +960,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                 int minimum_cost = int.MaxValue;
                 foreach (var vh in vhs)
                 {
-                    var result = GuideBLL.getGuideInfo(vh.CUR_ADR_ID, source);
-                    if (result.totalCost < minimum_cost)
+                    //var result = GuideBLL.getGuideInfo(vh.CUR_ADR_ID, source);
+                    var result = GuideBLL.IsRoadWalkable(vh.CUR_ADR_ID, source, out int totalCost);
+                    if (totalCost < minimum_cost)
                     {
                         best_vh = vh;
-                        minimum_cost = result.totalCost;
+                        minimum_cost = totalCost;
                     }
                 }
                 return best_vh;
