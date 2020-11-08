@@ -193,6 +193,18 @@
             this.ck_check_port_is_ready = new System.Windows.Forms.CheckBox();
             this.btn_refresh_agvstationInfo = new System.Windows.Forms.Button();
             this.dgv_AGVStationInfo = new System.Windows.Forms.DataGridView();
+            this.AGVStationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HasPortAuto = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsReservation = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.TransferMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsReadySingleUnload = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsCheckPortReady = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsEmergency = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.LastAskTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsTransferUnloadExcuting = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.BindingVh = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeliveryMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ForceEmergency = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cb_canUnloadToAGVStation = new System.Windows.Forms.CheckBox();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.btn_cmp_vh_complete = new System.Windows.Forms.Button();
@@ -399,18 +411,6 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.AGVStationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HasPortAuto = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.IsReservation = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.TransferMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsReadySingleUnload = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.IsCheckPortReady = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.IsEmergency = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.LastAskTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsTransferUnloadExcuting = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.BindingVh = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeliveryMode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ForceEmergency = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -630,23 +630,25 @@
             // 
             // button6
             // 
+            this.button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.button6.Location = new System.Drawing.Point(496, 341);
             this.button6.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(302, 42);
             this.button6.TabIndex = 16;
             this.button6.Text = "Force finish Cmd";
-            this.button6.UseVisualStyleBackColor = true;
+            this.button6.UseVisualStyleBackColor = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // btn_refsh_vh_status
             // 
+            this.btn_refsh_vh_status.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.btn_refsh_vh_status.Location = new System.Drawing.Point(496, 392);
             this.btn_refsh_vh_status.Name = "btn_refsh_vh_status";
             this.btn_refsh_vh_status.Size = new System.Drawing.Size(302, 42);
             this.btn_refsh_vh_status.TabIndex = 17;
             this.btn_refsh_vh_status.Text = "Refresh Vh Status (Func 43)";
-            this.btn_refsh_vh_status.UseVisualStyleBackColor = true;
+            this.btn_refsh_vh_status.UseVisualStyleBackColor = false;
             this.btn_refsh_vh_status.Click += new System.EventHandler(this.button7_Click);
             // 
             // cb_StartGenAntoCmd
@@ -855,22 +857,24 @@
             // 
             // btn_auto_local
             // 
+            this.btn_auto_local.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.btn_auto_local.Location = new System.Drawing.Point(823, 424);
             this.btn_auto_local.Name = "btn_auto_local";
             this.btn_auto_local.Size = new System.Drawing.Size(141, 28);
             this.btn_auto_local.TabIndex = 47;
             this.btn_auto_local.Text = "Auto Local";
-            this.btn_auto_local.UseVisualStyleBackColor = true;
+            this.btn_auto_local.UseVisualStyleBackColor = false;
             this.btn_auto_local.Click += new System.EventHandler(this.btn_auto_local_Click);
             // 
             // btn_auto_charge
             // 
+            this.btn_auto_charge.BackColor = System.Drawing.Color.Transparent;
             this.btn_auto_charge.Location = new System.Drawing.Point(823, 458);
             this.btn_auto_charge.Name = "btn_auto_charge";
             this.btn_auto_charge.Size = new System.Drawing.Size(141, 28);
             this.btn_auto_charge.TabIndex = 46;
             this.btn_auto_charge.Text = "Auto Charge";
-            this.btn_auto_charge.UseVisualStyleBackColor = true;
+            this.btn_auto_charge.UseVisualStyleBackColor = false;
             this.btn_auto_charge.Click += new System.EventHandler(this.btn_auto_charge_Click);
             // 
             // ch_reserve_stop
@@ -998,12 +1002,13 @@
             // 
             // btn_auto_remote
             // 
+            this.btn_auto_remote.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.btn_auto_remote.Location = new System.Drawing.Point(823, 392);
             this.btn_auto_remote.Name = "btn_auto_remote";
             this.btn_auto_remote.Size = new System.Drawing.Size(141, 28);
             this.btn_auto_remote.TabIndex = 38;
             this.btn_auto_remote.Text = "Auto Remote";
-            this.btn_auto_remote.UseVisualStyleBackColor = true;
+            this.btn_auto_remote.UseVisualStyleBackColor = false;
             this.btn_auto_remote.Click += new System.EventHandler(this.btn_auto_remote_Click);
             // 
             // groupBox12
@@ -2129,6 +2134,7 @@
             this.lbl_guideQuickTimes.Size = new System.Drawing.Size(40, 22);
             this.lbl_guideQuickTimes.TabIndex = 56;
             this.lbl_guideQuickTimes.Text = "   ";
+            this.lbl_guideQuickTimes.Visible = false;
             // 
             // lbl_guideTimes
             // 
@@ -2138,6 +2144,7 @@
             this.lbl_guideTimes.Size = new System.Drawing.Size(80, 22);
             this.lbl_guideTimes.TabIndex = 55;
             this.lbl_guideTimes.Text = "       ";
+            this.lbl_guideTimes.Visible = false;
             // 
             // label102
             // 
@@ -2147,6 +2154,7 @@
             this.label102.Size = new System.Drawing.Size(190, 22);
             this.label102.TabIndex = 54;
             this.label102.Text = "Guide Quick Times:";
+            this.label102.Visible = false;
             // 
             // label101
             // 
@@ -2156,6 +2164,7 @@
             this.label101.Size = new System.Drawing.Size(130, 22);
             this.label101.TabIndex = 53;
             this.label101.Text = "Guide times:";
+            this.label101.Visible = false;
             // 
             // button12
             // 
@@ -2165,6 +2174,7 @@
             this.button12.TabIndex = 52;
             this.button12.Text = "Refresh";
             this.button12.UseVisualStyleBackColor = true;
+            this.button12.Visible = false;
             this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // label100
@@ -2313,6 +2323,94 @@
             this.dgv_AGVStationInfo.Size = new System.Drawing.Size(1355, 198);
             this.dgv_AGVStationInfo.TabIndex = 39;
             this.dgv_AGVStationInfo.SelectionChanged += new System.EventHandler(this.dgv_AGVStationInfo_SelectionChanged);
+            // 
+            // AGVStationID
+            // 
+            this.AGVStationID.DataPropertyName = "AGVStationID";
+            this.AGVStationID.HeaderText = "AGVStationID";
+            this.AGVStationID.Name = "AGVStationID";
+            this.AGVStationID.Width = 155;
+            // 
+            // HasPortAuto
+            // 
+            this.HasPortAuto.DataPropertyName = "HasPortAuto";
+            this.HasPortAuto.HeaderText = "HasPortAuto";
+            this.HasPortAuto.Name = "HasPortAuto";
+            this.HasPortAuto.Width = 126;
+            // 
+            // IsReservation
+            // 
+            this.IsReservation.DataPropertyName = "IsReservation";
+            this.IsReservation.HeaderText = "IsReservation";
+            this.IsReservation.Name = "IsReservation";
+            this.IsReservation.Width = 146;
+            // 
+            // TransferMode
+            // 
+            this.TransferMode.DataPropertyName = "TransferMode";
+            this.TransferMode.HeaderText = "TransferMode";
+            this.TransferMode.Name = "TransferMode";
+            this.TransferMode.ReadOnly = true;
+            this.TransferMode.Width = 155;
+            // 
+            // IsReadySingleUnload
+            // 
+            this.IsReadySingleUnload.DataPropertyName = "IsReadySingleUnload";
+            this.IsReadySingleUnload.HeaderText = "IsReadySingleUnload";
+            this.IsReadySingleUnload.Name = "IsReadySingleUnload";
+            this.IsReadySingleUnload.Width = 206;
+            // 
+            // IsCheckPortReady
+            // 
+            this.IsCheckPortReady.DataPropertyName = "IsCheckPortReady";
+            this.IsCheckPortReady.HeaderText = "IsCheckPortReady";
+            this.IsCheckPortReady.Name = "IsCheckPortReady";
+            this.IsCheckPortReady.Width = 176;
+            // 
+            // IsEmergency
+            // 
+            this.IsEmergency.DataPropertyName = "IsEmergency";
+            this.IsEmergency.HeaderText = "IsEmergency";
+            this.IsEmergency.Name = "IsEmergency";
+            this.IsEmergency.Width = 126;
+            // 
+            // LastAskTime
+            // 
+            this.LastAskTime.DataPropertyName = "sLastAskTime";
+            this.LastAskTime.HeaderText = "LastAskTime";
+            this.LastAskTime.Name = "LastAskTime";
+            this.LastAskTime.ReadOnly = true;
+            this.LastAskTime.Width = 145;
+            // 
+            // IsTransferUnloadExcuting
+            // 
+            this.IsTransferUnloadExcuting.DataPropertyName = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.HeaderText = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.Name = "IsTransferUnloadExcuting";
+            this.IsTransferUnloadExcuting.Width = 256;
+            // 
+            // BindingVh
+            // 
+            this.BindingVh.DataPropertyName = "BindingVh";
+            this.BindingVh.HeaderText = "BindingVh";
+            this.BindingVh.Name = "BindingVh";
+            this.BindingVh.Width = 125;
+            // 
+            // DeliveryMode
+            // 
+            this.DeliveryMode.DataPropertyName = "DeliveryMode";
+            this.DeliveryMode.HeaderText = "DeliveryMode";
+            this.DeliveryMode.Name = "DeliveryMode";
+            this.DeliveryMode.ReadOnly = true;
+            this.DeliveryMode.Width = 155;
+            // 
+            // ForceEmergency
+            // 
+            this.ForceEmergency.DataPropertyName = "ForceEmergency";
+            this.ForceEmergency.HeaderText = "ForceEmergency";
+            this.ForceEmergency.Name = "ForceEmergency";
+            this.ForceEmergency.ReadOnly = true;
+            this.ForceEmergency.Width = 156;
             // 
             // cb_canUnloadToAGVStation
             // 
@@ -4368,94 +4466,6 @@
             this.btn_online.Text = "Online with MCS";
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
-            // 
-            // AGVStationID
-            // 
-            this.AGVStationID.DataPropertyName = "AGVStationID";
-            this.AGVStationID.HeaderText = "AGVStationID";
-            this.AGVStationID.Name = "AGVStationID";
-            this.AGVStationID.Width = 155;
-            // 
-            // HasPortAuto
-            // 
-            this.HasPortAuto.DataPropertyName = "HasPortAuto";
-            this.HasPortAuto.HeaderText = "HasPortAuto";
-            this.HasPortAuto.Name = "HasPortAuto";
-            this.HasPortAuto.Width = 126;
-            // 
-            // IsReservation
-            // 
-            this.IsReservation.DataPropertyName = "IsReservation";
-            this.IsReservation.HeaderText = "IsReservation";
-            this.IsReservation.Name = "IsReservation";
-            this.IsReservation.Width = 146;
-            // 
-            // TransferMode
-            // 
-            this.TransferMode.DataPropertyName = "TransferMode";
-            this.TransferMode.HeaderText = "TransferMode";
-            this.TransferMode.Name = "TransferMode";
-            this.TransferMode.ReadOnly = true;
-            this.TransferMode.Width = 155;
-            // 
-            // IsReadySingleUnload
-            // 
-            this.IsReadySingleUnload.DataPropertyName = "IsReadySingleUnload";
-            this.IsReadySingleUnload.HeaderText = "IsReadySingleUnload";
-            this.IsReadySingleUnload.Name = "IsReadySingleUnload";
-            this.IsReadySingleUnload.Width = 206;
-            // 
-            // IsCheckPortReady
-            // 
-            this.IsCheckPortReady.DataPropertyName = "IsCheckPortReady";
-            this.IsCheckPortReady.HeaderText = "IsCheckPortReady";
-            this.IsCheckPortReady.Name = "IsCheckPortReady";
-            this.IsCheckPortReady.Width = 176;
-            // 
-            // IsEmergency
-            // 
-            this.IsEmergency.DataPropertyName = "IsEmergency";
-            this.IsEmergency.HeaderText = "IsEmergency";
-            this.IsEmergency.Name = "IsEmergency";
-            this.IsEmergency.Width = 126;
-            // 
-            // LastAskTime
-            // 
-            this.LastAskTime.DataPropertyName = "sLastAskTime";
-            this.LastAskTime.HeaderText = "LastAskTime";
-            this.LastAskTime.Name = "LastAskTime";
-            this.LastAskTime.ReadOnly = true;
-            this.LastAskTime.Width = 145;
-            // 
-            // IsTransferUnloadExcuting
-            // 
-            this.IsTransferUnloadExcuting.DataPropertyName = "IsTransferUnloadExcuting";
-            this.IsTransferUnloadExcuting.HeaderText = "IsTransferUnloadExcuting";
-            this.IsTransferUnloadExcuting.Name = "IsTransferUnloadExcuting";
-            this.IsTransferUnloadExcuting.Width = 256;
-            // 
-            // BindingVh
-            // 
-            this.BindingVh.DataPropertyName = "BindingVh";
-            this.BindingVh.HeaderText = "BindingVh";
-            this.BindingVh.Name = "BindingVh";
-            this.BindingVh.Width = 125;
-            // 
-            // DeliveryMode
-            // 
-            this.DeliveryMode.DataPropertyName = "DeliveryMode";
-            this.DeliveryMode.HeaderText = "DeliveryMode";
-            this.DeliveryMode.Name = "DeliveryMode";
-            this.DeliveryMode.ReadOnly = true;
-            this.DeliveryMode.Width = 155;
-            // 
-            // ForceEmergency
-            // 
-            this.ForceEmergency.DataPropertyName = "ForceEmergency";
-            this.ForceEmergency.HeaderText = "ForceEmergency";
-            this.ForceEmergency.Name = "ForceEmergency";
-            this.ForceEmergency.ReadOnly = true;
-            this.ForceEmergency.Width = 156;
             // 
             // DebugForm
             // 

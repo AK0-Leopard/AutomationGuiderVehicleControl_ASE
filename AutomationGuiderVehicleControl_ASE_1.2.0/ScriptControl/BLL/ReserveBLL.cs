@@ -87,6 +87,9 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public (bool isSuccess, double x, double y, bool isTR50) GetHltMapAddress(string adrID)
         {
+            var hlt_address = mapAPI.HltMapAddresses.Where(adr => SCUtility.isMatche(adr.ID, adrID)).FirstOrDefault();
+            if (hlt_address == null)
+                return (false, double.MinValue, double.MinValue, false);
             bool is_exist = false;
             double x = double.MaxValue;
             double y = double.MaxValue;

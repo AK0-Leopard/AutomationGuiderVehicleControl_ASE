@@ -1000,7 +1000,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 if (is_exist)
                 {
                     totalCost = guideQuickSearch.totalCost;
-                    DebugParameter.GuideQuickSearchTimes++;
+                    //DebugParameter.GuideQuickSearchTimes++;
                     return guideQuickSearch.isWalker;
                 }
                 else
@@ -1009,7 +1009,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     dicGuideQuickSearch.TryAdd(key, new GuideQuickSearch(guide_info.isSuccess, guide_info.totalCost));
                     //if ((guide_info.guideAddressIds != null && guide_info.guideAddressIds.Count != 0) &&
                     //    ((guide_info.guideSectionIds != null && guide_info.guideSectionIds.Count != 0)))
-                    DebugParameter.GuideSearchTimes++;
+                    //DebugParameter.GuideSearchTimes++;
                     if (guide_info.isSuccess)
                     {
                         totalCost = guide_info.totalCost;

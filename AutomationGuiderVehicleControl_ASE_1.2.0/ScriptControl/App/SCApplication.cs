@@ -747,7 +747,7 @@ namespace com.mirle.ibg3k0.sc.App
                    .Build();
 
             Scheduler.ScheduleJob(tran_command_backup_scheduler, one_min_trigger);
-            Scheduler.ScheduleJob(mttf_mtbf_scheduler, fives_min_trigger);
+            //Scheduler.ScheduleJob(mttf_mtbf_scheduler, fives_min_trigger);
         }
 
         private void initDao()
