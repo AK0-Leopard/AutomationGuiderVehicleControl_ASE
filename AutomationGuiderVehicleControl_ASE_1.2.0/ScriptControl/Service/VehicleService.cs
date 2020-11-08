@@ -2098,39 +2098,71 @@ namespace com.mirle.ibg3k0.sc.Service
                 bool is_success = true;
                 if (cmd != null)
                 {
-                    carrierStateCheck(cmd, completeStatus);
-                    vh_id = cmd.VH_ID;
-                    finish_fransfer_cmd_id = cmd.TRANSFER_ID;
-                    is_success = is_success && scApp.CMDBLL.updateCommand_OHTC_StatusToFinish(finish_cmd_id, completeStatus);
-                    //再確認是否為Transfer command
-                    //是的話
-                    //1.要上報MCS
-                    //2.要將該Transfer改為結束
-                    bool isTransfer = !SCUtility.isEmpty(finish_fransfer_cmd_id);
-                    if (isTransfer)
+                    AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vh_id);
+                    try
                     {
-                        //if (scApp.PortStationBLL.OperateCatch.IsEqPort(scApp.EqptBLL, cmd.DESTINATION_PORT))
-                        //scApp.ReportBLL.newReportUnloadComplete(cmd.TRANSFER_ID, null);
-
-                        is_success = is_success && scApp.CMDBLL.updateCMD_MCS_TranStatus2Complete(finish_fransfer_cmd_id, completeStatus);
-                        is_success = is_success && scApp.ReportBLL.ReportTransferResult2MCS(finish_fransfer_cmd_id, completeStatus);
-                        is_success = is_success && scApp.SysExcuteQualityBLL.SysExecQityfinish(finish_fransfer_cmd_id, completeStatus, totalTravelDis);
-                        if (completeStatus == CompleteStatus.IdmisMatch ||
-                            completeStatus == CompleteStatus.IdreadFailed)
+                        vh.isCommandEnding = true;
+                        carrierStateCheck(cmd, completeStatus);
+                        vh_id = cmd.VH_ID;
+                        finish_fransfer_cmd_id = cmd.TRANSFER_ID;
+                        is_success = is_success && scApp.CMDBLL.updateCommand_OHTC_StatusToFinish(finish_cmd_id, completeStatus);
+                        //再確認是否為Transfer command
+                        //是的話
+                        //1.要上報MCS
+                        //2.要將該Transfer改為結束
+                        bool isTransfer = !SCUtility.isEmpty(finish_fransfer_cmd_id);
+                        if (isTransfer)
                         {
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                               Data: $"start process:[{completeStatus}] script. finish cmd id:{finish_cmd_id}...",
-                               VehicleID: vh_id);
-                            var result = scApp.TransferService.processIDReadFailAndMismatch(cmd.CARRIER_ID, completeStatus);
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                               Data: $"process:[{completeStatus}] script success:[{result.isSuccess}], result:[{result.result}]." +
-                                     $" finish cmd id:{finish_cmd_id}",
-                               VehicleID: vh_id);
+                            //if (scApp.PortStationBLL.OperateCatch.IsEqPort(scApp.EqptBLL, cmd.DESTINATION_PORT))
+                            //scApp.ReportBLL.newReportUnloadComplete(cmd.TRANSFER_ID, null);
 
+                            is_success = is_success && scApp.CMDBLL.updateCMD_MCS_TranStatus2Complete(finish_fransfer_cmd_id, completeStatus);
+                            is_success = is_success && scApp.ReportBLL.ReportTransferResult2MCS(finish_fransfer_cmd_id, completeStatus);
+                            is_success = is_success && scApp.SysExcuteQualityBLL.SysExecQityfinish(finish_fransfer_cmd_id, completeStatus, totalTravelDis);
+                            if (completeStatus == CompleteStatus.IdmisMatch ||
+                                completeStatus == CompleteStatus.IdreadFailed)
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                   Data: $"start process:[{completeStatus}] script. finish cmd id:{finish_cmd_id}...",
+                                   VehicleID: vh_id);
+                                var result = scApp.TransferService.processIDReadFailAndMismatch(cmd.CARRIER_ID, completeStatus);
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                   Data: $"process:[{completeStatus}] script success:[{result.isSuccess}], result:[{result.result}]." +
+                                         $" finish cmd id:{finish_cmd_id}",
+                                   VehicleID: vh_id);
+                            }
+                            tryRemoveFinishTransferInCurrentCache(finish_fransfer_cmd_id);
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, "Exception:");
+                        is_success = false;
+                    }
+                    finally
+                    {
+                        vh.isCommandEnding = false;
                     }
                 }
                 return (is_success, finish_fransfer_cmd_id);
+            }
+
+            private void tryRemoveFinishTransferInCurrentCache(string finish_fransfer_cmd_id)
+            {
+                try
+                {
+                    var vtrans = line.CurrentExcuteTransferCommand.ToList();
+                    if (vtrans == null || vtrans.Count == 0) return;
+                    var finish_vtran = vtrans.Where(tran => SCUtility.isMatche(tran.ID, finish_fransfer_cmd_id)).FirstOrDefault();
+                    if (finish_vtran != null)
+                    {
+                        line.CurrentExcuteTransferCommand.Remove(finish_vtran);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception:");
+                }
             }
 
             /// <summary>

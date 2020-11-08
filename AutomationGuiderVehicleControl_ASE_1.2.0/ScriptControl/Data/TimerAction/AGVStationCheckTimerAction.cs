@@ -90,7 +90,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     //2-2.沒有，則持續跟OHBC通報目前沒有Queue的命令要過去
                     //3.如果有預約成功，則將該Station的is reservation = true
                     //var v_trans = line.CurrentExcuteTransferCommand;
-                    var v_trans = scApp.getEQObjCacheManager().getLine().CurrentExcuteTransferCommand;
+                    var v_trans = scApp.getEQObjCacheManager().getLine().CurrentExcuteTransferCommand.ToList();
                     var agv_stations = scApp.EqptBLL.OperateCatch.loadAllAGVStation();
                     foreach (var agv_station in agv_stations)
                     {

@@ -556,6 +556,8 @@ namespace com.mirle.ibg3k0.sc
         public object PositionRefresh_Sync = new object();
         [JsonIgnore]
         public object connection_sync = new object();
+        [JsonIgnore]
+        public bool isCommandEnding = false;
 
         [JsonIgnore]
         public virtual ReserveUnsuccessInfo CanNotReserveInfo { get; set; }
@@ -1002,6 +1004,16 @@ namespace com.mirle.ibg3k0.sc
             {
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
                    Data: $"vh id:{this.VEHICLE_ID} current address is empty," +
+                         $"so filter it out",
+                   VehicleID: this.VEHICLE_ID,
+                   CST_ID_L: this.CST_ID_L,
+                   CST_ID_R: this.CST_ID_R);
+                return false;
+            }
+            if (isCommandEnding)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "AGVC",
+                   Data: $"vh id:{this.VEHICLE_ID} is command ending," +
                          $"so filter it out",
                    VehicleID: this.VEHICLE_ID,
                    CST_ID_L: this.CST_ID_L,
