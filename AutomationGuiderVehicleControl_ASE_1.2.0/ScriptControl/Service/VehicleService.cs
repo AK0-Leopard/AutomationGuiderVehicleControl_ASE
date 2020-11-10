@@ -97,32 +97,39 @@ namespace com.mirle.ibg3k0.sc.Service
                         reportBLL.newReportTransferInitial(cmd.TRANSFER_ID, null);
                     }
                     List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
-                    using (var tx = SCUtility.getTransactionScope())
+                    //using (var tx = SCUtility.getTransactionScope())
+                    //{
+                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
                     {
-                        using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                        isSuccess &= cmdBLL.updateCommand_OHTC_StatusByCmdID(vh_id, cmd.ID, E_CMD_STATUS.Execution);
+                        //isSuccess &= vehicleBLL.updateVehicleExcuteCMD(cmd.VH_ID, cmd.ID, cmd.TRANSFER_ID);
+                        if (isTransferCmd)
                         {
-                            isSuccess &= cmdBLL.updateCommand_OHTC_StatusByCmdID(vh_id, cmd.ID, E_CMD_STATUS.Execution);
-                            //isSuccess &= vehicleBLL.updateVehicleExcuteCMD(cmd.VH_ID, cmd.ID, cmd.TRANSFER_ID);
-                            if (isTransferCmd)
-                            {
-                                isSuccess &= transferBLL.db.transfer.updateTranStatus2InitialAndExcuteCmdID(cmd.TRANSFER_ID, cmd.ID);
-                                isSuccess &= reportBLL.newReportBeginTransfer(cmd.TRANSFER_ID, reportqueues);
-                                reportBLL.insertMCSReport(reportqueues);
-                            }
-
-                            if (isSuccess)
-                            {
-                                isSuccess &= sendMessage_ID_31_TRANS_REQUEST
-                                    (cmd.VH_ID, cmd.ID, active_type, cmd.CARRIER_ID,
-                                     cmd.SOURCE, cmd.DESTINATION,
-                                     cmd.SOURCE_PORT, cmd.DESTINATION_PORT);
-                            }
-                            if (isSuccess)
-                            {
-                                tx.Complete();
-                            }
+                            isSuccess &= transferBLL.db.transfer.updateTranStatus2InitialAndExcuteCmdID(cmd.TRANSFER_ID, cmd.ID);
+                            isSuccess &= reportBLL.newReportBeginTransfer(cmd.TRANSFER_ID, reportqueues);
+                            reportBLL.insertMCSReport(reportqueues);
                         }
+
+                        //if (isSuccess)
+                        //{
+                        //    isSuccess &= sendMessage_ID_31_TRANS_REQUEST
+                        //        (cmd.VH_ID, cmd.ID, active_type, cmd.CARRIER_ID,
+                        //         cmd.SOURCE, cmd.DESTINATION,
+                        //         cmd.SOURCE_PORT, cmd.DESTINATION_PORT);
+                        //}
+                        //if (isSuccess)
+                        //{
+                        //    tx.Complete();
+                        //}
                     }
+                    if (isSuccess)
+                    {
+                        isSuccess &= sendMessage_ID_31_TRANS_REQUEST
+                            (cmd.VH_ID, cmd.ID, active_type, cmd.CARRIER_ID,
+                             cmd.SOURCE, cmd.DESTINATION,
+                             cmd.SOURCE_PORT, cmd.DESTINATION_PORT);
+                    }
+                    //}
                     if (isSuccess)
                     {
                         reportBLL.newSendMCSMessage(reportqueues);
@@ -2098,12 +2105,12 @@ namespace com.mirle.ibg3k0.sc.Service
                 bool is_success = true;
                 if (cmd != null)
                 {
+                    vh_id = SCUtility.Trim(cmd.VH_ID, true);
                     AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vh_id);
                     try
                     {
                         vh.isCommandEnding = true;
                         carrierStateCheck(cmd, completeStatus);
-                        vh_id = cmd.VH_ID;
                         finish_fransfer_cmd_id = cmd.TRANSFER_ID;
                         is_success = is_success && scApp.CMDBLL.updateCommand_OHTC_StatusToFinish(finish_cmd_id, completeStatus);
                         //再確認是否為Transfer command
@@ -3298,43 +3305,43 @@ namespace com.mirle.ibg3k0.sc.Service
         private void checkWillGoToPortIsAGVStationAndIsNeedPreOpenCover(AVEHICLE vh, ACMD excute_cmd)
         {
 
-            bool is_carry_cmd_cst = scApp.VehicleBLL.cache.IsCarryCstByCstID(vh.VEHICLE_ID, excute_cmd.CARRIER_ID);
-            if (is_carry_cmd_cst)
-            {
-                bool is_agv_station_traget = excute_cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
-                if (is_agv_station_traget)
-                {
-                    checkIsNeedPreOpenAGVStationCover(vh, excute_cmd.DESTINATION_PORT);
-                }
-                else
-                {
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                       Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{SCUtility.Trim(excute_cmd.ID, true)} " +
-                             $"source port:{SCUtility.Trim(excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(excute_cmd.DESTINATION_PORT, true)}," +
-                             $"target port not agvstation",
-                       VehicleID: vh.VEHICLE_ID,
-                       CST_ID_L: vh.CST_ID_L,
-                       CST_ID_R: vh.CST_ID_R);
-                }
-            }
-            else
-            {
-                bool is_agv_station_source = excute_cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
-                if (is_agv_station_source)
-                {
-                    checkIsNeedPreOpenAGVStationCover(vh, excute_cmd.SOURCE_PORT);
-                }
-                else
-                {
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                       Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{SCUtility.Trim(excute_cmd.ID, true)} " +
-                             $"source port:{SCUtility.Trim(excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(excute_cmd.DESTINATION_PORT, true)}," +
-                             $"source port not agvstation",
-                       VehicleID: vh.VEHICLE_ID,
-                       CST_ID_L: vh.CST_ID_L,
-                       CST_ID_R: vh.CST_ID_R);
-                }
-            }
+            //bool is_carry_cmd_cst = scApp.VehicleBLL.cache.IsCarryCstByCstID(vh.VEHICLE_ID, excute_cmd.CARRIER_ID);
+            //if (is_carry_cmd_cst)
+            //{
+            //    bool is_agv_station_traget = excute_cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
+            //    if (is_agv_station_traget)
+            //    {
+            //        checkIsNeedPreOpenAGVStationCover(vh, excute_cmd.DESTINATION_PORT);
+            //    }
+            //    else
+            //    {
+            //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+            //           Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{SCUtility.Trim(excute_cmd.ID, true)} " +
+            //                 $"source port:{SCUtility.Trim(excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(excute_cmd.DESTINATION_PORT, true)}," +
+            //                 $"target port not agvstation",
+            //           VehicleID: vh.VEHICLE_ID,
+            //           CST_ID_L: vh.CST_ID_L,
+            //           CST_ID_R: vh.CST_ID_R);
+            //    }
+            //}
+            //else
+            //{
+            //    bool is_agv_station_source = excute_cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
+            //    if (is_agv_station_source)
+            //    {
+            //        checkIsNeedPreOpenAGVStationCover(vh, excute_cmd.SOURCE_PORT);
+            //    }
+            //    else
+            //    {
+            //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+            //           Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{SCUtility.Trim(excute_cmd.ID, true)} " +
+            //                 $"source port:{SCUtility.Trim(excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(excute_cmd.DESTINATION_PORT, true)}," +
+            //                 $"source port not agvstation",
+            //           VehicleID: vh.VEHICLE_ID,
+            //           CST_ID_L: vh.CST_ID_L,
+            //           CST_ID_R: vh.CST_ID_R);
+            //    }
+            //}
         }
 
         //private void checkIsNeedPreOpenCover(AVEHICLE vh, ACMD excute_cmd)
