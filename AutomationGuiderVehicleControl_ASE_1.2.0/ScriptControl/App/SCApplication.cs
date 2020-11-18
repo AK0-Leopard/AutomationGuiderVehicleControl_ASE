@@ -1631,7 +1631,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static int OpenAGVStationCoverDistance_mm = 5000;
         public static bool IsByPassAGVShelfStatus { get; private set; } = true;
 
-        public static int TransferCommandQueueTimeOut_mSec = 600000;
+        public static int TransferCommandExcuteTimeOut_mSec = 600000;
 
         public static int AllowVhIdleTime_ms = 300000;
 
@@ -1687,7 +1687,7 @@ namespace com.mirle.ibg3k0.sc.App
         }
         public static void setTransferCommandQueueTimeOut_mSec(int transferCommandQueueTimeOut_mSec)
         {
-            TransferCommandQueueTimeOut_mSec = transferCommandQueueTimeOut_mSec;
+            TransferCommandExcuteTimeOut_mSec = transferCommandQueueTimeOut_mSec;
         }
         public static void setAllowIdleTime_ms(int allowIdleTime_ms)
         {

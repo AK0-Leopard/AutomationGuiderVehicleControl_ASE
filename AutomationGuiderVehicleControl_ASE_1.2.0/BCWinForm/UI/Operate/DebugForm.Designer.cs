@@ -1902,7 +1902,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2251,11 +2251,12 @@
             // label95
             // 
             this.label95.AutoSize = true;
+            this.label95.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.label95.Location = new System.Drawing.Point(7, 521);
             this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(350, 22);
+            this.label95.Size = new System.Drawing.Size(370, 22);
             this.label95.TabIndex = 44;
-            this.label95.Text = "Transfer CommandQueue Time out(ms)";
+            this.label95.Text = "Transfer Command Excute Time out(ms)";
             // 
             // numer_pre_open_agv_station_distance
             // 

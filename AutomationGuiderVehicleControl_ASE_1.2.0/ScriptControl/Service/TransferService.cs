@@ -615,20 +615,27 @@ namespace com.mirle.ibg3k0.sc.Service
             return (false, null);
         }
 
+        DateTime LastNotifyMCSCommandExcuteTimeout = DateTime.MinValue;
+        int NotifyMCSCommandExcuteTimeoutInterval_min = 2;
         protected void queueTimeOutCheck(List<VTRANSFER> un_finish_trnasfer)
         {
             try
             {
-                bool has_mcs_cmd_time_out_in_queue = un_finish_trnasfer.Where(tran => tran.IsQueueTimeOut).Count() > 0;
-                if (has_mcs_cmd_time_out_in_queue)
+                bool has_mcs_cmd_time_out_excute = un_finish_trnasfer.Where(tran => tran.IsExcuteTimeOut).Count() > 0;
+                if (has_mcs_cmd_time_out_excute)
                 {
                     scApp.LineService.ProcessAlarmReport("AGVC", AlarmBLL.AGVC_TRAN_COMMAND_IN_QUEUE_TIME_OUT, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
-                                $"AGVC has trnasfer commmand in queue over time:{SystemParameter.TransferCommandQueueTimeOut_mSec}ms");
+                                $"AGVC has trnasfer commmand in queue over time:{SystemParameter.TransferCommandExcuteTimeOut_mSec}ms");
+                    if (DateTime.Now > LastNotifyMCSCommandExcuteTimeout.AddMinutes(NotifyMCSCommandExcuteTimeoutInterval_min))
+                    {
+                        LastNotifyMCSCommandExcuteTimeout = DateTime.Now;
+                        transferBLL.web.mcsCommandExcuteTimeOutNotify();
+                    }
                 }
                 else
                 {
                     scApp.LineService.ProcessAlarmReport("AGVC", AlarmBLL.AGVC_TRAN_COMMAND_IN_QUEUE_TIME_OUT, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
-                                $"AGVC has trnasfer commmand in queue over time:{SystemParameter.TransferCommandQueueTimeOut_mSec}ms");
+                                $"AGVC has trnasfer commmand in queue over time:{SystemParameter.TransferCommandExcuteTimeOut_mSec}ms");
                 }
             }
             catch { }

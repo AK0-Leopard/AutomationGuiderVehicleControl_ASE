@@ -205,6 +205,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             const string UNLOAD_CHECK_RESULT_OK = "OK";
             const string TRANSFER_RECEIVE_CONST = "0";
+            const string TRANSFER_TIME_OUT_CONST = "10";
 
             WebClientManager webClientManager;
             public Web(WebClientManager webClientManager)
@@ -333,7 +334,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             List<string> notify_urls = new List<string>()
             {
-                "http://stk01.asek21.mirle.com.tw:15000",
+                //"http://stk01.asek21.mirle.com.tw:15000",
                  "http://agvc.asek21.mirle.com.tw:15000"
             };
             public void receiveMCSCommandNotify()
@@ -347,6 +348,28 @@ namespace com.mirle.ibg3k0.sc.BLL
                     string[] param = new string[]
                     {
                     TRANSFER_RECEIVE_CONST,
+                    };
+                    foreach (string notify_url in notify_urls)
+                    {
+                        string result = webClientManager.GetInfoFromServer(notify_url, action_targets, param);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
+            public void mcsCommandExcuteTimeOutNotify()
+            {
+                try
+                {
+                    string[] action_targets = new string[]
+                    {
+                    "weatherforecast"
+                    };
+                    string[] param = new string[]
+                    {
+                    TRANSFER_TIME_OUT_CONST,
                     };
                     foreach (string notify_url in notify_urls)
                     {

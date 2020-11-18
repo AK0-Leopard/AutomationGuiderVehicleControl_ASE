@@ -78,6 +78,22 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.tbcList = new System.Windows.Forms.TabControl();
             this.tab_vhStatus = new System.Windows.Forms.TabPage();
             this.dgv_vhStatus = new System.Windows.Forms.DataGridView();
+            this.vEHICLEIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.mODESTATUSDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.aCTSTATUSDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TRANSFER_ID_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TRANSFER_ID_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TRANSFER_ID_3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TRANSFER_ID_4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CMD_ID_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CMD_ID_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CMD_ID_3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CMD_ID_4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.BATTERYCAPACITY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.uPDTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VEHICLE_TYPE = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.vehicleObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tapTransferCmd = new System.Windows.Forms.TabPage();
             this.dgv_TransferCommand = new System.Windows.Forms.DataGridView();
@@ -116,22 +132,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.timer_TimedUpdates = new System.Windows.Forms.Timer(this.components);
             this.vehicleObjToShowBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.aCMDMCSBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.vEHICLEIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.mODESTATUSDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.aCTSTATUSDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TRANSFER_ID_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TRANSFER_ID_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TRANSFER_ID_3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TRANSFER_ID_4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CMD_ID_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CMD_ID_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CMD_ID_3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CMD_ID_4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.BATTERYCAPACITY = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.uPDTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VEHICLE_TYPE = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -725,6 +725,138 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.dgv_vhStatus.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_vhStatus_CellClick);
             this.dgv_vhStatus.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_vhStatus_DataError);
             // 
+            // vEHICLEIDDataGridViewTextBoxColumn
+            // 
+            this.vEHICLEIDDataGridViewTextBoxColumn.DataPropertyName = "VEHICLE_ID";
+            this.vEHICLEIDDataGridViewTextBoxColumn.HeaderText = "Vh ID";
+            this.vEHICLEIDDataGridViewTextBoxColumn.Name = "vEHICLEIDDataGridViewTextBoxColumn";
+            this.vEHICLEIDDataGridViewTextBoxColumn.ReadOnly = true;
+            this.vEHICLEIDDataGridViewTextBoxColumn.Width = 75;
+            // 
+            // mODESTATUSDataGridViewTextBoxColumn
+            // 
+            this.mODESTATUSDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.mODESTATUSDataGridViewTextBoxColumn.DataPropertyName = "MODE_STATUS";
+            this.mODESTATUSDataGridViewTextBoxColumn.FillWeight = 200F;
+            this.mODESTATUSDataGridViewTextBoxColumn.HeaderText = "Mode";
+            this.mODESTATUSDataGridViewTextBoxColumn.Name = "mODESTATUSDataGridViewTextBoxColumn";
+            this.mODESTATUSDataGridViewTextBoxColumn.ReadOnly = true;
+            this.mODESTATUSDataGridViewTextBoxColumn.Width = 76;
+            // 
+            // aCTSTATUSDataGridViewTextBoxColumn
+            // 
+            this.aCTSTATUSDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.aCTSTATUSDataGridViewTextBoxColumn.DataPropertyName = "ACT_STATUS";
+            this.aCTSTATUSDataGridViewTextBoxColumn.FillWeight = 200F;
+            this.aCTSTATUSDataGridViewTextBoxColumn.HeaderText = "Action";
+            this.aCTSTATUSDataGridViewTextBoxColumn.Name = "aCTSTATUSDataGridViewTextBoxColumn";
+            this.aCTSTATUSDataGridViewTextBoxColumn.ReadOnly = true;
+            this.aCTSTATUSDataGridViewTextBoxColumn.Width = 83;
+            // 
+            // TRANSFER_ID_1
+            // 
+            this.TRANSFER_ID_1.DataPropertyName = "TRANSFER_ID_1";
+            this.TRANSFER_ID_1.HeaderText = "Tran ID1";
+            this.TRANSFER_ID_1.Name = "TRANSFER_ID_1";
+            this.TRANSFER_ID_1.ReadOnly = true;
+            this.TRANSFER_ID_1.Width = 97;
+            // 
+            // TRANSFER_ID_2
+            // 
+            this.TRANSFER_ID_2.DataPropertyName = "TRANSFER_ID_2";
+            this.TRANSFER_ID_2.HeaderText = "Tran ID2";
+            this.TRANSFER_ID_2.Name = "TRANSFER_ID_2";
+            this.TRANSFER_ID_2.ReadOnly = true;
+            this.TRANSFER_ID_2.Width = 97;
+            // 
+            // TRANSFER_ID_3
+            // 
+            this.TRANSFER_ID_3.DataPropertyName = "TRANSFER_ID_3";
+            this.TRANSFER_ID_3.HeaderText = "Tran ID3";
+            this.TRANSFER_ID_3.Name = "TRANSFER_ID_3";
+            this.TRANSFER_ID_3.ReadOnly = true;
+            this.TRANSFER_ID_3.Width = 97;
+            // 
+            // TRANSFER_ID_4
+            // 
+            this.TRANSFER_ID_4.DataPropertyName = "TRANSFER_ID_4";
+            this.TRANSFER_ID_4.HeaderText = "Tran ID4";
+            this.TRANSFER_ID_4.Name = "TRANSFER_ID_4";
+            this.TRANSFER_ID_4.ReadOnly = true;
+            this.TRANSFER_ID_4.Width = 97;
+            // 
+            // CMD_ID_1
+            // 
+            this.CMD_ID_1.DataPropertyName = "CMD_ID_1";
+            this.CMD_ID_1.HeaderText = "Command ID1";
+            this.CMD_ID_1.Name = "CMD_ID_1";
+            this.CMD_ID_1.ReadOnly = true;
+            this.CMD_ID_1.Width = 142;
+            // 
+            // CMD_ID_2
+            // 
+            this.CMD_ID_2.DataPropertyName = "CMD_ID_2";
+            this.CMD_ID_2.HeaderText = "Command ID2";
+            this.CMD_ID_2.Name = "CMD_ID_2";
+            this.CMD_ID_2.ReadOnly = true;
+            this.CMD_ID_2.Width = 142;
+            // 
+            // CMD_ID_3
+            // 
+            this.CMD_ID_3.DataPropertyName = "CMD_ID_3";
+            this.CMD_ID_3.HeaderText = "Command ID3";
+            this.CMD_ID_3.Name = "CMD_ID_3";
+            this.CMD_ID_3.ReadOnly = true;
+            this.CMD_ID_3.Width = 142;
+            // 
+            // CMD_ID_4
+            // 
+            this.CMD_ID_4.DataPropertyName = "CMD_ID_4";
+            this.CMD_ID_4.HeaderText = "Command ID4";
+            this.CMD_ID_4.Name = "CMD_ID_4";
+            this.CMD_ID_4.ReadOnly = true;
+            this.CMD_ID_4.Width = 142;
+            // 
+            // cMDPAUSE2ShowDataGridViewCheckBoxColumn
+            // 
+            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn.DataPropertyName = "cMD_PAUSE2Show";
+            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn.HeaderText = "CMD pause";
+            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn.Name = "cMDPAUSE2ShowDataGridViewCheckBoxColumn";
+            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn.ReadOnly = true;
+            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn.Width = 103;
+            // 
+            // oBSPAUSE2ShowDataGridViewCheckBoxColumn
+            // 
+            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn.DataPropertyName = "oBS_PAUSE2Show";
+            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn.HeaderText = "OBS pause";
+            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn.Name = "oBSPAUSE2ShowDataGridViewCheckBoxColumn";
+            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn.ReadOnly = true;
+            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn.Width = 101;
+            // 
+            // BATTERYCAPACITY
+            // 
+            this.BATTERYCAPACITY.DataPropertyName = "BATTERYCAPACITY";
+            this.BATTERYCAPACITY.HeaderText = "Battery Capacity";
+            this.BATTERYCAPACITY.Name = "BATTERYCAPACITY";
+            this.BATTERYCAPACITY.ReadOnly = true;
+            this.BATTERYCAPACITY.Width = 160;
+            // 
+            // uPDTIMEDataGridViewTextBoxColumn
+            // 
+            this.uPDTIMEDataGridViewTextBoxColumn.DataPropertyName = "UPD_TIME";
+            this.uPDTIMEDataGridViewTextBoxColumn.HeaderText = "UPD_TIME";
+            this.uPDTIMEDataGridViewTextBoxColumn.Name = "uPDTIMEDataGridViewTextBoxColumn";
+            this.uPDTIMEDataGridViewTextBoxColumn.ReadOnly = true;
+            this.uPDTIMEDataGridViewTextBoxColumn.Width = 116;
+            // 
+            // VEHICLE_TYPE
+            // 
+            this.VEHICLE_TYPE.DataPropertyName = "VEHICLE_TYPE";
+            this.VEHICLE_TYPE.HeaderText = "Type";
+            this.VEHICLE_TYPE.Name = "VEHICLE_TYPE";
+            this.VEHICLE_TYPE.ReadOnly = true;
+            this.VEHICLE_TYPE.Width = 71;
+            // 
             // vehicleObjToShowBindingSource
             // 
             this.vehicleObjToShowBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.VehicleObjToShow);
@@ -771,6 +903,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.dgv_TransferCommand.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_TransferCommand.Size = new System.Drawing.Size(1908, 156);
             this.dgv_TransferCommand.TabIndex = 0;
+            this.dgv_TransferCommand.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgv_TransferCommand_RowPrePaint);
             // 
             // cMDIDDataGridViewTextBoxColumn
             // 
@@ -1063,138 +1196,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // aCMDMCSBindingSource
             // 
             this.aCMDMCSBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ATRANSFER);
-            // 
-            // vEHICLEIDDataGridViewTextBoxColumn
-            // 
-            this.vEHICLEIDDataGridViewTextBoxColumn.DataPropertyName = "VEHICLE_ID";
-            this.vEHICLEIDDataGridViewTextBoxColumn.HeaderText = "Vh ID";
-            this.vEHICLEIDDataGridViewTextBoxColumn.Name = "vEHICLEIDDataGridViewTextBoxColumn";
-            this.vEHICLEIDDataGridViewTextBoxColumn.ReadOnly = true;
-            this.vEHICLEIDDataGridViewTextBoxColumn.Width = 75;
-            // 
-            // mODESTATUSDataGridViewTextBoxColumn
-            // 
-            this.mODESTATUSDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.mODESTATUSDataGridViewTextBoxColumn.DataPropertyName = "MODE_STATUS";
-            this.mODESTATUSDataGridViewTextBoxColumn.FillWeight = 200F;
-            this.mODESTATUSDataGridViewTextBoxColumn.HeaderText = "Mode";
-            this.mODESTATUSDataGridViewTextBoxColumn.Name = "mODESTATUSDataGridViewTextBoxColumn";
-            this.mODESTATUSDataGridViewTextBoxColumn.ReadOnly = true;
-            this.mODESTATUSDataGridViewTextBoxColumn.Width = 76;
-            // 
-            // aCTSTATUSDataGridViewTextBoxColumn
-            // 
-            this.aCTSTATUSDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.aCTSTATUSDataGridViewTextBoxColumn.DataPropertyName = "ACT_STATUS";
-            this.aCTSTATUSDataGridViewTextBoxColumn.FillWeight = 200F;
-            this.aCTSTATUSDataGridViewTextBoxColumn.HeaderText = "Action";
-            this.aCTSTATUSDataGridViewTextBoxColumn.Name = "aCTSTATUSDataGridViewTextBoxColumn";
-            this.aCTSTATUSDataGridViewTextBoxColumn.ReadOnly = true;
-            this.aCTSTATUSDataGridViewTextBoxColumn.Width = 83;
-            // 
-            // TRANSFER_ID_1
-            // 
-            this.TRANSFER_ID_1.DataPropertyName = "TRANSFER_ID_1";
-            this.TRANSFER_ID_1.HeaderText = "Tran ID1";
-            this.TRANSFER_ID_1.Name = "TRANSFER_ID_1";
-            this.TRANSFER_ID_1.ReadOnly = true;
-            this.TRANSFER_ID_1.Width = 97;
-            // 
-            // TRANSFER_ID_2
-            // 
-            this.TRANSFER_ID_2.DataPropertyName = "TRANSFER_ID_2";
-            this.TRANSFER_ID_2.HeaderText = "Tran ID2";
-            this.TRANSFER_ID_2.Name = "TRANSFER_ID_2";
-            this.TRANSFER_ID_2.ReadOnly = true;
-            this.TRANSFER_ID_2.Width = 97;
-            // 
-            // TRANSFER_ID_3
-            // 
-            this.TRANSFER_ID_3.DataPropertyName = "TRANSFER_ID_3";
-            this.TRANSFER_ID_3.HeaderText = "Tran ID3";
-            this.TRANSFER_ID_3.Name = "TRANSFER_ID_3";
-            this.TRANSFER_ID_3.ReadOnly = true;
-            this.TRANSFER_ID_3.Width = 97;
-            // 
-            // TRANSFER_ID_4
-            // 
-            this.TRANSFER_ID_4.DataPropertyName = "TRANSFER_ID_4";
-            this.TRANSFER_ID_4.HeaderText = "Tran ID4";
-            this.TRANSFER_ID_4.Name = "TRANSFER_ID_4";
-            this.TRANSFER_ID_4.ReadOnly = true;
-            this.TRANSFER_ID_4.Width = 97;
-            // 
-            // CMD_ID_1
-            // 
-            this.CMD_ID_1.DataPropertyName = "CMD_ID_1";
-            this.CMD_ID_1.HeaderText = "Command ID1";
-            this.CMD_ID_1.Name = "CMD_ID_1";
-            this.CMD_ID_1.ReadOnly = true;
-            this.CMD_ID_1.Width = 142;
-            // 
-            // CMD_ID_2
-            // 
-            this.CMD_ID_2.DataPropertyName = "CMD_ID_2";
-            this.CMD_ID_2.HeaderText = "Command ID2";
-            this.CMD_ID_2.Name = "CMD_ID_2";
-            this.CMD_ID_2.ReadOnly = true;
-            this.CMD_ID_2.Width = 142;
-            // 
-            // CMD_ID_3
-            // 
-            this.CMD_ID_3.DataPropertyName = "CMD_ID_3";
-            this.CMD_ID_3.HeaderText = "Command ID3";
-            this.CMD_ID_3.Name = "CMD_ID_3";
-            this.CMD_ID_3.ReadOnly = true;
-            this.CMD_ID_3.Width = 142;
-            // 
-            // CMD_ID_4
-            // 
-            this.CMD_ID_4.DataPropertyName = "CMD_ID_4";
-            this.CMD_ID_4.HeaderText = "Command ID4";
-            this.CMD_ID_4.Name = "CMD_ID_4";
-            this.CMD_ID_4.ReadOnly = true;
-            this.CMD_ID_4.Width = 142;
-            // 
-            // cMDPAUSE2ShowDataGridViewCheckBoxColumn
-            // 
-            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn.DataPropertyName = "cMD_PAUSE2Show";
-            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn.HeaderText = "CMD pause";
-            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn.Name = "cMDPAUSE2ShowDataGridViewCheckBoxColumn";
-            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn.ReadOnly = true;
-            this.cMDPAUSE2ShowDataGridViewCheckBoxColumn.Width = 103;
-            // 
-            // oBSPAUSE2ShowDataGridViewCheckBoxColumn
-            // 
-            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn.DataPropertyName = "oBS_PAUSE2Show";
-            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn.HeaderText = "OBS pause";
-            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn.Name = "oBSPAUSE2ShowDataGridViewCheckBoxColumn";
-            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn.ReadOnly = true;
-            this.oBSPAUSE2ShowDataGridViewCheckBoxColumn.Width = 101;
-            // 
-            // BATTERYCAPACITY
-            // 
-            this.BATTERYCAPACITY.DataPropertyName = "BATTERYCAPACITY";
-            this.BATTERYCAPACITY.HeaderText = "Battery Capacity";
-            this.BATTERYCAPACITY.Name = "BATTERYCAPACITY";
-            this.BATTERYCAPACITY.ReadOnly = true;
-            this.BATTERYCAPACITY.Width = 160;
-            // 
-            // uPDTIMEDataGridViewTextBoxColumn
-            // 
-            this.uPDTIMEDataGridViewTextBoxColumn.DataPropertyName = "UPD_TIME";
-            this.uPDTIMEDataGridViewTextBoxColumn.HeaderText = "UPD_TIME";
-            this.uPDTIMEDataGridViewTextBoxColumn.Name = "uPDTIMEDataGridViewTextBoxColumn";
-            this.uPDTIMEDataGridViewTextBoxColumn.ReadOnly = true;
-            this.uPDTIMEDataGridViewTextBoxColumn.Width = 116;
-            // 
-            // VEHICLE_TYPE
-            // 
-            this.VEHICLE_TYPE.DataPropertyName = "VEHICLE_TYPE";
-            this.VEHICLE_TYPE.HeaderText = "Type";
-            this.VEHICLE_TYPE.Name = "VEHICLE_TYPE";
-            this.VEHICLE_TYPE.ReadOnly = true;
-            this.VEHICLE_TYPE.Width = 71;
             // 
             // OHT_Form
             // 

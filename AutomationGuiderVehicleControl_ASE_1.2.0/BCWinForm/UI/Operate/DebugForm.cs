@@ -134,7 +134,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             num_BatteryLowBoundaryValue.Value = AVEHICLE.BATTERYLEVELVALUE_LOW;
             num_BatteryHighBoundaryValue.Value = AVEHICLE.BATTERYLEVELVALUE_HIGH;
             numer_pre_open_agv_station_distance.Value = sc.App.SystemParameter.OpenAGVStationCoverDistance_mm;
-            num_tran_cmd_queue_time_out_ms.Value = sc.App.SystemParameter.TransferCommandQueueTimeOut_mSec;
+            num_tran_cmd_queue_time_out_ms.Value = sc.App.SystemParameter.TransferCommandExcuteTimeOut_mSec;
             cb_by_pass_shelf_status.Checked = sc.App.SystemParameter.IsByPassAGVShelfStatus;
             num_vh_idle_time.Value = sc.App.SystemParameter.AllowVhIdleTime_ms;
 

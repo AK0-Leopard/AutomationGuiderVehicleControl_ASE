@@ -134,12 +134,12 @@ namespace com.mirle.ibg3k0.sc
             return BLL.CMDBLL.GetTransferDir(this);
         }
 
-        public bool IsQueueTimeOut
+        public bool IsExcuteTimeOut
         {
             get
             {
-                bool is_timeout = TRANSFERSTATE == E_TRAN_STATUS.Queue &&
-                                                   DateTime.Now > CMD_INSER_TIME.AddMilliseconds(SystemParameter.TransferCommandQueueTimeOut_mSec);
+                bool is_timeout = (TRANSFERSTATE >= E_TRAN_STATUS.Queue && TRANSFERSTATE <= E_TRAN_STATUS.Canceled) &&
+                                    DateTime.Now > CMD_INSER_TIME.AddMilliseconds(SystemParameter.TransferCommandExcuteTimeOut_mSec);
                 return is_timeout;
             }
         }

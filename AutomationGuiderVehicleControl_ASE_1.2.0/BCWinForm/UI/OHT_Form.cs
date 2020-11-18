@@ -1017,5 +1017,28 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             //}, null);
         }
 
+        const int TRAN_COMMAND_CLOUMN_INDEX_INSER_TIME = 8;
+        private void dgv_TransferCommand_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            if (dgv_TransferCommand.Rows.Count <= e.RowIndex) return;
+            if (e.RowIndex < 0) return;
+            var inser_time = dgv_TransferCommand.Rows[e.RowIndex].Cells[TRAN_COMMAND_CLOUMN_INDEX_INSER_TIME].Value;
+            if (!(inser_time is DateTime))
+                return;
+            DateTime inser_date_time = (DateTime)inser_time;
+            if (DateTime.Now > inser_date_time.AddSeconds(sc.App.SystemParameter.TransferCommandExcuteTimeOut_mSec))
+            {
+                DataGridViewRow row = dgv_TransferCommand.Rows[e.RowIndex];
+                row.DefaultCellStyle.BackColor = Color.Yellow;
+                row.DefaultCellStyle.ForeColor = Color.Red;
+
+                if (row.Selected)
+                {
+                    row.DefaultCellStyle.SelectionBackColor = Color.SkyBlue;
+                    row.DefaultCellStyle.SelectionForeColor = Color.Red;
+
+                }
+            }
+        }
     }
 }
