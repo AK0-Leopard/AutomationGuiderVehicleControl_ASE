@@ -390,6 +390,16 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 };
                 //SCUtility.RecodeReportInfo(eqpt.VEHICLE_ID, 0, send_gpp);
                 com.mirle.iibg3k0.ttc.Common.TrxTcpIp.ReturnCode result = snedRecv(wrapper, out receive_gpp, out reason);
+                //如果發了Time out則就直接在丟一次
+                if (result == TrxTcpIp.ReturnCode.Timeout)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(EQTcpIpMapAction), Device: "AGV",
+                       Data: $"發送命令時，Time our 發生再次重新傳送,CMD ID:{send_gpp.CmdID} from:{send_gpp.LoadPortID} to:{send_gpp.UnloadPortID} to(adr):{send_gpp.DestinationAdr}",
+                       VehicleID: eqpt.VEHICLE_ID,
+                       CST_ID_L: eqpt.CST_ID_L,
+                       CST_ID_R: eqpt.CST_ID_R);
+                    result = snedRecv(wrapper, out receive_gpp, out reason);
+                }
                 //SCUtility.RecodeReportInfo(eqpt.VEHICLE_ID, 0, receive_gpp, result.ToString());
                 if (result == TrxTcpIp.ReturnCode.Normal)
                 {
@@ -404,7 +414,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //isSuccess = result == TrxTcpIp.ReturnCode.Normal;
                 //reason = receive_gpp.NgReason;
                 if (isSuccess)
-                    isSuccess = receive_gpp.ReplyCode == 0;
+                    isSuccess = receive_gpp.ReplyCode == 0 ||
+                                receive_gpp.ReplyCode == 2;
             }
             catch (Exception ex)
             {

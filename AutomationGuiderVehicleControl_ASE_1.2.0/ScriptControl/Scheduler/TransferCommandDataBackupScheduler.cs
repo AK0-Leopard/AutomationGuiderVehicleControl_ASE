@@ -14,6 +14,8 @@ namespace com.mirle.ibg3k0.sc.Scheduler
 {
     public class TransferCommandDataBackupScheduler : IJob
     {
+
+        NLog.Logger RecordHTransfer = NLog.LogManager.GetLogger("RecordHTransfer");
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         SCApplication scApp = SCApplication.getInstance();
         public void Execute(IJobExecutionContext context)
@@ -36,6 +38,7 @@ namespace com.mirle.ibg3k0.sc.Scheduler
                         }
                     }
                 }
+                //scApp.TransferBLL.redis.setHTransferInfos(finish_cmd_mcs_list);
                 var finish_cmd_list = scApp.CMDBLL.loadfinishCmd();
                 if (finish_cmd_list != null && finish_cmd_list.Count > 0)
                 {
@@ -52,6 +55,8 @@ namespace com.mirle.ibg3k0.sc.Scheduler
                         }
                     }
                 }
+                if (finish_cmd_mcs_list.Count != 0)
+                    finish_cmd_mcs_list.ForEach(tran => RecordHTransfer.Info(tran.ToJson()));
             }
             catch (Exception ex)
             {

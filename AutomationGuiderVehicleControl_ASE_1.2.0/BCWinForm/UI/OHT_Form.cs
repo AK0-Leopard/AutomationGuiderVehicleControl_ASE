@@ -151,7 +151,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                         line.DetectionSystemExist == SCAppConstants.ExistStatus.Exist ? Color.Green : Color.Gray;
                     }
                     );
-            scApp.getNatsManager().Subscriber(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, SetCurrentAlarm);
+            //scApp.getNatsManager().Subscriber(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, SetCurrentAlarm);
+            line.AlarmListChange += SetCurrentAlarm;
 
             sc.App.SystemParameter.AutoOverrideChange += SystemParameter_AutoOverrideChange;
 
@@ -163,11 +164,18 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void SetCurrentAlarm(object sender, EventArgs e)
         {
-            List<ALARM> alarms = scApp.AlarmBLL.getCurrentAlarmsFromRedis();
-            Adapter.Invoke((obj) =>
+            try
             {
-                dgv_Alarm.DataSource = alarms;
-            }, null);
+                List<ALARM> alarms = scApp.AlarmBLL.getCurrentAlarmsFromRedis();
+                Adapter.Invoke((obj) =>
+                {
+                    dgv_Alarm.DataSource = alarms;
+                }, null);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
         }
 
         private void SetHostControlState(SCAppConstants.LineHostControlState.HostControlState controlState)
@@ -1026,7 +1034,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             if (!(inser_time is DateTime))
                 return;
             DateTime inser_date_time = (DateTime)inser_time;
-            if (DateTime.Now > inser_date_time.AddSeconds(sc.App.SystemParameter.TransferCommandExcuteTimeOut_mSec))
+            if (DateTime.Now > inser_date_time.AddMilliseconds(sc.App.SystemParameter.TransferCommandExcuteTimeOut_mSec))
             {
                 DataGridViewRow row = dgv_TransferCommand.Rows[e.RowIndex];
                 row.DefaultCellStyle.BackColor = Color.Yellow;

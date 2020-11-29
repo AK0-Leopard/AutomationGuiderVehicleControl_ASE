@@ -14,6 +14,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         private static Logger logger = LogManager.GetCurrentClassLogger();
         public DB db = null;
         public Web web = null;
+        public Redis redis = null;
         public TransferBLL()
         {
         }
@@ -22,6 +23,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             db = new DB(scApp);
             web = new Web(scApp.webClientManager);
+            redis = new Redis(scApp.getRedisCacheManager());
         }
 
         public class DB
@@ -417,5 +419,31 @@ namespace com.mirle.ibg3k0.sc.BLL
 
 
         }
+
+        public class Redis
+        {
+            TimeSpan timeOut_1hour = new TimeSpan(1, 0, 0);
+            const string HTRANSFER_LIST = "HTRANSFER_LIST";
+            RedisCacheManager redis;
+            public Redis(RedisCacheManager _redis)
+            {
+                redis = _redis;
+            }
+
+            public void setHTransferInfos(List<ATRANSFER> transfers)
+            {
+                try
+                {
+                    var finish_cmd_mcs_list_string = transfers.Select(tran => tran.ToJson());
+                    redis.ListRightPush(HTRANSFER_LIST, finish_cmd_mcs_list_string, timeOut_1hour);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
+
+        }
+
     }
 }

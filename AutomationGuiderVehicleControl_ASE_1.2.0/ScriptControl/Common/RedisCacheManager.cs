@@ -290,6 +290,20 @@ namespace com.mirle.ibg3k0.sc.Common
             //taskSand.Wait();
         }
 
+        public void ListRightPush(string list_key, IEnumerable<string> values, TimeSpan? timeSpan = null)
+        {
+            IDatabase db = Database();
+            if (db == null) return;
+            StackExchange.Redis.RedisValue[] redisArray = values.Select(v => (RedisValue)v).ToArray();
+            list_key = $"{productID}_{list_key}";
+            Task taskSand = db.ListRightPushAsync(list_key, redisArray);
+            if (timeSpan != null)
+            {
+                db.KeyExpireAsync(list_key, timeSpan);
+            }
+            UsingCount();
+        }
+
         public RedisValue ListLeftPopAsync(string list_key)
         {
             IDatabase db = Database();

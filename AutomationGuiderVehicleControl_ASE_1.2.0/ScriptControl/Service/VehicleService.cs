@@ -171,7 +171,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 if (isSuccess)
                 {
                     int reply_code = receive_gpp.ReplyCode;
-                    if (reply_code != 0)
+                    //if (reply_code != 0)
+                    //reply code = 0 代表接受
+                    //reply code = 2 代表已經在執行，所以就將它當作執行中
+                    if (reply_code != 0 && reply_code != 2)
                     {
                         isSuccess = false;
                         bcf.App.BCFApplication.onWarningMsg(string.Format("發送命令失敗,VH ID:{0}, CMD ID:{1}, Reason:{2}",
@@ -184,6 +187,15 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else
                 {
+                    //如果發生了time out，則直接當作成功來處理
+                    if (SCUtility.isMatche(reason, iibg3k0.ttc.Common.TrxTcpIp.ReturnCode.Timeout.ToString()))
+                    {
+                        bcf.App.BCFApplication.onWarningMsg(string.Format("發送命令Time out發生,VH ID:{0}, CMD ID:{1}, Reason:{2}",
+                                                  vhID,
+                                                  cmd_id,
+                                                  reason));
+                        return true;
+                    }
                     bcf.App.BCFApplication.onWarningMsg(string.Format("發送命令失敗,VH ID:{0}, CMD ID:{1}, Reason:{2}",
                                               vhID,
                                               cmd_id,
@@ -2151,6 +2163,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         vh.isCommandEnding = false;
                     }
                 }
+                
                 return (is_success, finish_fransfer_cmd_id);
             }
 

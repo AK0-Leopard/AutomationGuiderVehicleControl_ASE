@@ -445,7 +445,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 scApp.getRedisCacheManager().ExecuteTransaction();
                 //通知有Alarm的資訊改變。
                 if (alarms != null && alarms.Count > 0)
-                    scApp.getNatsManager().PublishAsync(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, new byte[0]);
+                    //scApp.getNatsManager().PublishAsync(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, new byte[0]);
+                    line.NotifyAlarmListChange();
 
                 foreach (ALARM report_alarm in alarms)
                 {
@@ -536,7 +537,9 @@ namespace com.mirle.ibg3k0.sc.Service
                 scApp.getRedisCacheManager().ExecuteTransaction();
                 //通知有Alarm的資訊改變。
                 if (alarms != null && alarms.Count > 0)
-                    scApp.getNatsManager().PublishAsync(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, new byte[0]);
+                    //scApp.getNatsManager().PublishAsync(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, new byte[0]);
+                    line.NotifyAlarmListChange();
+
 
                 foreach (ALARM report_alarm in alarms)
                 {

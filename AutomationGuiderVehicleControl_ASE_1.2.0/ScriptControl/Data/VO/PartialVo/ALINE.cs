@@ -25,6 +25,7 @@ namespace com.mirle.ibg3k0.sc
     public partial class ALINE : BaseEQObject, IAlarmHisList
     {
         public event EventHandler<EventArgs> LineStatusChange;
+        public event EventHandler AlarmListChange;
         public event EventHandler LongTimeNoCommuncation;
 
         /// <summary>
@@ -383,6 +384,10 @@ namespace com.mirle.ibg3k0.sc
         public void NotifyLineStatusChange()
         {
             LineStatusChange?.Invoke(this, null);
+        }
+        public void NotifyAlarmListChange()
+        {
+            AlarmListChange?.Invoke(this, null);
         }
 
 
