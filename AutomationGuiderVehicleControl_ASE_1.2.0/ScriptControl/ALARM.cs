@@ -23,5 +23,7 @@ namespace com.mirle.ibg3k0.sc
         public Nullable<System.DateTime> CLEAR_DATE_TIME { get; set; }
         public string CMD_ID_1 { get; set; }
         public string CMD_ID_2 { get; set; }
+        public string CMD_ID_3 { get; set; }
+        public string CMD_ID_4 { get; set; }
     }
 }

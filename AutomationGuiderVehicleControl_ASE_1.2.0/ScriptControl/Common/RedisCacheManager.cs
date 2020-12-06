@@ -289,7 +289,18 @@ namespace com.mirle.ibg3k0.sc.Common
             UsingCount();
             //taskSand.Wait();
         }
-
+        public void ListRightPush(string list_key, string value, TimeSpan? timeSpan = null)
+        {
+            IDatabase db = Database();
+            if (db == null) return;
+            list_key = $"{productID}_{list_key}";
+            Task taskSand = db.ListRightPushAsync(list_key, value);
+            if (timeSpan != null)
+            {
+                db.KeyExpireAsync(list_key, timeSpan);
+            }
+            UsingCount();
+        }
         public void ListRightPush(string list_key, IEnumerable<string> values, TimeSpan? timeSpan = null)
         {
             IDatabase db = Database();
@@ -302,6 +313,16 @@ namespace com.mirle.ibg3k0.sc.Common
                 db.KeyExpireAsync(list_key, timeSpan);
             }
             UsingCount();
+        }
+        public List<string> ListRange(string list_key)
+        {
+            IDatabase db = Database();
+            if (db == null) new List<string>();
+            list_key = $"{productID}_{list_key}";
+            RedisValue[] redisValues = db.ListRangeAsync(list_key).Result;
+            List<string> values = redisValues.Select(vs => (string)vs).ToList();
+            UsingCount();
+            return values;
         }
 
         public RedisValue ListLeftPopAsync(string list_key)
@@ -397,10 +418,10 @@ namespace com.mirle.ibg3k0.sc.Common
                 db = context;
             }
 
-
             UsingCount();
             return db.HashSetAsync(key, hashField, value, when); ;
         }
+        
         public Task<bool> HashDeleteAsync(RedisKey key, RedisValue hashField, When when = When.Always)
         {
             key = $"{productID}_{key}";

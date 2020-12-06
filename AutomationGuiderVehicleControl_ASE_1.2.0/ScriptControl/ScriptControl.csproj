@@ -452,6 +452,7 @@
     <Compile Include="BLL\SegmentBLL.cs" />
     <Compile Include="BLL\ZoneBLL.cs" />
     <Compile Include="Common\RecordReportInfoObj.cs" />
+    <Compile Include="Data\BackgroundWorkProcVehiclePosition.cs" />
     <Compile Include="Data\DAO\FireDoorDao.cs" />
     <Compile Include="Data\DAO\GroupPortStationDao.cs" />
     <Compile Include="Data\DAO\HCMDDao.cs" />

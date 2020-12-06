@@ -10,12 +10,12 @@
 namespace com.mirle.ibg3k0.sc
 {
     using System;
-
+    
     public enum E_VH_TYPE : int
     {
         Clean = 1,
         Dirty = 2,
-        Swap = 3,
-        None = 0
+        None = 0,
+        Swap = 3
     }
 }

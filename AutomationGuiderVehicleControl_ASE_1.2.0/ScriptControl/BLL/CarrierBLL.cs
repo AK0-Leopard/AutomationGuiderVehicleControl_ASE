@@ -43,7 +43,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     }
                     else
                     {
-                        vcarrierTemp.INSER_TIME = carrier.INSER_TIME;
+                        //vcarrierTemp.INSER_TIME = carrier.INSER_TIME;
                         vcarrierTemp.LOCATION = carrier.LOCATION;
                         vcarrierTemp.INSTALLED_TIME = carrier.INSTALLED_TIME;
                         vcarrierTemp.RENAME_ID = carrier.RENAME_ID;

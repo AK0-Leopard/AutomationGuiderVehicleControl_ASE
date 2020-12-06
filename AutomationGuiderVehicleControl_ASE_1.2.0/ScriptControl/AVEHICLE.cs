@@ -11,7 +11,7 @@ namespace com.mirle.ibg3k0.sc
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class AVEHICLE
     {
         public string VEHICLE_ID { get; set; }

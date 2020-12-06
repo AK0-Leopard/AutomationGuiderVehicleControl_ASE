@@ -912,7 +912,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     check_result.IsSuccess = false;
                 }
 
-                if (check_result.IsSuccess)
+                if (check_result.IsSuccess) 
                 {
                     check_result.IsSuccess = creatCommand_OHTC
                                              (vh_id, cmd_id_mcs, carrier_id, cmd_type, source, destination, priority, estimated_time, gen_cmd_type, out cmd_obj,

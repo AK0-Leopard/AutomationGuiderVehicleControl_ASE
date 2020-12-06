@@ -1325,6 +1325,35 @@ namespace com.mirle.ibg3k0.sc.BLL
                 report_obj.WriteTo(new Google.Protobuf.CodedOutputStream(arrayByte));
                 redisCache.Obj2ByteArraySetAsync(key_word_position, arrayByte, POSITION_TIMEOUT);
             }
+
+            TimeSpan timeOut_5Sec = new TimeSpan(0, 0, 5);
+            const string RECENT_FINISH_COMMAND = "RECENT_FINISH_COMMAND";
+            public void setFinishTransferCommandID(string vhID, string cmdID)
+            {
+                try
+                {
+                    string key_word = $"{RECENT_FINISH_COMMAND}_{vhID}";
+                    redisCache.ListRightPush(key_word, cmdID, timeOut_5Sec);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
+            public List<string> getFinishTransferCommandIDs(string vhID)
+            {
+                List<string> cmd_ids = new List<string>();
+                try
+                {
+                    string key_word = $"{RECENT_FINISH_COMMAND}_{vhID}";
+                    cmd_ids = redisCache.ListRange(key_word);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                return cmd_ids;
+            }
         }
 
         public class Web

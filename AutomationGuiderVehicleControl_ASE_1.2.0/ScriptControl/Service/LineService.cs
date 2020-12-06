@@ -486,8 +486,11 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 string node_id = vh.NODE_ID;
                 string vh_id = vh.VEHICLE_ID;
-                string mcd_cmd_id_1 = SCUtility.Trim(vh.TRANSFER_ID_1, true);
-                string mcs_cmd_id_2 = SCUtility.Trim(vh.TRANSFER_ID_2, true);
+
+                //string mcs_cmd_id_1 = SCUtility.Trim(vh.TRANSFER_ID_1, true);
+                //string mcs_cmd_id_2 = SCUtility.Trim(vh.TRANSFER_ID_2, true);
+                List<string> effect_tran_cmd_ids = tryGetEffectTransferCommnadID(vh);
+
                 bool is_all_alarm_clear = SCUtility.isMatche(err_code, "0") && status == ErrorStatus.ErrReset;
                 //List<ALARM> alarms = null;
                 List<ALARM> alarms = new List<ALARM>();
@@ -513,7 +516,8 @@ namespace com.mirle.ibg3k0.sc.Service
                             {
                                 case ErrorStatus.ErrSet:
                                     //將設備上報的Alarm填入資料庫。
-                                    alarm = scApp.AlarmBLL.setAlarmReport(node_id, vh_id, err_code, errorDesc, mcd_cmd_id_1, mcs_cmd_id_2);
+                                    //alarm = scApp.AlarmBLL.setAlarmReport(node_id, vh_id, err_code, errorDesc, mcs_cmd_id_1, mcs_cmd_id_2);
+                                    alarm = scApp.AlarmBLL.setAlarmReport(node_id, vh_id, err_code, errorDesc, effect_tran_cmd_ids);
                                     //將其更新至Redis，保存目前所發生的Alarm
                                     scApp.AlarmBLL.setAlarmReport2Redis(alarm);
                                     //alarms = new List<ALARM>() { alarm };
@@ -579,6 +583,39 @@ namespace com.mirle.ibg3k0.sc.Service
                    CST_ID_L: vh.CST_ID_L,
                    CST_ID_R: vh.CST_ID_R);
             }
+        }
+
+        private List<string> tryGetEffectTransferCommnadID(AVEHICLE vh)
+        {
+            if (vh == null) return new List<string>();
+            string vh_id = SCUtility.Trim(vh.VEHICLE_ID, true);
+            HashSet<string> effect_tran_ids = new HashSet<string>();
+            try
+            {
+                string mcs_cmd_id_1 = SCUtility.Trim(vh.TRANSFER_ID_1, true);
+                string mcs_cmd_id_2 = SCUtility.Trim(vh.TRANSFER_ID_2, true);
+                string mcs_cmd_id_3 = SCUtility.Trim(vh.TRANSFER_ID_3, true);
+                string mcs_cmd_id_4 = SCUtility.Trim(vh.TRANSFER_ID_4, true);
+                if (!SCUtility.isEmpty(mcs_cmd_id_1))
+                    effect_tran_ids.Add(mcs_cmd_id_1);
+                if (!SCUtility.isEmpty(mcs_cmd_id_2))
+                    effect_tran_ids.Add(mcs_cmd_id_2);
+                if (!SCUtility.isEmpty(mcs_cmd_id_3))
+                    effect_tran_ids.Add(mcs_cmd_id_3);
+                if (!SCUtility.isEmpty(mcs_cmd_id_4))
+                    effect_tran_ids.Add(mcs_cmd_id_4);
+                List<string> on_redis_effect_tran_ids = scApp.VehicleBLL.redis.getFinishTransferCommandIDs(vh_id);
+                on_redis_effect_tran_ids.ForEach(s =>
+                {
+                    if (!SCUtility.isEmpty(s))
+                        effect_tran_ids.Add(SCUtility.Trim(s, true));
+                });
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+            return effect_tran_ids.ToList();
         }
 
         private string tryGetCurrentTransferCommand(AVEHICLE vh)

@@ -79,6 +79,7 @@
         <EntityType Name="ACARRIER">
           <Key>
             <PropertyRef Name="ID" />
+            <PropertyRef Name="INSER_TIME" />
           </Key>
           <Property Name="ID" Type="char" MaxLength="64" Nullable="false" />
           <Property Name="INSER_TIME" Type="datetime2" Precision="7" Nullable="false" />
@@ -314,6 +315,8 @@
           <Property Name="CLEAR_DATE_TIME" Type="datetime2" Precision="7" />
           <Property Name="CMD_ID_1" Type="char" MaxLength="64" />
           <Property Name="CMD_ID_2" Type="char" MaxLength="64" />
+          <Property Name="CMD_ID_3" Type="char" MaxLength="64" />
+          <Property Name="CMD_ID_4" Type="char" MaxLength="64" />
         </EntityType>
         <EntityType Name="ALARMRPTCOND">
           <Key>
@@ -1022,7 +1025,7 @@
           <Property Name="USER_GRP" Type="char" MaxLength="20" Nullable="false" />
         </EntityType>
         <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'AGVC_ASE_K21_v4.dbo.VSECTION_100' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+警告 6002: 資料表/檢視 'AGVC_ASE_K21_v5.dbo.VSECTION_100' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="VSECTION_100">
           <Key>
             <PropertyRef Name="SEC_ID" />
@@ -1107,7 +1110,7 @@
           <Property Name="LAST_TECH_TIME" Type="smalldatetime" />
         </EntityType>
         <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'AGVC_ASE_K21_v4.dbo.VTRANSFER' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+警告 6002: 資料表/檢視 'AGVC_ASE_K21_v5.dbo.VTRANSFER' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="VTRANSFER">
           <Key>
             <PropertyRef Name="ID" />
@@ -1654,6 +1657,7 @@
           <Member Name="Clean" Value="1" />
           <Member Name="Dirty" Value="2" />
           <Member Name="None" Value="0" />
+          <Member Name="Swap" Value="3" />
         </EnumType>
         <EntityType Name="APORTICON">
           <Key>
@@ -2428,6 +2432,8 @@
           <Property Name="CLEAR_DATE_TIME" Type="DateTime" Precision="7" />
           <Property Name="CMD_ID_1" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="CMD_ID_2" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
+          <Property Name="CMD_ID_3" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
+          <Property Name="CMD_ID_4" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="UASUSR">
           <Key>
@@ -2514,6 +2520,7 @@
         <EntityType Name="ACARRIER">
           <Key>
             <PropertyRef Name="ID" />
+            <PropertyRef Name="INSER_TIME" />
           </Key>
           <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="INSER_TIME" Type="DateTime" Nullable="false" Precision="7" />
@@ -3566,8 +3573,8 @@
           <EntitySetMapping Name="ALARM">
             <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALARM)">
               <MappingFragment StoreEntitySet="ALARM">
-                <ScalarProperty Name="CMD_ID_2" ColumnName="CMD_ID_2" />
-                <ScalarProperty Name="CMD_ID_1" ColumnName="CMD_ID_1" />
+                <ScalarProperty Name="CMD_ID_4" ColumnName="CMD_ID_4" />
+                <ScalarProperty Name="CMD_ID_3" ColumnName="CMD_ID_3" />
                 <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
                 <ScalarProperty Name="RPT_DATE_TIME" ColumnName="RPT_DATE_TIME" />
                 <ScalarProperty Name="ALAM_CODE" ColumnName="ALAM_CODE" />
@@ -3575,6 +3582,8 @@
                 <ScalarProperty Name="ALAM_STAT" ColumnName="ALAM_STAT" />
                 <ScalarProperty Name="ALAM_DESC" ColumnName="ALAM_DESC" />
                 <ScalarProperty Name="CLEAR_DATE_TIME" ColumnName="CLEAR_DATE_TIME" />
+                <ScalarProperty Name="CMD_ID_1" ColumnName="CMD_ID_1" />
+                <ScalarProperty Name="CMD_ID_2" ColumnName="CMD_ID_2" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

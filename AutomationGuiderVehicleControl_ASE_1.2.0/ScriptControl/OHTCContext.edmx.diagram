@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="84fed8068adf4a8d89944fabd2b5fc15" Name="圖表1" ZoomLevel="88" ShowGrid="true" DisplayType="true">
+      <Diagram DiagramId="84fed8068adf4a8d89944fabd2b5fc15" Name="圖表1" ZoomLevel="94" ShowGrid="true" DisplayType="true">
         <EntityTypeShape EntityType="OHTC_DevModel.AMAIN_VER" Width="1.5" PointX="2.75" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.ASUB_VER" Width="1.5" PointX="2.75" PointY="2.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.ASEQUENCE" PointX="16.75" PointY="0.75" Width="1.5" IsExpanded="false" />

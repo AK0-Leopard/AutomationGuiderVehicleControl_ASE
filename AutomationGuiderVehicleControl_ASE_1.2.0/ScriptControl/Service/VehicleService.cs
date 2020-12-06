@@ -700,19 +700,23 @@ namespace com.mirle.ibg3k0.sc.Service
                     return;
                 }
 
+                //scApp.VehicleBLL.setAndPublishPositionReportInfo2Redis(vh.VEHICLE_ID, receiveStr);
+                //scApp.ReportBLL.newReportRunTimetatus(vh.VEHICLE_ID);
+                //doPositionUpdate(vh, receiveStr);
+                var workItem = new com.mirle.ibg3k0.bcf.Data.BackgroundWorkItem(this, vh, receiveStr);
+                scApp.BackgroundWorkProcVehiclePosition.triggerBackgroundWork(vh.VEHICLE_ID, workItem);
+                //EventType eventType = receiveStr.EventType;
+                //string current_adr_id = SCUtility.isEmpty(receiveStr.CurrentAdrID) ? string.Empty : receiveStr.CurrentAdrID;
+                //string current_sec_id = SCUtility.isEmpty(receiveStr.CurrentSecID) ? string.Empty : receiveStr.CurrentSecID;
+                //ASECTION sec_obj = scApp.SectionBLL.cache.GetSection(current_sec_id);
+                //string current_seg_id = sec_obj == null ? string.Empty : sec_obj.SEG_NUM;
+                //string last_adr_id = vh.CUR_ADR_ID;
+                //string last_sec_id = vh.CUR_SEC_ID;
+                //uint sec_dis = receiveStr.SecDistance;
+            }
+            public void doPositionUpdate(AVEHICLE vh, ID_134_TRANS_EVENT_REP receiveStr)
+            {
                 scApp.VehicleBLL.setAndPublishPositionReportInfo2Redis(vh.VEHICLE_ID, receiveStr);
-
-
-
-                EventType eventType = receiveStr.EventType;
-                string current_adr_id = SCUtility.isEmpty(receiveStr.CurrentAdrID) ? string.Empty : receiveStr.CurrentAdrID;
-                string current_sec_id = SCUtility.isEmpty(receiveStr.CurrentSecID) ? string.Empty : receiveStr.CurrentSecID;
-                ASECTION sec_obj = scApp.SectionBLL.cache.GetSection(current_sec_id);
-                string current_seg_id = sec_obj == null ? string.Empty : sec_obj.SEG_NUM;
-                string last_adr_id = vh.CUR_ADR_ID;
-                string last_sec_id = vh.CUR_SEC_ID;
-                uint sec_dis = receiveStr.SecDistance;
-
                 scApp.ReportBLL.newReportRunTimetatus(vh.VEHICLE_ID);
             }
             const int TOLERANCE_SCOPE = 50;
@@ -778,7 +782,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         break;
                     case EventType.LoadArrivals:
                         if (DebugParameter.testRetryLoadArrivals) return;
-                        TranEventReport_LoadArrivals(bcfApp, vh, seq_num, eventType, excute_cmd_id);
+                        TranEventReport_LoadArrivals(bcfApp, vh, seq_num, eventType, excute_cmd_id, current_port_id);
                         break;
                     case EventType.LoadComplete:
                         if (DebugParameter.testRetryLoadComplete) return;
@@ -849,7 +853,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
 
             private void TranEventReport_LoadArrivals(BCFApplication bcfApp, AVEHICLE vh, int seqNum
-                                                    , EventType eventType, string cmdID)
+                                                    , EventType eventType, string cmdID, string portID)
             {
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                    Data: $"Process report {eventType}",
@@ -857,6 +861,7 @@ namespace com.mirle.ibg3k0.sc.Service
                    CST_ID_L: vh.CST_ID_L,
                    CST_ID_R: vh.CST_ID_R);
                 ACMD cmd = scApp.CMDBLL.GetCMD_OHTCByID(cmdID);
+
                 vh.LastLoadCompleteCommandID = cmdID;
                 bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 if (isTranCmd)
@@ -899,6 +904,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 scApp.VehicleBLL.doLoadArrivals(vh.VEHICLE_ID);
                 scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
+                checkLoadUnloadArrivePortIsNeedToPreOpenCover(vh, eventType, portID);
             }
             private void TranEventReport_LoadComplete(BCFApplication bcfApp, AVEHICLE vh, int seqNum
                                                     , EventType eventType, string cmdID)
@@ -959,6 +965,39 @@ namespace com.mirle.ibg3k0.sc.Service
                 scApp.PortBLL.OperateCatch.updatePortStationCSTExistStatus(cmd.SOURCE_PORT, string.Empty);
                 scApp.VehicleBLL.doLoadComplete(vh.VEHICLE_ID);
                 //Task.Run(() => checkHasOrtherCommandExcuteAndIsNeedToPreOpenCover(vh, cmdID));
+            }
+
+            private void checkLoadUnloadArrivePortIsNeedToPreOpenCover(AVEHICLE vh, EventType eventType, string portID)
+            {
+                try
+                {
+                    APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(portID);
+                    if (port_station == null) return;
+
+                    if (port_station.IsAGVStation(scApp.EqptBLL))
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"event:{eventType}, port id:{portID} it is agv station port, start trigger pre open cover",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                        var agv_station = port_station.GetEqpt(scApp.EqptBLL);
+                        string notify_port_id = portID;
+                        Task.Run(() => scApp.TransferBLL.web.preOpenAGVStationCover(agv_station as IAGVStationType, notify_port_id));
+                    }
+                    else
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"event:{eventType}, port id:{portID} it not agv station port, start trigger pre open cover",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
             }
 
             private void checkHasOrtherCommandExcuteAndIsNeedToPreOpenCover(AVEHICLE vh, string currentExcuteCmd)
@@ -1150,6 +1189,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 scApp.VehicleBLL.doUnloadArrivals(vh.VEHICLE_ID, cmdID);
                 scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
                 checkIsAGVStationToCloseReservedFlag(vh, currentPortID);
+                checkLoadUnloadArrivePortIsNeedToPreOpenCover(vh, eventType, currentPortID);
             }
 
             private void checkIsAGVStationToCloseReservedFlag(AVEHICLE vh, string currentPortID)
@@ -2151,6 +2191,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                    VehicleID: vh_id);
                             }
                             tryRemoveFinishTransferInCurrentCache(finish_fransfer_cmd_id);
+                            Task.Run(() => scApp.VehicleBLL.redis.setFinishTransferCommandID(vh.VEHICLE_ID, finish_fransfer_cmd_id));
                         }
                     }
                     catch (Exception ex)
@@ -2163,7 +2204,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         vh.isCommandEnding = false;
                     }
                 }
-                
+
                 return (is_success, finish_fransfer_cmd_id);
             }
 
@@ -3407,7 +3448,7 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 scApp.ReserveBLL.RemoveManyReservedSectionsByVIDSID(vh.VEHICLE_ID, leave_section.SEC_ID);
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                   Data: $"vh:{vh.VEHICLE_ID} leave section {entry_section.SEC_ID},remove reserved.",
+                   Data: $"vh:{vh.VEHICLE_ID} leave section {leave_section.SEC_ID},remove reserved.",
                    VehicleID: vh.VEHICLE_ID);
             }
             scApp.VehicleBLL.cache.removeAlreadyPassedSection(vh.VEHICLE_ID, e.LeaveSection);

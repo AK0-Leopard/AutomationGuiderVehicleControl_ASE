@@ -149,9 +149,10 @@ namespace com.mirle.ibg3k0.sc.BLL
         object lock_obj_alarm = new object();
         public ALARM setAlarmReport(string eq_id, string error_code, string errorDesc)
         {
-            return setAlarmReport("", eq_id, error_code, errorDesc, "", "");
+            return setAlarmReport("", eq_id, error_code, errorDesc, new List<string>());
         }
-        public ALARM setAlarmReport(string nodeID, string eq_id, string error_code, string errorDesc, string cmd_id_1, string cmd_id_2)
+        //public ALARM setAlarmReport(string nodeID, string eq_id, string error_code, string errorDesc, string cmd_id_1, string cmd_id_2)
+        public ALARM setAlarmReport(string nodeID, string eq_id, string error_code, string errorDesc, List<string> effectTranIDs)
         {
             lock (lock_obj_alarm)
             {
@@ -163,6 +164,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 else
                     alarmMap = alarmMapDao.getAlarmMap(eq_id, error_code);
 
+                var effect_tran_ids = tryGetTransferCommandIDs(effectTranIDs);
+
                 string strNow = BCFUtility.formatDateTime(DateTime.Now, SCAppConstants.TimestampFormat_19);
                 ALARM alarm = new ALARM()
                 {
@@ -172,8 +175,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                     ALAM_LVL = alarmMap == null ? E_ALARM_LVL.None : alarmMap.ALARM_LVL,
                     ALAM_STAT = ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
                     ALAM_DESC = alarmMap == null ? errorDesc : alarmMap.ALARM_DESC,
-                    CMD_ID_1 = cmd_id_1,
-                    CMD_ID_2 = cmd_id_2
+                    CMD_ID_1 = effect_tran_ids.TranCmdId1,
+                    CMD_ID_2 = effect_tran_ids.TranCmdId2,
+                    CMD_ID_3 = effect_tran_ids.TranCmdId3,
+                    CMD_ID_4 = effect_tran_ids.TranCmdId4
                 };
                 if (SCUtility.isEmpty(alarm.ALAM_DESC))
                 {
@@ -184,10 +189,46 @@ namespace com.mirle.ibg3k0.sc.BLL
                     alarmDao.insertAlarm(con, alarm);
                     CheckSetAlarm();
                 }
-
                 return alarm;
             }
         }
+        (string TranCmdId1, string TranCmdId2, string TranCmdId3, string TranCmdId4) tryGetTransferCommandIDs(List<string> effectCmdIDs)
+        {
+            if (effectCmdIDs == null || effectCmdIDs.Count == 0) return ("", "", "", "");
+            string tran_cmd_1 = "";
+            string tran_cmd_2 = "";
+            string tran_cmd_3 = "";
+            string tran_cmd_4 = "";
+            int effect_cmd_id_count = effectCmdIDs.Count;
+            try
+            {
+                for (int i = 0; i < effect_cmd_id_count; i++)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            tran_cmd_1 = effectCmdIDs[i];
+                            break;
+                        case 1:
+                            tran_cmd_2 = effectCmdIDs[i];
+                            break;
+                        case 2:
+                            tran_cmd_3 = effectCmdIDs[i];
+                            break;
+                        case 3:
+                            tran_cmd_4 = effectCmdIDs[i];
+                            break;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+            return (tran_cmd_1, tran_cmd_2, tran_cmd_3, tran_cmd_4);
+        }
+
 
         public void setAlarmReport2Redis(ALARM alarm)
         {

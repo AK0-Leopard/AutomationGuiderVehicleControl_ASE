@@ -1599,7 +1599,6 @@
             this.groupBox19.TabIndex = 27;
             this.groupBox19.TabStop = false;
             this.groupBox19.Text = "Test Flag";
-            this.groupBox19.Visible = false;
             // 
             // label44
             // 
@@ -1902,7 +1901,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;

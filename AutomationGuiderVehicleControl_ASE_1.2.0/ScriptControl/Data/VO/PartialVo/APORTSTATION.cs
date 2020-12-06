@@ -74,7 +74,10 @@ namespace com.mirle.ibg3k0.sc
         {
             get { return $"{PORT_ID} ({ADR_ID})"; }
         }
-
+        public bool IsAGVStation(EqptBLL eqptBLL)
+        {
+           return eqptBLL.OperateCatch.GetEqptType(EQPT_ID) == SCAppConstants.EqptType.AGVStation;
+        }
     }
 
     public partial class APORTSTATION

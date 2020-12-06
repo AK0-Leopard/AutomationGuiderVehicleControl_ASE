@@ -949,7 +949,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             Task.Run(() =>
             {
-                mainForm.BCApp.SCApplication.VehicleBLL.setAndPublishPositionReportInfo2Redis(vh_id, id_134_trans_event_rep);
+                //mainForm.BCApp.SCApplication.VehicleBLL.setAndPublishPositionReportInfo2Redis(vh_id, id_134_trans_event_rep);
+                mainForm.BCApp.SCApplication.VehicleService.Receive.PositionReport(bcApp.SCApplication.getBCFApplication(), noticeCar, id_134_trans_event_rep,0);
             });
         }
 
