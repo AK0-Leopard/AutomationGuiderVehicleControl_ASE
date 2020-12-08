@@ -880,12 +880,33 @@ namespace com.mirle.ibg3k0.sc.Service
             return (port_priority_max_command != null, port_priority_max_command);
         }
 
+        const int TRAN_COMMAND_HIGH_PRIORITY_CONST = 99;
         public (bool isFind, AVEHICLE nearestVh, VTRANSFER nearestTransfer) FindVhAndCommand(List<VTRANSFER> transfers)
         {
             List<AVEHICLE> idle_vhs = scApp.VehicleBLL.cache.loadAllVh().ToList();
             scApp.VehicleBLL.cache.filterCanNotExcuteTranVh(ref idle_vhs, scApp.CMDBLL, E_VH_TYPE.None);
             //return FindVhAndCommandOrderByTransfer(idle_vhs, transfers);
-            return FindVhAndCommandOrderbyDistance(idle_vhs, transfers);
+
+            (bool isFind, AVEHICLE nearestVh, VTRANSFER nearestTransfer) findResult =
+                default((bool isFind, AVEHICLE nearestVh, VTRANSFER nearestTransfer));
+            var over_high_priority_tran = transfers.Where(tran => tran.PRIORITY_SUM >= TRAN_COMMAND_HIGH_PRIORITY_CONST)
+                                                   .OrderByDescending(tran => tran.PRIORITY_SUM);
+            //1.如果搬送命令有已經大於99的，就要從大於99的group來搜尋搬送的命令
+            //2.如果還沒有大於99的就直接依照目前的遠近來選擇
+            if (over_high_priority_tran.Count() > 0)
+            {
+                findResult = FindVhAndCommandOrderByTransfer(idle_vhs, over_high_priority_tran.ToList());
+            }
+
+            if (findResult.isFind)
+            {
+                return findResult;
+            }
+            else
+            {
+                return FindVhAndCommandOrderbyDistance(idle_vhs, transfers);
+            }
+
         }
         private (bool isFind, AVEHICLE nearestVh, VTRANSFER nearestTransfer) FindVhAndCommandOrderByTransfer(List<AVEHICLE> vhs, List<VTRANSFER> transfers)
         {
@@ -1843,6 +1864,20 @@ namespace com.mirle.ibg3k0.sc.Service
                                 }
                             }
                         }
+
+                        foreach (VTRANSFER queue_tran in in_queue_transfer)
+                        {
+                            //int AccumulateTime_minute = 5;
+                            int AccumulateTime_minute = SystemParameter.TransferCommandTimePriorityIncrement;
+                            int current_time_priority = ((int)((DateTime.Now - queue_tran.CMD_INSER_TIME).TotalMinutes) * AccumulateTime_minute);
+                            if (current_time_priority > queue_tran.TIME_PRIORITY)
+                            {
+                                //int change_priority = current_time_priority - queue_tran.TIME_PRIORITY;
+                                //int new_sum_priority = queue_tran.PRIORITY_SUM + change_priority;
+                                //scApp.CMDBLL.updateCMD_MCS_TimePriority(queue_tran.ID, current_time_priority, new_sum_priority);
+                                updateTranTimePriority(queue_tran, current_time_priority);
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -1853,6 +1888,19 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     System.Threading.Interlocked.Exchange(ref syncTranCmdPoint, 0);
                 }
+            }
+        }
+        public bool updateTranTimePriority(VTRANSFER tran, int timePriority)
+        {
+            try
+            {
+                int new_sum_priority = tran.PORT_PRIORITY + tran.PRIORITY + timePriority;
+                return scApp.CMDBLL.updateCMD_MCS_TimePriority(tran.ID, timePriority, new_sum_priority);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
             }
         }
 

@@ -277,19 +277,20 @@ namespace com.mirle.ibg3k0.sc.BLL
         public bool updateCMD_MCS_TimePriority(string tranID, int timePriority, int sumPriority)
         {
             bool isSuccess = false;
-            ATRANSFER tran = new ATRANSFER();
+            //ATRANSFER tran = new ATRANSFER();
             try
             {
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
-                    tran.ID = tranID;
-                    con.ATRANSFER.Attach(tran);
+                    ATRANSFER tran = GetTransferByID(tranID);
+                    //tran.ID = SCUtility.Trim(tranID, true);
+                    //con.ATRANSFER.Attach(tran);
                     tran.TIME_PRIORITY = timePriority;
                     tran.PRIORITY_SUM = sumPriority;
                     con.Entry(tran).Property(p => p.TIME_PRIORITY).IsModified = true;
                     con.Entry(tran).Property(p => p.PRIORITY_SUM).IsModified = true;
                     cmd_mcsDao.update(con, tran);
-                    con.Entry(tran).State = EntityState.Detached;
+                    //con.Entry(tran).State = EntityState.Detached;
                     isSuccess = true;
                 }
             }
@@ -912,7 +913,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     check_result.IsSuccess = false;
                 }
 
-                if (check_result.IsSuccess) 
+                if (check_result.IsSuccess)
                 {
                     check_result.IsSuccess = creatCommand_OHTC
                                              (vh_id, cmd_id_mcs, carrier_id, cmd_type, source, destination, priority, estimated_time, gen_cmd_type, out cmd_obj,

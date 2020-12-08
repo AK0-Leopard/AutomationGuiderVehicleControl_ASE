@@ -26,11 +26,7 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
             vtrnasfer = _cmd_mcs;
             PortStationBLL = portStationBLL;
         }
-        public TRANSFERObjToShow(BLL.PortStationBLL portStationBLL, ATRANSFER _cmd_mcs)
-        {
-            //vtrnasfer = _cmd_mcs;
-            PortStationBLL = portStationBLL;
-        }
+
         //public TRANSFERObjToShow(BLL.VehicleBLL vehicleBLL, BLL.PortStationBLL portStationBLL, ATRANSFER _cmd_mcs)
         //{
         //    vtrnasfer = _cmd_mcs;
@@ -74,6 +70,10 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
         public Nullable<System.DateTime> CMD_FINISH_TIME { get { return vtrnasfer.CMD_FINISH_TIME; } }
         public int REPLACE { get { return vtrnasfer.REPLACE; } }
 
+        public int CMD_PRIORITY { get { return vtrnasfer.PRIORITY; } }
+        public int TIME_PRIORITY { get { return vtrnasfer.TIME_PRIORITY; } }
+        public int PORT_PRIORITY { get { return vtrnasfer.PORT_PRIORITY; } }
+        public int PRIORITY_SUM { get { return vtrnasfer.PRIORITY_SUM; } }
     }
     public class HCMD_MCSObjToShow
     {

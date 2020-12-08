@@ -233,7 +233,6 @@
             this.cmb_mcsReportTestVHID = new System.Windows.Forms.ComboBox();
             this.numer_num_of_avoid_seg = new System.Windows.Forms.NumericUpDown();
             this.lbl_num_of_avoid_seg = new System.Windows.Forms.Label();
-            this.button10 = new System.Windows.Forms.Button();
             this.label37 = new System.Windows.Forms.Label();
             this.num_batteryCapacity = new System.Windows.Forms.NumericUpDown();
             this.txt_remove_loc_id = new System.Windows.Forms.TextBox();
@@ -411,6 +410,8 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
+            this.label103 = new System.Windows.Forms.Label();
+            this.num_timePriorityIncrement = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -458,6 +459,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_BatteryLowBoundaryValue)).BeginInit();
             this.DIO_DEVICE_TEST.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_timePriorityIncrement)).BeginInit();
             this.SuspendLayout();
             // 
             // cmb_tcpipctr_Vehicle
@@ -1901,7 +1903,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2086,6 +2088,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.num_timePriorityIncrement);
+            this.tabPage3.Controls.Add(this.label103);
             this.tabPage3.Controls.Add(this.lbl_guideQuickTimes);
             this.tabPage3.Controls.Add(this.lbl_guideTimes);
             this.tabPage3.Controls.Add(this.label102);
@@ -2108,7 +2112,6 @@
             this.tabPage3.Controls.Add(this.groupBox18);
             this.tabPage3.Controls.Add(this.numer_num_of_avoid_seg);
             this.tabPage3.Controls.Add(this.lbl_num_of_avoid_seg);
-            this.tabPage3.Controls.Add(this.button10);
             this.tabPage3.Controls.Add(this.label37);
             this.tabPage3.Controls.Add(this.num_batteryCapacity);
             this.tabPage3.Controls.Add(this.txt_remove_loc_id);
@@ -2415,7 +2418,7 @@
             // cb_canUnloadToAGVStation
             // 
             this.cb_canUnloadToAGVStation.AutoSize = true;
-            this.cb_canUnloadToAGVStation.Location = new System.Drawing.Point(12, 472);
+            this.cb_canUnloadToAGVStation.Location = new System.Drawing.Point(12, 377);
             this.cb_canUnloadToAGVStation.Name = "cb_canUnloadToAGVStation";
             this.cb_canUnloadToAGVStation.Size = new System.Drawing.Size(269, 26);
             this.cb_canUnloadToAGVStation.TabIndex = 38;
@@ -2689,7 +2692,7 @@
             // 
             // numer_num_of_avoid_seg
             // 
-            this.numer_num_of_avoid_seg.Location = new System.Drawing.Point(12, 425);
+            this.numer_num_of_avoid_seg.Location = new System.Drawing.Point(12, 330);
             this.numer_num_of_avoid_seg.Name = "numer_num_of_avoid_seg";
             this.numer_num_of_avoid_seg.Size = new System.Drawing.Size(120, 30);
             this.numer_num_of_avoid_seg.TabIndex = 36;
@@ -2698,21 +2701,11 @@
             // lbl_num_of_avoid_seg
             // 
             this.lbl_num_of_avoid_seg.AutoSize = true;
-            this.lbl_num_of_avoid_seg.Location = new System.Drawing.Point(6, 388);
+            this.lbl_num_of_avoid_seg.Location = new System.Drawing.Point(6, 293);
             this.lbl_num_of_avoid_seg.Name = "lbl_num_of_avoid_seg";
             this.lbl_num_of_avoid_seg.Size = new System.Drawing.Size(280, 22);
             this.lbl_num_of_avoid_seg.TabIndex = 35;
             this.lbl_num_of_avoid_seg.Text = "Number of Avoidance Segment";
-            // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(10, 304);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(173, 50);
-            this.button10.TabIndex = 34;
-            this.button10.Text = "MCS Cmd Creat";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click_1);
             // 
             // label37
             // 
@@ -4467,6 +4460,24 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
+            // label103
+            // 
+            this.label103.AutoSize = true;
+            this.label103.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label103.Location = new System.Drawing.Point(4, 453);
+            this.label103.Name = "label103";
+            this.label103.Size = new System.Drawing.Size(330, 22);
+            this.label103.TabIndex = 57;
+            this.label103.Text = "Time Priority Increment(pre min)";
+            // 
+            // num_timePriorityIncrement
+            // 
+            this.num_timePriorityIncrement.Location = new System.Drawing.Point(8, 478);
+            this.num_timePriorityIncrement.Name = "num_timePriorityIncrement";
+            this.num_timePriorityIncrement.Size = new System.Drawing.Size(120, 30);
+            this.num_timePriorityIncrement.TabIndex = 58;
+            this.num_timePriorityIncrement.ValueChanged += new System.EventHandler(this.num_timePriorityIncrement_ValueChanged);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -4555,6 +4566,7 @@
             this.DIO_DEVICE_TEST.ResumeLayout(false);
             this.DIO_DEVICE_TEST.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.num_timePriorityIncrement)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4659,7 +4671,6 @@
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.NumericUpDown num_batteryCapacity;
         private System.Windows.Forms.Button btn_auto_remote;
-        private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Label lbl_batteryLowBoundaryValue;
         private System.Windows.Forms.NumericUpDown num_BatteryLowBoundaryValue;
         private System.Windows.Forms.NumericUpDown num_BatteryHighBoundaryValue;
@@ -4943,5 +4954,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn BindingVh;
         private System.Windows.Forms.DataGridViewTextBoxColumn DeliveryMode;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ForceEmergency;
+        private System.Windows.Forms.NumericUpDown num_timePriorityIncrement;
+        private System.Windows.Forms.Label label103;
     }
 }

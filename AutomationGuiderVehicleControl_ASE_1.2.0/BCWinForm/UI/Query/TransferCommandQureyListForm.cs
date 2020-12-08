@@ -104,6 +104,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                     cmb_st_port_ids.Visible = true;
                     lbl_st_port_id.Visible = true;
                 }
+                num_PriorityValue.Value = mcs_cmd.TIME_PRIORITY > num_PriorityValue.Maximum ?
+                                          num_PriorityValue.Maximum : mcs_cmd.TIME_PRIORITY;
             }
         }
 
@@ -192,6 +194,12 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             transfer = mainform.BCApp.SCApplication.CMDBLL.GetTransferByID(mcs_cmd.CMD_ID);
             return (cmd, transfer);
         }
+        private ATRANSFER GetRealTranCommandInfo(TRANSFERObjToShow mcs_cmd)
+        {
+            ATRANSFER transfer;
+            transfer = mainform.BCApp.SCApplication.CMDBLL.GetTransferByID(mcs_cmd.CMD_ID);
+            return (transfer);
+        }
 
         private void TransferCommandQureyListForm_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -250,6 +258,52 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cmb_force_assign_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private async void btnPriorityUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (selection_index == -1) return;
+                btn_force_finish.Enabled = false;
+                var mcs_cmd = cmdMCSshowList[selection_index];
+                ATRANSFER transfer = await Task.Run(() => GetRealTranCommandInfo(mcs_cmd));
+                if (transfer == null)
+                {
+                    MessageBox.Show($"Transfer cmd ID:{SCUtility.Trim(mcs_cmd.CMD_ID, true)} not exist.", "Check command fail.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (transfer.TRANSFERSTATE != E_TRAN_STATUS.Queue)
+                {
+                    MessageBox.Show($"Transfer cmd ID:{SCUtility.Trim(mcs_cmd.CMD_ID, true)} is not in queue.", "Priority update fail.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                bool is_success = false;
+                int manual_time_priority = (int)num_PriorityValue.Value;
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        is_success = mainform.BCApp.SCApplication.TransferService.updateTranTimePriority(mcs_cmd.vtrnasfer, manual_time_priority);
+                    }
+                    catch { }
+                });
+                if (is_success)
+                {
+                    MessageBox.Show($"Transfer cmd ID:{SCUtility.Trim(mcs_cmd.CMD_ID, true)} update priority to {manual_time_priority} is success.", "Priority update success.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"Transfer cmd ID:{SCUtility.Trim(mcs_cmd.CMD_ID, true)} update priority to {manual_time_priority} is fail.", "Priority update success.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                updateTransferCommand();
+            }
+            catch (Exception ex) { }
+            finally
+            {
+                btn_force_finish.Enabled = true;
+            }
         }
     }
 }

@@ -432,17 +432,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             //updateDGVCommandAsync();
             updateDGVCommand(line);
         }
-        private async void updateDGVTransferCommandAsync()
-        {
-            List<ATRANSFER> cmd_mcs_lst = null;
-            await Task.Run(() => cmd_mcs_lst = scApp.CMDBLL.loadUnfinishedTransfer());
-            transfer_obj_to_show = cmd_mcs_lst.
-                Select(cmd_mcs => new TRANSFERObjToShow(scApp.PortStationBLL, cmd_mcs)).
-                ToList();
-            transfer_bindingSource.DataSource = transfer_obj_to_show;
-            dgv_TransferCommand.Refresh();
-
-        }
+   
         private void updateDGVVTransferCommand(ALINE line)
         {
             List<VTRANSFER> cmd_mcs_lst = line.CurrentExcuteTransferCommand;

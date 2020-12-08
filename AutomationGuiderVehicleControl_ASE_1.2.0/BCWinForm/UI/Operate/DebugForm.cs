@@ -137,6 +137,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             num_tran_cmd_queue_time_out_ms.Value = sc.App.SystemParameter.TransferCommandExcuteTimeOut_mSec;
             cb_by_pass_shelf_status.Checked = sc.App.SystemParameter.IsByPassAGVShelfStatus;
             num_vh_idle_time.Value = sc.App.SystemParameter.AllowVhIdleTime_ms;
+            num_timePriorityIncrement.Value = sc.App.SystemParameter.TransferCommandTimePriorityIncrement;
 
             agvPortStation = bcApp.SCApplication.PortStationBLL.OperateCatch.loadAllPortStation();
             dgv_cache_object_data_portstation.DataSource = agvPortStation;
@@ -950,7 +951,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             Task.Run(() =>
             {
                 //mainForm.BCApp.SCApplication.VehicleBLL.setAndPublishPositionReportInfo2Redis(vh_id, id_134_trans_event_rep);
-                mainForm.BCApp.SCApplication.VehicleService.Receive.PositionReport(bcApp.SCApplication.getBCFApplication(), noticeCar, id_134_trans_event_rep,0);
+                mainForm.BCApp.SCApplication.VehicleService.Receive.PositionReport(bcApp.SCApplication.getBCFApplication(), noticeCar, id_134_trans_event_rep, 0);
             });
         }
 
@@ -1052,18 +1053,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         }
 
-        private async void button10_Click_1(object sender, EventArgs e)
-        {
-            try
-            {
-                button10.Enabled = false;
-            }
-            catch { }
-            finally
-            {
-                button10.Enabled = true;
-            }
-        }
 
         private void num_BatteryLowBoundaryValue_ValueChanged(object sender, EventArgs e)
         {
@@ -1606,6 +1595,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             lbl_guideTimes.Text = DebugParameter.GuideSearchTimes.ToString();
             lbl_guideQuickTimes.Text = DebugParameter.GuideQuickSearchTimes.ToString();
+        }
+
+        private void num_timePriorityIncrement_ValueChanged(object sender, EventArgs e)
+        {
+            sc.App.SystemParameter.setTransferCommandTimePriorityIncrement((int)num_timePriorityIncrement.Value);
         }
     }
 }
