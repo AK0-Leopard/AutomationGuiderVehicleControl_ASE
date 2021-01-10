@@ -375,7 +375,7 @@ namespace com.mirle.ibg3k0.sc
         }
         public bool ForceEmergency { get; set; }
         public DateTime LastAskTime { get; set; }
-        public string sLastAskTime { get { return LastAskTime.ToString(SCAppConstants.DateTimeFormat_19);  }  }
+        public string sLastAskTime { get { return LastAskTime.ToString(SCAppConstants.DateTimeFormat_19); } }
     }
 
 
@@ -394,6 +394,7 @@ namespace com.mirle.ibg3k0.sc
         bool IsReadySingleUnload { get; }
         bool HasPortAuto { get; }
         APORTSTATION getAGVVirtruePort();
+        List<APORTSTATION> getAGVStationPorts();
         List<APORTSTATION> getAGVStationReadyLoadPorts();
         List<APORTSTATION> loadAutoAGVStationPorts();
         string BindingVh { get; }

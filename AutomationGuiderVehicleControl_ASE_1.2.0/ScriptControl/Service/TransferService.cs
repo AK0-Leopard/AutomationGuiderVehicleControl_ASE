@@ -1920,7 +1920,7 @@ namespace com.mirle.ibg3k0.sc.Service
             bool is_success = false;
 
             List<VTRANSFER> can_excute_after_on_the_way_tran = excutingTransfers.
-                                                    //Where(tr => tr.COMMANDSTATE < ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE).
+                                                    Where(tr => tr.COMMANDSTATE < ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE).
                                                     ToList();
 
             foreach (var excute_tran in can_excute_after_on_the_way_tran)

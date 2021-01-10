@@ -202,7 +202,13 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
                 zoon_Factor = 70;
                 defaultMaxScale = 10;
             }
-
+            else if (BCFUtility.isMatche(mainForm.BCApp.SCApplication.BC_ID, SCAppConstants.WorkVersion.VERSION_NAME_AGC))
+            {
+                space_Height_m = 35000; //AGVC 地圖地圖大小
+                space_Width_m = 135000;
+                zoon_Factor = 130;
+                defaultMaxScale = 10;
+            }
             else
             {
                 space_Height_m = 14000;

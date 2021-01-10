@@ -35,16 +35,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnl_Map = new System.Windows.Forms.Panel();
-            this.uctl_Map = new com.mirle.ibg3k0.bc.winform.UI.Components.uctl_Map();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lbl_SCState = new System.Windows.Forms.Label();
-            this.lbl_detectionSystemExist = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.lbl_earthqualeHappend = new System.Windows.Forms.Label();
             this.lbl_hostconnAndMode = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.lbl_RediStat = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -97,6 +92,17 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.vehicleObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tapTransferCmd = new System.Windows.Forms.TabPage();
             this.dgv_TransferCommand = new System.Windows.Forms.DataGridView();
+            this.cMDIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cARRIERIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LOT_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VEHICLE_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tRANSFERSTATEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.hOSTSOURCEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.hOSTDESTINATIONDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pRIORITYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TIME_PRIORITY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cMDINSERTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cMDSTARTTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cMDMCSObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tapDetail = new System.Windows.Forms.TabPage();
             this.dgv_TaskCommand = new System.Windows.Forms.DataGridView();
@@ -121,17 +127,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.timer_TimedUpdates = new System.Windows.Forms.Timer(this.components);
             this.vehicleObjToShowBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.aCMDMCSBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.cMDIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cARRIERIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LOT_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VEHICLE_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tRANSFERSTATEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.hOSTSOURCEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.hOSTDESTINATIONDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pRIORITYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TIME_PRIORITY = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cMDINSERTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cMDSTARTTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.uctl_Map = new com.mirle.ibg3k0.bc.winform.UI.Components.uctl_Map();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -156,6 +153,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Alarm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aCMDMCSBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -205,30 +203,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.pnl_Map.Size = new System.Drawing.Size(1626, 855);
             this.pnl_Map.TabIndex = 0;
             // 
-            // uctl_Map
-            // 
-            this.uctl_Map.AutoScroll = true;
-            this.uctl_Map.BackColor = System.Drawing.Color.MidnightBlue;
-            this.uctl_Map.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uctl_Map.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uctl_Map.Location = new System.Drawing.Point(0, 0);
-            this.uctl_Map.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uctl_Map.Name = "uctl_Map";
-            this.uctl_Map.Size = new System.Drawing.Size(1626, 855);
-            this.uctl_Map.TabIndex = 0;
-            this.uctl_Map.Load += new System.EventHandler(this.uctl_Map_Load);
-            // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.lbl_SCState);
-            this.panel1.Controls.Add(this.lbl_detectionSystemExist);
             this.panel1.Controls.Add(this.label11);
-            this.panel1.Controls.Add(this.label10);
-            this.panel1.Controls.Add(this.lbl_earthqualeHappend);
             this.panel1.Controls.Add(this.lbl_hostconnAndMode);
             this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.lbl_RediStat);
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.label2);
@@ -247,57 +229,27 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             this.lbl_SCState.AutoSize = true;
             this.lbl_SCState.BackColor = System.Drawing.Color.Gray;
-            this.lbl_SCState.Location = new System.Drawing.Point(11, 101);
+            this.lbl_SCState.Location = new System.Drawing.Point(11, 185);
             this.lbl_SCState.Name = "lbl_SCState";
             this.lbl_SCState.Size = new System.Drawing.Size(54, 19);
             this.lbl_SCState.TabIndex = 12;
             this.lbl_SCState.Text = "     ";
             // 
-            // lbl_detectionSystemExist
-            // 
-            this.lbl_detectionSystemExist.AutoSize = true;
-            this.lbl_detectionSystemExist.BackColor = System.Drawing.Color.Gray;
-            this.lbl_detectionSystemExist.Location = new System.Drawing.Point(11, 124);
-            this.lbl_detectionSystemExist.Name = "lbl_detectionSystemExist";
-            this.lbl_detectionSystemExist.Size = new System.Drawing.Size(54, 19);
-            this.lbl_detectionSystemExist.TabIndex = 10;
-            this.lbl_detectionSystemExist.Text = "     ";
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(71, 101);
+            this.label11.Location = new System.Drawing.Point(71, 185);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(90, 19);
             this.label11.TabIndex = 13;
             this.label11.Text = ":SC State";
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(71, 124);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(162, 19);
-            this.label10.TabIndex = 11;
-            this.label10.Text = ":Detection System";
-            // 
-            // lbl_earthqualeHappend
-            // 
-            this.lbl_earthqualeHappend.AutoSize = true;
-            this.lbl_earthqualeHappend.BackColor = System.Drawing.Color.Gray;
-            this.lbl_earthqualeHappend.Location = new System.Drawing.Point(11, 6);
-            this.lbl_earthqualeHappend.Name = "lbl_earthqualeHappend";
-            this.lbl_earthqualeHappend.Size = new System.Drawing.Size(54, 19);
-            this.lbl_earthqualeHappend.TabIndex = 9;
-            this.lbl_earthqualeHappend.Text = "     ";
-            // 
             // lbl_hostconnAndMode
             // 
             this.lbl_hostconnAndMode.AutoSize = true;
             this.lbl_hostconnAndMode.BackColor = System.Drawing.Color.Gray;
-            this.lbl_hostconnAndMode.Location = new System.Drawing.Point(11, 77);
+            this.lbl_hostconnAndMode.Location = new System.Drawing.Point(11, 161);
             this.lbl_hostconnAndMode.Name = "lbl_hostconnAndMode";
             this.lbl_hostconnAndMode.Size = new System.Drawing.Size(54, 19);
             this.lbl_hostconnAndMode.TabIndex = 4;
@@ -307,27 +259,17 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(71, 77);
+            this.label4.Location = new System.Drawing.Point(71, 161);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(99, 19);
             this.label4.TabIndex = 5;
             this.label4.Text = ":Host Conn";
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(71, 6);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(180, 19);
-            this.label9.TabIndex = 8;
-            this.label9.Text = ":Earthquake Happend";
-            // 
             // lbl_RediStat
             // 
             this.lbl_RediStat.AutoSize = true;
             this.lbl_RediStat.BackColor = System.Drawing.Color.Gray;
-            this.lbl_RediStat.Location = new System.Drawing.Point(11, 30);
+            this.lbl_RediStat.Location = new System.Drawing.Point(11, 114);
             this.lbl_RediStat.Name = "lbl_RediStat";
             this.lbl_RediStat.Size = new System.Drawing.Size(54, 19);
             this.lbl_RediStat.TabIndex = 7;
@@ -337,7 +279,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(71, 30);
+            this.label7.Location = new System.Drawing.Point(71, 114);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(63, 19);
             this.label7.TabIndex = 6;
@@ -347,7 +289,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(71, 54);
+            this.label2.Location = new System.Drawing.Point(71, 138);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 19);
             this.label2.TabIndex = 5;
@@ -357,7 +299,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             this.lbl_isMaster.AutoSize = true;
             this.lbl_isMaster.BackColor = System.Drawing.Color.Gray;
-            this.lbl_isMaster.Location = new System.Drawing.Point(11, 54);
+            this.lbl_isMaster.Location = new System.Drawing.Point(11, 138);
             this.lbl_isMaster.Name = "lbl_isMaster";
             this.lbl_isMaster.Size = new System.Drawing.Size(54, 19);
             this.lbl_isMaster.TabIndex = 4;
@@ -427,9 +369,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.groupBox1.Location = new System.Drawing.Point(15, 146);
+            this.groupBox1.Location = new System.Drawing.Point(15, 210);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(225, 680);
+            this.groupBox1.Size = new System.Drawing.Size(225, 616);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Specify Path";
@@ -437,7 +379,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // cbm_Action_admin
             // 
             this.cbm_Action_admin.FormattingEnabled = true;
-            this.cbm_Action_admin.Location = new System.Drawing.Point(11, 110);
+            this.cbm_Action_admin.Location = new System.Drawing.Point(11, 93);
             this.cbm_Action_admin.Name = "cbm_Action_admin";
             this.cbm_Action_admin.Size = new System.Drawing.Size(162, 27);
             this.cbm_Action_admin.TabIndex = 1;
@@ -446,7 +388,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // cbm_Action_op
             // 
             this.cbm_Action_op.FormattingEnabled = true;
-            this.cbm_Action_op.Location = new System.Drawing.Point(10, 110);
+            this.cbm_Action_op.Location = new System.Drawing.Point(10, 93);
             this.cbm_Action_op.Name = "cbm_Action_op";
             this.cbm_Action_op.Size = new System.Drawing.Size(162, 27);
             this.cbm_Action_op.TabIndex = 13;
@@ -456,7 +398,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.cb_autoOverride.AutoSize = true;
             this.cb_autoOverride.Checked = true;
             this.cb_autoOverride.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_autoOverride.Location = new System.Drawing.Point(37, 540);
+            this.cb_autoOverride.Location = new System.Drawing.Point(37, 523);
             this.cb_autoOverride.Name = "cb_autoOverride";
             this.cb_autoOverride.Size = new System.Drawing.Size(145, 23);
             this.cb_autoOverride.TabIndex = 12;
@@ -468,7 +410,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             // txt_cst_id
             // 
-            this.txt_cst_id.Location = new System.Drawing.Point(10, 362);
+            this.txt_cst_id.Location = new System.Drawing.Point(10, 345);
             this.txt_cst_id.Name = "txt_cst_id";
             this.txt_cst_id.Size = new System.Drawing.Size(163, 26);
             this.txt_cst_id.TabIndex = 10;
@@ -487,7 +429,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.gb_PortNameType.Controls.Add(this.Raid_PortNameType_AdrID);
             this.gb_PortNameType.Controls.Add(this.Raid_PortNameType_PortID);
             this.gb_PortNameType.ForeColor = System.Drawing.Color.White;
-            this.gb_PortNameType.Location = new System.Drawing.Point(10, 143);
+            this.gb_PortNameType.Location = new System.Drawing.Point(10, 126);
             this.gb_PortNameType.Name = "gb_PortNameType";
             this.gb_PortNameType.Size = new System.Drawing.Size(162, 90);
             this.gb_PortNameType.TabIndex = 5;
@@ -522,7 +464,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // cmb_cycRunZone
             // 
             this.cmb_cycRunZone.FormattingEnabled = true;
-            this.cmb_cycRunZone.Location = new System.Drawing.Point(11, 310);
+            this.cmb_cycRunZone.Location = new System.Drawing.Point(11, 293);
             this.cmb_cycRunZone.Name = "cmb_cycRunZone";
             this.cmb_cycRunZone.Size = new System.Drawing.Size(197, 27);
             this.cmb_cycRunZone.TabIndex = 4;
@@ -530,7 +472,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // btn_pause
             // 
             this.btn_pause.ForeColor = System.Drawing.Color.Black;
-            this.btn_pause.Location = new System.Drawing.Point(24, 430);
+            this.btn_pause.Location = new System.Drawing.Point(24, 413);
             this.btn_pause.Name = "btn_pause";
             this.btn_pause.Size = new System.Drawing.Size(133, 29);
             this.btn_pause.TabIndex = 3;
@@ -542,7 +484,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // btn_continuous
             // 
             this.btn_continuous.ForeColor = System.Drawing.Color.Black;
-            this.btn_continuous.Location = new System.Drawing.Point(24, 465);
+            this.btn_continuous.Location = new System.Drawing.Point(24, 448);
             this.btn_continuous.Name = "btn_continuous";
             this.btn_continuous.Size = new System.Drawing.Size(133, 30);
             this.btn_continuous.TabIndex = 3;
@@ -554,7 +496,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // btn_Avoid
             // 
             this.btn_Avoid.ForeColor = System.Drawing.Color.Black;
-            this.btn_Avoid.Location = new System.Drawing.Point(24, 501);
+            this.btn_Avoid.Location = new System.Drawing.Point(24, 484);
             this.btn_Avoid.Name = "btn_Avoid";
             this.btn_Avoid.Size = new System.Drawing.Size(133, 31);
             this.btn_Avoid.TabIndex = 2;
@@ -566,7 +508,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             this.btn_start.Enabled = false;
             this.btn_start.ForeColor = System.Drawing.Color.Black;
-            this.btn_start.Location = new System.Drawing.Point(24, 397);
+            this.btn_start.Location = new System.Drawing.Point(24, 380);
             this.btn_start.Name = "btn_start";
             this.btn_start.Size = new System.Drawing.Size(133, 27);
             this.btn_start.TabIndex = 2;
@@ -577,7 +519,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // cmb_fromAddress
             // 
             this.cmb_fromAddress.FormattingEnabled = true;
-            this.cmb_fromAddress.Location = new System.Drawing.Point(10, 258);
+            this.cmb_fromAddress.Location = new System.Drawing.Point(10, 241);
             this.cmb_fromAddress.Name = "cmb_fromAddress";
             this.cmb_fromAddress.Size = new System.Drawing.Size(198, 27);
             this.cmb_fromAddress.TabIndex = 1;
@@ -585,7 +527,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // cmb_toAddress
             // 
             this.cmb_toAddress.FormattingEnabled = true;
-            this.cmb_toAddress.Location = new System.Drawing.Point(10, 310);
+            this.cmb_toAddress.Location = new System.Drawing.Point(10, 293);
             this.cmb_toAddress.Name = "cmb_toAddress";
             this.cmb_toAddress.Size = new System.Drawing.Size(198, 27);
             this.cmb_toAddress.TabIndex = 1;
@@ -593,7 +535,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // cmb_Vehicle
             // 
             this.cmb_Vehicle.FormattingEnabled = true;
-            this.cmb_Vehicle.Location = new System.Drawing.Point(6, 58);
+            this.cmb_Vehicle.Location = new System.Drawing.Point(6, 41);
             this.cmb_Vehicle.Name = "cmb_Vehicle";
             this.cmb_Vehicle.Size = new System.Drawing.Size(162, 27);
             this.cmb_Vehicle.TabIndex = 1;
@@ -601,7 +543,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // cmb_fromSection
             // 
             this.cmb_fromSection.FormattingEnabled = true;
-            this.cmb_fromSection.Location = new System.Drawing.Point(11, 590);
+            this.cmb_fromSection.Location = new System.Drawing.Point(11, 573);
             this.cmb_fromSection.Name = "cmb_fromSection";
             this.cmb_fromSection.Size = new System.Drawing.Size(162, 27);
             this.cmb_fromSection.TabIndex = 1;
@@ -611,7 +553,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // lbl_sourceName
             // 
             this.lbl_sourceName.AutoSize = true;
-            this.lbl_sourceName.Location = new System.Drawing.Point(6, 236);
+            this.lbl_sourceName.Location = new System.Drawing.Point(6, 219);
             this.lbl_sourceName.Name = "lbl_sourceName";
             this.lbl_sourceName.Size = new System.Drawing.Size(117, 19);
             this.lbl_sourceName.TabIndex = 0;
@@ -629,7 +571,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // lbl_destinationName
             // 
             this.lbl_destinationName.AutoSize = true;
-            this.lbl_destinationName.Location = new System.Drawing.Point(6, 288);
+            this.lbl_destinationName.Location = new System.Drawing.Point(6, 271);
             this.lbl_destinationName.Name = "lbl_destinationName";
             this.lbl_destinationName.Size = new System.Drawing.Size(99, 19);
             this.lbl_destinationName.TabIndex = 0;
@@ -638,7 +580,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 38);
+            this.label3.Location = new System.Drawing.Point(6, 21);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(72, 19);
             this.label3.TabIndex = 0;
@@ -647,7 +589,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 573);
+            this.label1.Location = new System.Drawing.Point(16, 556);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(99, 19);
             this.label1.TabIndex = 0;
@@ -905,6 +847,89 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.dgv_TransferCommand.TabIndex = 0;
             this.dgv_TransferCommand.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgv_TransferCommand_RowPrePaint);
             // 
+            // cMDIDDataGridViewTextBoxColumn
+            // 
+            this.cMDIDDataGridViewTextBoxColumn.DataPropertyName = "CMD_ID";
+            this.cMDIDDataGridViewTextBoxColumn.HeaderText = "ID";
+            this.cMDIDDataGridViewTextBoxColumn.Name = "cMDIDDataGridViewTextBoxColumn";
+            this.cMDIDDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // cARRIERIDDataGridViewTextBoxColumn
+            // 
+            this.cARRIERIDDataGridViewTextBoxColumn.DataPropertyName = "CARRIER_ID";
+            this.cARRIERIDDataGridViewTextBoxColumn.HeaderText = "Carrier ID";
+            this.cARRIERIDDataGridViewTextBoxColumn.Name = "cARRIERIDDataGridViewTextBoxColumn";
+            this.cARRIERIDDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // LOT_ID
+            // 
+            this.LOT_ID.DataPropertyName = "LOT_ID";
+            this.LOT_ID.HeaderText = "LOT ID";
+            this.LOT_ID.Name = "LOT_ID";
+            this.LOT_ID.ReadOnly = true;
+            // 
+            // VEHICLE_ID
+            // 
+            this.VEHICLE_ID.DataPropertyName = "VEHICLE_ID";
+            this.VEHICLE_ID.HeaderText = "Vh";
+            this.VEHICLE_ID.Name = "VEHICLE_ID";
+            this.VEHICLE_ID.ReadOnly = true;
+            // 
+            // tRANSFERSTATEDataGridViewTextBoxColumn
+            // 
+            this.tRANSFERSTATEDataGridViewTextBoxColumn.DataPropertyName = "TRANSFERSTATE";
+            this.tRANSFERSTATEDataGridViewTextBoxColumn.FillWeight = 60F;
+            this.tRANSFERSTATEDataGridViewTextBoxColumn.HeaderText = "State";
+            this.tRANSFERSTATEDataGridViewTextBoxColumn.Name = "tRANSFERSTATEDataGridViewTextBoxColumn";
+            this.tRANSFERSTATEDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // hOSTSOURCEDataGridViewTextBoxColumn
+            // 
+            this.hOSTSOURCEDataGridViewTextBoxColumn.DataPropertyName = "HOSTSOURCE";
+            this.hOSTSOURCEDataGridViewTextBoxColumn.FillWeight = 150F;
+            this.hOSTSOURCEDataGridViewTextBoxColumn.HeaderText = "L Port";
+            this.hOSTSOURCEDataGridViewTextBoxColumn.Name = "hOSTSOURCEDataGridViewTextBoxColumn";
+            this.hOSTSOURCEDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // hOSTDESTINATIONDataGridViewTextBoxColumn
+            // 
+            this.hOSTDESTINATIONDataGridViewTextBoxColumn.DataPropertyName = "HOSTDESTINATION";
+            this.hOSTDESTINATIONDataGridViewTextBoxColumn.FillWeight = 150F;
+            this.hOSTDESTINATIONDataGridViewTextBoxColumn.HeaderText = "U Port";
+            this.hOSTDESTINATIONDataGridViewTextBoxColumn.Name = "hOSTDESTINATIONDataGridViewTextBoxColumn";
+            this.hOSTDESTINATIONDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // pRIORITYDataGridViewTextBoxColumn
+            // 
+            this.pRIORITYDataGridViewTextBoxColumn.DataPropertyName = "PRIORITY";
+            this.pRIORITYDataGridViewTextBoxColumn.FillWeight = 70F;
+            this.pRIORITYDataGridViewTextBoxColumn.HeaderText = "Priority";
+            this.pRIORITYDataGridViewTextBoxColumn.Name = "pRIORITYDataGridViewTextBoxColumn";
+            this.pRIORITYDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // TIME_PRIORITY
+            // 
+            this.TIME_PRIORITY.DataPropertyName = "TIME_PRIORITY";
+            this.TIME_PRIORITY.HeaderText = "Time Priority";
+            this.TIME_PRIORITY.Name = "TIME_PRIORITY";
+            this.TIME_PRIORITY.ReadOnly = true;
+            // 
+            // cMDINSERTIMEDataGridViewTextBoxColumn
+            // 
+            this.cMDINSERTIMEDataGridViewTextBoxColumn.DataPropertyName = "CMD_INSER_TIME";
+            this.cMDINSERTIMEDataGridViewTextBoxColumn.FillWeight = 120F;
+            this.cMDINSERTIMEDataGridViewTextBoxColumn.HeaderText = "Inser Time";
+            this.cMDINSERTIMEDataGridViewTextBoxColumn.Name = "cMDINSERTIMEDataGridViewTextBoxColumn";
+            this.cMDINSERTIMEDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // cMDSTARTTIMEDataGridViewTextBoxColumn
+            // 
+            this.cMDSTARTTIMEDataGridViewTextBoxColumn.DataPropertyName = "CMD_START_TIME";
+            this.cMDSTARTTIMEDataGridViewTextBoxColumn.FillWeight = 120F;
+            this.cMDSTARTTIMEDataGridViewTextBoxColumn.HeaderText = "Start Time";
+            this.cMDSTARTTIMEDataGridViewTextBoxColumn.Name = "cMDSTARTTIMEDataGridViewTextBoxColumn";
+            this.cMDSTARTTIMEDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
             // cMDMCSObjToShowBindingSource
             // 
             this.cMDMCSObjToShowBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.TRANSFERObjToShow);
@@ -1113,88 +1138,28 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             this.aCMDMCSBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ATRANSFER);
             // 
-            // cMDIDDataGridViewTextBoxColumn
+            // pictureBox1
             // 
-            this.cMDIDDataGridViewTextBoxColumn.DataPropertyName = "CMD_ID";
-            this.cMDIDDataGridViewTextBoxColumn.HeaderText = "ID";
-            this.cMDIDDataGridViewTextBoxColumn.Name = "cMDIDDataGridViewTextBoxColumn";
-            this.cMDIDDataGridViewTextBoxColumn.ReadOnly = true;
+            this.pictureBox1.Image = global::com.mirle.ibg3k0.bc.winform.Properties.Resources.Mirle;
+            this.pictureBox1.Location = new System.Drawing.Point(28, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(205, 108);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 14;
+            this.pictureBox1.TabStop = false;
             // 
-            // cARRIERIDDataGridViewTextBoxColumn
+            // uctl_Map
             // 
-            this.cARRIERIDDataGridViewTextBoxColumn.DataPropertyName = "CARRIER_ID";
-            this.cARRIERIDDataGridViewTextBoxColumn.HeaderText = "Carrier ID";
-            this.cARRIERIDDataGridViewTextBoxColumn.Name = "cARRIERIDDataGridViewTextBoxColumn";
-            this.cARRIERIDDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // LOT_ID
-            // 
-            this.LOT_ID.DataPropertyName = "LOT_ID";
-            this.LOT_ID.HeaderText = "LOT ID";
-            this.LOT_ID.Name = "LOT_ID";
-            this.LOT_ID.ReadOnly = true;
-            // 
-            // VEHICLE_ID
-            // 
-            this.VEHICLE_ID.DataPropertyName = "VEHICLE_ID";
-            this.VEHICLE_ID.HeaderText = "Vh";
-            this.VEHICLE_ID.Name = "VEHICLE_ID";
-            this.VEHICLE_ID.ReadOnly = true;
-            // 
-            // tRANSFERSTATEDataGridViewTextBoxColumn
-            // 
-            this.tRANSFERSTATEDataGridViewTextBoxColumn.DataPropertyName = "TRANSFERSTATE";
-            this.tRANSFERSTATEDataGridViewTextBoxColumn.FillWeight = 60F;
-            this.tRANSFERSTATEDataGridViewTextBoxColumn.HeaderText = "State";
-            this.tRANSFERSTATEDataGridViewTextBoxColumn.Name = "tRANSFERSTATEDataGridViewTextBoxColumn";
-            this.tRANSFERSTATEDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // hOSTSOURCEDataGridViewTextBoxColumn
-            // 
-            this.hOSTSOURCEDataGridViewTextBoxColumn.DataPropertyName = "HOSTSOURCE";
-            this.hOSTSOURCEDataGridViewTextBoxColumn.FillWeight = 150F;
-            this.hOSTSOURCEDataGridViewTextBoxColumn.HeaderText = "L Port";
-            this.hOSTSOURCEDataGridViewTextBoxColumn.Name = "hOSTSOURCEDataGridViewTextBoxColumn";
-            this.hOSTSOURCEDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // hOSTDESTINATIONDataGridViewTextBoxColumn
-            // 
-            this.hOSTDESTINATIONDataGridViewTextBoxColumn.DataPropertyName = "HOSTDESTINATION";
-            this.hOSTDESTINATIONDataGridViewTextBoxColumn.FillWeight = 150F;
-            this.hOSTDESTINATIONDataGridViewTextBoxColumn.HeaderText = "U Port";
-            this.hOSTDESTINATIONDataGridViewTextBoxColumn.Name = "hOSTDESTINATIONDataGridViewTextBoxColumn";
-            this.hOSTDESTINATIONDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // pRIORITYDataGridViewTextBoxColumn
-            // 
-            this.pRIORITYDataGridViewTextBoxColumn.DataPropertyName = "PRIORITY";
-            this.pRIORITYDataGridViewTextBoxColumn.FillWeight = 70F;
-            this.pRIORITYDataGridViewTextBoxColumn.HeaderText = "Priority";
-            this.pRIORITYDataGridViewTextBoxColumn.Name = "pRIORITYDataGridViewTextBoxColumn";
-            this.pRIORITYDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // TIME_PRIORITY
-            // 
-            this.TIME_PRIORITY.DataPropertyName = "TIME_PRIORITY";
-            this.TIME_PRIORITY.HeaderText = "Time Priority";
-            this.TIME_PRIORITY.Name = "TIME_PRIORITY";
-            this.TIME_PRIORITY.ReadOnly = true;
-            // 
-            // cMDINSERTIMEDataGridViewTextBoxColumn
-            // 
-            this.cMDINSERTIMEDataGridViewTextBoxColumn.DataPropertyName = "CMD_INSER_TIME";
-            this.cMDINSERTIMEDataGridViewTextBoxColumn.FillWeight = 120F;
-            this.cMDINSERTIMEDataGridViewTextBoxColumn.HeaderText = "Inser Time";
-            this.cMDINSERTIMEDataGridViewTextBoxColumn.Name = "cMDINSERTIMEDataGridViewTextBoxColumn";
-            this.cMDINSERTIMEDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // cMDSTARTTIMEDataGridViewTextBoxColumn
-            // 
-            this.cMDSTARTTIMEDataGridViewTextBoxColumn.DataPropertyName = "CMD_START_TIME";
-            this.cMDSTARTTIMEDataGridViewTextBoxColumn.FillWeight = 120F;
-            this.cMDSTARTTIMEDataGridViewTextBoxColumn.HeaderText = "Start Time";
-            this.cMDSTARTTIMEDataGridViewTextBoxColumn.Name = "cMDSTARTTIMEDataGridViewTextBoxColumn";
-            this.cMDSTARTTIMEDataGridViewTextBoxColumn.ReadOnly = true;
+            this.uctl_Map.AutoScroll = true;
+            this.uctl_Map.BackColor = System.Drawing.Color.MidnightBlue;
+            this.uctl_Map.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uctl_Map.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uctl_Map.Location = new System.Drawing.Point(0, 0);
+            this.uctl_Map.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uctl_Map.Name = "uctl_Map";
+            this.uctl_Map.Size = new System.Drawing.Size(1626, 855);
+            this.uctl_Map.TabIndex = 0;
+            this.uctl_Map.Load += new System.EventHandler(this.uctl_Map_Load);
             // 
             // OHT_Form
             // 
@@ -1238,6 +1203,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Alarm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aCMDMCSBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1287,15 +1253,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private System.Windows.Forms.Label lbl_hostconnAndMode;
         private System.Windows.Forms.Label lbl_RediStat;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label lbl_earthqualeHappend;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.DataGridViewTextBoxColumn eqpt_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn alarm_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn alarm_lvl;
         private System.Windows.Forms.DataGridViewTextBoxColumn report_time;
         private System.Windows.Forms.DataGridViewTextBoxColumn alarm_desc;
-        private System.Windows.Forms.Label lbl_detectionSystemExist;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.BindingSource vehicleObjToShowBindingSource1;
         private System.Windows.Forms.Label lbl_SCState;
         private System.Windows.Forms.Label label11;
@@ -1351,5 +1313,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private System.Windows.Forms.DataGridViewTextBoxColumn TIME_PRIORITY;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDINSERTIMEDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDSTARTTIMEDataGridViewTextBoxColumn;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

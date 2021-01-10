@@ -758,6 +758,8 @@ namespace com.mirle.ibg3k0.sc.Common
                             //{
                             //}
                         }
+                        if (portstation != null)
+                            portstation.LastNotifyPreOpenCoverTime.Start();
                     }
                 }
             }

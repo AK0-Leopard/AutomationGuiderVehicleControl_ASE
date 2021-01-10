@@ -135,22 +135,22 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                     line.Redis_Link_Stat == SCAppConstants.LinkStatus.LinkOK ? Color.Green : Color.Gray;
                 }
                 );
-            line.addEventHandler(this.Name
-            , BCFUtility.getPropertyName(() => line.IsEarthquakeHappend)
-                , (s1, e1) =>
-                {
-                    lbl_earthqualeHappend.BackColor =
-                    line.IsEarthquakeHappend ? Color.Red : Color.Gray;
-                }
-                );
-            line.addEventHandler(this.Name
-                , BCFUtility.getPropertyName(() => line.DetectionSystemExist)
-                    , (s1, e1) =>
-                    {
-                        lbl_detectionSystemExist.BackColor =
-                        line.DetectionSystemExist == SCAppConstants.ExistStatus.Exist ? Color.Green : Color.Gray;
-                    }
-                    );
+            //line.addEventHandler(this.Name
+            //, BCFUtility.getPropertyName(() => line.IsEarthquakeHappend)
+            //    , (s1, e1) =>
+            //    {
+            //        lbl_earthqualeHappend.BackColor =
+            //        line.IsEarthquakeHappend ? Color.Red : Color.Gray;
+            //    }
+            //    );
+            //line.addEventHandler(this.Name
+            //    , BCFUtility.getPropertyName(() => line.DetectionSystemExist)
+            //        , (s1, e1) =>
+            //        {
+            //            lbl_detectionSystemExist.BackColor =
+            //            line.DetectionSystemExist == SCAppConstants.ExistStatus.Exist ? Color.Green : Color.Gray;
+            //        }
+            //        );
             //scApp.getNatsManager().Subscriber(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, SetCurrentAlarm);
             line.AlarmListChange += SetCurrentAlarm;
 
@@ -1015,7 +1015,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             //}, null);
         }
 
-        const int TRAN_COMMAND_CLOUMN_INDEX_INSER_TIME = 8;
+        const int TRAN_COMMAND_CLOUMN_INDEX_INSER_TIME = 9;
         private void dgv_TransferCommand_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             if (dgv_TransferCommand.Rows.Count <= e.RowIndex) return;

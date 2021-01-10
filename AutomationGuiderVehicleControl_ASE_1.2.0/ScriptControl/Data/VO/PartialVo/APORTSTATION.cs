@@ -16,6 +16,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace com.mirle.ibg3k0.sc
 {
@@ -76,8 +77,9 @@ namespace com.mirle.ibg3k0.sc
         }
         public bool IsAGVStation(EqptBLL eqptBLL)
         {
-           return eqptBLL.OperateCatch.GetEqptType(EQPT_ID) == SCAppConstants.EqptType.AGVStation;
+            return eqptBLL.OperateCatch.GetEqptType(EQPT_ID) == SCAppConstants.EqptType.AGVStation;
         }
+        public Stopwatch LastNotifyPreOpenCoverTime = new Stopwatch();
     }
 
     public partial class APORTSTATION
