@@ -903,6 +903,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return vhs.Where(vh => vh.ERROR == ProtocolFormat.OHTMessage.VhStopSingle.On).ToList();
             }
 
+            public (bool isExist, AVEHICLE vh) IsVehicleExist(string vhID)
+            {
+                var vhs = eqObjCacheManager.getAllVehicle();
+                var vh = vhs.Where(v => SCUtility.isMatche(v.VEHICLE_ID, vhID)).FirstOrDefault();
+                return (vh != null, vh);
+            }
             public bool IsVehicleExistByRealID(string vhRealID)
             {
                 var vhs = eqObjCacheManager.getAllVehicle();
@@ -1365,11 +1371,35 @@ namespace com.mirle.ibg3k0.sc.BLL
                  "http://agvc.asek21.mirle.com.tw:15000"
             };
             const string ERROR_HAPPEND_CONST = "99";
+            const string OBSTACLE_HAPPEND_CONST = "XXXX";
 
             public Web(WebClientManager _webClient)
             {
                 webClientManager = _webClient;
             }
+            public void ObstacleHappendNotify()
+            {
+                try
+                {
+                    string[] action_targets = new string[]
+                    {
+                    "weatherforecast"
+                    };
+                    string[] param = new string[]
+                    {
+                    OBSTACLE_HAPPEND_CONST,
+                    };
+                    foreach (string notify_url in notify_urls)
+                    {
+                        string result = webClientManager.GetInfoFromServer(notify_url, action_targets, param);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
+
             public void errorHappendNotify()
             {
                 try

@@ -33,8 +33,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btn_all_adress_test = new System.Windows.Forms.Button();
             this.txt_segment_startFrom = new System.Windows.Forms.TextBox();
             this.txt_current_ban = new System.Windows.Forms.TextBox();
+            this.btn_current_ban = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.cmb_pathInfo_FromTo_SecToAdrToAdr = new System.Windows.Forms.ComboBox();
             this.cmb_pathInfo_FromTo_AdrToAdrToAdr = new System.Windows.Forms.ComboBox();
             this.cmb_pathInfo_StartFrom_AdrToAdrToAdr = new System.Windows.Forms.ComboBox();
@@ -112,6 +114,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btn_auto_override = new System.Windows.Forms.Button();
             this.label38 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
             this.txt_segments_fromTo_adrAdrAndAdr = new System.Windows.Forms.TextBox();
@@ -156,9 +159,6 @@
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.cb_startFromTo_To_SecToAdrToAdr = new System.Windows.Forms.ComboBox();
-            this.btn_all_adress_test = new System.Windows.Forms.Button();
-            this.btn_current_ban = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_auto_override = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.gb_BanRoute3.SuspendLayout();
             this.gb_BanRoute2.SuspendLayout();
@@ -266,6 +266,16 @@
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             // 
+            // btn_all_adress_test
+            // 
+            this.btn_all_adress_test.Location = new System.Drawing.Point(1003, 53);
+            this.btn_all_adress_test.Name = "btn_all_adress_test";
+            this.btn_all_adress_test.Size = new System.Drawing.Size(190, 38);
+            this.btn_all_adress_test.TabIndex = 127;
+            this.btn_all_adress_test.Text = "All Addredd Test";
+            this.btn_all_adress_test.UseVisualStyleBackColor = true;
+            this.btn_all_adress_test.Click += new System.EventHandler(this.btn_all_adress_test_Click);
+            // 
             // txt_segment_startFrom
             // 
             this.txt_segment_startFrom.Location = new System.Drawing.Point(670, 578);
@@ -282,6 +292,16 @@
             this.txt_current_ban.ReadOnly = true;
             this.txt_current_ban.Size = new System.Drawing.Size(536, 30);
             this.txt_current_ban.TabIndex = 125;
+            // 
+            // btn_current_ban
+            // 
+            this.btn_current_ban.Location = new System.Drawing.Point(445, 657);
+            this.btn_current_ban.Name = "btn_current_ban";
+            this.btn_current_ban.Size = new System.Drawing.Size(147, 40);
+            this.btn_current_ban.TabIndex = 124;
+            this.btn_current_ban.Text = "Current Ban";
+            this.btn_current_ban.UseVisualStyleBackColor = true;
+            this.btn_current_ban.Click += new System.EventHandler(this.btn_current_ban_Click);
             // 
             // cmb_pathInfo_FromTo_SecToAdrToAdr
             // 
@@ -849,6 +869,7 @@
             this.btn_reloadRoude.TabIndex = 13;
             this.btn_reloadRoude.Text = "Reload Route";
             this.btn_reloadRoude.UseVisualStyleBackColor = true;
+            this.btn_reloadRoude.Visible = false;
             this.btn_reloadRoude.Click += new System.EventHandler(this.btn_reloadRoude_Click);
             // 
             // groupBox2
@@ -1100,6 +1121,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Send Cmd Test";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btn_auto_override
+            // 
+            this.btn_auto_override.Location = new System.Drawing.Point(738, 547);
+            this.btn_auto_override.Name = "btn_auto_override";
+            this.btn_auto_override.Size = new System.Drawing.Size(152, 42);
+            this.btn_auto_override.TabIndex = 171;
+            this.btn_auto_override.Text = "Auto Override";
+            this.btn_auto_override.UseVisualStyleBackColor = true;
+            this.btn_auto_override.Click += new System.EventHandler(this.btn_auto_override_Click);
             // 
             // label38
             // 
@@ -1537,36 +1568,6 @@
             this.cb_startFromTo_To_SecToAdrToAdr.Name = "cb_startFromTo_To_SecToAdrToAdr";
             this.cb_startFromTo_To_SecToAdrToAdr.Size = new System.Drawing.Size(121, 30);
             this.cb_startFromTo_To_SecToAdrToAdr.TabIndex = 149;
-            // 
-            // btn_all_adress_test
-            // 
-            this.btn_all_adress_test.Location = new System.Drawing.Point(1003, 53);
-            this.btn_all_adress_test.Name = "btn_all_adress_test";
-            this.btn_all_adress_test.Size = new System.Drawing.Size(190, 38);
-            this.btn_all_adress_test.TabIndex = 127;
-            this.btn_all_adress_test.Text = "All Addredd Test";
-            this.btn_all_adress_test.UseVisualStyleBackColor = true;
-            this.btn_all_adress_test.Click += new System.EventHandler(this.btn_all_adress_test_Click);
-            // 
-            // btn_current_ban
-            // 
-            this.btn_current_ban.Location = new System.Drawing.Point(445, 657);
-            this.btn_current_ban.Name = "btn_current_ban";
-            this.btn_current_ban.Size = new System.Drawing.Size(147, 40);
-            this.btn_current_ban.TabIndex = 124;
-            this.btn_current_ban.Text = "Current Ban";
-            this.btn_current_ban.UseVisualStyleBackColor = true;
-            this.btn_current_ban.Click += new System.EventHandler(this.btn_current_ban_Click);
-            // 
-            // btn_auto_override
-            // 
-            this.btn_auto_override.Location = new System.Drawing.Point(738, 547);
-            this.btn_auto_override.Name = "btn_auto_override";
-            this.btn_auto_override.Size = new System.Drawing.Size(152, 42);
-            this.btn_auto_override.TabIndex = 171;
-            this.btn_auto_override.Text = "Auto Override";
-            this.btn_auto_override.UseVisualStyleBackColor = true;
-            this.btn_auto_override.Click += new System.EventHandler(this.btn_auto_override_Click);
             // 
             // EngineerFormForAGVC
             // 

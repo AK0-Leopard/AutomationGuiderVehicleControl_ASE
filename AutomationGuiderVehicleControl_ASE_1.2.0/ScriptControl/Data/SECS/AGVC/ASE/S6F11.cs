@@ -110,6 +110,29 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
                     public TRANSFERINFO TransferInfo = new TRANSFERINFO();
                 }
                 [Serializable]
+                public class VIDITEM_40 : SXFY
+                {
+                    [SecsElement(Index = 1, ListSpreadOut = true)]
+                    public ENHANCEDALID[] ENHANCED_ALIDs;
+                }
+                [Serializable]
+                public class VIDITEM_41 : SXFY
+                {
+                    [SecsElement(Index = 1, ListSpreadOut = true)]
+                    public ENHANCEDALID ENHANCED_ALID;
+                }
+                [Serializable]
+                public class ENHANCEDALID : SXFY
+                {
+                    [SecsElement(Index = 1, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)]
+                    public string ALID;
+                    [SecsElement(Index = 2, ListSpreadOut = true)]
+                    public VEHICLEINFO VehicleInfo = new VEHICLEINFO();
+                    [SecsElement(Index = 3, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 128)]
+                    public string AlarmText;
+                }
+
+                [Serializable]
                 public class VIDITEM_50 : SXFY
                 {
                     [SecsElement(Index = 1, ListSpreadOut = true, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)]
@@ -220,7 +243,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
                 {
                     [SecsElement(Index = 1, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 32)]
                     public string VehicleID;
-                    [SecsElement(Index = 1, ListSpreadOut = true, Type = SecsElement.SecsElementType.TYPE_2_BYTE_UNSIGNED_INTEGER, Length = 1)]
+                    [SecsElement(Index = 2, ListSpreadOut = true, Type = SecsElement.SecsElementType.TYPE_2_BYTE_UNSIGNED_INTEGER, Length = 1)]
                     public string VehicleState;
                 }
                 [Serializable]

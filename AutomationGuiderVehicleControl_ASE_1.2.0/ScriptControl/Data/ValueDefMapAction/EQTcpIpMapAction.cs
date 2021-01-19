@@ -671,7 +671,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             Google.Protobuf.MessageParser<T> parser = new Google.Protobuf.MessageParser<T>(() => new T());
             return parser.ParseFrom(buf);
         }
-        private void whenObstacleFinish()
+        private void whenObstacleStatusChange()
         {
             AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(eqpt.VEHICLE_ID);
             if (eqpt.ObstacleStatus == VhStopSingle.Off)
@@ -688,6 +688,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //{
                 //    scApp.SysExcuteQualityBLL.updateSysExecQity_OCSTime2DestnOnTheWay(vh.MCS_CMD, OCSTime_s);
                 //}
+            }
+            else if (eqpt.ObstacleStatus == VhStopSingle.On)
+            {
+                scApp.VehicleBLL.web.ObstacleHappendNotify();
             }
         }
         private void whenBlockFinish()
@@ -747,7 +751,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 ITcpIpControl.addTcpIpSendErrorHandler(bcfApp, tcpipAgentName, SendErrorHandler);
                 eqpt.addEventHandler(event_id
                     , BCFUtility.getPropertyName(() => eqpt.ObstacleStatus)
-                    , (s1, e1) => { whenObstacleFinish(); });
+                    , (s1, e1) => { whenObstacleStatusChange(); });
                 eqpt.addEventHandler(event_id
                     , BCFUtility.getPropertyName(() => eqpt.BlockingStatus)
                     , (s1, e1) => { whenBlockFinish(); });

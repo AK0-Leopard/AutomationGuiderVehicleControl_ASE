@@ -379,6 +379,8 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.AGVC.ASE
         public const string VID_EnhancedCarrierInfo = "10";
         public const string VID_InstallTime = "12";
         public const string VID_EnhancedTransferCmd = "13";
+        public const string VID_EnhancedALID = "40";
+        public const string VID_EnhancedAlarmsSet = "41";
         public const string VID_EnhancedCarriers = "51";
         public const string VID_EnhancedVehicles = "53";
         public const string VID_CarrierID = "54";

@@ -108,6 +108,11 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         line.EnhancedVehiclesChecked = true;
                         s1f4.SV[i] = buildControlStateVIDItem();
                     }
+                    else if (s1f3.SVID[i] == SECSConst.VID_EnhancedALID)
+                    {
+                        line.EnhancedVehiclesChecked = true;
+                        s1f4.SV[i] = buildEnhancedAlarmsSetVIDItem();
+                    }
                     else if (s1f3.SVID[i] == SECSConst.VID_EnhancedCarriers)
                     {
                         line.EnhancedCarriersChecked = true;
@@ -200,6 +205,44 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             };
             return item;
         }
+        private S6F11.RPTINFO.RPTITEM.VIDITEM_40 buildEnhancedAlarmsSetVIDItem()
+        {
+            //var alarms = scApp.AlarmBLL.getCurrentAlarms();
+            var alarms = scApp.AlarmBLL.getCurrentErrorAlarms();
+            S6F11.RPTINFO.RPTITEM.ENHANCEDALID[] alarm_enhanced_alids = new S6F11.RPTINFO.RPTITEM.ENHANCEDALID[alarms.Count];
+            for (int i = 0; i < alarms.Count; i++)
+            {
+                var alarm = alarms[i];
+                string alid = alarm.ALAM_CODE;
+                string eq_id = alarm.EQPT_ID;
+                string text = alarm.ALAM_DESC;
+
+                var check_result = scApp.VehicleBLL.cache.IsVehicleExist(eq_id);
+                S6F11.RPTINFO.RPTITEM.VEHICLEINFO vEHICLEINFO = new S6F11.RPTINFO.RPTITEM.VEHICLEINFO();
+                if (check_result.isExist)
+                {
+                    vEHICLEINFO.VehicleID = check_result.vh.Real_ID;
+                    vEHICLEINFO.VehicleState = ((int)check_result.vh.State).ToString();
+                }
+                else
+                {
+                    vEHICLEINFO.VehicleState = "0";
+                }
+                alarm_enhanced_alids[i] = new S6F11.RPTINFO.RPTITEM.ENHANCEDALID()
+                {
+                    ALID = alid,
+                    VehicleInfo = vEHICLEINFO,
+                    AlarmText = text
+                };
+            }
+
+            S6F11.RPTINFO.RPTITEM.VIDITEM_40 item = new S6F11.RPTINFO.RPTITEM.VIDITEM_40()
+            {
+                ENHANCED_ALIDs = alarm_enhanced_alids
+            };
+            return item;
+        }
+
 
         private S6F11.RPTINFO.RPTITEM.VIDITEM_51 buildEnhanecdCarriersVIDItem()
         {
