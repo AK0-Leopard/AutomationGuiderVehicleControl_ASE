@@ -2654,10 +2654,16 @@ namespace com.mirle.ibg3k0.sc.BLL
                             }
                             else
                             {
-                                int current_assign_source_is_agv_st_cmd_count =
-                                    assign_cmds.Where(cmd => cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL)).Count();
-                                int current_assign_destination_agv_st_cmd_count =
+                                //int current_assign_source_is_agv_st_cmd_count =
+                                //    assign_cmds.Where(cmd => cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL)).Count();
+                                //int current_assign_destination_agv_st_cmd_count =
+                                //    assign_cmds.Where(cmd => cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL)).Count();
+
+                                int in_agv_st_cmd_count =
                                     assign_cmds.Where(cmd => cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL)).Count();
+                                int out_agv_st_cmd_count =
+                                    assign_cmds.Where(cmd => !cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL)).Count();
+
                                 //bool is_agv_st_will_go_source_port = portStationBLL.OperateCatch.IsAGVStationPort(eqptBLL, Source);
                                 //bool is_agv_st_will_go_destination_port = portStationBLL.OperateCatch.IsAGVStationPort(eqptBLL, Destination);
                                 if (current_can_turnover_shelf_space_count == 1)
@@ -2665,17 +2671,23 @@ namespace com.mirle.ibg3k0.sc.BLL
                                     switch (transferDir)
                                     {
                                         case CMDBLL.CommandTranDir.InAGVStation:
-                                            if (current_assign_destination_agv_st_cmd_count >= 1)
+                                            //if (current_assign_destination_agv_st_cmd_count >= 1)
+                                            if (in_agv_st_cmd_count >= 1)
                                             {
+                                                //return (false, $"want to assign destination port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                //               $"and current assign destination is agv st. count:{current_assign_destination_agv_st_cmd_count},can't assign transfer command.");
                                                 return (false, $"want to assign destination port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
-                                                               $"and current assign destination is agv st. count:{current_assign_destination_agv_st_cmd_count},can't assign transfer command.");
+                                                               $"and current assign destination is agv st. count:{in_agv_st_cmd_count},can't assign transfer command.");
                                             }
                                             break;
                                         case CMDBLL.CommandTranDir.OutAGVStation:
-                                            if (current_assign_source_is_agv_st_cmd_count >= 1)
+                                            //if (current_assign_source_is_agv_st_cmd_count >= 1)
+                                            if (out_agv_st_cmd_count >= 1)
                                             {
+                                                //return (false, $"want to assign source port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                //               $"and current assign source is agv st. count:{current_assign_source_is_agv_st_cmd_count},can't assign transfer command.");
                                                 return (false, $"want to assign source port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
-                                                               $"and current assign source is agv st. count:{current_assign_source_is_agv_st_cmd_count},can't assign transfer command.");
+                                                               $"and current assign source is agv st. count:{out_agv_st_cmd_count},can't assign transfer command.");
                                             }
                                             break;
                                     }
@@ -2685,17 +2697,23 @@ namespace com.mirle.ibg3k0.sc.BLL
                                     switch (transferDir)
                                     {
                                         case CMDBLL.CommandTranDir.InAGVStation:
-                                            if (current_assign_destination_agv_st_cmd_count >= 2)
+                                            //if (current_assign_destination_agv_st_cmd_count >= 2)
+                                            if (in_agv_st_cmd_count >= 2)
                                             {
+                                                //return (false, $"want to assign destination port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                //               $"and current assign destination is agv st. count:{current_assign_destination_agv_st_cmd_count},can't assign transfer command.");
                                                 return (false, $"want to assign destination port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
-                                                               $"and current assign destination is agv st. count:{current_assign_destination_agv_st_cmd_count},can't assign transfer command.");
+                                                               $"and current assign destination is agv st. count:{in_agv_st_cmd_count},can't assign transfer command.");
                                             }
                                             break;
                                         case CMDBLL.CommandTranDir.OutAGVStation:
-                                            if (current_assign_source_is_agv_st_cmd_count >= 2)
+                                            //if (current_assign_source_is_agv_st_cmd_count >= 2)
+                                            if (out_agv_st_cmd_count >= 2)
                                             {
+                                                //return (false, $"want to assign source port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
+                                                //               $"and current assign source is agv st. count:{current_assign_source_is_agv_st_cmd_count},can't assign transfer command.");
                                                 return (false, $"want to assign source port is agv st cmd, currnt trunover space={current_can_turnover_shelf_space_count}" +
-                                                               $"and current assign source is agv st. count:{current_assign_source_is_agv_st_cmd_count},can't assign transfer command.");
+                                                               $"and current assign source is agv st. count:{out_agv_st_cmd_count},can't assign transfer command.");
                                             }
                                             break;
                                     }

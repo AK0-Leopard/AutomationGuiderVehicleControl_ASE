@@ -1630,10 +1630,10 @@ namespace com.mirle.ibg3k0.sc.App
         public static bool AutoOverride = true;
         public static int PortMaxPriority = 99;
 
-        public static int OpenAGVStationCoverDistance_mm = 5000;
+        public static int OpenAGVStationCoverDistance_mm = 0;
         public static bool IsByPassAGVShelfStatus { get; private set; } = true;
 
-        public static int TransferCommandExcuteTimeOut_mSec = 600000;
+        public static int TransferCommandExcuteTimeOut_mSec = 1800000;
 
         public static int AllowVhIdleTime_ms = 300000;
         public static int TransferCommandTimePriorityIncrement = 1;
@@ -1787,7 +1787,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         //public static Boolean isForcedPassReserve = false;
         public static Boolean isForcedPassReserve = true;
-        public static Boolean isForcedPassReserve_AGV0609 = false;
+        public static Boolean isForcedPassReserve_AGV0609 = true;
         public static Boolean isForcedRejectReserve = false;
 
         public static Boolean isContinueByIDReadFail = false;

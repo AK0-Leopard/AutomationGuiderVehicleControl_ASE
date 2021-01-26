@@ -720,6 +720,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             if (command_id_item != null)
             {
                 command_id = command_id_item.CPVAL;
+                return (false, SECSConst.HCACK_Rejected, command_id);//由於AGVM尚未準備好Cancel流程，因此一律先拒絕。20210115
+
                 ATRANSFER cmd_mcs = scApp.CMDBLL.GetTransferByID(command_id);
                 if (cmd_mcs == null)
                 {
@@ -743,6 +745,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             if (command_id_item != null)
             {
                 command_id = command_id_item.CPVAL;
+                return (false, SECSConst.HCACK_Rejected, command_id);//由於AGVM尚未準備好Cancel流程，因此一律先拒絕。20210115
+
                 ATRANSFER cmd_mcs = scApp.CMDBLL.GetTransferByID(command_id);
                 if (cmd_mcs == null)
                 {

@@ -923,6 +923,13 @@ namespace com.mirle.ibg3k0.sc.Service
                 if (isTranCmd)
                 {
                     string transfer_id = cmd.TRANSFER_ID;
+                    //bool is_load_complete_ready =
+                    //    scApp.TransferBLL.db.transfer.isTransferStatusReady(transfer_id, ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE);
+                    //if (is_load_complete_ready)
+                    //{
+                    //    Boolean resp_cmp = replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
+                    //    return;
+                    //}
                     scApp.TransferBLL.db.transfer.updateTranStatus2Transferring(transfer_id);
                     List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
                     using (TransactionScope tx = SCUtility.getTransactionScope())

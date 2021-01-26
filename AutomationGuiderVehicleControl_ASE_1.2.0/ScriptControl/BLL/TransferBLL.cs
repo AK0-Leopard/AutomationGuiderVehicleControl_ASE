@@ -68,6 +68,18 @@ namespace com.mirle.ibg3k0.sc.BLL
                     }
                     return isSuccess;
                 }
+                public bool isTransferStatusReady(string cmdID, int status)
+                {
+                    bool isSuccess = true;
+                    ATRANSFER cmd = null;
+                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                    {
+                        cmd = tranDao.getByID(con, cmdID);
+                    }
+                    if (cmd == null) return false;
+                    if (cmd.COMMANDSTATE >= status) return true;
+                    return isSuccess;
+                }
                 public bool updateTranStatus2Transferring(string cmdID)
                 {
                     bool isSuccess = true;
