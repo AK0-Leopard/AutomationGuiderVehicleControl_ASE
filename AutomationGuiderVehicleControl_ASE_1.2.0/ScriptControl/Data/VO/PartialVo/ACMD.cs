@@ -25,6 +25,16 @@ namespace com.mirle.ibg3k0.sc
                        CMD_TYPE == E_CMD_TYPE.Move_Charger;
             }
         }
+        public bool IsCarryCommand
+        {
+            get
+            {
+                return CMD_TYPE == E_CMD_TYPE.Load ||
+                       CMD_TYPE == E_CMD_TYPE.Unload ||
+                       CMD_TYPE == E_CMD_TYPE.LoadUnload;
+            }
+        }
+
 
         public bool IsSourcePortAGVStation(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
         {
@@ -50,13 +60,6 @@ namespace com.mirle.ibg3k0.sc
             if (port_station == null) return null;
             return port_station.GetEqpt(eqptBLL);
         }
-        public bool IsTargetPortAGVStation(BLL.EqptBLL eqptBLL)
-        {
-            var eq = eqptBLL.OperateCatch.GetEqpt(this.DESTINATION_PORT);
-            if (eq == null) return false;
-            return eq is IAGVStationType;
-        }
-
         public AEQPT getTragetPortEQ(BLL.EqptBLL eqptBLL)
         {
             var eq = eqptBLL.OperateCatch.GetEqpt(this.DESTINATION_PORT);

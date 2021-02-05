@@ -70,16 +70,16 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
         /// </summary>
         /// <param name="obj">The object.</param>
         private long syncPoint = 0;
-     
 
-      
+
+
 
 
         Random rnd_Index = new Random(Guid.NewGuid().GetHashCode());
 
 
         List<APORTSTATION> wait_unload_agv_station = null;
-       
+
         public async override void doProcess(object obj)
         {
 
@@ -175,10 +175,12 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 bool is_success = check_results.Where(result => result.is_success == false).Count() == 0;
                 if (is_success)
                 {
-                    AVEHICLE idle_vh = check_results[0].result as AVEHICLE;
+                    List<AVEHICLE> idle_vhs = check_results[0].result as List<AVEHICLE>;
+                    if (idle_vhs == null || idle_vhs.Count == 0) continue;
+                    AVEHICLE idle_vh = idle_vhs[0];
                     APORTSTATION has_cst_agv_station_port = check_results[1].result as APORTSTATION;
                     APORTSTATION no_cst_agv_station_port = check_results[2].result as APORTSTATION;
-
+                    if (idle_vh == null || has_cst_agv_station_port == null || no_cst_agv_station_port == null) continue;
                     if (scApp.GuideBLL.IsRoadWalkable(idle_vh.CUR_ADR_ID, no_cst_agv_station_port.ADR_ID) &&
                         scApp.GuideBLL.IsRoadWalkable(no_cst_agv_station_port.ADR_ID, has_cst_agv_station_port.ADR_ID))
                     {
