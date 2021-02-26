@@ -175,6 +175,8 @@
             this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btn_refresf_portsation_info = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.num_timePriorityIncrement = new System.Windows.Forms.NumericUpDown();
+            this.label103 = new System.Windows.Forms.Label();
             this.lbl_guideQuickTimes = new System.Windows.Forms.Label();
             this.lbl_guideTimes = new System.Windows.Forms.Label();
             this.label102 = new System.Windows.Forms.Label();
@@ -410,8 +412,6 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
-            this.label103 = new System.Windows.Forms.Label();
-            this.num_timePriorityIncrement = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -438,6 +438,7 @@
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_cache_object_data_portstation)).BeginInit();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_timePriorityIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_tran_cmd_queue_time_out_ms)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numer_pre_open_agv_station_distance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_AGVStationInfo)).BeginInit();
@@ -459,7 +460,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_BatteryLowBoundaryValue)).BeginInit();
             this.DIO_DEVICE_TEST.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_timePriorityIncrement)).BeginInit();
             this.SuspendLayout();
             // 
             // cmb_tcpipctr_Vehicle
@@ -1755,9 +1755,9 @@
             this.cb_reserve_pass_agv0609.AutoSize = true;
             this.cb_reserve_pass_agv0609.Location = new System.Drawing.Point(25, 70);
             this.cb_reserve_pass_agv0609.Name = "cb_reserve_pass_agv0609";
-            this.cb_reserve_pass_agv0609.Size = new System.Drawing.Size(299, 26);
+            this.cb_reserve_pass_agv0609.Size = new System.Drawing.Size(309, 26);
             this.cb_reserve_pass_agv0609.TabIndex = 2;
-            this.cb_reserve_pass_agv0609.Text = "Force Reserve Pass(AGV06/9)";
+            this.cb_reserve_pass_agv0609.Text = "Force Reserve Pass(AGV06/11)";
             this.cb_reserve_pass_agv0609.UseVisualStyleBackColor = true;
             this.cb_reserve_pass_agv0609.CheckedChanged += new System.EventHandler(this.cb_reserve_pass_agv0609_CheckedChanged);
             // 
@@ -1903,7 +1903,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2127,6 +2127,24 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Test Tool";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // num_timePriorityIncrement
+            // 
+            this.num_timePriorityIncrement.Location = new System.Drawing.Point(8, 478);
+            this.num_timePriorityIncrement.Name = "num_timePriorityIncrement";
+            this.num_timePriorityIncrement.Size = new System.Drawing.Size(120, 30);
+            this.num_timePriorityIncrement.TabIndex = 58;
+            this.num_timePriorityIncrement.ValueChanged += new System.EventHandler(this.num_timePriorityIncrement_ValueChanged);
+            // 
+            // label103
+            // 
+            this.label103.AutoSize = true;
+            this.label103.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label103.Location = new System.Drawing.Point(4, 453);
+            this.label103.Name = "label103";
+            this.label103.Size = new System.Drawing.Size(330, 22);
+            this.label103.TabIndex = 57;
+            this.label103.Text = "Time Priority Increment(pre min)";
             // 
             // lbl_guideQuickTimes
             // 
@@ -4460,24 +4478,6 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
-            // label103
-            // 
-            this.label103.AutoSize = true;
-            this.label103.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.label103.Location = new System.Drawing.Point(4, 453);
-            this.label103.Name = "label103";
-            this.label103.Size = new System.Drawing.Size(330, 22);
-            this.label103.TabIndex = 57;
-            this.label103.Text = "Time Priority Increment(pre min)";
-            // 
-            // num_timePriorityIncrement
-            // 
-            this.num_timePriorityIncrement.Location = new System.Drawing.Point(8, 478);
-            this.num_timePriorityIncrement.Name = "num_timePriorityIncrement";
-            this.num_timePriorityIncrement.Size = new System.Drawing.Size(120, 30);
-            this.num_timePriorityIncrement.TabIndex = 58;
-            this.num_timePriorityIncrement.ValueChanged += new System.EventHandler(this.num_timePriorityIncrement_ValueChanged);
-            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -4532,6 +4532,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_cache_object_data_portstation)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_timePriorityIncrement)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_tran_cmd_queue_time_out_ms)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numer_pre_open_agv_station_distance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_AGVStationInfo)).EndInit();
@@ -4566,7 +4567,6 @@
             this.DIO_DEVICE_TEST.ResumeLayout(false);
             this.DIO_DEVICE_TEST.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.num_timePriorityIncrement)).EndInit();
             this.ResumeLayout(false);
 
         }

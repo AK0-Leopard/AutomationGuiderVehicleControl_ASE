@@ -218,6 +218,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         public class Web
         {
             const string UNLOAD_CHECK_RESULT_OK = "OK";
+            const string CHECK_IS_WAIT_RESULT_TRUE = "TRUE";
             const string TRANSFER_RECEIVE_CONST = "0";
             const string TRANSFER_TIME_OUT_CONST = "10";
 
@@ -427,7 +428,40 @@ namespace com.mirle.ibg3k0.sc.BLL
                     logger.Error(ex, $"Exception:{url}");
                 }
             }
-
+            public bool checkIsNeedWaitForLoad(IAGVStationType agvStation)
+            {
+                string result = "";
+                string url = "";
+                try
+                {
+                    //TransferManagement/TransferCheck/Swap/AGVStation/{agvStationName}
+                    string agv_url = agvStation.RemoveURI;
+                    url = SCUtility.Trim(agv_url, true);
+                    string agv_station_id = agvStation.getAGVStationID();
+                    string[] action_targets = new string[]
+                    {
+                    "TransferManagement",
+                    "TransferCheck",
+                    "Swap",
+                    "AGVStation"
+                    };
+                    string[] param = new string[]
+                    {
+                    agv_station_id
+                    };
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
+                       Data: $"Try to pre open agv station cover,uri:{agv_url} station id:{agv_station_id} ");
+                    result = webClientManager.GetInfoFromServer(agv_url, action_targets, param);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
+                       Data: $"Try to pre open agv station cover,uri:{agv_url} station id:{agv_station_id} ,result:{result}");
+                    result = result.ToUpper();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, $"Exception:{url}");
+                }
+                return result.Contains(CHECK_IS_WAIT_RESULT_TRUE);
+            }
 
 
         }

@@ -281,13 +281,24 @@ namespace com.mirle.ibg3k0.sc
             if (portStationList == null) return null;
             return portStationList.
                    Where(port_station => !port_station.PORT_ID.Contains("_ST0")).
+                   OrderBy(port_station => port_station.PORT_ID).
                    ToList();
         }
+        public List<string> getAGVStationPortAdrIDs()
+        {
+            if (portStationList == null) return new List<string>();
+            return portStationList.
+                   Where(port_station => !port_station.PORT_ID.Contains("_ST0")).
+                   Select(port_station => SCUtility.Trim(port_station.ADR_ID, true)).
+                   ToList();
+        }
+
         public List<APORTSTATION> getAGVStationReadyLoadPorts()
         {
             if (portStationList == null) return null;
             return portStationList.
-                   Where(port_station => port_station.IsInPutMode && port_station.PortReady).
+                   Where(port_station => !port_station.PORT_ID.Contains("_ST0") && port_station.IsInPutMode && port_station.PortReady).
+                   OrderBy(port_station => port_station.PORT_ID).
                    ToList();
         }
         public APORTSTATION getAGVVirtruePort()
@@ -303,7 +314,7 @@ namespace com.mirle.ibg3k0.sc
             return portStationList.
                    Where(port_station => !port_station.PORT_ID.Contains("_ST0") && port_station.IsAutoMode).
                    //Where(port_station => !port_station.PORT_ID.Contains("_ST0")).
-                   OrderBy(port_station => port_station.PortNum).
+                   OrderBy(port_station => port_station.PORT_ID).
                    ToList();
         }
 
@@ -395,6 +406,7 @@ namespace com.mirle.ibg3k0.sc
         bool HasPortAuto { get; }
         APORTSTATION getAGVVirtruePort();
         List<APORTSTATION> getAGVStationPorts();
+        List<string> getAGVStationPortAdrIDs();
         List<APORTSTATION> getAGVStationReadyLoadPorts();
         List<APORTSTATION> loadAutoAGVStationPorts();
         string BindingVh { get; }

@@ -551,6 +551,10 @@ namespace com.mirle.ibg3k0.sc
         {
             get { return HAS_CST_L || HAS_CST_R; }
         }
+        public virtual bool IsShelfFull
+        {
+            get { return HAS_CST_L && HAS_CST_L; }
+        }
 
         [JsonIgnore]
         public object PositionRefresh_Sync = new object();

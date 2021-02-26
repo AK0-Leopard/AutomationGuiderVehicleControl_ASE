@@ -136,29 +136,33 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 bool is_success = check_results.Where(result => result.is_success == false).Count() == 0;
                 if (is_success)
                 {
-                    //AVEHICLE idle_vh = check_results[0].result as AVEHICLE;
                     List<AVEHICLE> idle_vhs = check_results[0].result as List<AVEHICLE>;
+                    if (idle_vhs == null || idle_vhs.Count == 0) continue;
+                    AVEHICLE idle_vh = idle_vhs[0];
                     APORTSTATION can_unload_agv_station_port = check_results[1].result as APORTSTATION;
                     APORTSTATION can_load_agv_station_port = check_results[2].result as APORTSTATION;
-                    foreach (var idle_vh in idle_vhs)
+                    if (idle_vh == null || can_unload_agv_station_port == null || can_load_agv_station_port == null) continue;
+
+                    //foreach (var idle_vh in idle_vhs)
+                    //{
+                    if (scApp.GuideBLL.IsRoadWalkable(idle_vh.CUR_ADR_ID, can_load_agv_station_port.ADR_ID) &&
+                        scApp.GuideBLL.IsRoadWalkable(can_load_agv_station_port.ADR_ID, can_unload_agv_station_port.ADR_ID))
                     {
-                        if (scApp.GuideBLL.IsRoadWalkable(idle_vh.CUR_ADR_ID, can_load_agv_station_port.ADR_ID) &&
-                            scApp.GuideBLL.IsRoadWalkable(can_load_agv_station_port.ADR_ID, can_unload_agv_station_port.ADR_ID))
-                        {
-                            scApp.VehicleService.Command.Loadunload(idle_vh.VEHICLE_ID,
-                            can_load_agv_station_port.CassetteID,
-                            can_load_agv_station_port.ADR_ID, can_unload_agv_station_port.ADR_ID,
-                            can_load_agv_station_port.PORT_ID, can_unload_agv_station_port.PORT_ID);
-                        }
-                        else
-                        {
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(RandomGeneratesCommandTimerActionTiming), Device: string.Empty,
-                               Data: $"Can't find the path.");
-                        }
+                        scApp.VehicleService.Command.Loadunload(idle_vh.VEHICLE_ID,
+                        can_load_agv_station_port.CassetteID,
+                        can_load_agv_station_port.ADR_ID, can_unload_agv_station_port.ADR_ID,
+                        can_load_agv_station_port.PORT_ID, can_unload_agv_station_port.PORT_ID);
                     }
+                    else
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(RandomGeneratesCommandTimerActionTiming), Device: string.Empty,
+                           Data: $"Can't find the path.");
+                    }
+                    //}
                 }
             }
         }
+
 
         List<APORTSTATION> agvStations = null;
         private async void CycleRunIgnorePortStatus()

@@ -318,12 +318,12 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             try
             {
-                if (SCUtility.isMatche(vhID, "AGV06") || SCUtility.isMatche(vhID, "AGV09"))
+                if (SCUtility.isMatche(vhID, "AGV06") || SCUtility.isMatche(vhID, "AGV11"))
                 {
                     if (DebugParameter.isForcedPassReserve_AGV0609)
                     {
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ReserveBLL), Device: "AGV",
-                           Data: "test flag(AGV06,09): Force pass reserve is open, will driect reply to vh pass",
+                           Data: "test flag(AGV06,11): Force pass reserve is open, will driect reply to vh pass",
                            VehicleID: vhID);
                         return (true, string.Empty, string.Empty, reserveInfos);
                     }

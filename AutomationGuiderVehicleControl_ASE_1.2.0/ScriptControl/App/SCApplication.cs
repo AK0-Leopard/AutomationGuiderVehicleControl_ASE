@@ -575,9 +575,11 @@ namespace com.mirle.ibg3k0.sc.App
             int vh_highi = getInt("VehicleHeight", 1800);
             int vh_width = getInt("VehicleWidth", 3200);
             int vh_sensor_wlength = getInt("SensorWLength", 1200);
+            int vh_fork_wlength = getInt("ForkLength", 0);
             reserveSectionAPI.VehicleHeight = vh_highi;
             reserveSectionAPI.VehicleWidth = vh_width;
             reserveSectionAPI.SensorLength = vh_sensor_wlength;
+            reserveSectionAPI.ForkLength = vh_fork_wlength;
         }
 
         private void LoadMapFiles(string addressPath = null, string sectionPath = null)

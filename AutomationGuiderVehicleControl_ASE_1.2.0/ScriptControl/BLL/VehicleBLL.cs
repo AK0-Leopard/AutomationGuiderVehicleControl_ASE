@@ -788,7 +788,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 var vh = eqObjCacheManager.getVehicletByVHID(vhID);
                 vh.VEHICLE_TYPE = vhType;
-                vh.VehicleRemove();
             }
 
             public void updateVheiclePosition_CacheManager(string vhID, string adr_id, string sec_id, string seg_id, double sce_dis, DriveDirction driveDirction, double xAxis, double yAxis, double dirctionAngle, double vehicleAngle)

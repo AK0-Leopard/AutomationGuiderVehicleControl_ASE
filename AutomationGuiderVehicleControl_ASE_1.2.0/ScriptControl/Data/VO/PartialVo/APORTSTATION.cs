@@ -79,6 +79,14 @@ namespace com.mirle.ibg3k0.sc
         {
             return eqptBLL.OperateCatch.GetEqptType(EQPT_ID) == SCAppConstants.EqptType.AGVStation;
         }
+        public bool IsVirtualAGVStation(EqptBLL eqptBLL)
+        {
+            if (!PORT_ID.Contains("_ST"))
+                return false;
+            if (eqptBLL.OperateCatch.GetEqptType(EQPT_ID) != SCAppConstants.EqptType.AGVStation)
+                return false;
+            return true;
+        }
         public Stopwatch LastNotifyPreOpenCoverTime = new Stopwatch();
     }
 

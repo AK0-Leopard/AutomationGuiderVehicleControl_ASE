@@ -862,6 +862,8 @@ namespace com.mirle.ibg3k0.sc.Service
                    CST_ID_R: vh.CST_ID_R);
                 ACMD cmd = scApp.CMDBLL.GetCMD_OHTCByID(cmdID);
                 //bool can_continue_to_load_action = checkCanContinueToLoadAction(vh);
+                //ReplyActionType replyActionType = can_continue_to_load_action ? ReplyActionType.Continue : ReplyActionType.Wait;
+
                 vh.LastLoadCompleteCommandID = cmdID;
                 bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 if (isTranCmd)
@@ -904,17 +906,19 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 scApp.VehicleBLL.doLoadArrivals(vh.VEHICLE_ID);
                 scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
-                checkLoadUnloadArrivePortIsNeedToPreOpenCover(vh, eventType, portID);
+                //checkLoadUnloadArrivePortIsNeedToPreOpenCover(vh, eventType, portID);
             }
 
             private bool checkCanContinueToLoadAction(AVEHICLE vh)
             {
                 try
                 {
+                    if (!SCUtility.isMatche(vh.VEHICLE_ID, "AGV11"))
+                        return true;
                     string vh_id = vh.VEHICLE_ID;
                     string cur_sec_id = vh.CUR_SEC_ID;
 
-                    var check_result = scApp.ReserveBLL.TryAddReservedSection(vh_id, cur_sec_id, forkDir: Mirle.Hlts.Utils.HltDirection.LeftRight);
+                    var check_result = scApp.ReserveBLL.TryAddReservedSection(vh_id, cur_sec_id, forkDir: Mirle.Hlts.Utils.HltDirection.EastWest);
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                                Data: $"check can continue to load action,result:{check_result.OK} ,desc:{check_result.Description}",
                                VehicleID: vh.VEHICLE_ID,
@@ -943,6 +947,9 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.LastLoadCompleteCommandID = cmdID;
                 updateCarrierInVehicleLocation(vh, cmd, "");
                 bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
+
+                //bool is_need_wait_orther_port_wait_out = checkIsNeedToWaitOrtherPortCSTWaitOut();
+
                 if (isTranCmd)
                 {
                     string transfer_id = cmd.TRANSFER_ID;
@@ -1003,129 +1010,31 @@ namespace com.mirle.ibg3k0.sc.Service
                 //Task.Run(() => checkHasOrtherCommandExcuteAndIsNeedToPreOpenCover(vh, cmdID));
             }
 
-            private void checkWillGoToPortIsAGVStationAndIsNeedPreOpenCoverByExcuteCommand(AVEHICLE vh, ACMD excute_cmd)
+            private bool checkIsNeedToWaitOrtherPortCSTWaitOut(string vhID)
             {
-                var check_result = CheckIsGoToAGVStationLoadUnload(vh, excute_cmd);
-                if (!check_result.isGoToSt) return;
-                //如果目前執行的命令目標PORT是虛擬PORT則需要要確認目前接下來可能是哪一個PORT要進行預開蓋
-                //如果是明確的Port則直接開啟
-                string target_port_id = check_result.targetPortID;
-                bool is_virtual_agv_station_port = scApp.EqptBLL.OperateCatch.IsAGVStation(target_port_id);
-
-                var target_port = scApp.PortStationBLL.OperateCatch.getPortStation(target_port_id);
-                var target_port_station = target_port.GetEqpt(scApp.EqptBLL);
-                if (is_virtual_agv_station_port)
+                //1.確認是否還有空位可以取貨
+                //2.確認目前執行的命令數量僅有一筆，且是已經拿完準備從St出發的
+                //3.若是，則透過API詢問 是否有貨物準備要出
+                //4.有，則開始等待N秒
+                AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+                if (vh.IsShelfFull)
+                    return false;
+                List<ACMD> cmds = scApp.CMDBLL.cache.loadExcuteCmds(vhID);
+                if (cmds == null || cmds.Count != 1)
+                    return false;
+                ACMD current_excute_cmd = cmds.First();
+                if (!current_excute_cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL))
                 {
-
+                    return false;
                 }
-                else
+                if (!vh.IsCarreirExist(current_excute_cmd.CARRIER_ID))
                 {
-                    Task.Run(() => scApp.TransferBLL.web.preOpenAGVStationCover(target_port_station as IAGVStationType, target_port_id));
+                    return false;
                 }
-            }
-            private (bool isGoToSt, string targetPortID) CheckIsGoToAGVStationLoadUnload(AVEHICLE vh, ACMD excute_cmd)
-            {
-                if (excute_cmd == null) return (false, "");
-                if (!excute_cmd.IsCarryCommand) return (false, "");
-                bool is_carry_cmd_cst = scApp.VehicleBLL.cache.IsCarryCstByCstID(vh.VEHICLE_ID, excute_cmd.CARRIER_ID);
-                if (is_carry_cmd_cst)
-                {
-                    bool is_go_to_st = excute_cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
-                    string target_port_id = is_go_to_st ? SCUtility.Trim(excute_cmd.DESTINATION_PORT) : "";
-                    return (is_go_to_st, target_port_id);
-                }
-                else
-                {
-                    bool is_go_to_st = excute_cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
-                    string target_port_id = is_go_to_st ? SCUtility.Trim(excute_cmd.SOURCE_PORT) : "";
-                    return (is_go_to_st, target_port_id);
-                }
-            }
-
-            private void checkLoadUnloadArrivePortIsNeedToPreOpenCover(AVEHICLE vh, EventType eventType, string portID)
-            {
-                try
-                {
-                    APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(portID);
-                    if (port_station == null) return;
-
-                    if (port_station.IsAGVStation(scApp.EqptBLL))
-                    {
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                           Data: $"event:{eventType}, port id:{portID} it is agv station port, start trigger pre open cover",
-                           VehicleID: vh.VEHICLE_ID,
-                           CST_ID_L: vh.CST_ID_L,
-                           CST_ID_R: vh.CST_ID_R);
-                        var agv_station = port_station.GetEqpt(scApp.EqptBLL);
-                        string notify_port_id = portID;
-                        Task.Run(() => scApp.TransferBLL.web.preOpenAGVStationCover(agv_station as IAGVStationType, notify_port_id));
-                    }
-                    else
-                    {
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                           Data: $"event:{eventType}, port id:{portID} it not agv station port, start trigger pre open cover",
-                           VehicleID: vh.VEHICLE_ID,
-                           CST_ID_L: vh.CST_ID_L,
-                           CST_ID_R: vh.CST_ID_R);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex, "Exception");
-                }
-            }
-
-            private void checkHasOrtherCommandExcuteAndIsNeedToPreOpenCover(AVEHICLE vh, string currentExcuteCmd)
-            {
-                try
-                {
-                    //if (vh.IsCloseToAGVStation)
-                    //{
-                    //    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                    //       Data: $"Close to agv station is on",
-                    //       VehicleID: vh.VEHICLE_ID,
-                    //       CST_ID_L: vh.CST_ID_L,
-                    //       CST_ID_R: vh.CST_ID_R);
-
-                    //    return;
-                    //}
-                    var has_orther_cmd = scApp.VehicleBLL.cache.hasOrtherCmd(vh.VEHICLE_ID, currentExcuteCmd);
-                    if (has_orther_cmd.has)
-                    {
-                        string next_excute_cmd_id = SCUtility.Trim(has_orther_cmd.cmdID, true);
-                        if (SCUtility.isEmpty(next_excute_cmd_id)) return;
-                        //先確認目前執行的命令，是否是要去AGV Station 進行Load/Unload
-                        //是的話則判斷是否已經進入到N公尺m內
-                        //如果是 則將通知OHBC將此AGV ST進行開蓋
-                        bool has_excute_cmd = !SCUtility.isEmpty(vh.CurrentExcuteCmdID);
-                        if (!has_excute_cmd)
-                            return;
-                        ACMD current_excute_cmd = scApp.CMDBLL.cache.getExcuteCmd(next_excute_cmd_id);
-                        if (current_excute_cmd == null)
-                            return;
-                        if (current_excute_cmd.CMD_TYPE == E_CMD_TYPE.LoadUnload || current_excute_cmd.CMD_TYPE == E_CMD_TYPE.Unload)
-                        {
-                            //not thing...
-                        }
-                        else
-                        {
-                            return;
-                        }
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                           Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{next_excute_cmd_id} " +
-                                 $"source port:{SCUtility.Trim(current_excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(current_excute_cmd.DESTINATION_PORT, true)} ...,",
-                           VehicleID: vh.VEHICLE_ID,
-                           CST_ID_L: vh.CST_ID_L,
-                           CST_ID_R: vh.CST_ID_R);
-
-                        scApp.VehicleService.checkWillGoToPortIsAGVStationAndIsNeedPreOpenCover(vh, current_excute_cmd);
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex, "Exception:");
-                }
+                var agv_station = current_excute_cmd.getSourcePortEQ(scApp.PortStationBLL, scApp.EqptBLL) as IAGVStationType;
+                bool is_need_to_wait = scApp.TransferBLL.web.checkIsNeedWaitForLoad(agv_station);
+                //todo...kevin
+                return false;
             }
 
             private void updateCarrierInVehicleLocation(AVEHICLE vh, ACMD cmd, string readCarrierID)
@@ -1199,6 +1108,9 @@ namespace com.mirle.ibg3k0.sc.Service
                 bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 RepeatedField<PortInfo> virtual_agv_station_port_infos = null;
 
+                //bool can_continue_to_load_action = checkCanContinueToLoadAction(vh);
+                //ReplyActionType replyActionType = can_continue_to_load_action ? ReplyActionType.Continue : ReplyActionType.Wait;
+
 
                 if (scApp.EqptBLL.OperateCatch.IsAGVStation(currentPortID))
                 {
@@ -1264,7 +1176,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 scApp.VehicleBLL.doUnloadArrivals(vh.VEHICLE_ID, cmdID);
                 scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
                 checkIsAGVStationToCloseReservedFlag(vh, currentPortID);
-                checkLoadUnloadArrivePortIsNeedToPreOpenCover(vh, eventType, currentPortID);
+                //checkLoadUnloadArrivePortIsNeedToPreOpenCover(vh, eventType, currentPortID);
             }
 
             private void checkIsAGVStationToCloseReservedFlag(AVEHICLE vh, string currentPortID)
@@ -3011,33 +2923,33 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 //    return;
                 //}
-                string current_excute_cmd_id = SCUtility.Trim(e, true);
-                if (SCUtility.isEmpty(current_excute_cmd_id)) return;
-                //先確認目前執行的命令，是否是要去AGV Station 進行Load/Unload
-                //是的話則判斷是否已經進入到N公尺m內
-                //如果是 則將通知OHBC將此AGV ST進行開蓋
-                bool has_excute_cmd = !SCUtility.isEmpty(vh.CurrentExcuteCmdID);
-                if (!has_excute_cmd)
-                    return;
-                ACMD current_excute_cmd = scApp.CMDBLL.cache.getExcuteCmd(current_excute_cmd_id);
-                if (current_excute_cmd == null)
-                    return;
-                if (current_excute_cmd.CMD_TYPE == E_CMD_TYPE.LoadUnload || current_excute_cmd.CMD_TYPE == E_CMD_TYPE.Unload)
-                {
-                    //not thing...
-                }
-                else
-                {
-                    return;
-                }
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                   Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{current_excute_cmd_id} " +
-                         $"source port:{SCUtility.Trim(current_excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(current_excute_cmd.DESTINATION_PORT, true)} ...,",
-                   VehicleID: vh.VEHICLE_ID,
-                   CST_ID_L: vh.CST_ID_L,
-                   CST_ID_R: vh.CST_ID_R);
+                //string current_excute_cmd_id = SCUtility.Trim(e, true);
+                //if (SCUtility.isEmpty(current_excute_cmd_id)) return;
+                ////先確認目前執行的命令，是否是要去AGV Station 進行Load/Unload
+                ////是的話則判斷是否已經進入到N公尺m內
+                ////如果是 則將通知OHBC將此AGV ST進行開蓋
+                //bool has_excute_cmd = !SCUtility.isEmpty(vh.CurrentExcuteCmdID);
+                //if (!has_excute_cmd)
+                //    return;
+                //ACMD current_excute_cmd = scApp.CMDBLL.cache.getExcuteCmd(current_excute_cmd_id);
+                //if (current_excute_cmd == null)
+                //    return;
+                //if (current_excute_cmd.CMD_TYPE == E_CMD_TYPE.LoadUnload || current_excute_cmd.CMD_TYPE == E_CMD_TYPE.Unload)
+                //{
+                //    //not thing...
+                //}
+                //else
+                //{
+                //    return;
+                //}
+                //LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                //   Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{current_excute_cmd_id} " +
+                //         $"source port:{SCUtility.Trim(current_excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(current_excute_cmd.DESTINATION_PORT, true)} ...,",
+                //   VehicleID: vh.VEHICLE_ID,
+                //   CST_ID_L: vh.CST_ID_L,
+                //   CST_ID_R: vh.CST_ID_R);
 
-                checkWillGoToPortIsAGVStationAndIsNeedPreOpenCover(vh, current_excute_cmd);
+                //checkWillGoToPortIsAGVStationAndIsNeedPreOpenCover(vh, current_excute_cmd);
 
             }
             catch (Exception ex)
@@ -3408,14 +3320,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 ACMD current_excute_cmd = scApp.CMDBLL.cache.getExcuteCmd(current_excute_cmd_id);
                 if (current_excute_cmd == null)
                     return;
-                if (current_excute_cmd.CMD_TYPE == E_CMD_TYPE.LoadUnload || current_excute_cmd.CMD_TYPE == E_CMD_TYPE.Unload)
-                {
-                    //not thing...
-                }
-                else
-                {
-                    return;
-                }
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                    Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{current_excute_cmd_id} " +
                          $"source port:{SCUtility.Trim(current_excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(current_excute_cmd.DESTINATION_PORT, true)} ...,",
@@ -3423,7 +3327,18 @@ namespace com.mirle.ibg3k0.sc.Service
                    CST_ID_L: vh.CST_ID_L,
                    CST_ID_R: vh.CST_ID_R);
 
-                checkWillGoToPortIsAGVStationAndIsNeedPreOpenCover(vh, current_excute_cmd);
+                checkWillGoToPortIsAGVStationAndIsNeedPreOpenCoverByExcuteCommand(vh, current_excute_cmd);
+
+                //if (current_excute_cmd.CMD_TYPE == E_CMD_TYPE.LoadUnload || current_excute_cmd.CMD_TYPE == E_CMD_TYPE.Unload)
+                //{
+                //    //not thing...
+                //}
+                //else
+                //{
+                //    return;
+                //}
+
+                //checkWillGoToPortIsAGVStationAndIsNeedPreOpenCover(vh, current_excute_cmd);
 
             }
             catch (Exception ex)
@@ -3431,80 +3346,238 @@ namespace com.mirle.ibg3k0.sc.Service
                 logger.Error(ex, "Exception:");
             }
         }
-        private void checkWillGoToPortIsAGVStationAndIsNeedPreOpenCover(AVEHICLE vh, ACMD excute_cmd)
-        {
 
-            bool is_carry_cmd_cst = scApp.VehicleBLL.cache.IsCarryCstByCstID(vh.VEHICLE_ID, excute_cmd.CARRIER_ID);
-            if (is_carry_cmd_cst)
+        private void checkWillGoToPortIsAGVStationAndIsNeedPreOpenCoverByExcuteCommand(AVEHICLE vh, ACMD excute_cmd)
+        {
+            try
             {
-                bool is_agv_station_traget = excute_cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
-                if (is_agv_station_traget)
+                if (vh == null) return;
+                if (SCUtility.isMatche(vh.VEHICLE_ID, "AGV11") || SCUtility.isMatche(vh.VEHICLE_ID, "AGV06"))
                 {
-                    //checkIsNeedPreOpenAGVStationCover(vh, excute_cmd.DESTINATION_PORT);
-                    checkIsNeedPreOpenAGVStationCoverOnStationAllPort(vh, excute_cmd.DESTINATION_PORT);
+                    //not thing...
                 }
                 else
                 {
+                    return;
+                }
+                if (SystemParameter.OpenAGVStationCoverDistance_mm <= 0)
+                {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                       Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{SCUtility.Trim(excute_cmd.ID, true)} " +
-                             $"source port:{SCUtility.Trim(excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(excute_cmd.DESTINATION_PORT, true)}," +
-                             $"target port not agvstation",
+                       Data: $"開蓋的距離設定為0，故不進行預開蓋確認",
                        VehicleID: vh.VEHICLE_ID,
                        CST_ID_L: vh.CST_ID_L,
                        CST_ID_R: vh.CST_ID_R);
+                    return;
                 }
-            }
-            else
-            {
-                bool is_agv_station_source = excute_cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
-                if (is_agv_station_source)
-                {
-                    //checkIsNeedPreOpenAGVStationCover(vh, excute_cmd.SOURCE_PORT);
-                    checkIsNeedPreOpenAGVStationCoverOnStationAllPort(vh, excute_cmd.SOURCE_PORT);
-                }
-                else
-                {
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                       Data: $"Start check pre open cover scenario,vh id:{vh.VEHICLE_ID} current excute cmd:{SCUtility.Trim(excute_cmd.ID, true)} " +
-                             $"source port:{SCUtility.Trim(excute_cmd.SOURCE_PORT, true)} target port:{SCUtility.Trim(excute_cmd.DESTINATION_PORT, true)}," +
-                             $"source port not agvstation",
-                       VehicleID: vh.VEHICLE_ID,
-                       CST_ID_L: vh.CST_ID_L,
-                       CST_ID_R: vh.CST_ID_R);
-                }
-            }
-        }
+                var check_result = CheckIsGoToAGVStationLoadUnload(vh, excute_cmd);
+                if (!check_result.isGoToSt) return;
 
-        //private void checkIsNeedPreOpenCover(AVEHICLE vh, ACMD excute_cmd)
-        private void checkIsNeedPreOpenAGVStationCover(AVEHICLE vh, string checkPortStationID)
-        {
-            var port_station = scApp.PortStationBLL.OperateCatch.getPortStation(checkPortStationID);
-            var get_axis_result = port_station.getAxis(scApp.ReserveBLL);
-            if (get_axis_result.isSuccess)
-            {
+                //如果目前執行的命令目標PORT是虛擬PORT則需要要確認目前接下來可能是哪一個PORT要進行預開蓋
+                //如果是明確的Port則直接開啟
+                string target_port_id = check_result.targetPortID;
+                APORTSTATION target_port = scApp.PortStationBLL.OperateCatch.getPortStation(target_port_id);
+                if (target_port == null)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                       Data: $"Port ID:{target_port_id} 不存在，離開預開蓋流程。",
+                       VehicleID: vh.VEHICLE_ID,
+                       CST_ID_L: vh.CST_ID_L,
+                       CST_ID_R: vh.CST_ID_R);
+                    return;
+                }
+                var get_axis_result = target_port.getAxis(scApp.ReserveBLL);
+                if (!get_axis_result.isSuccess)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                       Data: $"Port ID:{target_port_id} 座標不存在，離開預開蓋流程。",
+                       VehicleID: vh.VEHICLE_ID,
+                       CST_ID_L: vh.CST_ID_L,
+                       CST_ID_R: vh.CST_ID_R);
+                    return;
+                }
                 double x_port_station = get_axis_result.x;
                 double y_port_station = get_axis_result.y;
                 double vh_port_distance = getDistance(vh.X_Axis, vh.Y_Axis, x_port_station, y_port_station);
-                if (vh_port_distance < SystemParameter.OpenAGVStationCoverDistance_mm)
+                if (vh_port_distance > SystemParameter.OpenAGVStationCoverDistance_mm)
                 {
-                    vh.IsCloseToAGVStation = true;
-                    //var agv_station = excute_cmd.getTragetPortEQ(scApp.PortStationBLL, scApp.EqptBLL);
-                    var agv_station = port_station.GetEqpt(scApp.EqptBLL);
-                    string notify_port_id = checkPortStationID;
-                    Task.Run(() => scApp.TransferBLL.web.preOpenAGVStationCover(agv_station as IAGVStationType, notify_port_id));
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                       Data: $"vh:{vh.VEHICLE_ID} 尚未靠近 port:{target_port_id}，不需確認是否要預開蓋",
+                       VehicleID: vh.VEHICLE_ID,
+                       CST_ID_L: vh.CST_ID_L,
+                       CST_ID_R: vh.CST_ID_R);
+                    return;
+                }
+                var target_port_station = target_port.GetEqpt(scApp.EqptBLL) as IAGVStationType;
+                if (target_port_station == null)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                       Data: $"目標Port的Station無法取得對應EQ，離開預開蓋流程。",
+                       VehicleID: vh.VEHICLE_ID,
+                       CST_ID_L: vh.CST_ID_L,
+                       CST_ID_R: vh.CST_ID_R);
+                    return;
+                }
+                string vh_cur_adr_id = SCUtility.Trim(vh.CUR_ADR_ID, true);
+                if (target_port_station.getAGVStationPortAdrIDs().Contains(vh_cur_adr_id))
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                       Data: $"vh:{vh.VEHICLE_ID} current adr:{vh_cur_adr_id} 已經在 st:{target_port_station.getAGVStationID()}中，不需確認是否要預開蓋",
+                       VehicleID: vh.VEHICLE_ID,
+                       CST_ID_L: vh.CST_ID_L,
+                       CST_ID_R: vh.CST_ID_R);
+                    return;
+                }
+                string vh_id = vh.VEHICLE_ID;
+                bool is_virtual_agv_station_port = target_port.IsVirtualAGVStation(scApp.EqptBLL);
+                if (is_virtual_agv_station_port)
+                {
+                    //需要確認的情境有 
+                    //找出第一個可以放置的Port
+                    //2in 1out
+                    //2in 0out
+                    //1in 0out
+                    //2in 2Out
+
+                    //找出先派命令要拿的那筆
+                    //1in 2out
+                    //1in 1out
+                    List<ACMD> cmds = scApp.CMDBLL.cache.loadExcuteCmds(vh_id);
+                    if (cmds == null || cmds.Count == 0)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"vh:{vh_id}，無執行的命令，離開預開蓋流程。",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                        return;
+                    }
+                    var preOpenCoverType_result = PreOpenCoverTypeCheck(vh_id, cmds);
+                    switch (preOpenCoverType_result.PreOpenCoverType)
+                    {
+                        case PreOpenCoverType.FindTheFirstCanLoadPort:
+                            APORTSTATION first_ready_port_stations = target_port_station.getAGVStationReadyLoadPorts().FirstOrDefault();
+                            if (first_ready_port_stations == null)
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                   Data: $"Target eq:{target_port_station.getAGVStationID()} not ready load port，離開預開蓋流程。",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CST_ID_L: vh.CST_ID_L,
+                                   CST_ID_R: vh.CST_ID_R);
+                                return;
+                            }
+                            procNotifyPreOpenAGVStationCover(target_port_station, first_ready_port_stations.PORT_ID);
+                            break;
+                        case PreOpenCoverType.FindTheFirstLoadCmd:
+                            if (SCUtility.isEmpty(preOpenCoverType_result.firstLoadCmdPortID)) return;
+                            procNotifyPreOpenAGVStationCover(target_port_station, preOpenCoverType_result.firstLoadCmdPortID);
+                            break;
+                    }
                 }
                 else
                 {
-                    //todo log...
+                    procNotifyPreOpenAGVStationCover(target_port_station, target_port_id);
                 }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+        private void procNotifyPreOpenAGVStationCover(IAGVStationType agvStation, string portID)
+        {
+            APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(portID);
+            if (port_station == null) return;
+            if (port_station.LastNotifyPreOpenCoverTime.ElapsedMilliseconds < MAX_PRE_OPEN_COVER_TIME_MILLISEC)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: $"想要進行Port:{portID}，但由於該port 前1分鐘內已進行過預該蓋，跳過該次預開蓋。");
+                return;
+            }
+            port_station.LastNotifyPreOpenCoverTime.Restart();
+            Task.Run(() => scApp.TransferBLL.web.preOpenAGVStationCover(agvStation, portID));
+        }
+        enum PreOpenCoverType
+        {
+            NoAction,
+            FindTheFirstCanLoadPort,
+            FindTheFirstLoadCmd
+        }
+        private (PreOpenCoverType PreOpenCoverType, string firstLoadCmdPortID) PreOpenCoverTypeCheck(string vhID, List<ACMD> cmds)
+        {
+            int in_st_cmd_count = 0;
+            int out_st_cmd_count = 0;
+            string first_load_cmd_port_id = "";
+            cmds = cmds.OrderBy(cmd => cmd.CMD_INSER_TIME).ToList();
+            foreach (var cmd in cmds)
+            {
+                bool is_carry_cmd_cst = scApp.VehicleBLL.cache.IsCarryCstByCstID(vhID, cmd.CARRIER_ID);
+                if (is_carry_cmd_cst)
+                {
+                    bool is_go_to_st = cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
+                    if (is_go_to_st)
+                    {
+                        in_st_cmd_count++;
+                    }
+                }
+                else
+                {
+                    bool is_go_to_st = cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
+                    if (is_go_to_st)
+                    {
+                        out_st_cmd_count++;
+                        if (SCUtility.isEmpty(first_load_cmd_port_id))
+                        {
+                            first_load_cmd_port_id = SCUtility.Trim(cmd.SOURCE_PORT, true);
+                        }
+                    }
+                }
+            }
+            //需要確認的情境有 
+            //找出第一個可以放置的Port
+            //2in 1out
+            //2in 0out
+            //1in 0out
+            //2in 2Out
 
+            //找出先派命令要拿的那筆
+            //1in 2out
+            //1in 1out
+
+            if ((in_st_cmd_count == 2 && out_st_cmd_count == 1) ||
+                (in_st_cmd_count == 2 && out_st_cmd_count == 0) ||
+                (in_st_cmd_count == 1 && out_st_cmd_count == 0) ||
+                (in_st_cmd_count == 2 && out_st_cmd_count == 2))
+            {
+                return (PreOpenCoverType.FindTheFirstCanLoadPort, first_load_cmd_port_id);
+            }
+            else if ((in_st_cmd_count == 1 && out_st_cmd_count == 2) ||
+                     (in_st_cmd_count == 1 && out_st_cmd_count == 1))
+            {
+                return (PreOpenCoverType.FindTheFirstLoadCmd, first_load_cmd_port_id);
             }
             else
             {
-                //todo log...
+                return (PreOpenCoverType.NoAction, first_load_cmd_port_id);
             }
         }
-
+        private (bool isGoToSt, string targetPortID) CheckIsGoToAGVStationLoadUnload(AVEHICLE vh, ACMD excute_cmd)
+        {
+            if (excute_cmd == null) return (false, "");
+            if (!excute_cmd.IsCarryCommand) return (false, "");
+            bool is_carry_cmd_cst = scApp.VehicleBLL.cache.IsCarryCstByCstID(vh.VEHICLE_ID, excute_cmd.CARRIER_ID);
+            if (is_carry_cmd_cst)
+            {
+                bool is_go_to_st = excute_cmd.IsTargetPortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
+                string target_port_id = is_go_to_st ? SCUtility.Trim(excute_cmd.DESTINATION_PORT) : "";
+                return (is_go_to_st, target_port_id);
+            }
+            else
+            {
+                bool is_go_to_st = excute_cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL);
+                string target_port_id = is_go_to_st ? SCUtility.Trim(excute_cmd.SOURCE_PORT) : "";
+                return (is_go_to_st, target_port_id);
+            }
+        }
         const int MAX_PRE_OPEN_COVER_TIME_MILLISEC = 60000;
         private void checkIsNeedPreOpenAGVStationCoverOnStationAllPort(AVEHICLE vh, string checkPortStationID)
         {
