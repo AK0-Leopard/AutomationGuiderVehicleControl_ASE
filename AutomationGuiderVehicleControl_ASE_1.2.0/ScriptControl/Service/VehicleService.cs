@@ -786,7 +786,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         break;
                     case EventType.LoadComplete:
                         if (DebugParameter.testRetryLoadComplete) return;
-                        TranEventReport_LoadComplete(bcfApp, vh, seq_num, eventType, excute_cmd_id);
+                        TranEventReport_LoadComplete(bcfApp, vh, seq_num, eventType, excute_cmd_id, current_port_id);
                         break;
                     case EventType.UnloadArrivals:
                         if (DebugParameter.testRetryUnloadArrivals) return;
@@ -799,7 +799,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         break;
                     case EventType.Vhloading:
                         if (DebugParameter.testRetryVhloading) return;
-                        TranEventReport_Loading(bcfApp, vh, seq_num, eventType, excute_cmd_id);
+                        TranEventReport_Loading(bcfApp, vh, seq_num, eventType, excute_cmd_id, current_port_id);
                         break;
                     case EventType.Vhunloading:
                         if (DebugParameter.testRetryVhunloading) return;
@@ -934,7 +934,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
 
             private void TranEventReport_LoadComplete(BCFApplication bcfApp, AVEHICLE vh, int seqNum
-                                                    , EventType eventType, string cmdID)
+                                                    , EventType eventType, string cmdID, string portID)
             {
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                            Data: $"Process report {eventType}",
@@ -948,25 +948,28 @@ namespace com.mirle.ibg3k0.sc.Service
                 updateCarrierInVehicleLocation(vh, cmd, "");
                 bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
 
-                //bool is_need_wait_orther_port_wait_out = checkIsNeedToWaitOrtherPortCSTWaitOut();
-
+                bool is_need_wait_orther_port_wait_in = IsNeedToWaitOrtherPortCSTWaitInWhenLoadCmpOnAGVSt(vh.VEHICLE_ID, portID);
+                ReplyActionType replyActionType = is_need_wait_orther_port_wait_in ? ReplyActionType.Wait : ReplyActionType.Continue;
                 if (isTranCmd)
                 {
                     string transfer_id = cmd.TRANSFER_ID;
-                    //bool is_load_complete_ready =
-                    //    scApp.TransferBLL.db.transfer.isTransferStatusReady(transfer_id, ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE);
-                    //if (is_load_complete_ready)
-                    //{
-                    //    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                    //       Data: $"pass this load complete report to mcs,transfer id:{transfer_id}",
-                    //       VehicleID: vh.VEHICLE_ID,
-                    //       CST_ID_L: vh.CST_ID_L,
-                    //       CST_ID_R: vh.CST_ID_R);
-
-                    //    Boolean resp_cmp = replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
-                    //    return;
-                    //}
-                    scApp.TransferBLL.db.transfer.updateTranStatus2Transferring(transfer_id);
+                    var check_tran_status_result =
+                        scApp.TransferBLL.db.vTransfer.isTransferStatusReady(transfer_id, ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE);
+                    if (check_tran_status_result.isStatusReady)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"pass this load complete report to mcs,transfer id:{transfer_id}",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                        if (check_tran_status_result.isPausing != is_need_wait_orther_port_wait_in)
+                        {
+                            scApp.TransferBLL.db.transfer.updateTranStatus2Transferring(transfer_id, is_need_wait_orther_port_wait_in);
+                        }
+                        Boolean resp_cmp = replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID, actionType: replyActionType);
+                        return;
+                    }
+                    scApp.TransferBLL.db.transfer.updateTranStatus2Transferring(transfer_id, is_need_wait_orther_port_wait_in);
                     List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
                     using (TransactionScope tx = SCUtility.getTransactionScope())
                     {
@@ -985,7 +988,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             scApp.ReportBLL.insertMCSReport(reportqueues);
                         }
 
-                        Boolean resp_cmp = replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
+                        Boolean resp_cmp = replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID, actionType: replyActionType);
 
                         if (resp_cmp)
                         {
@@ -1002,7 +1005,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     //if (!SCUtility.isEmpty(cmd.CARRIER_ID))
                     //    scApp.ReportBLL.newReportLoadComplete(vh.Real_ID, cmd.CARRIER_ID, vh.Real_ID, null);
-                    replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
+                    replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID, actionType: replyActionType);
                 }
 
                 scApp.PortBLL.OperateCatch.updatePortStationCSTExistStatus(cmd.SOURCE_PORT, string.Empty);
@@ -1010,32 +1013,125 @@ namespace com.mirle.ibg3k0.sc.Service
                 //Task.Run(() => checkHasOrtherCommandExcuteAndIsNeedToPreOpenCover(vh, cmdID));
             }
 
-            private bool checkIsNeedToWaitOrtherPortCSTWaitOut(string vhID)
+            private bool CanWaitOrtherWaitInCSTWhenLoadComplete(string vhID)
             {
-                //1.確認是否還有空位可以取貨
-                //2.確認目前執行的命令數量僅有一筆，且是已經拿完準備從St出發的
-                //3.若是，則透過API詢問 是否有貨物準備要出
-                //4.有，則開始等待N秒
                 AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
                 if (vh.IsShelfFull)
                     return false;
+                List<ACMD> cmds = scApp.CMDBLL.cache.loadExcuteCmdsAndTargetNotAGVST(scApp.PortStationBLL, scApp.EqptBLL, vhID);
+                if (cmds == null || cmds.Count != 1)
+                    return false;
+                return true;
+            }
+            private bool CanWaitOrtherWaitInCSTWhenLoading(string vhID)
+            {
+                //AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+                //if (!vh.IsShelfEmpty)
+                //    return false;
                 List<ACMD> cmds = scApp.CMDBLL.cache.loadExcuteCmds(vhID);
                 if (cmds == null || cmds.Count != 1)
                     return false;
-                ACMD current_excute_cmd = cmds.First();
-                if (!current_excute_cmd.IsSourcePortAGVStation(scApp.PortStationBLL, scApp.EqptBLL))
-                {
-                    return false;
-                }
-                if (!vh.IsCarreirExist(current_excute_cmd.CARRIER_ID))
-                {
-                    return false;
-                }
-                var agv_station = current_excute_cmd.getSourcePortEQ(scApp.PortStationBLL, scApp.EqptBLL) as IAGVStationType;
-                bool is_need_to_wait = scApp.TransferBLL.web.checkIsNeedWaitForLoad(agv_station);
-                //todo...kevin
-                return false;
+                return true;
             }
+            const int WAIT_ASK_CST_WAIT_IN_TIME_MS = 3000;
+            private bool IsNeedToWaitOrtherPortCSTWaitInWhenLoadCmpOnAGVSt(string vhID, string portID)
+            {
+                try
+                {
+                    if (DebugParameter.isForceByPassWaitTranEvent)
+                    {
+                        return false;
+                    }
+                    if (!SCUtility.isMatche(vhID, "AGV11"))
+                    {
+                        return false;
+                    }
+                    //確認該Port是AGV St的Port
+                    APORTSTATION port_sataion = scApp.PortStationBLL.OperateCatch.getPortStation(portID);
+                    if (!port_sataion.IsAGVStation(scApp.EqptBLL))
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"port:{portID} not agv st, so pass ask st.",
+                           VehicleID: vhID);
+                        return false;
+                    }
+                    AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+                    if (vh == null) return false;
+                    var agv_station = port_sataion.GetEqpt(scApp.EqptBLL) as IAGVStationType;
+                    //1.確認是否還有空位可以取貨
+                    //2.確認目前執行的命令數量僅有一筆，且是已經拿完準備從St出發的
+                    bool can_wait_orther_wait_in_cst = CanWaitOrtherWaitInCSTWhenLoadComplete(vhID);
+                    if (!can_wait_orther_wait_in_cst)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"vh:{vh.VEHICLE_ID} status can't excute waitting 3+1 when loading, so pass ask st.",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                        agv_station.ResetLastStartWaitingWaitOutTime();
+                        return false;
+                    }
+                    //如果是則需要判斷是否需要進行WaitIn的等待
+                    if (agv_station.IsAskedWaitWaitOutCST)
+                    {
+
+                        if (agv_station.isNeedWaitingCSTWaitIn)
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"st.:{agv_station.getAGVStationID()} 尚須等待另一顆CST wait in,上次詢問時間:{agv_station.LastStartWaitingWaitOutTime.ToString(SCAppConstants.DateTimeFormat_22)}",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                            return true;
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"st.:{agv_station.getAGVStationID()} 等待已超時，不需再等待CST wait in,上次詢問時間:{agv_station.LastStartWaitingWaitOutTime.ToString(SCAppConstants.DateTimeFormat_22)}",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                            agv_station.ResetLastStartWaitingWaitOutTime();
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"st.:{agv_station.getAGVStationID()} 開始詢問是否需要等待wait in...",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                        bool is_need_to_wait = scApp.TransferBLL.web.checkIsNeedWaitForLoad(agv_station, WAIT_ASK_CST_WAIT_IN_TIME_MS);
+                        if (is_need_to_wait)
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"st.:{agv_station.getAGVStationID()} 回復需等待另一顆CST wait in",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                            agv_station.SetLastStartWaitingWaitOutTime();
+                            return true;
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"st.:{agv_station.getAGVStationID()} 回復不需等待另一顆CST wait in",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                            agv_station.ResetLastStartWaitingWaitOutTime();
+                            return false;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception:");
+                    return false;
+                }
+            }
+
 
             private void updateCarrierInVehicleLocation(AVEHICLE vh, ACMD cmd, string readCarrierID)
             {
@@ -1229,9 +1325,26 @@ namespace com.mirle.ibg3k0.sc.Service
                            CST_ID_R: vh.CST_ID_R);
                 vh.IsCloseToAGVStation = false;
                 ACMD cmd = scApp.CMDBLL.GetCMD_OHTCByID(cmdID);
+
+                bool is_need_wait_orther_port_wait_in = IsNeedToWaitOrtherPortCSTWaitInWhenLoadCmpOnAGVSt(vh.VEHICLE_ID, currentPortID);
+                ReplyActionType replyActionType = is_need_wait_orther_port_wait_in ? ReplyActionType.Wait : ReplyActionType.Continue;
+
                 bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 if (isTranCmd)
                 {
+                    string transfer_id = cmd.TRANSFER_ID;
+                    var check_tran_status_result =
+                        scApp.TransferBLL.db.vTransfer.isTransferStatusReady(transfer_id, ATRANSFER.COMMAND_STATUS_BIT_INDEX_UNLOAD_COMPLETE);
+                    if (check_tran_status_result.isStatusReady)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"pass this unload complete report to mcs,transfer id:{transfer_id}",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                        Boolean resp_cmp = replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID, actionType: replyActionType);
+                        return;
+                    }
                     scApp.TransferBLL.db.transfer.updateTranStatus2UnloadComplete(cmd.TRANSFER_ID);
                     List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
                     using (TransactionScope tx = SCUtility.getTransactionScope())
@@ -1263,7 +1376,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         {
                             scApp.CarrierBLL.db.updateLocationAndState(cmd.CARRIER_ID, cmd.DESTINATION_PORT, E_CARRIER_STATE.Complete);
                         }
-                        Boolean resp_cmp = replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
+                        Boolean resp_cmp = replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID, actionType: replyActionType);
 
                         if (resp_cmp)
                         {
@@ -1292,7 +1405,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     //    scApp.CarrierBLL.db.updateLocationAndState(cmd.CARRIER_ID, cmd.DESTINATION_PORT, E_CARRIER_STATE.Complete);
                     //    scApp.ReportBLL.newReportUnloadComplete(vh.Real_ID, cmd.CARRIER_ID, cmd.DESTINATION_PORT, null);
                     //}
-                    replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
+                    replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID, actionType: replyActionType);
                 }
                 scApp.VehicleBLL.doUnloadComplete(vh.VEHICLE_ID);
                 //Task.Run(() => checkHasOrtherCommandExcuteAndIsNeedToPreOpenCover(vh, cmdID));
@@ -1420,21 +1533,23 @@ namespace com.mirle.ibg3k0.sc.Service
                 //    scApp.ReportBLL.newSendMCSMessage(reportqueues);
                 //}
             }
-            private void TranEventReport_Loading(BCFApplication bcfApp, AVEHICLE vh, int seqNum, EventType eventType, string cmdID)
+            private void TranEventReport_Loading(BCFApplication bcfApp, AVEHICLE vh, int seqNum, EventType eventType, string cmdID, string portID)
             {
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                    Data: $"Process report {eventType}",
                    VehicleID: vh.VEHICLE_ID,
                    CST_ID_L: vh.CST_ID_L,
                    CST_ID_R: vh.CST_ID_R);
+                string vh_id = vh.VEHICLE_ID;
+
                 ACMD cmd = scApp.CMDBLL.GetCMD_OHTCByID(cmdID);
                 if (cmd == null)
                 {
                     replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
                     return;
                 }
-                bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
 
+                bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 if (isTranCmd)
                 {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
@@ -1468,6 +1583,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
                 }
                 scApp.VehicleBLL.doLoading(vh.VEHICLE_ID);
+                //Task.Run(() => checkIsNeedToWaitOrtherPortCSTWaitInWhenLoadingOnAGVSt(vh_id, portID));
             }
             private void TranEventReport_Unloading(BCFApplication bcfApp, AVEHICLE vh, int seqNum, EventType eventType, string cmdID)
             {
@@ -3352,14 +3468,14 @@ namespace com.mirle.ibg3k0.sc.Service
             try
             {
                 if (vh == null) return;
-                if (SCUtility.isMatche(vh.VEHICLE_ID, "AGV11") || SCUtility.isMatche(vh.VEHICLE_ID, "AGV06"))
-                {
-                    //not thing...
-                }
-                else
-                {
-                    return;
-                }
+                //if (SCUtility.isMatche(vh.VEHICLE_ID, "AGV11") || SCUtility.isMatche(vh.VEHICLE_ID, "AGV06"))
+                //{
+                //    //not thing...
+                //}
+                //else
+                //{
+                //    return;
+                //}
                 if (SystemParameter.OpenAGVStationCoverDistance_mm <= 0)
                 {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,

@@ -350,6 +350,17 @@ namespace com.mirle.ibg3k0.sc
                 }
             }
         }
+
+        public void SetLastStartWaitingWaitOutTime()
+        {
+            LastStartWaitingWaitOutTime = DateTime.Now;
+        }
+
+        public void ResetLastStartWaitingWaitOutTime()
+        {
+            LastStartWaitingWaitOutTime = DateTime.MinValue;
+        }
+
         //        E_AGVStationDeliveryMode GetDeliveryMode()
         //{
         //    if (SCUtility.isEmpty(recipe_Parameter_Format))
@@ -387,6 +398,10 @@ namespace com.mirle.ibg3k0.sc
         public bool ForceEmergency { get; set; }
         public DateTime LastAskTime { get; set; }
         public string sLastAskTime { get { return LastAskTime.ToString(SCAppConstants.DateTimeFormat_19); } }
+        public DateTime LastStartWaitingWaitOutTime { get; set; } = DateTime.MinValue;
+        private int WATING_CST_WAIT_IN_TIME_SEC = 60;
+        public bool isNeedWaitingCSTWaitIn => LastStartWaitingWaitOutTime.AddSeconds(WATING_CST_WAIT_IN_TIME_SEC) > DateTime.Now;
+        public bool IsAskedWaitWaitOutCST => LastStartWaitingWaitOutTime != DateTime.MinValue;
     }
 
 
@@ -419,6 +434,13 @@ namespace com.mirle.ibg3k0.sc
 
         DateTime LastAskTime { get; set; }
         string sLastAskTime { get; }
+
+        void SetLastStartWaitingWaitOutTime();
+        void ResetLastStartWaitingWaitOutTime();
+        DateTime LastStartWaitingWaitOutTime { get; set; }
+        bool isNeedWaitingCSTWaitIn { get; }
+        bool IsAskedWaitWaitOutCST { get; }
+
     }
 
     public enum E_AGVStationDeliveryMode

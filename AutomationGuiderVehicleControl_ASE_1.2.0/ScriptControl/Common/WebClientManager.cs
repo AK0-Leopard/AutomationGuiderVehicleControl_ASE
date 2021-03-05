@@ -43,17 +43,18 @@ namespace com.mirle.ibg3k0.sc.Common
 
 
 
-        public string GetInfoFromServer(string uri, string[] action_targets, string[] param)
+        public string GetInfoFromServer(string uri, string[] action_targets, string[] param, int timeOut = 5000)
         {
             string p = string.Join("", param);
-            return GetInfoFromServer(uri, action_targets, p);
+            return GetInfoFromServer(uri, action_targets, p, timeOut);
         }
-        public string GetInfoFromServer(string uri, string[] action_targets, string param)
+        public string GetInfoFromServer(string uri, string[] action_targets, string param, int timeOut = 5000)
         {
             string result = "default";
             string action_target = string.Join("/", action_targets);
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create($"{uri}/{action_target}/{param}");
-            httpWebRequest.Timeout = 5000;
+            //httpWebRequest.Timeout = 5000;
+            httpWebRequest.Timeout = timeOut;
             httpWebRequest.Method = HTTP_METHOD.GET.ToString();
             //指定 request 的 content type
             httpWebRequest.ContentType = "application/x-www-form-urlencoded";

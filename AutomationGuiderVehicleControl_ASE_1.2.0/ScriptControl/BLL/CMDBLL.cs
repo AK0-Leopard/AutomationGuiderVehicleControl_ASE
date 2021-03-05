@@ -2370,6 +2370,26 @@ namespace com.mirle.ibg3k0.sc.BLL
                     return null;
                 }
             }
+            public List<ACMD> loadExcuteCmdsAndTargetNotAGVST(PortStationBLL portStationBLL, EqptBLL eqptBLL, string vhID)
+            {
+                try
+                {
+                    ALINE line = app.getEQObjCacheManager().getLine();
+                    var current_unfinish_cmd = line.CurrentExcuteCommand;
+                    if (current_unfinish_cmd == null || current_unfinish_cmd.Count == 0)
+                        return null;
+                    var has_unfinish_cmds_by_vh = current_unfinish_cmd.Where(cmd => SCUtility.isMatche(cmd.VH_ID, vhID)
+                                                                                && cmd.CMD_STATUS < E_CMD_STATUS.Aborting
+                                                                                && !cmd.IsTargetPortAGVStation(portStationBLL, eqptBLL)).
+                                                                                ToList();
+                    return has_unfinish_cmds_by_vh;
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    return null;
+                }
+            }
         }
 
         public enum CommandTranDir

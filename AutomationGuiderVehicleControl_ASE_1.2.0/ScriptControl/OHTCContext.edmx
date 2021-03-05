@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="OHTC_DevModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="OHTC_DevModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AADDRESS">
           <Key>
             <PropertyRef Name="ADR_ID" />
@@ -1120,6 +1120,7 @@
             <PropertyRef Name="HOSTDESTINATION" />
             <PropertyRef Name="PRIORITY" />
             <PropertyRef Name="CHECKCODE" />
+            <PropertyRef Name="PAUSEFLAG" />
             <PropertyRef Name="CMD_INSER_TIME" />
             <PropertyRef Name="TIME_PRIORITY" />
             <PropertyRef Name="PORT_PRIORITY" />
@@ -1135,6 +1136,7 @@
           <Property Name="HOSTDESTINATION" Type="char" MaxLength="64" Nullable="false" />
           <Property Name="PRIORITY" Type="int" Nullable="false" />
           <Property Name="CHECKCODE" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="PAUSEFLAG" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="CMD_INSER_TIME" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="CMD_START_TIME" Type="datetime2" Precision="7" />
           <Property Name="CMD_FINISH_TIME" Type="datetime2" Precision="7" />
@@ -1221,90 +1223,86 @@
           <EntitySet Name="UASUSR" EntityType="Self.UASUSR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UASUSRGRP" EntityType="Self.UASUSRGRP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VSECTION_100" EntityType="Self.VSECTION_100" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-              SELECT
-              [VSECTION_100].[SEC_ID] AS [SEC_ID],
-              [VSECTION_100].[SEC_ORDER_NUM] AS [SEC_ORDER_NUM],
-              [VSECTION_100].[SEG_ORDER_NUM] AS [SEG_ORDER_NUM],
-              [VSECTION_100].[DIRC_DRIV] AS [DIRC_DRIV],
-              [VSECTION_100].[DIRC_GUID] AS [DIRC_GUID],
-              [VSECTION_100].[SEG_NUM] AS [SEG_NUM],
-              [VSECTION_100].[FROM_ADR_ID] AS [FROM_ADR_ID],
-              [VSECTION_100].[TO_ADR_ID] AS [TO_ADR_ID],
-              [VSECTION_100].[SEC_DIS] AS [SEC_DIS],
-              [VSECTION_100].[SEC_SPD] AS [SEC_SPD],
-              [VSECTION_100].[DIS_FROM_ORIGIN] AS [DIS_FROM_ORIGIN],
-              [VSECTION_100].[CDOG_1] AS [CDOG_1],
-              [VSECTION_100].[CHG_SEG_NUM_1] AS [CHG_SEG_NUM_1],
-              [VSECTION_100].[CDOG_2] AS [CDOG_2],
-              [VSECTION_100].[CHG_SEG_NUM_2] AS [CHG_SEG_NUM_2],
-              [VSECTION_100].[PRE_BLO_REQ] AS [PRE_BLO_REQ],
-              [VSECTION_100].[SEC_TYPE] AS [SEC_TYPE],
-              [VSECTION_100].[SEC_DIR] AS [SEC_DIR],
-              [VSECTION_100].[PADDING] AS [PADDING],
-              [VSECTION_100].[ENB_CHG_G_AREA] AS [ENB_CHG_G_AREA],
-              [VSECTION_100].[PRE_DIV] AS [PRE_DIV],
-              [VSECTION_100].[PRE_ADD_REPR] AS [PRE_ADD_REPR],
-              [VSECTION_100].[OBS_SENSOR] AS [OBS_SENSOR],
-              [VSECTION_100].[SUB_VER] AS [SUB_VER],
-              [VSECTION_100].[ADD_TIME] AS [ADD_TIME],
-              [VSECTION_100].[ADD_USER] AS [ADD_USER],
-              [VSECTION_100].[UPD_TIME] AS [UPD_TIME],
-              [VSECTION_100].[UPD_USER] AS [UPD_USER],
-              [VSECTION_100].[START_BC1] AS [START_BC1],
-              [VSECTION_100].[END_BC1] AS [END_BC1],
-              [VSECTION_100].[START_BC2] AS [START_BC2],
-              [VSECTION_100].[END_BC2] AS [END_BC2],
-              [VSECTION_100].[START_BC3] AS [START_BC3],
-              [VSECTION_100].[END_BC3] AS [END_BC3],
-              [VSECTION_100].[CHG_AREA_SECSOR_1] AS [CHG_AREA_SECSOR_1],
-              [VSECTION_100].[CHG_AREA_SECSOR_2] AS [CHG_AREA_SECSOR_2],
-              [VSECTION_100].[OBS_SENSOR_F] AS [OBS_SENSOR_F],
-              [VSECTION_100].[OBS_SENSOR_R] AS [OBS_SENSOR_R],
-              [VSECTION_100].[OBS_SENSOR_L] AS [OBS_SENSOR_L],
-              [VSECTION_100].[RANGE_SENSOR_F] AS [RANGE_SENSOR_F],
-              [VSECTION_100].[IS_ADR_RPT] AS [IS_ADR_RPT],
-              [VSECTION_100].[CAN_GUIDE_CHG] AS [CAN_GUIDE_CHG],
-              [VSECTION_100].[HID_CONTROL] AS [HID_CONTROL],
-              [VSECTION_100].[BRANCH_FLAG] AS [BRANCH_FLAG],
-              [VSECTION_100].[AREA_SECSOR] AS [AREA_SECSOR],
-              [VSECTION_100].[LAST_TECH_TIME] AS [LAST_TECH_TIME]
-              FROM [dbo].[VSECTION_100] AS [VSECTION_100]
-            </DefiningQuery>
+            <DefiningQuery>SELECT 
+    [VSECTION_100].[SEC_ID] AS [SEC_ID], 
+    [VSECTION_100].[SEC_ORDER_NUM] AS [SEC_ORDER_NUM], 
+    [VSECTION_100].[SEG_ORDER_NUM] AS [SEG_ORDER_NUM], 
+    [VSECTION_100].[DIRC_DRIV] AS [DIRC_DRIV], 
+    [VSECTION_100].[DIRC_GUID] AS [DIRC_GUID], 
+    [VSECTION_100].[SEG_NUM] AS [SEG_NUM], 
+    [VSECTION_100].[FROM_ADR_ID] AS [FROM_ADR_ID], 
+    [VSECTION_100].[TO_ADR_ID] AS [TO_ADR_ID], 
+    [VSECTION_100].[SEC_DIS] AS [SEC_DIS], 
+    [VSECTION_100].[SEC_SPD] AS [SEC_SPD], 
+    [VSECTION_100].[DIS_FROM_ORIGIN] AS [DIS_FROM_ORIGIN], 
+    [VSECTION_100].[CDOG_1] AS [CDOG_1], 
+    [VSECTION_100].[CHG_SEG_NUM_1] AS [CHG_SEG_NUM_1], 
+    [VSECTION_100].[CDOG_2] AS [CDOG_2], 
+    [VSECTION_100].[CHG_SEG_NUM_2] AS [CHG_SEG_NUM_2], 
+    [VSECTION_100].[PRE_BLO_REQ] AS [PRE_BLO_REQ], 
+    [VSECTION_100].[SEC_TYPE] AS [SEC_TYPE], 
+    [VSECTION_100].[SEC_DIR] AS [SEC_DIR], 
+    [VSECTION_100].[PADDING] AS [PADDING], 
+    [VSECTION_100].[ENB_CHG_G_AREA] AS [ENB_CHG_G_AREA], 
+    [VSECTION_100].[PRE_DIV] AS [PRE_DIV], 
+    [VSECTION_100].[PRE_ADD_REPR] AS [PRE_ADD_REPR], 
+    [VSECTION_100].[OBS_SENSOR] AS [OBS_SENSOR], 
+    [VSECTION_100].[SUB_VER] AS [SUB_VER], 
+    [VSECTION_100].[ADD_TIME] AS [ADD_TIME], 
+    [VSECTION_100].[ADD_USER] AS [ADD_USER], 
+    [VSECTION_100].[UPD_TIME] AS [UPD_TIME], 
+    [VSECTION_100].[UPD_USER] AS [UPD_USER], 
+    [VSECTION_100].[START_BC1] AS [START_BC1], 
+    [VSECTION_100].[END_BC1] AS [END_BC1], 
+    [VSECTION_100].[START_BC2] AS [START_BC2], 
+    [VSECTION_100].[END_BC2] AS [END_BC2], 
+    [VSECTION_100].[START_BC3] AS [START_BC3], 
+    [VSECTION_100].[END_BC3] AS [END_BC3], 
+    [VSECTION_100].[CHG_AREA_SECSOR_1] AS [CHG_AREA_SECSOR_1], 
+    [VSECTION_100].[CHG_AREA_SECSOR_2] AS [CHG_AREA_SECSOR_2], 
+    [VSECTION_100].[OBS_SENSOR_F] AS [OBS_SENSOR_F], 
+    [VSECTION_100].[OBS_SENSOR_R] AS [OBS_SENSOR_R], 
+    [VSECTION_100].[OBS_SENSOR_L] AS [OBS_SENSOR_L], 
+    [VSECTION_100].[RANGE_SENSOR_F] AS [RANGE_SENSOR_F], 
+    [VSECTION_100].[IS_ADR_RPT] AS [IS_ADR_RPT], 
+    [VSECTION_100].[CAN_GUIDE_CHG] AS [CAN_GUIDE_CHG], 
+    [VSECTION_100].[HID_CONTROL] AS [HID_CONTROL], 
+    [VSECTION_100].[BRANCH_FLAG] AS [BRANCH_FLAG], 
+    [VSECTION_100].[AREA_SECSOR] AS [AREA_SECSOR], 
+    [VSECTION_100].[LAST_TECH_TIME] AS [LAST_TECH_TIME]
+    FROM [dbo].[VSECTION_100] AS [VSECTION_100]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VTRANSFER" EntityType="Self.VTRANSFER" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-              SELECT
-              [VTRANSFER].[ID] AS [ID],
-              [VTRANSFER].[CARRIER_ID] AS [CARRIER_ID],
-              [VTRANSFER].[LOT_ID] AS [LOT_ID],
-              [VTRANSFER].[TRANSFERSTATE] AS [TRANSFERSTATE],
-              [VTRANSFER].[COMMANDSTATE] AS [COMMANDSTATE],
-              [VTRANSFER].[HOSTSOURCE] AS [HOSTSOURCE],
-              [VTRANSFER].[HOSTDESTINATION] AS [HOSTDESTINATION],
-              [VTRANSFER].[PRIORITY] AS [PRIORITY],
-              [VTRANSFER].[CHECKCODE] AS [CHECKCODE],
-              [VTRANSFER].[CMD_INSER_TIME] AS [CMD_INSER_TIME],
-              [VTRANSFER].[CMD_START_TIME] AS [CMD_START_TIME],
-              [VTRANSFER].[CMD_FINISH_TIME] AS [CMD_FINISH_TIME],
-              [VTRANSFER].[TIME_PRIORITY] AS [TIME_PRIORITY],
-              [VTRANSFER].[PORT_PRIORITY] AS [PORT_PRIORITY],
-              [VTRANSFER].[REPLACE] AS [REPLACE],
-              [VTRANSFER].[PRIORITY_SUM] AS [PRIORITY_SUM],
-              [VTRANSFER].[RESULT_CODE] AS [RESULT_CODE],
-              [VTRANSFER].[EXCUTE_CMD_ID] AS [EXCUTE_CMD_ID],
-              [VTRANSFER].[CARRIER_INSER_TIME] AS [CARRIER_INSER_TIME],
-              [VTRANSFER].[CARRIER_LOCATION] AS [CARRIER_LOCATION],
-              [VTRANSFER].[CARRIER_INSTALLED_TIME] AS [CARRIER_INSTALLED_TIME],
-              [VTRANSFER].[CARRIER_READ_STATUS] AS [CARRIER_READ_STATUS],
-              [VTRANSFER].[VH_ID] AS [VH_ID],
-              [VTRANSFER].[COMPLETE_STATUS] AS [COMPLETE_STATUS]
-              FROM [dbo].[VTRANSFER] AS [VTRANSFER]
-            </DefiningQuery>
+            <DefiningQuery>SELECT 
+    [VTRANSFER].[ID] AS [ID], 
+    [VTRANSFER].[CARRIER_ID] AS [CARRIER_ID], 
+    [VTRANSFER].[LOT_ID] AS [LOT_ID], 
+    [VTRANSFER].[TRANSFERSTATE] AS [TRANSFERSTATE], 
+    [VTRANSFER].[COMMANDSTATE] AS [COMMANDSTATE], 
+    [VTRANSFER].[HOSTSOURCE] AS [HOSTSOURCE], 
+    [VTRANSFER].[HOSTDESTINATION] AS [HOSTDESTINATION], 
+    [VTRANSFER].[PRIORITY] AS [PRIORITY], 
+    [VTRANSFER].[CHECKCODE] AS [CHECKCODE], 
+    [VTRANSFER].[PAUSEFLAG] AS [PAUSEFLAG], 
+    [VTRANSFER].[CMD_INSER_TIME] AS [CMD_INSER_TIME], 
+    [VTRANSFER].[CMD_START_TIME] AS [CMD_START_TIME], 
+    [VTRANSFER].[CMD_FINISH_TIME] AS [CMD_FINISH_TIME], 
+    [VTRANSFER].[TIME_PRIORITY] AS [TIME_PRIORITY], 
+    [VTRANSFER].[PORT_PRIORITY] AS [PORT_PRIORITY], 
+    [VTRANSFER].[REPLACE] AS [REPLACE], 
+    [VTRANSFER].[PRIORITY_SUM] AS [PRIORITY_SUM], 
+    [VTRANSFER].[RESULT_CODE] AS [RESULT_CODE], 
+    [VTRANSFER].[EXCUTE_CMD_ID] AS [EXCUTE_CMD_ID], 
+    [VTRANSFER].[CARRIER_INSER_TIME] AS [CARRIER_INSER_TIME], 
+    [VTRANSFER].[CARRIER_LOCATION] AS [CARRIER_LOCATION], 
+    [VTRANSFER].[CARRIER_INSTALLED_TIME] AS [CARRIER_INSTALLED_TIME], 
+    [VTRANSFER].[CARRIER_READ_STATUS] AS [CARRIER_READ_STATUS], 
+    [VTRANSFER].[VH_ID] AS [VH_ID], 
+    [VTRANSFER].[COMPLETE_STATUS] AS [COMPLETE_STATUS]
+    FROM [dbo].[VTRANSFER] AS [VTRANSFER]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="OHTC_DevModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2622,6 +2620,7 @@
             <PropertyRef Name="HOSTDESTINATION" />
             <PropertyRef Name="PRIORITY" />
             <PropertyRef Name="CHECKCODE" />
+            <PropertyRef Name="PAUSEFLAG" />
             <PropertyRef Name="CMD_INSER_TIME" />
             <PropertyRef Name="TIME_PRIORITY" />
             <PropertyRef Name="PORT_PRIORITY" />
@@ -2637,6 +2636,7 @@
           <Property Name="HOSTDESTINATION" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="PRIORITY" Type="Int32" Nullable="false" />
           <Property Name="CHECKCODE" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="PAUSEFLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="CMD_INSER_TIME" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="CMD_START_TIME" Type="DateTime" Precision="7" />
           <Property Name="CMD_FINISH_TIME" Type="DateTime" Precision="7" />
@@ -2657,1115 +2657,1115 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="OHTC_DevModelStoreContainer" CdmEntityContainer="OHTC_DevEntities">
-          <EntitySetMapping Name="ABASEDATA_VER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ABASEDATA_VER)">
-              <MappingFragment StoreEntitySet="ABASEDATA_VER">
-                <ScalarProperty Name="VER_TYPE" ColumnName="VER_TYPE" />
-                <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
-                <ScalarProperty Name="REL_STAUS" ColumnName="REL_STAUS" />
-                <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
-                <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
-                <ScalarProperty Name="MEMO" ColumnName="MEMO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ABLOCKZONEDETAIL">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ABLOCKZONEDETAIL)">
-              <MappingFragment StoreEntitySet="ABLOCKZONEDETAIL">
-                <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
-                <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AGROUPRAILS">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AGROUPRAILS)">
-              <MappingFragment StoreEntitySet="AGROUPRAILS">
-                <ScalarProperty Name="SECTION_ID" ColumnName="SECTION_ID" />
-                <ScalarProperty Name="RAIL_ID" ColumnName="RAIL_ID" />
-                <ScalarProperty Name="RAIL_NO" ColumnName="RAIL_NO" />
-                <ScalarProperty Name="DIR" ColumnName="DIR" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AMAIN_VER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AMAIN_VER)">
-              <MappingFragment StoreEntitySet="AMAIN_VER">
-                <ScalarProperty Name="MAIN_VER" ColumnName="MAIN_VER" />
-                <ScalarProperty Name="VER_YEAR" ColumnName="VER_YEAR" />
-                <ScalarProperty Name="VER_MON" ColumnName="VER_MON" />
-                <ScalarProperty Name="VER_DAY" ColumnName="VER_DAY" />
-                <ScalarProperty Name="VER_HOUR" ColumnName="VER_HOUR" />
-                <ScalarProperty Name="VER_MIN" ColumnName="VER_MIN" />
-                <ScalarProperty Name="VER_STAUS" ColumnName="VER_STAUS" />
-                <ScalarProperty Name="REL_STAUS" ColumnName="REL_STAUS" />
-                <ScalarProperty Name="MEMO" ColumnName="MEMO" />
-                <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
-                <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="APOINT">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APOINT)">
-              <MappingFragment StoreEntitySet="APOINT">
-                <ScalarProperty Name="POINT_ID" ColumnName="POINT_ID" />
-                <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
-                <ScalarProperty Name="RAIL_ID" ColumnName="RAIL_ID" />
-                <ScalarProperty Name="POINTTYPE" ColumnName="POINTTYPE" />
-                <ScalarProperty Name="LOCATIONX" ColumnName="LOCATIONX" />
-                <ScalarProperty Name="LOCATIONY" ColumnName="LOCATIONY" />
-                <ScalarProperty Name="HEIGHT" ColumnName="HEIGHT" />
-                <ScalarProperty Name="WIDTH" ColumnName="WIDTH" />
-                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ARAIL">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ARAIL)">
-              <MappingFragment StoreEntitySet="ARAIL">
-                <ScalarProperty Name="RAIL_ID" ColumnName="RAIL_ID" />
-                <ScalarProperty Name="RAILTYPE" ColumnName="RAILTYPE" />
-                <ScalarProperty Name="LOCATIONX" ColumnName="LOCATIONX" />
-                <ScalarProperty Name="LOCATIONY" ColumnName="LOCATIONY" />
-                <ScalarProperty Name="WIDTH" ColumnName="WIDTH" />
-                <ScalarProperty Name="LENGTH" ColumnName="LENGTH" />
-                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ASUB_VER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASUB_VER)">
-              <MappingFragment StoreEntitySet="ASUB_VER">
-                <ScalarProperty Name="MAIN_VER" ColumnName="MAIN_VER" />
-                <ScalarProperty Name="VER_TYPE" ColumnName="VER_TYPE" />
-                <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
-                <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
-                <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BLOCKZONEQUEUE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.BLOCKZONEQUEUE)">
-              <MappingFragment StoreEntitySet="BLOCKZONEQUEUE">
-                <ScalarProperty Name="CAR_ID" ColumnName="CAR_ID" />
-                <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
-                <ScalarProperty Name="REQ_TIME" ColumnName="REQ_TIME" />
-                <ScalarProperty Name="BLOCK_TIME" ColumnName="BLOCK_TIME" />
-                <ScalarProperty Name="THROU_TIME" ColumnName="THROU_TIME" />
-                <ScalarProperty Name="RELEASE_TIME" ColumnName="RELEASE_TIME" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ABLOCKZONEMASTER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ABLOCKZONEMASTER)">
-              <MappingFragment StoreEntitySet="ABLOCKZONEMASTER">
-                <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
-                <ScalarProperty Name="BLOCK_ZONE_TYPE" ColumnName="BLOCK_ZONE_TYPE" />
-                <ScalarProperty Name="LEAVE_ADR_ID_1" ColumnName="LEAVE_ADR_ID_1" />
-                <ScalarProperty Name="LEAVE_ADR_ID_2" ColumnName="LEAVE_ADR_ID_2" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ASEQUENCE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASEQUENCE)">
-              <MappingFragment StoreEntitySet="ASEQUENCE">
-                <ScalarProperty Name="SEQ_NAME" ColumnName="SEQ_NAME" />
-                <ScalarProperty Name="NXT_VAL" ColumnName="NXT_VAL" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ACYCLEZONEDETAIL">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACYCLEZONEDETAIL)">
-              <MappingFragment StoreEntitySet="ACYCLEZONEDETAIL">
-                <ScalarProperty Name="CYCLE_ZONE_ID" ColumnName="CYCLE_ZONE_ID" />
-                <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
-                <ScalarProperty Name="SEC_ORDER" ColumnName="SEC_ORDER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ACYCLEZONEMASTER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACYCLEZONEMASTER)">
-              <MappingFragment StoreEntitySet="ACYCLEZONEMASTER">
-                <ScalarProperty Name="CYCLE_TYPE_ID" ColumnName="CYCLE_TYPE_ID" />
-                <ScalarProperty Name="CYCLE_ZONE_ID" ColumnName="CYCLE_ZONE_ID" />
-                <ScalarProperty Name="ENTRY_ADR_ID" ColumnName="ENTRY_ADR_ID" />
-                <ScalarProperty Name="TOTAL_BORDER" ColumnName="TOTAL_BORDER" />
-                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ACYCLEZONETYPE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACYCLEZONETYPE)">
-              <MappingFragment StoreEntitySet="ACYCLEZONETYPE">
-                <ScalarProperty Name="CYCLE_TYPE_ID" ColumnName="CYCLE_TYPE_ID" />
-                <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
-                <ScalarProperty Name="TOTAL_BORDER" ColumnName="TOTAL_BORDER" />
-                <ScalarProperty Name="IS_DEFAULT" ColumnName="IS_DEFAULT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ACEID">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACEID)">
-              <MappingFragment StoreEntitySet="ACEID">
-                <ScalarProperty Name="CEID" ColumnName="CEID" />
-                <ScalarProperty Name="RPTID" ColumnName="RPTID" />
-                <ScalarProperty Name="ORDER_NUM" ColumnName="ORDER_NUM" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ARPTID">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ARPTID)">
-              <MappingFragment StoreEntitySet="ARPTID">
-                <ScalarProperty Name="RPTID" ColumnName="RPTID" />
-                <ScalarProperty Name="VID" ColumnName="VID" />
-                <ScalarProperty Name="ORDER_NUM" ColumnName="ORDER_NUM" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ANETWORKQUALITY">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ANETWORKQUALITY)">
-              <MappingFragment StoreEntitySet="ANETWORKQUALITY">
-                <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
-                <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="VEHICLE_ID" ColumnName="VEHICLE_ID" />
-                <ScalarProperty Name="ACC_SEC_DIST" ColumnName="ACC_SEC_DIST" />
-                <ScalarProperty Name="PING_TIME" ColumnName="PING_TIME" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="APORTICON">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APORTICON)">
-              <MappingFragment StoreEntitySet="APORTICON">
-                <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
-                <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
-                <ScalarProperty Name="RAIL_ID" ColumnName="RAIL_ID" />
-                <ScalarProperty Name="ADRTYPE" ColumnName="ADRTYPE" />
-                <ScalarProperty Name="LOCATIONX" ColumnName="LOCATIONX" />
-                <ScalarProperty Name="LOCATIONY" ColumnName="LOCATIONY" />
-                <ScalarProperty Name="HEIGHT" ColumnName="HEIGHT" />
-                <ScalarProperty Name="WIDTH" ColumnName="WIDTH" />
-                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BCSTAT">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.BCSTAT)">
-              <MappingFragment StoreEntitySet="BCSTAT">
-                <ScalarProperty Name="BC_ID" ColumnName="BC_ID" />
-                <ScalarProperty Name="CLOSE_MODE" ColumnName="CLOSE_MODE" />
-                <ScalarProperty Name="RUN_TIMESTAMP" ColumnName="RUN_TIMESTAMP" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AEQPT">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AEQPT)">
-              <MappingFragment StoreEntitySet="AEQPT">
-                <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
-                <ScalarProperty Name="NODE_ID" ColumnName="NODE_ID" />
-                <ScalarProperty Name="CIM_MODE" ColumnName="CIM_MODE" />
-                <ScalarProperty Name="OPER_MODE" ColumnName="OPER_MODE" />
-                <ScalarProperty Name="INLINE_MODE" ColumnName="INLINE_MODE" />
-                <ScalarProperty Name="EQPT_STAT" ColumnName="EQPT_STAT" />
-                <ScalarProperty Name="EQPT_PROC_STAT" ColumnName="EQPT_PROC_STAT" />
-                <ScalarProperty Name="CR_RECIPE" ColumnName="CR_RECIPE" />
-                <ScalarProperty Name="MAX_SHT_CNT" ColumnName="MAX_SHT_CNT" />
-                <ScalarProperty Name="MIN_SHT_CNT" ColumnName="MIN_SHT_CNT" />
-                <ScalarProperty Name="ALARM_STAT" ColumnName="ALARM_STAT" />
-                <ScalarProperty Name="WARN_STAT" ColumnName="WARN_STAT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ALINE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALINE)">
-              <MappingFragment StoreEntitySet="ALINE">
-                <ScalarProperty Name="LINE_ID" ColumnName="LINE_ID" />
-                <ScalarProperty Name="HOST_MODE" ColumnName="HOST_MODE" />
-                <ScalarProperty Name="LINE_STAT" ColumnName="LINE_STAT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AZONE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AZONE)">
-              <MappingFragment StoreEntitySet="AZONE">
-                <ScalarProperty Name="ZONE_ID" ColumnName="ZONE_ID" />
-                <ScalarProperty Name="LINE_ID" ColumnName="LINE_ID" />
-                <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ANODE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ANODE)">
-              <MappingFragment StoreEntitySet="ANODE">
-                <ScalarProperty Name="NODE_ID" ColumnName="NODE_ID" />
-                <ScalarProperty Name="ZONE_ID" ColumnName="ZONE_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AUNIT">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AUNIT)">
-              <MappingFragment StoreEntitySet="AUNIT">
-                <ScalarProperty Name="UNIT_ID" ColumnName="UNIT_ID" />
-                <ScalarProperty Name="UNIT_NUM" ColumnName="UNIT_NUM" />
-                <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
-                <ScalarProperty Name="UNIT_CATE" ColumnName="UNIT_CATE" />
-                <ScalarProperty Name="EQPT_TYPE" ColumnName="EQPT_TYPE" />
-                <ScalarProperty Name="CAPACITY" ColumnName="CAPACITY" />
-                <ScalarProperty Name="UNIT_STAT" ColumnName="UNIT_STAT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ABUFFER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ABUFFER)">
-              <MappingFragment StoreEntitySet="ABUFFER">
-                <ScalarProperty Name="BUFF_ID" ColumnName="BUFF_ID" />
-                <ScalarProperty Name="UNIT_NUM" ColumnName="UNIT_NUM" />
-                <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
-                <ScalarProperty Name="CAPACITY" ColumnName="CAPACITY" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ACASSETTE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACASSETTE)">
-              <MappingFragment StoreEntitySet="ACASSETTE">
-                <ScalarProperty Name="CST_ID" ColumnName="CST_ID" />
-                <ScalarProperty Name="CST_STAT" ColumnName="CST_STAT" />
-                <ScalarProperty Name="SHT_CNT" ColumnName="SHT_CNT" />
-                <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
-                <ScalarProperty Name="CST_CODE" ColumnName="CST_CODE" />
-                <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
-                <ScalarProperty Name="SLOT_MAP" ColumnName="SLOT_MAP" />
-                <ScalarProperty Name="SLOT_SEL" ColumnName="SLOT_SEL" />
-                <ScalarProperty Name="END_STAT" ColumnName="END_STAT" />
-                <ScalarProperty Name="CRATE_ID" ColumnName="CRATE_ID" />
-                <ScalarProperty Name="CSTLOGON_TIME" ColumnName="CSTLOGON_TIME" />
-                <ScalarProperty Name="CSTLOGOff_TIME" ColumnName="CSTLOGOff_TIME" />
-                <ScalarProperty Name="ISLOTSTART" ColumnName="ISLOTSTART" />
-                <ScalarProperty Name="CSTPROCSTART_TIME" ColumnName="CSTPROCSTART_TIME" />
-                <ScalarProperty Name="CSTPROCEND_TIME" ColumnName="CSTPROCEND_TIME" />
-                <ScalarProperty Name="ROUNTINMODE" ColumnName="ROUNTINMODE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ACRATE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACRATE)">
-              <MappingFragment StoreEntitySet="ACRATE">
-                <ScalarProperty Name="CRATE_ID" ColumnName="CRATE_ID" />
-                <ScalarProperty Name="MAKER" ColumnName="MAKER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AECDATAMAP">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AECDATAMAP)">
-              <MappingFragment StoreEntitySet="AECDATAMAP">
-                <ScalarProperty Name="ECID" ColumnName="ECID" />
-                <ScalarProperty Name="EQPT_REAL_ID" ColumnName="EQPT_REAL_ID" />
-                <ScalarProperty Name="ECNAME" ColumnName="ECNAME" />
-                <ScalarProperty Name="ECMIN" ColumnName="ECMIN" />
-                <ScalarProperty Name="ECMAX" ColumnName="ECMAX" />
-                <ScalarProperty Name="ECV" ColumnName="ECV" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AEVENTRPTCOND">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AEVENTRPTCOND)">
-              <MappingFragment StoreEntitySet="AEVENTRPTCOND">
-                <ScalarProperty Name="CEID" ColumnName="CEID" />
-                <ScalarProperty Name="ENABLE_FLG" ColumnName="ENABLE_FLG" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AFLOW_REL">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AFLOW_REL)">
-              <MappingFragment StoreEntitySet="AFLOW_REL">
-                <ScalarProperty Name="UPSTREAM_ID" ColumnName="UPSTREAM_ID" />
-                <ScalarProperty Name="DOWNSTREAM_ID" ColumnName="DOWNSTREAM_ID" />
-                <ScalarProperty Name="FR_ID" ColumnName="FR_ID" />
-                <ScalarProperty Name="REL_TYPE" ColumnName="REL_TYPE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UASFNC">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.UASFNC)">
-              <MappingFragment StoreEntitySet="UASFNC">
-                <ScalarProperty Name="FUNC_CODE" ColumnName="FUNC_CODE" />
-                <ScalarProperty Name="FUNC_NAME" ColumnName="FUNC_NAME" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ALOT">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALOT)">
-              <MappingFragment StoreEntitySet="ALOT">
-                <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
-                <ScalarProperty Name="SHT_TYP" ColumnName="SHT_TYP" />
-                <ScalarProperty Name="CST_OPER_MODE" ColumnName="CST_OPER_MODE" />
-                <ScalarProperty Name="DUMMY_TYPE" ColumnName="DUMMY_TYPE" />
-                <ScalarProperty Name="LOT_JUDGE" ColumnName="LOT_JUDGE" />
-                <ScalarProperty Name="WORK_ORDER" ColumnName="WORK_ORDER" />
-                <ScalarProperty Name="PROC_STAT" ColumnName="PROC_STAT" />
-                <ScalarProperty Name="LOT_START_PROC_TIME" ColumnName="LOT_START_PROC_TIME" />
-                <ScalarProperty Name="LOT_END_PROC_TIME" ColumnName="LOT_END_PROC_TIME" />
-                <ScalarProperty Name="PROC_SHT_CNT" ColumnName="PROC_SHT_CNT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="HOPERATION">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.HOPERATION)">
-              <MappingFragment StoreEntitySet="HOPERATION">
-                <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
-                <ScalarProperty Name="T_STAMP" ColumnName="T_STAMP" />
-                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
-                <ScalarProperty Name="FORM_NAME" ColumnName="FORM_NAME" />
-                <ScalarProperty Name="ACTION" ColumnName="ACTION" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ASHEET">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASHEET)">
-              <MappingFragment StoreEntitySet="ASHEET">
-                <ScalarProperty Name="SHT_ID" ColumnName="SHT_ID" />
-                <ScalarProperty Name="JOB_NO" ColumnName="JOB_NO" />
-                <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
-                <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
-                <ScalarProperty Name="SHT_STAT" ColumnName="SHT_STAT" />
-                <ScalarProperty Name="SOURCE_CST_ID" ColumnName="SOURCE_CST_ID" />
-                <ScalarProperty Name="SOURCE_SLOT_NO" ColumnName="SOURCE_SLOT_NO" />
-                <ScalarProperty Name="SOURCE_PORT_NO" ColumnName="SOURCE_PORT_NO" />
-                <ScalarProperty Name="TARGET_CST_ID" ColumnName="TARGET_CST_ID" />
-                <ScalarProperty Name="TARGET_SLOT_NO" ColumnName="TARGET_SLOT_NO" />
-                <ScalarProperty Name="TARGET_PORT_NO" ColumnName="TARGET_PORT_NO" />
-                <ScalarProperty Name="PROC_FLAG" ColumnName="PROC_FLAG" />
-                <ScalarProperty Name="SHT_JUDGE" ColumnName="SHT_JUDGE" />
-                <ScalarProperty Name="SHT_GRADE" ColumnName="SHT_GRADE" />
-                <ScalarProperty Name="PROC_INFO" ColumnName="PROC_INFO" />
-                <ScalarProperty Name="PPID" ColumnName="PPID" />
-                <ScalarProperty Name="CRATE_ID" ColumnName="CRATE_ID" />
-                <ScalarProperty Name="TAKE_OUT_STAT" ColumnName="TAKE_OUT_STAT" />
-                <ScalarProperty Name="NODE_ID" ColumnName="NODE_ID" />
-                <ScalarProperty Name="CST_ID" ColumnName="CST_ID" />
-                <ScalarProperty Name="SLOT_NO" ColumnName="SLOT_NO" />
-                <ScalarProperty Name="TAKE_OUT_TIME" ColumnName="TAKE_OUT_TIME" />
-                <ScalarProperty Name="SCRAP_CODE" ColumnName="SCRAP_CODE" />
-                <ScalarProperty Name="REASON_CODE" ColumnName="REASON_CODE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="HASHEET">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.HASHEET)">
-              <MappingFragment StoreEntitySet="HASHEET">
-                <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
-                <ScalarProperty Name="T_STAMP" ColumnName="T_STAMP" />
-                <ScalarProperty Name="SHT_ID" ColumnName="SHT_ID" />
-                <ScalarProperty Name="JOB_NO" ColumnName="JOB_NO" />
-                <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
-                <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
-                <ScalarProperty Name="SHT_STAT" ColumnName="SHT_STAT" />
-                <ScalarProperty Name="SOURCE_CST_ID" ColumnName="SOURCE_CST_ID" />
-                <ScalarProperty Name="SOURCE_SLOT_NO" ColumnName="SOURCE_SLOT_NO" />
-                <ScalarProperty Name="SOURCE_PORT_NO" ColumnName="SOURCE_PORT_NO" />
-                <ScalarProperty Name="TARGET_CST_ID" ColumnName="TARGET_CST_ID" />
-                <ScalarProperty Name="TARGET_SLOT_NO" ColumnName="TARGET_SLOT_NO" />
-                <ScalarProperty Name="TARGET_PORT_NO" ColumnName="TARGET_PORT_NO" />
-                <ScalarProperty Name="PROC_FLAG" ColumnName="PROC_FLAG" />
-                <ScalarProperty Name="SHT_JUDGE" ColumnName="SHT_JUDGE" />
-                <ScalarProperty Name="SHT_GRADE" ColumnName="SHT_GRADE" />
-                <ScalarProperty Name="PROC_INFO" ColumnName="PROC_INFO" />
-                <ScalarProperty Name="PPID" ColumnName="PPID" />
-                <ScalarProperty Name="CRATE_ID" ColumnName="CRATE_ID" />
-                <ScalarProperty Name="TAKE_OUT_STAT" ColumnName="TAKE_OUT_STAT" />
-                <ScalarProperty Name="NODE_ID" ColumnName="NODE_ID" />
-                <ScalarProperty Name="CST_ID" ColumnName="CST_ID" />
-                <ScalarProperty Name="SLOT_NO" ColumnName="SLOT_NO" />
-                <ScalarProperty Name="TAKE_OUT_TIME" ColumnName="TAKE_OUT_TIME" />
-                <ScalarProperty Name="SCRAP_CODE" ColumnName="SCRAP_CODE" />
-                <ScalarProperty Name="REASON_CODE" ColumnName="REASON_CODE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ATRACEITEM">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ATRACEITEM)">
-              <MappingFragment StoreEntitySet="ATRACEITEM">
-                <ScalarProperty Name="TRACE_ID" ColumnName="TRACE_ID" />
-                <ScalarProperty Name="SVID" ColumnName="SVID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ATRACESET">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ATRACESET)">
-              <MappingFragment StoreEntitySet="ATRACESET">
-                <ScalarProperty Name="TRACE_ID" ColumnName="TRACE_ID" />
-                <ScalarProperty Name="SMP_PERIOD" ColumnName="SMP_PERIOD" />
-                <ScalarProperty Name="SMP_PERIOD_SEC" ColumnName="SMP_PERIOD_SEC" />
-                <ScalarProperty Name="TOTAL_SMP_CNT" ColumnName="TOTAL_SMP_CNT" />
-                <ScalarProperty Name="SMP_CNT" ColumnName="SMP_CNT" />
-                <ScalarProperty Name="NX_SMP_TIME" ColumnName="NX_SMP_TIME" />
-                <ScalarProperty Name="SMP_TIME" ColumnName="SMP_TIME" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UASUSRGRP">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.UASUSRGRP)">
-              <MappingFragment StoreEntitySet="UASUSRGRP">
-                <ScalarProperty Name="USER_GRP" ColumnName="USER_GRP" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UASUFNC">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.UASUFNC)">
-              <MappingFragment StoreEntitySet="UASUFNC">
-                <ScalarProperty Name="USER_GRP" ColumnName="USER_GRP" />
-                <ScalarProperty Name="FUNC_CODE" ColumnName="FUNC_CODE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="APORTSTATION">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APORTSTATION)">
-              <MappingFragment StoreEntitySet="APORTSTATION">
-                <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
-                <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
-                <ScalarProperty Name="LD_VH_TYPE" ColumnName="LD_VH_TYPE" />
-                <ScalarProperty Name="ULD_VH_TYPE" ColumnName="ULD_VH_TYPE" />
-                <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
-                <ScalarProperty Name="PORT_TYPE" ColumnName="PORT_TYPE" />
-                <ScalarProperty Name="PORT_STATUS" ColumnName="PORT_STATUS" />
-                <ScalarProperty Name="PORT_DIR" ColumnName="PORT_DIR" />
-                <ScalarProperty Name="PORT_SERVICE_STATUS" ColumnName="PORT_SERVICE_STATUS" />
-                <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="APORT">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APORT)">
-              <MappingFragment StoreEntitySet="APORT">
-                <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
-                <ScalarProperty Name="UNIT_NUM" ColumnName="UNIT_NUM" />
-                <ScalarProperty Name="PORT_NUM" ColumnName="PORT_NUM" />
-                <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
-                <ScalarProperty Name="PORT_TYPE" ColumnName="PORT_TYPE" />
-                <ScalarProperty Name="PORT_USE_TYPE" ColumnName="PORT_USE_TYPE" />
-                <ScalarProperty Name="PORT_REAL_TYPE" ColumnName="PORT_REAL_TYPE" />
-                <ScalarProperty Name="CAPACITY" ColumnName="CAPACITY" />
-                <ScalarProperty Name="PORT_STAT" ColumnName="PORT_STAT" />
-                <ScalarProperty Name="PORT_ENABLE" ColumnName="PORT_ENABLE" />
-                <ScalarProperty Name="TRS_MODE" ColumnName="TRS_MODE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AMCSREPORTQUEUE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AMCSREPORTQUEUE)">
-              <MappingFragment StoreEntitySet="AMCSREPORTQUEUE">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="SERIALIZED_SXFY" ColumnName="SERIALIZED_SXFY" />
-                <ScalarProperty Name="INTER_TIME" ColumnName="INTER_TIME" />
-                <ScalarProperty Name="REPORT_TIME" ColumnName="REPORT_TIME" />
-                <ScalarProperty Name="STREAMFUNCTION_NAME" ColumnName="STREAMFUNCTION_NAME" />
-                <ScalarProperty Name="STREAMFUNCTION_CEID" ColumnName="STREAMFUNCTION_CEID" />
-                <ScalarProperty Name="MCS_CMD_ID" ColumnName="MCS_CMD_ID" />
-                <ScalarProperty Name="VEHICLE_ID" ColumnName="VEHICLE_ID" />
-                <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AADDRESS_DATA">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AADDRESS_DATA)">
-              <MappingFragment StoreEntitySet="AADDRESS_DATA">
-                <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
-                <ScalarProperty Name="VEHOCLE_ID" ColumnName="VEHOCLE_ID" />
-                <ScalarProperty Name="RESOLUTION" ColumnName="RESOLUTION" />
-                <ScalarProperty Name="LOACTION" ColumnName="LOACTION" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="APARKZONEDETAIL">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APARKZONEDETAIL)">
-              <MappingFragment StoreEntitySet="APARKZONEDETAIL">
-                <ScalarProperty Name="PARK_ZONE_ID" ColumnName="PARK_ZONE_ID" />
-                <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
-                <ScalarProperty Name="PRIO" ColumnName="PRIO" />
-                <ScalarProperty Name="CAR_ID" ColumnName="CAR_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="APARKZONEMASTER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APARKZONEMASTER)">
-              <MappingFragment StoreEntitySet="APARKZONEMASTER">
-                <ScalarProperty Name="PARK_TYPE_ID" ColumnName="PARK_TYPE_ID" />
-                <ScalarProperty Name="PARK_ZONE_ID" ColumnName="PARK_ZONE_ID" />
-                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
-                <ScalarProperty Name="ENTRY_ADR_ID" ColumnName="ENTRY_ADR_ID" />
-                <ScalarProperty Name="TOTAL_BORDER" ColumnName="TOTAL_BORDER" />
-                <ScalarProperty Name="LOWER_BORDER" ColumnName="LOWER_BORDER" />
-                <ScalarProperty Name="PARK_TYPE" ColumnName="PARK_TYPE" />
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="APARKZONETYPE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APARKZONETYPE)">
-              <MappingFragment StoreEntitySet="APARKZONETYPE">
-                <ScalarProperty Name="PARK_TYPE_ID" ColumnName="PARK_TYPE_ID" />
-                <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
-                <ScalarProperty Name="TOTAL_BORDER" ColumnName="TOTAL_BORDER" />
-                <ScalarProperty Name="IS_DEFAULT" ColumnName="IS_DEFAULT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="APORT_POSITION_TEACHING_DATA">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APORT_POSITION_TEACHING_DATA)">
-              <MappingFragment StoreEntitySet="APORT_POSITION_TEACHING_DATA">
-                <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
-                <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
-                <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
-                <ScalarProperty Name="POSITION_OFFSET" ColumnName="POSITION_OFFSET" />
-                <ScalarProperty Name="RESOLUTION" ColumnName="RESOLUTION" />
-                <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
-                <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AVEHICLE_CONTROL_100">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AVEHICLE_CONTROL_100)">
-              <MappingFragment StoreEntitySet="AVEHICLE_CONTROL_100">
-                <ScalarProperty Name="VEHICLE_ID" ColumnName="VEHICLE_ID" />
-                <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
-                <ScalarProperty Name="GUIDE_START_STOP_SPEED" ColumnName="GUIDE_START_STOP_SPEED" />
-                <ScalarProperty Name="GUIDE_MAX_SPD" ColumnName="GUIDE_MAX_SPD" />
-                <ScalarProperty Name="GUIDE_ACCEL_DECCEL_TIME" ColumnName="GUIDE_ACCEL_DECCEL_TIME" />
-                <ScalarProperty Name="GUIDE_S_CURVE_RATE" ColumnName="GUIDE_S_CURVE_RATE" />
-                <ScalarProperty Name="GUIDE_RUN_SPD" ColumnName="GUIDE_RUN_SPD" />
-                <ScalarProperty Name="GUIDE_MANUAL_HIGH_SPD" ColumnName="GUIDE_MANUAL_HIGH_SPD" />
-                <ScalarProperty Name="GUIDE_MANUAL_LOW_SPD" ColumnName="GUIDE_MANUAL_LOW_SPD" />
-                <ScalarProperty Name="GUIDE_LF_LOCK_POSITION" ColumnName="GUIDE_LF_LOCK_POSITION" />
-                <ScalarProperty Name="GUIDE_LB_LOCK_POSITION" ColumnName="GUIDE_LB_LOCK_POSITION" />
-                <ScalarProperty Name="GUIDE_RF_LOCK_POSITION" ColumnName="GUIDE_RF_LOCK_POSITION" />
-                <ScalarProperty Name="GUIDE_RB_LOCK_POSITION" ColumnName="GUIDE_RB_LOCK_POSITION" />
-                <ScalarProperty Name="GUIDE_CHG_STABLE_TIME" ColumnName="GUIDE_CHG_STABLE_TIME" />
-                <ScalarProperty Name="TRAVEL_RESOLUTION" ColumnName="TRAVEL_RESOLUTION" />
-                <ScalarProperty Name="TRAVEL_START_STOP_SPEED" ColumnName="TRAVEL_START_STOP_SPEED" />
-                <ScalarProperty Name="TRAVEL_MAX_SPD" ColumnName="TRAVEL_MAX_SPD" />
-                <ScalarProperty Name="TRAVEL_ACCEL_DECCEL_TIME" ColumnName="TRAVEL_ACCEL_DECCEL_TIME" />
-                <ScalarProperty Name="TRAVEL_S_CURVE_RATE" ColumnName="TRAVEL_S_CURVE_RATE" />
-                <ScalarProperty Name="TRAVEL_HOME_DIR" ColumnName="TRAVEL_HOME_DIR" />
-                <ScalarProperty Name="TRAVEL_HOME_SPD" ColumnName="TRAVEL_HOME_SPD" />
-                <ScalarProperty Name="TRAVEL_KEEP_DIS_SPD" ColumnName="TRAVEL_KEEP_DIS_SPD" />
-                <ScalarProperty Name="TRAVEL_MANUAL_HIGH_SPD" ColumnName="TRAVEL_MANUAL_HIGH_SPD" />
-                <ScalarProperty Name="TRAVEL_MANUAL_LOW_SPD" ColumnName="TRAVEL_MANUAL_LOW_SPD" />
-                <ScalarProperty Name="TRAVEL_TEACHING_SPD" ColumnName="TRAVEL_TEACHING_SPD" />
-                <ScalarProperty Name="TRAVEL_TRAVEL_DIR" ColumnName="TRAVEL_TRAVEL_DIR" />
-                <ScalarProperty Name="TRAVEL_ENCODER_POLARITY" ColumnName="TRAVEL_ENCODER_POLARITY" />
-                <ScalarProperty Name="TRAVEL_F_DIR_LIMIT" ColumnName="TRAVEL_F_DIR_LIMIT" />
-                <ScalarProperty Name="TRAVEL_R_DIR_LIMIT" ColumnName="TRAVEL_R_DIR_LIMIT" />
-                <ScalarProperty Name="TRAVEL_OBS_DETECT_LONG" ColumnName="TRAVEL_OBS_DETECT_LONG" />
-                <ScalarProperty Name="TRAVEL_OBS_DETECT_SHORT" ColumnName="TRAVEL_OBS_DETECT_SHORT" />
-                <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
-                <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CONTROL_DATA">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.CONTROL_DATA)">
-              <MappingFragment StoreEntitySet="CONTROL_DATA">
-                <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
-                <ScalarProperty Name="T1" ColumnName="T1" />
-                <ScalarProperty Name="T2" ColumnName="T2" />
-                <ScalarProperty Name="T3" ColumnName="T3" />
-                <ScalarProperty Name="T4" ColumnName="T4" />
-                <ScalarProperty Name="T5" ColumnName="T5" />
-                <ScalarProperty Name="T6" ColumnName="T6" />
-                <ScalarProperty Name="T7" ColumnName="T7" />
-                <ScalarProperty Name="T8" ColumnName="T8" />
-                <ScalarProperty Name="BLOCK_REQ_TIME_OUT" ColumnName="BLOCK_REQ_TIME_OUT" />
-                <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
-                <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SCALE_BASE_DATA">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.SCALE_BASE_DATA)">
-              <MappingFragment StoreEntitySet="SCALE_BASE_DATA">
-                <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
-                <ScalarProperty Name="RESOLUTION" ColumnName="RESOLUTION" />
-                <ScalarProperty Name="INPOSITION_AREA" ColumnName="INPOSITION_AREA" />
-                <ScalarProperty Name="INPOSITION_STABLE_TIME" ColumnName="INPOSITION_STABLE_TIME" />
-                <ScalarProperty Name="TOTAL_SCALE_PULSE" ColumnName="TOTAL_SCALE_PULSE" />
-                <ScalarProperty Name="SCALE_OFFSET" ColumnName="SCALE_OFFSET" />
-                <ScalarProperty Name="SCALE_RESE_DIST" ColumnName="SCALE_RESE_DIST" />
-                <ScalarProperty Name="READ_DIR" ColumnName="READ_DIR" />
-                <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
-                <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ASYSEXCUTEQUALITY">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASYSEXCUTEQUALITY)">
-              <MappingFragment StoreEntitySet="ASYSEXCUTEQUALITY">
-                <ScalarProperty Name="CMD_ID_MCS" ColumnName="CMD_ID_MCS" />
-                <ScalarProperty Name="CMD_INSERT_TIME" ColumnName="CMD_INSERT_TIME" />
-                <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
-                <ScalarProperty Name="CMD_FINISH_TIME" ColumnName="CMD_FINISH_TIME" />
-                <ScalarProperty Name="CMD_FINISH_STATUS" ColumnName="CMD_FINISH_STATUS" />
-                <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
-                <ScalarProperty Name="VH_START_SEC_ID" ColumnName="VH_START_SEC_ID" />
-                <ScalarProperty Name="SOURCE_ADR" ColumnName="SOURCE_ADR" />
-                <ScalarProperty Name="SEC_CNT_TO_SOURCE" ColumnName="SEC_CNT_TO_SOURCE" />
-                <ScalarProperty Name="SEC_DIS_TO_SOURCE" ColumnName="SEC_DIS_TO_SOURCE" />
-                <ScalarProperty Name="DESTINATION_ADR" ColumnName="DESTINATION_ADR" />
-                <ScalarProperty Name="SEC_CNT_TO_DESTN" ColumnName="SEC_CNT_TO_DESTN" />
-                <ScalarProperty Name="SEC_DIS_TO_DESTN" ColumnName="SEC_DIS_TO_DESTN" />
-                <ScalarProperty Name="CMDQUEUE_TIME" ColumnName="CMDQUEUE_TIME" />
-                <ScalarProperty Name="MOVE_TO_SOURCE_TIME" ColumnName="MOVE_TO_SOURCE_TIME" />
-                <ScalarProperty Name="TOTAL_BLOCK_TIME_TO_SOURCE" ColumnName="TOTAL_BLOCK_TIME_TO_SOURCE" />
-                <ScalarProperty Name="TOTAL_OCS_TIME_TO_SOURCE" ColumnName="TOTAL_OCS_TIME_TO_SOURCE" />
-                <ScalarProperty Name="TOTAL_BLOCK_COUNT_TO_SOURCE" ColumnName="TOTAL_BLOCK_COUNT_TO_SOURCE" />
-                <ScalarProperty Name="TOTAL_OCS_COUNT_TO_SOURCE" ColumnName="TOTAL_OCS_COUNT_TO_SOURCE" />
-                <ScalarProperty Name="MOVE_TO_DESTN_TIME" ColumnName="MOVE_TO_DESTN_TIME" />
-                <ScalarProperty Name="TOTAL_BLOCK_TIME_TO_DESTN" ColumnName="TOTAL_BLOCK_TIME_TO_DESTN" />
-                <ScalarProperty Name="TOTAL_OCS_TIME_TO_DESTN" ColumnName="TOTAL_OCS_TIME_TO_DESTN" />
-                <ScalarProperty Name="TOTAL_BLOCK_COUNT_TO_DESTN" ColumnName="TOTAL_BLOCK_COUNT_TO_DESTN" />
-                <ScalarProperty Name="TOTAL_OCS_COUNT_TO_DESTN" ColumnName="TOTAL_OCS_COUNT_TO_DESTN" />
-                <ScalarProperty Name="TOTALPAUSE_TIME" ColumnName="TOTALPAUSE_TIME" />
-                <ScalarProperty Name="CMD_TOTAL_EXCUTION_TIME" ColumnName="CMD_TOTAL_EXCUTION_TIME" />
-                <ScalarProperty Name="TOTAL_ACT_VH_COUNT" ColumnName="TOTAL_ACT_VH_COUNT" />
-                <ScalarProperty Name="PARKING_VH_COUNT" ColumnName="PARKING_VH_COUNT" />
-                <ScalarProperty Name="CYCLERUN_VH_COUNT" ColumnName="CYCLERUN_VH_COUNT" />
-                <ScalarProperty Name="TOTAL_IDLE_VH_COUNT" ColumnName="TOTAL_IDLE_VH_COUNT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AHIDZONEDETAIL">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AHIDZONEDETAIL)">
-              <MappingFragment StoreEntitySet="AHIDZONEDETAIL">
-                <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
-                <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AHIDZONEMASTER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AHIDZONEMASTER)">
-              <MappingFragment StoreEntitySet="AHIDZONEMASTER">
-                <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
-                <ScalarProperty Name="LEAVE_ADR_ID_1" ColumnName="LEAVE_ADR_ID_1" />
-                <ScalarProperty Name="LEAVE_ADR_ID_2" ColumnName="LEAVE_ADR_ID_2" />
-                <ScalarProperty Name="MAX_LOAD_COUNT" ColumnName="MAX_LOAD_COUNT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AHIDZONEQUEUE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AHIDZONEQUEUE)">
-              <MappingFragment StoreEntitySet="AHIDZONEQUEUE">
-                <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
-                <ScalarProperty Name="VEHICLE_ID" ColumnName="VEHICLE_ID" />
-                <ScalarProperty Name="REQ_TIME" ColumnName="REQ_TIME" />
-                <ScalarProperty Name="BLOCK_TIME" ColumnName="BLOCK_TIME" />
-                <ScalarProperty Name="THROU_TIME" ColumnName="THROU_TIME" />
-                <ScalarProperty Name="RELEASE_TIME" ColumnName="RELEASE_TIME" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="IS_PASUE" ColumnName="IS_PASUE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ALARMRPTCOND">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALARMRPTCOND)">
-              <MappingFragment StoreEntitySet="ALARMRPTCOND">
-                <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
-                <ScalarProperty Name="ALAM_CODE" ColumnName="ALAM_CODE" />
-                <ScalarProperty Name="ENABLE_FLG" ColumnName="ENABLE_FLG" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ASECTION_CONTROL_100">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASECTION_CONTROL_100)">
-              <MappingFragment StoreEntitySet="ASECTION_CONTROL_100">
-                <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
-                <ScalarProperty Name="CHG_AREA_SECSOR_1" ColumnName="CHG_AREA_SECSOR_1" />
-                <ScalarProperty Name="CHG_AREA_SECSOR_2" ColumnName="CHG_AREA_SECSOR_2" />
-                <ScalarProperty Name="OBS_SENSOR_F" ColumnName="OBS_SENSOR_F" />
-                <ScalarProperty Name="OBS_SENSOR_R" ColumnName="OBS_SENSOR_R" />
-                <ScalarProperty Name="OBS_SENSOR_L" ColumnName="OBS_SENSOR_L" />
-                <ScalarProperty Name="RANGE_SENSOR_F" ColumnName="RANGE_SENSOR_F" />
-                <ScalarProperty Name="IS_ADR_RPT" ColumnName="IS_ADR_RPT" />
-                <ScalarProperty Name="CAN_GUIDE_CHG" ColumnName="CAN_GUIDE_CHG" />
-                <ScalarProperty Name="HID_CONTROL" ColumnName="HID_CONTROL" />
-                <ScalarProperty Name="BRANCH_FLAG" ColumnName="BRANCH_FLAG" />
-                <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
-                <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
-                <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VSECTION_100">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.VSECTION_100)">
-              <MappingFragment StoreEntitySet="VSECTION_100">
-                <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
-                <ScalarProperty Name="SEG_ORDER_NUM" ColumnName="SEG_ORDER_NUM" />
-                <ScalarProperty Name="DIRC_DRIV" ColumnName="DIRC_DRIV" />
-                <ScalarProperty Name="DIRC_GUID" ColumnName="DIRC_GUID" />
-                <ScalarProperty Name="SEC_DIS" ColumnName="SEC_DIS" />
-                <ScalarProperty Name="DIS_FROM_ORIGIN" ColumnName="DIS_FROM_ORIGIN" />
-                <ScalarProperty Name="CDOG_1" ColumnName="CDOG_1" />
-                <ScalarProperty Name="CDOG_2" ColumnName="CDOG_2" />
-                <ScalarProperty Name="PRE_BLO_REQ" ColumnName="PRE_BLO_REQ" />
-                <ScalarProperty Name="SEC_TYPE" ColumnName="SEC_TYPE" />
-                <ScalarProperty Name="SEC_DIR" ColumnName="SEC_DIR" />
-                <ScalarProperty Name="PADDING" ColumnName="PADDING" />
-                <ScalarProperty Name="ENB_CHG_G_AREA" ColumnName="ENB_CHG_G_AREA" />
-                <ScalarProperty Name="PRE_DIV" ColumnName="PRE_DIV" />
-                <ScalarProperty Name="PRE_ADD_REPR" ColumnName="PRE_ADD_REPR" />
-                <ScalarProperty Name="OBS_SENSOR" ColumnName="OBS_SENSOR" />
-                <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
-                <ScalarProperty Name="START_BC1" ColumnName="START_BC1" />
-                <ScalarProperty Name="END_BC1" ColumnName="END_BC1" />
-                <ScalarProperty Name="START_BC2" ColumnName="START_BC2" />
-                <ScalarProperty Name="END_BC2" ColumnName="END_BC2" />
-                <ScalarProperty Name="START_BC3" ColumnName="START_BC3" />
-                <ScalarProperty Name="END_BC3" ColumnName="END_BC3" />
-                <ScalarProperty Name="CHG_AREA_SECSOR_1" ColumnName="CHG_AREA_SECSOR_1" />
-                <ScalarProperty Name="CHG_AREA_SECSOR_2" ColumnName="CHG_AREA_SECSOR_2" />
-                <ScalarProperty Name="OBS_SENSOR_F" ColumnName="OBS_SENSOR_F" />
-                <ScalarProperty Name="OBS_SENSOR_R" ColumnName="OBS_SENSOR_R" />
-                <ScalarProperty Name="OBS_SENSOR_L" ColumnName="OBS_SENSOR_L" />
-                <ScalarProperty Name="RANGE_SENSOR_F" ColumnName="RANGE_SENSOR_F" />
-                <ScalarProperty Name="IS_ADR_RPT" ColumnName="IS_ADR_RPT" />
-                <ScalarProperty Name="CAN_GUIDE_CHG" ColumnName="CAN_GUIDE_CHG" />
-                <ScalarProperty Name="HID_CONTROL" ColumnName="HID_CONTROL" />
-                <ScalarProperty Name="BRANCH_FLAG" ColumnName="BRANCH_FLAG" />
-                <ScalarProperty Name="SEC_ORDER_NUM" ColumnName="SEC_ORDER_NUM" />
-                <ScalarProperty Name="SEG_NUM" ColumnName="SEG_NUM" />
-                <ScalarProperty Name="FROM_ADR_ID" ColumnName="FROM_ADR_ID" />
-                <ScalarProperty Name="TO_ADR_ID" ColumnName="TO_ADR_ID" />
-                <ScalarProperty Name="SEC_SPD" ColumnName="SEC_SPD" />
-                <ScalarProperty Name="CHG_SEG_NUM_1" ColumnName="CHG_SEG_NUM_1" />
-                <ScalarProperty Name="CHG_SEG_NUM_2" ColumnName="CHG_SEG_NUM_2" />
-                <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
-                <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
-                <ScalarProperty Name="AREA_SECSOR" ColumnName="AREA_SECSOR" />
-                <ScalarProperty Name="LAST_TECH_TIME" ColumnName="LAST_TECH_TIME" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ASECTION">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASECTION)">
-              <MappingFragment StoreEntitySet="ASECTION">
-                <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
-                <ScalarProperty Name="SEG_ORDER_NUM" ColumnName="SEG_ORDER_NUM" />
-                <ScalarProperty Name="SEG_NUM" ColumnName="SEG_NUM" />
-                <ScalarProperty Name="FROM_ADR_ID" ColumnName="FROM_ADR_ID" />
-                <ScalarProperty Name="TO_ADR_ID" ColumnName="TO_ADR_ID" />
-                <ScalarProperty Name="SEC_DIS" ColumnName="SEC_DIS" />
-                <ScalarProperty Name="SEC_SPD" ColumnName="SEC_SPD" />
-                <ScalarProperty Name="SEC_TYPE" ColumnName="SEC_TYPE" />
-                <ScalarProperty Name="SEC_DIR" ColumnName="SEC_DIR" />
-                <ScalarProperty Name="LAST_TECH_TIME" ColumnName="LAST_TECH_TIME" />
-                <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
-                <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
-                <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
-                <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
-                <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
-                <ScalarProperty Name="ADR1_CHG_SEC_ID_1" ColumnName="ADR1_CHG_SEC_ID_1" />
-                <ScalarProperty Name="ADR1_CHG_SEC_COST_1" ColumnName="ADR1_CHG_SEC_COST_1" />
-                <ScalarProperty Name="ADR1_CHG_SEC_ID_2" ColumnName="ADR1_CHG_SEC_ID_2" />
-                <ScalarProperty Name="ADR1_CHG_SEC_COST_2" ColumnName="ADR1_CHG_SEC_COST_2" />
-                <ScalarProperty Name="ADR1_CHG_SEC_ID_3" ColumnName="ADR1_CHG_SEC_ID_3" />
-                <ScalarProperty Name="ADR1_CHG_SEC_COST_3" ColumnName="ADR1_CHG_SEC_COST_3" />
-                <ScalarProperty Name="ADR2_CHG_SEC_ID_1" ColumnName="ADR2_CHG_SEC_ID_1" />
-                <ScalarProperty Name="ADR2_CHG_SEC_COST_1" ColumnName="ADR2_CHG_SEC_COST_1" />
-                <ScalarProperty Name="ADR2_CHG_SEC_ID_2" ColumnName="ADR2_CHG_SEC_ID_2" />
-                <ScalarProperty Name="ADR2_CHG_SEC_COST_2" ColumnName="ADR2_CHG_SEC_COST_2" />
-                <ScalarProperty Name="ADR2_CHG_SEC_ID_3" ColumnName="ADR2_CHG_SEC_ID_3" />
-                <ScalarProperty Name="ADR2_CHG_SEC_COST_3" ColumnName="ADR2_CHG_SEC_COST_3" />
-                <ScalarProperty Name="SEC_COST_From2To" ColumnName="SEC_COST_From2To" />
-                <ScalarProperty Name="SEC_COST_To2From" ColumnName="SEC_COST_To2From" />
-                <ScalarProperty Name="ISBANEND_From2To" ColumnName="ISBANEND_From2To" />
-                <ScalarProperty Name="ISBANEND_To2From" ColumnName="ISBANEND_To2From" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
-                <ScalarProperty Name="PRE_DISABLE_FLAG" ColumnName="PRE_DISABLE_FLAG" />
-                <ScalarProperty Name="PRE_DISABLE_TIME" ColumnName="PRE_DISABLE_TIME" />
-                <ScalarProperty Name="DISABLE_TIME" ColumnName="DISABLE_TIME" />
-                <ScalarProperty Name="DISABLE_FLAG_USER" ColumnName="DISABLE_FLAG_USER" />
-                <ScalarProperty Name="DISABLE_FLAG_SAFETY" ColumnName="DISABLE_FLAG_SAFETY" />
-                <ScalarProperty Name="DISABLE_FLAG_CHARGE" ColumnName="DISABLE_FLAG_CHARGE" />
-                <ScalarProperty Name="DISABLE_FLAG_SYSTEM" ColumnName="DISABLE_FLAG_SYSTEM" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ASEGMENT">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASEGMENT)">
-              <MappingFragment StoreEntitySet="ASEGMENT">
-                <ScalarProperty Name="SEG_ID" ColumnName="SEG_ID" />
-                <ScalarProperty Name="FROM_ADR_ID" ColumnName="FROM_ADR_ID" />
-                <ScalarProperty Name="TO_ADR_ID" ColumnName="TO_ADR_ID" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="SEG_TYPE" ColumnName="SEG_TYPE" />
-                <ScalarProperty Name="SEG_RAIL_TYPE" ColumnName="SEG_RAIL_TYPE" />
-                <ScalarProperty Name="SPECIAL_MARK" ColumnName="SPECIAL_MARK" />
-                <ScalarProperty Name="RESERVE_FIELD" ColumnName="RESERVE_FIELD" />
-                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
-                <ScalarProperty Name="DIR" ColumnName="DIR" />
-                <ScalarProperty Name="PRE_DISABLE_FLAG" ColumnName="PRE_DISABLE_FLAG" />
-                <ScalarProperty Name="PRE_DISABLE_TIME" ColumnName="PRE_DISABLE_TIME" />
-                <ScalarProperty Name="DISABLE_TIME" ColumnName="DISABLE_TIME" />
-                <ScalarProperty Name="ADR1_CHG_SEG_ID_1" ColumnName="ADR1_CHG_SEG_ID_1" />
-                <ScalarProperty Name="ADR1_CHG_SEG_COST_1" ColumnName="ADR1_CHG_SEG_COST_1" />
-                <ScalarProperty Name="ADR1_CHG_SEG_ID_2" ColumnName="ADR1_CHG_SEG_ID_2" />
-                <ScalarProperty Name="ADR1_CHG_SEG_COST_2" ColumnName="ADR1_CHG_SEG_COST_2" />
-                <ScalarProperty Name="ADR1_CHG_SEG_ID_3" ColumnName="ADR1_CHG_SEG_ID_3" />
-                <ScalarProperty Name="ADR1_CHG_SEG_COST_3" ColumnName="ADR1_CHG_SEG_COST_3" />
-                <ScalarProperty Name="ADR2_CHG_SEG_ID_1" ColumnName="ADR2_CHG_SEG_ID_1" />
-                <ScalarProperty Name="ADR2_CHG_SEG_COST_1" ColumnName="ADR2_CHG_SEG_COST_1" />
-                <ScalarProperty Name="ADR2_CHG_SEG_ID_2" ColumnName="ADR2_CHG_SEG_ID_2" />
-                <ScalarProperty Name="ADR2_CHG_SEG_COST_2" ColumnName="ADR2_CHG_SEG_COST_2" />
-                <ScalarProperty Name="ADR2_CHG_SEG_ID_3" ColumnName="ADR2_CHG_SEG_ID_3" />
-                <ScalarProperty Name="ADR2_CHG_SEG_COST_3" ColumnName="ADR2_CHG_SEG_COST_3" />
-                <ScalarProperty Name="SEC_COST_From2To" ColumnName="SEC_COST_From2To" />
-                <ScalarProperty Name="SEC_COST_To2From" ColumnName="SEC_COST_To2From" />
-                <ScalarProperty Name="ISBANEND_From2To" ColumnName="ISBANEND_From2To" />
-                <ScalarProperty Name="ISBANEND_To2From" ColumnName="ISBANEND_To2From" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AADDRESS">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AADDRESS)">
-              <MappingFragment StoreEntitySet="AADDRESS">
-                <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
-                <ScalarProperty Name="ADRTYPE" ColumnName="ADRTYPE" />
-                <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
-                <ScalarProperty Name="DISTANCE" ColumnName="DISTANCE" />
-                <ScalarProperty Name="P_LOCATION" ColumnName="P_LOCATION" />
-                <ScalarProperty Name="IS_DISPLAY" ColumnName="IS_DISPLAY" />
-                <ScalarProperty Name="ZOOM_LV" ColumnName="ZOOM_LV" />
-                <ScalarProperty Name="PORT1_ID" ColumnName="PORT1_ID" />
-                <ScalarProperty Name="P1_LD_VH_TYPE" ColumnName="P1_LD_VH_TYPE" />
-                <ScalarProperty Name="P1_ULD_VH_TYPE" ColumnName="P1_ULD_VH_TYPE" />
-                <ScalarProperty Name="PORT2_ID" ColumnName="PORT2_ID" />
-                <ScalarProperty Name="P2_LD_VH_TYPE" ColumnName="P2_LD_VH_TYPE" />
-                <ScalarProperty Name="P2_ULD_VH_TYPE" ColumnName="P2_ULD_VH_TYPE" />
-                <ScalarProperty Name="NODE_ID" ColumnName="NODE_ID" />
-                <ScalarProperty Name="ADR1_DIS" ColumnName="ADR1_DIS" />
-                <ScalarProperty Name="ADR2_DIS" ColumnName="ADR2_DIS" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ALARM">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALARM)">
-              <MappingFragment StoreEntitySet="ALARM">
-                <ScalarProperty Name="CMD_ID_4" ColumnName="CMD_ID_4" />
-                <ScalarProperty Name="CMD_ID_3" ColumnName="CMD_ID_3" />
-                <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
-                <ScalarProperty Name="RPT_DATE_TIME" ColumnName="RPT_DATE_TIME" />
-                <ScalarProperty Name="ALAM_CODE" ColumnName="ALAM_CODE" />
-                <ScalarProperty Name="ALAM_LVL" ColumnName="ALAM_LVL" />
-                <ScalarProperty Name="ALAM_STAT" ColumnName="ALAM_STAT" />
-                <ScalarProperty Name="ALAM_DESC" ColumnName="ALAM_DESC" />
-                <ScalarProperty Name="CLEAR_DATE_TIME" ColumnName="CLEAR_DATE_TIME" />
-                <ScalarProperty Name="CMD_ID_1" ColumnName="CMD_ID_1" />
-                <ScalarProperty Name="CMD_ID_2" ColumnName="CMD_ID_2" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UASUSR">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.UASUSR)">
-              <MappingFragment StoreEntitySet="UASUSR">
-                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
-                <ScalarProperty Name="PASSWD" ColumnName="PASSWD" />
-                <ScalarProperty Name="BADGE_NUMBER" ColumnName="BADGE_NUMBER" />
-                <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
-                <ScalarProperty Name="DISABLE_FLG" ColumnName="DISABLE_FLG" />
-                <ScalarProperty Name="POWER_USER_FLG" ColumnName="POWER_USER_FLG" />
-                <ScalarProperty Name="ADMIN_FLG" ColumnName="ADMIN_FLG" />
-                <ScalarProperty Name="USER_GRP" ColumnName="USER_GRP" />
-                <ScalarProperty Name="DEPARTMENT" ColumnName="DEPARTMENT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ACMD">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACMD)">
-              <MappingFragment StoreEntitySet="ACMD">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
-                <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
-                <ScalarProperty Name="CMD_TYPE" ColumnName="CMD_TYPE" />
-                <ScalarProperty Name="SOURCE" ColumnName="SOURCE" />
-                <ScalarProperty Name="DESTINATION" ColumnName="DESTINATION" />
-                <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
-                <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
-                <ScalarProperty Name="CMD_END_TIME" ColumnName="CMD_END_TIME" />
-                <ScalarProperty Name="CMD_PROGRESS" ColumnName="CMD_PROGRESS" />
-                <ScalarProperty Name="INTERRUPTED_REASON" ColumnName="INTERRUPTED_REASON" />
-                <ScalarProperty Name="ESTIMATED_TIME" ColumnName="ESTIMATED_TIME" />
-                <ScalarProperty Name="ESTIMATED_EXCESS_TIME" ColumnName="ESTIMATED_EXCESS_TIME" />
-                <ScalarProperty Name="TRANSFER_ID" ColumnName="TRANSFER_ID" />
-                <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
-                <ScalarProperty Name="SOURCE_PORT" ColumnName="SOURCE_PORT" />
-                <ScalarProperty Name="DESTINATION_PORT" ColumnName="DESTINATION_PORT" />
-                <ScalarProperty Name="CMD_STATUS" ColumnName="CMD_STATUS" />
-                <ScalarProperty Name="COMPLETE_STATUS" ColumnName="COMPLETE_STATUS" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ACMD_DETAIL">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACMD_DETAIL)">
-              <MappingFragment StoreEntitySet="ACMD_DETAIL">
-                <ScalarProperty Name="CMD_ID" ColumnName="CMD_ID" />
-                <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
-                <ScalarProperty Name="ADD_ID" ColumnName="ADD_ID" />
-                <ScalarProperty Name="ADD_ENTRY_TIME" ColumnName="ADD_ENTRY_TIME" />
-                <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
-                <ScalarProperty Name="SEG_NUM" ColumnName="SEG_NUM" />
-                <ScalarProperty Name="SEC_ENTRY_TIME" ColumnName="SEC_ENTRY_TIME" />
-                <ScalarProperty Name="SEC_LEAVE_TIME" ColumnName="SEC_LEAVE_TIME" />
-                <ScalarProperty Name="LOAD_START_TIME" ColumnName="LOAD_START_TIME" />
-                <ScalarProperty Name="LOAD_END_TIME" ColumnName="LOAD_END_TIME" />
-                <ScalarProperty Name="UNLOAD_START_TIME" ColumnName="UNLOAD_START_TIME" />
-                <ScalarProperty Name="UNLOAD_END_TIME" ColumnName="UNLOAD_END_TIME" />
-                <ScalarProperty Name="ESTIMATED_TIME" ColumnName="ESTIMATED_TIME" />
-                <ScalarProperty Name="IS_PASS" ColumnName="IS_PASS" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ATRANSFER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ATRANSFER)">
-              <MappingFragment StoreEntitySet="ATRANSFER">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
-                <ScalarProperty Name="TRANSFERSTATE" ColumnName="TRANSFERSTATE" />
-                <ScalarProperty Name="COMMANDSTATE" ColumnName="COMMANDSTATE" />
-                <ScalarProperty Name="HOSTSOURCE" ColumnName="HOSTSOURCE" />
-                <ScalarProperty Name="HOSTDESTINATION" ColumnName="HOSTDESTINATION" />
-                <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
-                <ScalarProperty Name="CHECKCODE" ColumnName="CHECKCODE" />
-                <ScalarProperty Name="PAUSEFLAG" ColumnName="PAUSEFLAG" />
-                <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
-                <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
-                <ScalarProperty Name="CMD_FINISH_TIME" ColumnName="CMD_FINISH_TIME" />
-                <ScalarProperty Name="TIME_PRIORITY" ColumnName="TIME_PRIORITY" />
-                <ScalarProperty Name="PORT_PRIORITY" ColumnName="PORT_PRIORITY" />
-                <ScalarProperty Name="REPLACE" ColumnName="REPLACE" />
-                <ScalarProperty Name="PRIORITY_SUM" ColumnName="PRIORITY_SUM" />
-                <ScalarProperty Name="EXCUTE_CMD_ID" ColumnName="EXCUTE_CMD_ID" />
-                <ScalarProperty Name="RESULT_CODE" ColumnName="RESULT_CODE" />
-                <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ACARRIER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACARRIER)">
-              <MappingFragment StoreEntitySet="ACARRIER">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="INSER_TIME" ColumnName="INSER_TIME" />
-                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
-                <ScalarProperty Name="INSTALLED_TIME" ColumnName="INSTALLED_TIME" />
-                <ScalarProperty Name="RENAME_ID" ColumnName="RENAME_ID" />
-                <ScalarProperty Name="STATE" ColumnName="STATE" />
-                <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
-                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
-                <ScalarProperty Name="READ_STATUS" ColumnName="READ_STATUS" />
-                <ScalarProperty Name="FINISH_TIME" ColumnName="FINISH_TIME" />
-                <ScalarProperty Name="HOSTSOURCE" ColumnName="HOSTSOURCE" />
-                <ScalarProperty Name="HOSTDESTINATION" ColumnName="HOSTDESTINATION" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AVEHICLE">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AVEHICLE)">
-              <MappingFragment StoreEntitySet="AVEHICLE">
-                <ScalarProperty Name="VEHICLE_ID" ColumnName="VEHICLE_ID" />
-                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
-                <ScalarProperty Name="VEHICLE_ACC_DIST" ColumnName="VEHICLE_ACC_DIST" />
-                <ScalarProperty Name="MANT_ACC_DIST" ColumnName="MANT_ACC_DIST" />
-                <ScalarProperty Name="MANT_DATE" ColumnName="MANT_DATE" />
-                <ScalarProperty Name="GRIP_COUNT" ColumnName="GRIP_COUNT" />
-                <ScalarProperty Name="GRIP_MANT_COUNT" ColumnName="GRIP_MANT_COUNT" />
-                <ScalarProperty Name="GRIP_MANT_DATE" ColumnName="GRIP_MANT_DATE" />
-                <ScalarProperty Name="LAST_FULLY_CHARGED_TIME" ColumnName="LAST_FULLY_CHARGED_TIME" />
-                <ScalarProperty Name="IS_INSTALLED" ColumnName="IS_INSTALLED" />
-                <ScalarProperty Name="INSTALLED_TIME" ColumnName="INSTALLED_TIME" />
-                <ScalarProperty Name="REMOVED_TIME" ColumnName="REMOVED_TIME" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="HCMD">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.HCMD)">
-              <MappingFragment StoreEntitySet="HCMD">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
-                <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
-                <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
-                <ScalarProperty Name="TRANSFER_ID" ColumnName="TRANSFER_ID" />
-                <ScalarProperty Name="CMD_TYPE" ColumnName="CMD_TYPE" />
-                <ScalarProperty Name="SOURCE" ColumnName="SOURCE" />
-                <ScalarProperty Name="DESTINATION" ColumnName="DESTINATION" />
-                <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
-                <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
-                <ScalarProperty Name="CMD_END_TIME" ColumnName="CMD_END_TIME" />
-                <ScalarProperty Name="CMD_STATUS" ColumnName="CMD_STATUS" />
-                <ScalarProperty Name="CMD_PROGRESS" ColumnName="CMD_PROGRESS" />
-                <ScalarProperty Name="INTERRUPTED_REASON" ColumnName="INTERRUPTED_REASON" />
-                <ScalarProperty Name="ESTIMATED_TIME" ColumnName="ESTIMATED_TIME" />
-                <ScalarProperty Name="ESTIMATED_EXCESS_TIME" ColumnName="ESTIMATED_EXCESS_TIME" />
-                <ScalarProperty Name="SOURCE_PORT" ColumnName="SOURCE_PORT" />
-                <ScalarProperty Name="DESTINATION_PORT" ColumnName="DESTINATION_PORT" />
-                <ScalarProperty Name="COMPLETE_STATUS" ColumnName="COMPLETE_STATUS" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="HTRANSFER">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.HTRANSFER)">
-              <MappingFragment StoreEntitySet="HTRANSFER">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
-                <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
-                <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
-                <ScalarProperty Name="TRANSFERSTATE" ColumnName="TRANSFERSTATE" />
-                <ScalarProperty Name="COMMANDSTATE" ColumnName="COMMANDSTATE" />
-                <ScalarProperty Name="HOSTSOURCE" ColumnName="HOSTSOURCE" />
-                <ScalarProperty Name="HOSTDESTINATION" ColumnName="HOSTDESTINATION" />
-                <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
-                <ScalarProperty Name="CHECKCODE" ColumnName="CHECKCODE" />
-                <ScalarProperty Name="PAUSEFLAG" ColumnName="PAUSEFLAG" />
-                <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
-                <ScalarProperty Name="CMD_FINISH_TIME" ColumnName="CMD_FINISH_TIME" />
-                <ScalarProperty Name="TIME_PRIORITY" ColumnName="TIME_PRIORITY" />
-                <ScalarProperty Name="PORT_PRIORITY" ColumnName="PORT_PRIORITY" />
-                <ScalarProperty Name="REPLACE" ColumnName="REPLACE" />
-                <ScalarProperty Name="PRIORITY_SUM" ColumnName="PRIORITY_SUM" />
-                <ScalarProperty Name="EXCUTE_CMD_ID" ColumnName="EXCUTE_CMD_ID" />
-                <ScalarProperty Name="RESULT_CODE" ColumnName="RESULT_CODE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AGROUPPORTSTATION">
-            <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AGROUPPORTSTATION)">
-              <MappingFragment StoreEntitySet="AGROUPPORTSTATION">
-                <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
-                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="OHTC_DevModelStoreContainer" CdmEntityContainer="OHTC_DevEntities">
+    <EntitySetMapping Name="ABASEDATA_VER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ABASEDATA_VER)">
+        <MappingFragment StoreEntitySet="ABASEDATA_VER">
+          <ScalarProperty Name="VER_TYPE" ColumnName="VER_TYPE" />
+          <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
+          <ScalarProperty Name="REL_STAUS" ColumnName="REL_STAUS" />
+          <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
+          <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
+          <ScalarProperty Name="MEMO" ColumnName="MEMO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ABLOCKZONEDETAIL">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ABLOCKZONEDETAIL)">
+        <MappingFragment StoreEntitySet="ABLOCKZONEDETAIL">
+          <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
+          <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AGROUPRAILS">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AGROUPRAILS)">
+        <MappingFragment StoreEntitySet="AGROUPRAILS">
+          <ScalarProperty Name="SECTION_ID" ColumnName="SECTION_ID" />
+          <ScalarProperty Name="RAIL_ID" ColumnName="RAIL_ID" />
+          <ScalarProperty Name="RAIL_NO" ColumnName="RAIL_NO" />
+          <ScalarProperty Name="DIR" ColumnName="DIR" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AMAIN_VER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AMAIN_VER)">
+        <MappingFragment StoreEntitySet="AMAIN_VER">
+          <ScalarProperty Name="MAIN_VER" ColumnName="MAIN_VER" />
+          <ScalarProperty Name="VER_YEAR" ColumnName="VER_YEAR" />
+          <ScalarProperty Name="VER_MON" ColumnName="VER_MON" />
+          <ScalarProperty Name="VER_DAY" ColumnName="VER_DAY" />
+          <ScalarProperty Name="VER_HOUR" ColumnName="VER_HOUR" />
+          <ScalarProperty Name="VER_MIN" ColumnName="VER_MIN" />
+          <ScalarProperty Name="VER_STAUS" ColumnName="VER_STAUS" />
+          <ScalarProperty Name="REL_STAUS" ColumnName="REL_STAUS" />
+          <ScalarProperty Name="MEMO" ColumnName="MEMO" />
+          <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
+          <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="APOINT">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APOINT)">
+        <MappingFragment StoreEntitySet="APOINT">
+          <ScalarProperty Name="POINT_ID" ColumnName="POINT_ID" />
+          <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
+          <ScalarProperty Name="RAIL_ID" ColumnName="RAIL_ID" />
+          <ScalarProperty Name="POINTTYPE" ColumnName="POINTTYPE" />
+          <ScalarProperty Name="LOCATIONX" ColumnName="LOCATIONX" />
+          <ScalarProperty Name="LOCATIONY" ColumnName="LOCATIONY" />
+          <ScalarProperty Name="HEIGHT" ColumnName="HEIGHT" />
+          <ScalarProperty Name="WIDTH" ColumnName="WIDTH" />
+          <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ARAIL">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ARAIL)">
+        <MappingFragment StoreEntitySet="ARAIL">
+          <ScalarProperty Name="RAIL_ID" ColumnName="RAIL_ID" />
+          <ScalarProperty Name="RAILTYPE" ColumnName="RAILTYPE" />
+          <ScalarProperty Name="LOCATIONX" ColumnName="LOCATIONX" />
+          <ScalarProperty Name="LOCATIONY" ColumnName="LOCATIONY" />
+          <ScalarProperty Name="WIDTH" ColumnName="WIDTH" />
+          <ScalarProperty Name="LENGTH" ColumnName="LENGTH" />
+          <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ASUB_VER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASUB_VER)">
+        <MappingFragment StoreEntitySet="ASUB_VER">
+          <ScalarProperty Name="MAIN_VER" ColumnName="MAIN_VER" />
+          <ScalarProperty Name="VER_TYPE" ColumnName="VER_TYPE" />
+          <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
+          <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
+          <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BLOCKZONEQUEUE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.BLOCKZONEQUEUE)">
+        <MappingFragment StoreEntitySet="BLOCKZONEQUEUE">
+          <ScalarProperty Name="CAR_ID" ColumnName="CAR_ID" />
+          <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
+          <ScalarProperty Name="REQ_TIME" ColumnName="REQ_TIME" />
+          <ScalarProperty Name="BLOCK_TIME" ColumnName="BLOCK_TIME" />
+          <ScalarProperty Name="THROU_TIME" ColumnName="THROU_TIME" />
+          <ScalarProperty Name="RELEASE_TIME" ColumnName="RELEASE_TIME" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ABLOCKZONEMASTER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ABLOCKZONEMASTER)">
+        <MappingFragment StoreEntitySet="ABLOCKZONEMASTER">
+          <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
+          <ScalarProperty Name="BLOCK_ZONE_TYPE" ColumnName="BLOCK_ZONE_TYPE" />
+          <ScalarProperty Name="LEAVE_ADR_ID_1" ColumnName="LEAVE_ADR_ID_1" />
+          <ScalarProperty Name="LEAVE_ADR_ID_2" ColumnName="LEAVE_ADR_ID_2" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ASEQUENCE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASEQUENCE)">
+        <MappingFragment StoreEntitySet="ASEQUENCE">
+          <ScalarProperty Name="SEQ_NAME" ColumnName="SEQ_NAME" />
+          <ScalarProperty Name="NXT_VAL" ColumnName="NXT_VAL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACYCLEZONEDETAIL">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACYCLEZONEDETAIL)">
+        <MappingFragment StoreEntitySet="ACYCLEZONEDETAIL">
+          <ScalarProperty Name="CYCLE_ZONE_ID" ColumnName="CYCLE_ZONE_ID" />
+          <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
+          <ScalarProperty Name="SEC_ORDER" ColumnName="SEC_ORDER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACYCLEZONEMASTER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACYCLEZONEMASTER)">
+        <MappingFragment StoreEntitySet="ACYCLEZONEMASTER">
+          <ScalarProperty Name="CYCLE_TYPE_ID" ColumnName="CYCLE_TYPE_ID" />
+          <ScalarProperty Name="CYCLE_ZONE_ID" ColumnName="CYCLE_ZONE_ID" />
+          <ScalarProperty Name="ENTRY_ADR_ID" ColumnName="ENTRY_ADR_ID" />
+          <ScalarProperty Name="TOTAL_BORDER" ColumnName="TOTAL_BORDER" />
+          <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACYCLEZONETYPE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACYCLEZONETYPE)">
+        <MappingFragment StoreEntitySet="ACYCLEZONETYPE">
+          <ScalarProperty Name="CYCLE_TYPE_ID" ColumnName="CYCLE_TYPE_ID" />
+          <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
+          <ScalarProperty Name="TOTAL_BORDER" ColumnName="TOTAL_BORDER" />
+          <ScalarProperty Name="IS_DEFAULT" ColumnName="IS_DEFAULT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACEID">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACEID)">
+        <MappingFragment StoreEntitySet="ACEID">
+          <ScalarProperty Name="CEID" ColumnName="CEID" />
+          <ScalarProperty Name="RPTID" ColumnName="RPTID" />
+          <ScalarProperty Name="ORDER_NUM" ColumnName="ORDER_NUM" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ARPTID">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ARPTID)">
+        <MappingFragment StoreEntitySet="ARPTID">
+          <ScalarProperty Name="RPTID" ColumnName="RPTID" />
+          <ScalarProperty Name="VID" ColumnName="VID" />
+          <ScalarProperty Name="ORDER_NUM" ColumnName="ORDER_NUM" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ANETWORKQUALITY">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ANETWORKQUALITY)">
+        <MappingFragment StoreEntitySet="ANETWORKQUALITY">
+          <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
+          <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="VEHICLE_ID" ColumnName="VEHICLE_ID" />
+          <ScalarProperty Name="ACC_SEC_DIST" ColumnName="ACC_SEC_DIST" />
+          <ScalarProperty Name="PING_TIME" ColumnName="PING_TIME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="APORTICON">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APORTICON)">
+        <MappingFragment StoreEntitySet="APORTICON">
+          <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
+          <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
+          <ScalarProperty Name="RAIL_ID" ColumnName="RAIL_ID" />
+          <ScalarProperty Name="ADRTYPE" ColumnName="ADRTYPE" />
+          <ScalarProperty Name="LOCATIONX" ColumnName="LOCATIONX" />
+          <ScalarProperty Name="LOCATIONY" ColumnName="LOCATIONY" />
+          <ScalarProperty Name="HEIGHT" ColumnName="HEIGHT" />
+          <ScalarProperty Name="WIDTH" ColumnName="WIDTH" />
+          <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BCSTAT">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.BCSTAT)">
+        <MappingFragment StoreEntitySet="BCSTAT">
+          <ScalarProperty Name="BC_ID" ColumnName="BC_ID" />
+          <ScalarProperty Name="CLOSE_MODE" ColumnName="CLOSE_MODE" />
+          <ScalarProperty Name="RUN_TIMESTAMP" ColumnName="RUN_TIMESTAMP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AEQPT">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AEQPT)">
+        <MappingFragment StoreEntitySet="AEQPT">
+          <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
+          <ScalarProperty Name="NODE_ID" ColumnName="NODE_ID" />
+          <ScalarProperty Name="CIM_MODE" ColumnName="CIM_MODE" />
+          <ScalarProperty Name="OPER_MODE" ColumnName="OPER_MODE" />
+          <ScalarProperty Name="INLINE_MODE" ColumnName="INLINE_MODE" />
+          <ScalarProperty Name="EQPT_STAT" ColumnName="EQPT_STAT" />
+          <ScalarProperty Name="EQPT_PROC_STAT" ColumnName="EQPT_PROC_STAT" />
+          <ScalarProperty Name="CR_RECIPE" ColumnName="CR_RECIPE" />
+          <ScalarProperty Name="MAX_SHT_CNT" ColumnName="MAX_SHT_CNT" />
+          <ScalarProperty Name="MIN_SHT_CNT" ColumnName="MIN_SHT_CNT" />
+          <ScalarProperty Name="ALARM_STAT" ColumnName="ALARM_STAT" />
+          <ScalarProperty Name="WARN_STAT" ColumnName="WARN_STAT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ALINE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALINE)">
+        <MappingFragment StoreEntitySet="ALINE">
+          <ScalarProperty Name="LINE_ID" ColumnName="LINE_ID" />
+          <ScalarProperty Name="HOST_MODE" ColumnName="HOST_MODE" />
+          <ScalarProperty Name="LINE_STAT" ColumnName="LINE_STAT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AZONE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AZONE)">
+        <MappingFragment StoreEntitySet="AZONE">
+          <ScalarProperty Name="ZONE_ID" ColumnName="ZONE_ID" />
+          <ScalarProperty Name="LINE_ID" ColumnName="LINE_ID" />
+          <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ANODE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ANODE)">
+        <MappingFragment StoreEntitySet="ANODE">
+          <ScalarProperty Name="NODE_ID" ColumnName="NODE_ID" />
+          <ScalarProperty Name="ZONE_ID" ColumnName="ZONE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AUNIT">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AUNIT)">
+        <MappingFragment StoreEntitySet="AUNIT">
+          <ScalarProperty Name="UNIT_ID" ColumnName="UNIT_ID" />
+          <ScalarProperty Name="UNIT_NUM" ColumnName="UNIT_NUM" />
+          <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
+          <ScalarProperty Name="UNIT_CATE" ColumnName="UNIT_CATE" />
+          <ScalarProperty Name="EQPT_TYPE" ColumnName="EQPT_TYPE" />
+          <ScalarProperty Name="CAPACITY" ColumnName="CAPACITY" />
+          <ScalarProperty Name="UNIT_STAT" ColumnName="UNIT_STAT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ABUFFER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ABUFFER)">
+        <MappingFragment StoreEntitySet="ABUFFER">
+          <ScalarProperty Name="BUFF_ID" ColumnName="BUFF_ID" />
+          <ScalarProperty Name="UNIT_NUM" ColumnName="UNIT_NUM" />
+          <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
+          <ScalarProperty Name="CAPACITY" ColumnName="CAPACITY" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACASSETTE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACASSETTE)">
+        <MappingFragment StoreEntitySet="ACASSETTE">
+          <ScalarProperty Name="CST_ID" ColumnName="CST_ID" />
+          <ScalarProperty Name="CST_STAT" ColumnName="CST_STAT" />
+          <ScalarProperty Name="SHT_CNT" ColumnName="SHT_CNT" />
+          <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
+          <ScalarProperty Name="CST_CODE" ColumnName="CST_CODE" />
+          <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
+          <ScalarProperty Name="SLOT_MAP" ColumnName="SLOT_MAP" />
+          <ScalarProperty Name="SLOT_SEL" ColumnName="SLOT_SEL" />
+          <ScalarProperty Name="END_STAT" ColumnName="END_STAT" />
+          <ScalarProperty Name="CRATE_ID" ColumnName="CRATE_ID" />
+          <ScalarProperty Name="CSTLOGON_TIME" ColumnName="CSTLOGON_TIME" />
+          <ScalarProperty Name="CSTLOGOff_TIME" ColumnName="CSTLOGOff_TIME" />
+          <ScalarProperty Name="ISLOTSTART" ColumnName="ISLOTSTART" />
+          <ScalarProperty Name="CSTPROCSTART_TIME" ColumnName="CSTPROCSTART_TIME" />
+          <ScalarProperty Name="CSTPROCEND_TIME" ColumnName="CSTPROCEND_TIME" />
+          <ScalarProperty Name="ROUNTINMODE" ColumnName="ROUNTINMODE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACRATE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACRATE)">
+        <MappingFragment StoreEntitySet="ACRATE">
+          <ScalarProperty Name="CRATE_ID" ColumnName="CRATE_ID" />
+          <ScalarProperty Name="MAKER" ColumnName="MAKER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AECDATAMAP">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AECDATAMAP)">
+        <MappingFragment StoreEntitySet="AECDATAMAP">
+          <ScalarProperty Name="ECID" ColumnName="ECID" />
+          <ScalarProperty Name="EQPT_REAL_ID" ColumnName="EQPT_REAL_ID" />
+          <ScalarProperty Name="ECNAME" ColumnName="ECNAME" />
+          <ScalarProperty Name="ECMIN" ColumnName="ECMIN" />
+          <ScalarProperty Name="ECMAX" ColumnName="ECMAX" />
+          <ScalarProperty Name="ECV" ColumnName="ECV" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AEVENTRPTCOND">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AEVENTRPTCOND)">
+        <MappingFragment StoreEntitySet="AEVENTRPTCOND">
+          <ScalarProperty Name="CEID" ColumnName="CEID" />
+          <ScalarProperty Name="ENABLE_FLG" ColumnName="ENABLE_FLG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AFLOW_REL">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AFLOW_REL)">
+        <MappingFragment StoreEntitySet="AFLOW_REL">
+          <ScalarProperty Name="UPSTREAM_ID" ColumnName="UPSTREAM_ID" />
+          <ScalarProperty Name="DOWNSTREAM_ID" ColumnName="DOWNSTREAM_ID" />
+          <ScalarProperty Name="FR_ID" ColumnName="FR_ID" />
+          <ScalarProperty Name="REL_TYPE" ColumnName="REL_TYPE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UASFNC">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.UASFNC)">
+        <MappingFragment StoreEntitySet="UASFNC">
+          <ScalarProperty Name="FUNC_CODE" ColumnName="FUNC_CODE" />
+          <ScalarProperty Name="FUNC_NAME" ColumnName="FUNC_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ALOT">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALOT)">
+        <MappingFragment StoreEntitySet="ALOT">
+          <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
+          <ScalarProperty Name="SHT_TYP" ColumnName="SHT_TYP" />
+          <ScalarProperty Name="CST_OPER_MODE" ColumnName="CST_OPER_MODE" />
+          <ScalarProperty Name="DUMMY_TYPE" ColumnName="DUMMY_TYPE" />
+          <ScalarProperty Name="LOT_JUDGE" ColumnName="LOT_JUDGE" />
+          <ScalarProperty Name="WORK_ORDER" ColumnName="WORK_ORDER" />
+          <ScalarProperty Name="PROC_STAT" ColumnName="PROC_STAT" />
+          <ScalarProperty Name="LOT_START_PROC_TIME" ColumnName="LOT_START_PROC_TIME" />
+          <ScalarProperty Name="LOT_END_PROC_TIME" ColumnName="LOT_END_PROC_TIME" />
+          <ScalarProperty Name="PROC_SHT_CNT" ColumnName="PROC_SHT_CNT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HOPERATION">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.HOPERATION)">
+        <MappingFragment StoreEntitySet="HOPERATION">
+          <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
+          <ScalarProperty Name="T_STAMP" ColumnName="T_STAMP" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="FORM_NAME" ColumnName="FORM_NAME" />
+          <ScalarProperty Name="ACTION" ColumnName="ACTION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ASHEET">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASHEET)">
+        <MappingFragment StoreEntitySet="ASHEET">
+          <ScalarProperty Name="SHT_ID" ColumnName="SHT_ID" />
+          <ScalarProperty Name="JOB_NO" ColumnName="JOB_NO" />
+          <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
+          <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
+          <ScalarProperty Name="SHT_STAT" ColumnName="SHT_STAT" />
+          <ScalarProperty Name="SOURCE_CST_ID" ColumnName="SOURCE_CST_ID" />
+          <ScalarProperty Name="SOURCE_SLOT_NO" ColumnName="SOURCE_SLOT_NO" />
+          <ScalarProperty Name="SOURCE_PORT_NO" ColumnName="SOURCE_PORT_NO" />
+          <ScalarProperty Name="TARGET_CST_ID" ColumnName="TARGET_CST_ID" />
+          <ScalarProperty Name="TARGET_SLOT_NO" ColumnName="TARGET_SLOT_NO" />
+          <ScalarProperty Name="TARGET_PORT_NO" ColumnName="TARGET_PORT_NO" />
+          <ScalarProperty Name="PROC_FLAG" ColumnName="PROC_FLAG" />
+          <ScalarProperty Name="SHT_JUDGE" ColumnName="SHT_JUDGE" />
+          <ScalarProperty Name="SHT_GRADE" ColumnName="SHT_GRADE" />
+          <ScalarProperty Name="PROC_INFO" ColumnName="PROC_INFO" />
+          <ScalarProperty Name="PPID" ColumnName="PPID" />
+          <ScalarProperty Name="CRATE_ID" ColumnName="CRATE_ID" />
+          <ScalarProperty Name="TAKE_OUT_STAT" ColumnName="TAKE_OUT_STAT" />
+          <ScalarProperty Name="NODE_ID" ColumnName="NODE_ID" />
+          <ScalarProperty Name="CST_ID" ColumnName="CST_ID" />
+          <ScalarProperty Name="SLOT_NO" ColumnName="SLOT_NO" />
+          <ScalarProperty Name="TAKE_OUT_TIME" ColumnName="TAKE_OUT_TIME" />
+          <ScalarProperty Name="SCRAP_CODE" ColumnName="SCRAP_CODE" />
+          <ScalarProperty Name="REASON_CODE" ColumnName="REASON_CODE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HASHEET">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.HASHEET)">
+        <MappingFragment StoreEntitySet="HASHEET">
+          <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
+          <ScalarProperty Name="T_STAMP" ColumnName="T_STAMP" />
+          <ScalarProperty Name="SHT_ID" ColumnName="SHT_ID" />
+          <ScalarProperty Name="JOB_NO" ColumnName="JOB_NO" />
+          <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
+          <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
+          <ScalarProperty Name="SHT_STAT" ColumnName="SHT_STAT" />
+          <ScalarProperty Name="SOURCE_CST_ID" ColumnName="SOURCE_CST_ID" />
+          <ScalarProperty Name="SOURCE_SLOT_NO" ColumnName="SOURCE_SLOT_NO" />
+          <ScalarProperty Name="SOURCE_PORT_NO" ColumnName="SOURCE_PORT_NO" />
+          <ScalarProperty Name="TARGET_CST_ID" ColumnName="TARGET_CST_ID" />
+          <ScalarProperty Name="TARGET_SLOT_NO" ColumnName="TARGET_SLOT_NO" />
+          <ScalarProperty Name="TARGET_PORT_NO" ColumnName="TARGET_PORT_NO" />
+          <ScalarProperty Name="PROC_FLAG" ColumnName="PROC_FLAG" />
+          <ScalarProperty Name="SHT_JUDGE" ColumnName="SHT_JUDGE" />
+          <ScalarProperty Name="SHT_GRADE" ColumnName="SHT_GRADE" />
+          <ScalarProperty Name="PROC_INFO" ColumnName="PROC_INFO" />
+          <ScalarProperty Name="PPID" ColumnName="PPID" />
+          <ScalarProperty Name="CRATE_ID" ColumnName="CRATE_ID" />
+          <ScalarProperty Name="TAKE_OUT_STAT" ColumnName="TAKE_OUT_STAT" />
+          <ScalarProperty Name="NODE_ID" ColumnName="NODE_ID" />
+          <ScalarProperty Name="CST_ID" ColumnName="CST_ID" />
+          <ScalarProperty Name="SLOT_NO" ColumnName="SLOT_NO" />
+          <ScalarProperty Name="TAKE_OUT_TIME" ColumnName="TAKE_OUT_TIME" />
+          <ScalarProperty Name="SCRAP_CODE" ColumnName="SCRAP_CODE" />
+          <ScalarProperty Name="REASON_CODE" ColumnName="REASON_CODE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ATRACEITEM">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ATRACEITEM)">
+        <MappingFragment StoreEntitySet="ATRACEITEM">
+          <ScalarProperty Name="TRACE_ID" ColumnName="TRACE_ID" />
+          <ScalarProperty Name="SVID" ColumnName="SVID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ATRACESET">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ATRACESET)">
+        <MappingFragment StoreEntitySet="ATRACESET">
+          <ScalarProperty Name="TRACE_ID" ColumnName="TRACE_ID" />
+          <ScalarProperty Name="SMP_PERIOD" ColumnName="SMP_PERIOD" />
+          <ScalarProperty Name="SMP_PERIOD_SEC" ColumnName="SMP_PERIOD_SEC" />
+          <ScalarProperty Name="TOTAL_SMP_CNT" ColumnName="TOTAL_SMP_CNT" />
+          <ScalarProperty Name="SMP_CNT" ColumnName="SMP_CNT" />
+          <ScalarProperty Name="NX_SMP_TIME" ColumnName="NX_SMP_TIME" />
+          <ScalarProperty Name="SMP_TIME" ColumnName="SMP_TIME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UASUSRGRP">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.UASUSRGRP)">
+        <MappingFragment StoreEntitySet="UASUSRGRP">
+          <ScalarProperty Name="USER_GRP" ColumnName="USER_GRP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UASUFNC">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.UASUFNC)">
+        <MappingFragment StoreEntitySet="UASUFNC">
+          <ScalarProperty Name="USER_GRP" ColumnName="USER_GRP" />
+          <ScalarProperty Name="FUNC_CODE" ColumnName="FUNC_CODE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="APORTSTATION">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APORTSTATION)">
+        <MappingFragment StoreEntitySet="APORTSTATION">
+          <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
+          <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
+          <ScalarProperty Name="LD_VH_TYPE" ColumnName="LD_VH_TYPE" />
+          <ScalarProperty Name="ULD_VH_TYPE" ColumnName="ULD_VH_TYPE" />
+          <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
+          <ScalarProperty Name="PORT_TYPE" ColumnName="PORT_TYPE" />
+          <ScalarProperty Name="PORT_STATUS" ColumnName="PORT_STATUS" />
+          <ScalarProperty Name="PORT_DIR" ColumnName="PORT_DIR" />
+          <ScalarProperty Name="PORT_SERVICE_STATUS" ColumnName="PORT_SERVICE_STATUS" />
+          <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="APORT">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APORT)">
+        <MappingFragment StoreEntitySet="APORT">
+          <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
+          <ScalarProperty Name="UNIT_NUM" ColumnName="UNIT_NUM" />
+          <ScalarProperty Name="PORT_NUM" ColumnName="PORT_NUM" />
+          <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
+          <ScalarProperty Name="PORT_TYPE" ColumnName="PORT_TYPE" />
+          <ScalarProperty Name="PORT_USE_TYPE" ColumnName="PORT_USE_TYPE" />
+          <ScalarProperty Name="PORT_REAL_TYPE" ColumnName="PORT_REAL_TYPE" />
+          <ScalarProperty Name="CAPACITY" ColumnName="CAPACITY" />
+          <ScalarProperty Name="PORT_STAT" ColumnName="PORT_STAT" />
+          <ScalarProperty Name="PORT_ENABLE" ColumnName="PORT_ENABLE" />
+          <ScalarProperty Name="TRS_MODE" ColumnName="TRS_MODE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AMCSREPORTQUEUE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AMCSREPORTQUEUE)">
+        <MappingFragment StoreEntitySet="AMCSREPORTQUEUE">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="SERIALIZED_SXFY" ColumnName="SERIALIZED_SXFY" />
+          <ScalarProperty Name="INTER_TIME" ColumnName="INTER_TIME" />
+          <ScalarProperty Name="REPORT_TIME" ColumnName="REPORT_TIME" />
+          <ScalarProperty Name="STREAMFUNCTION_NAME" ColumnName="STREAMFUNCTION_NAME" />
+          <ScalarProperty Name="STREAMFUNCTION_CEID" ColumnName="STREAMFUNCTION_CEID" />
+          <ScalarProperty Name="MCS_CMD_ID" ColumnName="MCS_CMD_ID" />
+          <ScalarProperty Name="VEHICLE_ID" ColumnName="VEHICLE_ID" />
+          <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AADDRESS_DATA">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AADDRESS_DATA)">
+        <MappingFragment StoreEntitySet="AADDRESS_DATA">
+          <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
+          <ScalarProperty Name="VEHOCLE_ID" ColumnName="VEHOCLE_ID" />
+          <ScalarProperty Name="RESOLUTION" ColumnName="RESOLUTION" />
+          <ScalarProperty Name="LOACTION" ColumnName="LOACTION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="APARKZONEDETAIL">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APARKZONEDETAIL)">
+        <MappingFragment StoreEntitySet="APARKZONEDETAIL">
+          <ScalarProperty Name="PARK_ZONE_ID" ColumnName="PARK_ZONE_ID" />
+          <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
+          <ScalarProperty Name="PRIO" ColumnName="PRIO" />
+          <ScalarProperty Name="CAR_ID" ColumnName="CAR_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="APARKZONEMASTER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APARKZONEMASTER)">
+        <MappingFragment StoreEntitySet="APARKZONEMASTER">
+          <ScalarProperty Name="PARK_TYPE_ID" ColumnName="PARK_TYPE_ID" />
+          <ScalarProperty Name="PARK_ZONE_ID" ColumnName="PARK_ZONE_ID" />
+          <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+          <ScalarProperty Name="ENTRY_ADR_ID" ColumnName="ENTRY_ADR_ID" />
+          <ScalarProperty Name="TOTAL_BORDER" ColumnName="TOTAL_BORDER" />
+          <ScalarProperty Name="LOWER_BORDER" ColumnName="LOWER_BORDER" />
+          <ScalarProperty Name="PARK_TYPE" ColumnName="PARK_TYPE" />
+          <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="APARKZONETYPE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APARKZONETYPE)">
+        <MappingFragment StoreEntitySet="APARKZONETYPE">
+          <ScalarProperty Name="PARK_TYPE_ID" ColumnName="PARK_TYPE_ID" />
+          <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
+          <ScalarProperty Name="TOTAL_BORDER" ColumnName="TOTAL_BORDER" />
+          <ScalarProperty Name="IS_DEFAULT" ColumnName="IS_DEFAULT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="APORT_POSITION_TEACHING_DATA">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.APORT_POSITION_TEACHING_DATA)">
+        <MappingFragment StoreEntitySet="APORT_POSITION_TEACHING_DATA">
+          <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
+          <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
+          <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
+          <ScalarProperty Name="POSITION_OFFSET" ColumnName="POSITION_OFFSET" />
+          <ScalarProperty Name="RESOLUTION" ColumnName="RESOLUTION" />
+          <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
+          <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AVEHICLE_CONTROL_100">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AVEHICLE_CONTROL_100)">
+        <MappingFragment StoreEntitySet="AVEHICLE_CONTROL_100">
+          <ScalarProperty Name="VEHICLE_ID" ColumnName="VEHICLE_ID" />
+          <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
+          <ScalarProperty Name="GUIDE_START_STOP_SPEED" ColumnName="GUIDE_START_STOP_SPEED" />
+          <ScalarProperty Name="GUIDE_MAX_SPD" ColumnName="GUIDE_MAX_SPD" />
+          <ScalarProperty Name="GUIDE_ACCEL_DECCEL_TIME" ColumnName="GUIDE_ACCEL_DECCEL_TIME" />
+          <ScalarProperty Name="GUIDE_S_CURVE_RATE" ColumnName="GUIDE_S_CURVE_RATE" />
+          <ScalarProperty Name="GUIDE_RUN_SPD" ColumnName="GUIDE_RUN_SPD" />
+          <ScalarProperty Name="GUIDE_MANUAL_HIGH_SPD" ColumnName="GUIDE_MANUAL_HIGH_SPD" />
+          <ScalarProperty Name="GUIDE_MANUAL_LOW_SPD" ColumnName="GUIDE_MANUAL_LOW_SPD" />
+          <ScalarProperty Name="GUIDE_LF_LOCK_POSITION" ColumnName="GUIDE_LF_LOCK_POSITION" />
+          <ScalarProperty Name="GUIDE_LB_LOCK_POSITION" ColumnName="GUIDE_LB_LOCK_POSITION" />
+          <ScalarProperty Name="GUIDE_RF_LOCK_POSITION" ColumnName="GUIDE_RF_LOCK_POSITION" />
+          <ScalarProperty Name="GUIDE_RB_LOCK_POSITION" ColumnName="GUIDE_RB_LOCK_POSITION" />
+          <ScalarProperty Name="GUIDE_CHG_STABLE_TIME" ColumnName="GUIDE_CHG_STABLE_TIME" />
+          <ScalarProperty Name="TRAVEL_RESOLUTION" ColumnName="TRAVEL_RESOLUTION" />
+          <ScalarProperty Name="TRAVEL_START_STOP_SPEED" ColumnName="TRAVEL_START_STOP_SPEED" />
+          <ScalarProperty Name="TRAVEL_MAX_SPD" ColumnName="TRAVEL_MAX_SPD" />
+          <ScalarProperty Name="TRAVEL_ACCEL_DECCEL_TIME" ColumnName="TRAVEL_ACCEL_DECCEL_TIME" />
+          <ScalarProperty Name="TRAVEL_S_CURVE_RATE" ColumnName="TRAVEL_S_CURVE_RATE" />
+          <ScalarProperty Name="TRAVEL_HOME_DIR" ColumnName="TRAVEL_HOME_DIR" />
+          <ScalarProperty Name="TRAVEL_HOME_SPD" ColumnName="TRAVEL_HOME_SPD" />
+          <ScalarProperty Name="TRAVEL_KEEP_DIS_SPD" ColumnName="TRAVEL_KEEP_DIS_SPD" />
+          <ScalarProperty Name="TRAVEL_MANUAL_HIGH_SPD" ColumnName="TRAVEL_MANUAL_HIGH_SPD" />
+          <ScalarProperty Name="TRAVEL_MANUAL_LOW_SPD" ColumnName="TRAVEL_MANUAL_LOW_SPD" />
+          <ScalarProperty Name="TRAVEL_TEACHING_SPD" ColumnName="TRAVEL_TEACHING_SPD" />
+          <ScalarProperty Name="TRAVEL_TRAVEL_DIR" ColumnName="TRAVEL_TRAVEL_DIR" />
+          <ScalarProperty Name="TRAVEL_ENCODER_POLARITY" ColumnName="TRAVEL_ENCODER_POLARITY" />
+          <ScalarProperty Name="TRAVEL_F_DIR_LIMIT" ColumnName="TRAVEL_F_DIR_LIMIT" />
+          <ScalarProperty Name="TRAVEL_R_DIR_LIMIT" ColumnName="TRAVEL_R_DIR_LIMIT" />
+          <ScalarProperty Name="TRAVEL_OBS_DETECT_LONG" ColumnName="TRAVEL_OBS_DETECT_LONG" />
+          <ScalarProperty Name="TRAVEL_OBS_DETECT_SHORT" ColumnName="TRAVEL_OBS_DETECT_SHORT" />
+          <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
+          <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CONTROL_DATA">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.CONTROL_DATA)">
+        <MappingFragment StoreEntitySet="CONTROL_DATA">
+          <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
+          <ScalarProperty Name="T1" ColumnName="T1" />
+          <ScalarProperty Name="T2" ColumnName="T2" />
+          <ScalarProperty Name="T3" ColumnName="T3" />
+          <ScalarProperty Name="T4" ColumnName="T4" />
+          <ScalarProperty Name="T5" ColumnName="T5" />
+          <ScalarProperty Name="T6" ColumnName="T6" />
+          <ScalarProperty Name="T7" ColumnName="T7" />
+          <ScalarProperty Name="T8" ColumnName="T8" />
+          <ScalarProperty Name="BLOCK_REQ_TIME_OUT" ColumnName="BLOCK_REQ_TIME_OUT" />
+          <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
+          <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SCALE_BASE_DATA">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.SCALE_BASE_DATA)">
+        <MappingFragment StoreEntitySet="SCALE_BASE_DATA">
+          <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
+          <ScalarProperty Name="RESOLUTION" ColumnName="RESOLUTION" />
+          <ScalarProperty Name="INPOSITION_AREA" ColumnName="INPOSITION_AREA" />
+          <ScalarProperty Name="INPOSITION_STABLE_TIME" ColumnName="INPOSITION_STABLE_TIME" />
+          <ScalarProperty Name="TOTAL_SCALE_PULSE" ColumnName="TOTAL_SCALE_PULSE" />
+          <ScalarProperty Name="SCALE_OFFSET" ColumnName="SCALE_OFFSET" />
+          <ScalarProperty Name="SCALE_RESE_DIST" ColumnName="SCALE_RESE_DIST" />
+          <ScalarProperty Name="READ_DIR" ColumnName="READ_DIR" />
+          <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
+          <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ASYSEXCUTEQUALITY">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASYSEXCUTEQUALITY)">
+        <MappingFragment StoreEntitySet="ASYSEXCUTEQUALITY">
+          <ScalarProperty Name="CMD_ID_MCS" ColumnName="CMD_ID_MCS" />
+          <ScalarProperty Name="CMD_INSERT_TIME" ColumnName="CMD_INSERT_TIME" />
+          <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
+          <ScalarProperty Name="CMD_FINISH_TIME" ColumnName="CMD_FINISH_TIME" />
+          <ScalarProperty Name="CMD_FINISH_STATUS" ColumnName="CMD_FINISH_STATUS" />
+          <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
+          <ScalarProperty Name="VH_START_SEC_ID" ColumnName="VH_START_SEC_ID" />
+          <ScalarProperty Name="SOURCE_ADR" ColumnName="SOURCE_ADR" />
+          <ScalarProperty Name="SEC_CNT_TO_SOURCE" ColumnName="SEC_CNT_TO_SOURCE" />
+          <ScalarProperty Name="SEC_DIS_TO_SOURCE" ColumnName="SEC_DIS_TO_SOURCE" />
+          <ScalarProperty Name="DESTINATION_ADR" ColumnName="DESTINATION_ADR" />
+          <ScalarProperty Name="SEC_CNT_TO_DESTN" ColumnName="SEC_CNT_TO_DESTN" />
+          <ScalarProperty Name="SEC_DIS_TO_DESTN" ColumnName="SEC_DIS_TO_DESTN" />
+          <ScalarProperty Name="CMDQUEUE_TIME" ColumnName="CMDQUEUE_TIME" />
+          <ScalarProperty Name="MOVE_TO_SOURCE_TIME" ColumnName="MOVE_TO_SOURCE_TIME" />
+          <ScalarProperty Name="TOTAL_BLOCK_TIME_TO_SOURCE" ColumnName="TOTAL_BLOCK_TIME_TO_SOURCE" />
+          <ScalarProperty Name="TOTAL_OCS_TIME_TO_SOURCE" ColumnName="TOTAL_OCS_TIME_TO_SOURCE" />
+          <ScalarProperty Name="TOTAL_BLOCK_COUNT_TO_SOURCE" ColumnName="TOTAL_BLOCK_COUNT_TO_SOURCE" />
+          <ScalarProperty Name="TOTAL_OCS_COUNT_TO_SOURCE" ColumnName="TOTAL_OCS_COUNT_TO_SOURCE" />
+          <ScalarProperty Name="MOVE_TO_DESTN_TIME" ColumnName="MOVE_TO_DESTN_TIME" />
+          <ScalarProperty Name="TOTAL_BLOCK_TIME_TO_DESTN" ColumnName="TOTAL_BLOCK_TIME_TO_DESTN" />
+          <ScalarProperty Name="TOTAL_OCS_TIME_TO_DESTN" ColumnName="TOTAL_OCS_TIME_TO_DESTN" />
+          <ScalarProperty Name="TOTAL_BLOCK_COUNT_TO_DESTN" ColumnName="TOTAL_BLOCK_COUNT_TO_DESTN" />
+          <ScalarProperty Name="TOTAL_OCS_COUNT_TO_DESTN" ColumnName="TOTAL_OCS_COUNT_TO_DESTN" />
+          <ScalarProperty Name="TOTALPAUSE_TIME" ColumnName="TOTALPAUSE_TIME" />
+          <ScalarProperty Name="CMD_TOTAL_EXCUTION_TIME" ColumnName="CMD_TOTAL_EXCUTION_TIME" />
+          <ScalarProperty Name="TOTAL_ACT_VH_COUNT" ColumnName="TOTAL_ACT_VH_COUNT" />
+          <ScalarProperty Name="PARKING_VH_COUNT" ColumnName="PARKING_VH_COUNT" />
+          <ScalarProperty Name="CYCLERUN_VH_COUNT" ColumnName="CYCLERUN_VH_COUNT" />
+          <ScalarProperty Name="TOTAL_IDLE_VH_COUNT" ColumnName="TOTAL_IDLE_VH_COUNT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AHIDZONEDETAIL">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AHIDZONEDETAIL)">
+        <MappingFragment StoreEntitySet="AHIDZONEDETAIL">
+          <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
+          <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AHIDZONEMASTER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AHIDZONEMASTER)">
+        <MappingFragment StoreEntitySet="AHIDZONEMASTER">
+          <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
+          <ScalarProperty Name="LEAVE_ADR_ID_1" ColumnName="LEAVE_ADR_ID_1" />
+          <ScalarProperty Name="LEAVE_ADR_ID_2" ColumnName="LEAVE_ADR_ID_2" />
+          <ScalarProperty Name="MAX_LOAD_COUNT" ColumnName="MAX_LOAD_COUNT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AHIDZONEQUEUE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AHIDZONEQUEUE)">
+        <MappingFragment StoreEntitySet="AHIDZONEQUEUE">
+          <ScalarProperty Name="ENTRY_SEC_ID" ColumnName="ENTRY_SEC_ID" />
+          <ScalarProperty Name="VEHICLE_ID" ColumnName="VEHICLE_ID" />
+          <ScalarProperty Name="REQ_TIME" ColumnName="REQ_TIME" />
+          <ScalarProperty Name="BLOCK_TIME" ColumnName="BLOCK_TIME" />
+          <ScalarProperty Name="THROU_TIME" ColumnName="THROU_TIME" />
+          <ScalarProperty Name="RELEASE_TIME" ColumnName="RELEASE_TIME" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="IS_PASUE" ColumnName="IS_PASUE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ALARMRPTCOND">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALARMRPTCOND)">
+        <MappingFragment StoreEntitySet="ALARMRPTCOND">
+          <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
+          <ScalarProperty Name="ALAM_CODE" ColumnName="ALAM_CODE" />
+          <ScalarProperty Name="ENABLE_FLG" ColumnName="ENABLE_FLG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ASECTION_CONTROL_100">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASECTION_CONTROL_100)">
+        <MappingFragment StoreEntitySet="ASECTION_CONTROL_100">
+          <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
+          <ScalarProperty Name="CHG_AREA_SECSOR_1" ColumnName="CHG_AREA_SECSOR_1" />
+          <ScalarProperty Name="CHG_AREA_SECSOR_2" ColumnName="CHG_AREA_SECSOR_2" />
+          <ScalarProperty Name="OBS_SENSOR_F" ColumnName="OBS_SENSOR_F" />
+          <ScalarProperty Name="OBS_SENSOR_R" ColumnName="OBS_SENSOR_R" />
+          <ScalarProperty Name="OBS_SENSOR_L" ColumnName="OBS_SENSOR_L" />
+          <ScalarProperty Name="RANGE_SENSOR_F" ColumnName="RANGE_SENSOR_F" />
+          <ScalarProperty Name="IS_ADR_RPT" ColumnName="IS_ADR_RPT" />
+          <ScalarProperty Name="CAN_GUIDE_CHG" ColumnName="CAN_GUIDE_CHG" />
+          <ScalarProperty Name="HID_CONTROL" ColumnName="HID_CONTROL" />
+          <ScalarProperty Name="BRANCH_FLAG" ColumnName="BRANCH_FLAG" />
+          <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
+          <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
+          <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VSECTION_100">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.VSECTION_100)">
+        <MappingFragment StoreEntitySet="VSECTION_100">
+          <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
+          <ScalarProperty Name="SEG_ORDER_NUM" ColumnName="SEG_ORDER_NUM" />
+          <ScalarProperty Name="DIRC_DRIV" ColumnName="DIRC_DRIV" />
+          <ScalarProperty Name="DIRC_GUID" ColumnName="DIRC_GUID" />
+          <ScalarProperty Name="SEC_DIS" ColumnName="SEC_DIS" />
+          <ScalarProperty Name="DIS_FROM_ORIGIN" ColumnName="DIS_FROM_ORIGIN" />
+          <ScalarProperty Name="CDOG_1" ColumnName="CDOG_1" />
+          <ScalarProperty Name="CDOG_2" ColumnName="CDOG_2" />
+          <ScalarProperty Name="PRE_BLO_REQ" ColumnName="PRE_BLO_REQ" />
+          <ScalarProperty Name="SEC_TYPE" ColumnName="SEC_TYPE" />
+          <ScalarProperty Name="SEC_DIR" ColumnName="SEC_DIR" />
+          <ScalarProperty Name="PADDING" ColumnName="PADDING" />
+          <ScalarProperty Name="ENB_CHG_G_AREA" ColumnName="ENB_CHG_G_AREA" />
+          <ScalarProperty Name="PRE_DIV" ColumnName="PRE_DIV" />
+          <ScalarProperty Name="PRE_ADD_REPR" ColumnName="PRE_ADD_REPR" />
+          <ScalarProperty Name="OBS_SENSOR" ColumnName="OBS_SENSOR" />
+          <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
+          <ScalarProperty Name="START_BC1" ColumnName="START_BC1" />
+          <ScalarProperty Name="END_BC1" ColumnName="END_BC1" />
+          <ScalarProperty Name="START_BC2" ColumnName="START_BC2" />
+          <ScalarProperty Name="END_BC2" ColumnName="END_BC2" />
+          <ScalarProperty Name="START_BC3" ColumnName="START_BC3" />
+          <ScalarProperty Name="END_BC3" ColumnName="END_BC3" />
+          <ScalarProperty Name="CHG_AREA_SECSOR_1" ColumnName="CHG_AREA_SECSOR_1" />
+          <ScalarProperty Name="CHG_AREA_SECSOR_2" ColumnName="CHG_AREA_SECSOR_2" />
+          <ScalarProperty Name="OBS_SENSOR_F" ColumnName="OBS_SENSOR_F" />
+          <ScalarProperty Name="OBS_SENSOR_R" ColumnName="OBS_SENSOR_R" />
+          <ScalarProperty Name="OBS_SENSOR_L" ColumnName="OBS_SENSOR_L" />
+          <ScalarProperty Name="RANGE_SENSOR_F" ColumnName="RANGE_SENSOR_F" />
+          <ScalarProperty Name="IS_ADR_RPT" ColumnName="IS_ADR_RPT" />
+          <ScalarProperty Name="CAN_GUIDE_CHG" ColumnName="CAN_GUIDE_CHG" />
+          <ScalarProperty Name="HID_CONTROL" ColumnName="HID_CONTROL" />
+          <ScalarProperty Name="BRANCH_FLAG" ColumnName="BRANCH_FLAG" />
+          <ScalarProperty Name="SEC_ORDER_NUM" ColumnName="SEC_ORDER_NUM" />
+          <ScalarProperty Name="SEG_NUM" ColumnName="SEG_NUM" />
+          <ScalarProperty Name="FROM_ADR_ID" ColumnName="FROM_ADR_ID" />
+          <ScalarProperty Name="TO_ADR_ID" ColumnName="TO_ADR_ID" />
+          <ScalarProperty Name="SEC_SPD" ColumnName="SEC_SPD" />
+          <ScalarProperty Name="CHG_SEG_NUM_1" ColumnName="CHG_SEG_NUM_1" />
+          <ScalarProperty Name="CHG_SEG_NUM_2" ColumnName="CHG_SEG_NUM_2" />
+          <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
+          <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
+          <ScalarProperty Name="AREA_SECSOR" ColumnName="AREA_SECSOR" />
+          <ScalarProperty Name="LAST_TECH_TIME" ColumnName="LAST_TECH_TIME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ASECTION">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASECTION)">
+        <MappingFragment StoreEntitySet="ASECTION">
+          <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
+          <ScalarProperty Name="SEG_ORDER_NUM" ColumnName="SEG_ORDER_NUM" />
+          <ScalarProperty Name="SEG_NUM" ColumnName="SEG_NUM" />
+          <ScalarProperty Name="FROM_ADR_ID" ColumnName="FROM_ADR_ID" />
+          <ScalarProperty Name="TO_ADR_ID" ColumnName="TO_ADR_ID" />
+          <ScalarProperty Name="SEC_DIS" ColumnName="SEC_DIS" />
+          <ScalarProperty Name="SEC_SPD" ColumnName="SEC_SPD" />
+          <ScalarProperty Name="SEC_TYPE" ColumnName="SEC_TYPE" />
+          <ScalarProperty Name="SEC_DIR" ColumnName="SEC_DIR" />
+          <ScalarProperty Name="LAST_TECH_TIME" ColumnName="LAST_TECH_TIME" />
+          <ScalarProperty Name="SUB_VER" ColumnName="SUB_VER" />
+          <ScalarProperty Name="ADD_TIME" ColumnName="ADD_TIME" />
+          <ScalarProperty Name="ADD_USER" ColumnName="ADD_USER" />
+          <ScalarProperty Name="UPD_TIME" ColumnName="UPD_TIME" />
+          <ScalarProperty Name="UPD_USER" ColumnName="UPD_USER" />
+          <ScalarProperty Name="ADR1_CHG_SEC_ID_1" ColumnName="ADR1_CHG_SEC_ID_1" />
+          <ScalarProperty Name="ADR1_CHG_SEC_COST_1" ColumnName="ADR1_CHG_SEC_COST_1" />
+          <ScalarProperty Name="ADR1_CHG_SEC_ID_2" ColumnName="ADR1_CHG_SEC_ID_2" />
+          <ScalarProperty Name="ADR1_CHG_SEC_COST_2" ColumnName="ADR1_CHG_SEC_COST_2" />
+          <ScalarProperty Name="ADR1_CHG_SEC_ID_3" ColumnName="ADR1_CHG_SEC_ID_3" />
+          <ScalarProperty Name="ADR1_CHG_SEC_COST_3" ColumnName="ADR1_CHG_SEC_COST_3" />
+          <ScalarProperty Name="ADR2_CHG_SEC_ID_1" ColumnName="ADR2_CHG_SEC_ID_1" />
+          <ScalarProperty Name="ADR2_CHG_SEC_COST_1" ColumnName="ADR2_CHG_SEC_COST_1" />
+          <ScalarProperty Name="ADR2_CHG_SEC_ID_2" ColumnName="ADR2_CHG_SEC_ID_2" />
+          <ScalarProperty Name="ADR2_CHG_SEC_COST_2" ColumnName="ADR2_CHG_SEC_COST_2" />
+          <ScalarProperty Name="ADR2_CHG_SEC_ID_3" ColumnName="ADR2_CHG_SEC_ID_3" />
+          <ScalarProperty Name="ADR2_CHG_SEC_COST_3" ColumnName="ADR2_CHG_SEC_COST_3" />
+          <ScalarProperty Name="SEC_COST_From2To" ColumnName="SEC_COST_From2To" />
+          <ScalarProperty Name="SEC_COST_To2From" ColumnName="SEC_COST_To2From" />
+          <ScalarProperty Name="ISBANEND_From2To" ColumnName="ISBANEND_From2To" />
+          <ScalarProperty Name="ISBANEND_To2From" ColumnName="ISBANEND_To2From" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+          <ScalarProperty Name="PRE_DISABLE_FLAG" ColumnName="PRE_DISABLE_FLAG" />
+          <ScalarProperty Name="PRE_DISABLE_TIME" ColumnName="PRE_DISABLE_TIME" />
+          <ScalarProperty Name="DISABLE_TIME" ColumnName="DISABLE_TIME" />
+          <ScalarProperty Name="DISABLE_FLAG_USER" ColumnName="DISABLE_FLAG_USER" />
+          <ScalarProperty Name="DISABLE_FLAG_SAFETY" ColumnName="DISABLE_FLAG_SAFETY" />
+          <ScalarProperty Name="DISABLE_FLAG_CHARGE" ColumnName="DISABLE_FLAG_CHARGE" />
+          <ScalarProperty Name="DISABLE_FLAG_SYSTEM" ColumnName="DISABLE_FLAG_SYSTEM" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ASEGMENT">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ASEGMENT)">
+        <MappingFragment StoreEntitySet="ASEGMENT">
+          <ScalarProperty Name="SEG_ID" ColumnName="SEG_ID" />
+          <ScalarProperty Name="FROM_ADR_ID" ColumnName="FROM_ADR_ID" />
+          <ScalarProperty Name="TO_ADR_ID" ColumnName="TO_ADR_ID" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="SEG_TYPE" ColumnName="SEG_TYPE" />
+          <ScalarProperty Name="SEG_RAIL_TYPE" ColumnName="SEG_RAIL_TYPE" />
+          <ScalarProperty Name="SPECIAL_MARK" ColumnName="SPECIAL_MARK" />
+          <ScalarProperty Name="RESERVE_FIELD" ColumnName="RESERVE_FIELD" />
+          <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+          <ScalarProperty Name="DIR" ColumnName="DIR" />
+          <ScalarProperty Name="PRE_DISABLE_FLAG" ColumnName="PRE_DISABLE_FLAG" />
+          <ScalarProperty Name="PRE_DISABLE_TIME" ColumnName="PRE_DISABLE_TIME" />
+          <ScalarProperty Name="DISABLE_TIME" ColumnName="DISABLE_TIME" />
+          <ScalarProperty Name="ADR1_CHG_SEG_ID_1" ColumnName="ADR1_CHG_SEG_ID_1" />
+          <ScalarProperty Name="ADR1_CHG_SEG_COST_1" ColumnName="ADR1_CHG_SEG_COST_1" />
+          <ScalarProperty Name="ADR1_CHG_SEG_ID_2" ColumnName="ADR1_CHG_SEG_ID_2" />
+          <ScalarProperty Name="ADR1_CHG_SEG_COST_2" ColumnName="ADR1_CHG_SEG_COST_2" />
+          <ScalarProperty Name="ADR1_CHG_SEG_ID_3" ColumnName="ADR1_CHG_SEG_ID_3" />
+          <ScalarProperty Name="ADR1_CHG_SEG_COST_3" ColumnName="ADR1_CHG_SEG_COST_3" />
+          <ScalarProperty Name="ADR2_CHG_SEG_ID_1" ColumnName="ADR2_CHG_SEG_ID_1" />
+          <ScalarProperty Name="ADR2_CHG_SEG_COST_1" ColumnName="ADR2_CHG_SEG_COST_1" />
+          <ScalarProperty Name="ADR2_CHG_SEG_ID_2" ColumnName="ADR2_CHG_SEG_ID_2" />
+          <ScalarProperty Name="ADR2_CHG_SEG_COST_2" ColumnName="ADR2_CHG_SEG_COST_2" />
+          <ScalarProperty Name="ADR2_CHG_SEG_ID_3" ColumnName="ADR2_CHG_SEG_ID_3" />
+          <ScalarProperty Name="ADR2_CHG_SEG_COST_3" ColumnName="ADR2_CHG_SEG_COST_3" />
+          <ScalarProperty Name="SEC_COST_From2To" ColumnName="SEC_COST_From2To" />
+          <ScalarProperty Name="SEC_COST_To2From" ColumnName="SEC_COST_To2From" />
+          <ScalarProperty Name="ISBANEND_From2To" ColumnName="ISBANEND_From2To" />
+          <ScalarProperty Name="ISBANEND_To2From" ColumnName="ISBANEND_To2From" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AADDRESS">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AADDRESS)">
+        <MappingFragment StoreEntitySet="AADDRESS">
+          <ScalarProperty Name="ADR_ID" ColumnName="ADR_ID" />
+          <ScalarProperty Name="ADRTYPE" ColumnName="ADRTYPE" />
+          <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
+          <ScalarProperty Name="DISTANCE" ColumnName="DISTANCE" />
+          <ScalarProperty Name="P_LOCATION" ColumnName="P_LOCATION" />
+          <ScalarProperty Name="IS_DISPLAY" ColumnName="IS_DISPLAY" />
+          <ScalarProperty Name="ZOOM_LV" ColumnName="ZOOM_LV" />
+          <ScalarProperty Name="PORT1_ID" ColumnName="PORT1_ID" />
+          <ScalarProperty Name="P1_LD_VH_TYPE" ColumnName="P1_LD_VH_TYPE" />
+          <ScalarProperty Name="P1_ULD_VH_TYPE" ColumnName="P1_ULD_VH_TYPE" />
+          <ScalarProperty Name="PORT2_ID" ColumnName="PORT2_ID" />
+          <ScalarProperty Name="P2_LD_VH_TYPE" ColumnName="P2_LD_VH_TYPE" />
+          <ScalarProperty Name="P2_ULD_VH_TYPE" ColumnName="P2_ULD_VH_TYPE" />
+          <ScalarProperty Name="NODE_ID" ColumnName="NODE_ID" />
+          <ScalarProperty Name="ADR1_DIS" ColumnName="ADR1_DIS" />
+          <ScalarProperty Name="ADR2_DIS" ColumnName="ADR2_DIS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ALARM">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALARM)">
+        <MappingFragment StoreEntitySet="ALARM">
+          <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
+          <ScalarProperty Name="RPT_DATE_TIME" ColumnName="RPT_DATE_TIME" />
+          <ScalarProperty Name="ALAM_CODE" ColumnName="ALAM_CODE" />
+          <ScalarProperty Name="ALAM_LVL" ColumnName="ALAM_LVL" />
+          <ScalarProperty Name="ALAM_STAT" ColumnName="ALAM_STAT" />
+          <ScalarProperty Name="ALAM_DESC" ColumnName="ALAM_DESC" />
+          <ScalarProperty Name="CLEAR_DATE_TIME" ColumnName="CLEAR_DATE_TIME" />
+          <ScalarProperty Name="CMD_ID_1" ColumnName="CMD_ID_1" />
+          <ScalarProperty Name="CMD_ID_2" ColumnName="CMD_ID_2" />
+          <ScalarProperty Name="CMD_ID_3" ColumnName="CMD_ID_3" />
+          <ScalarProperty Name="CMD_ID_4" ColumnName="CMD_ID_4" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UASUSR">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.UASUSR)">
+        <MappingFragment StoreEntitySet="UASUSR">
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="PASSWD" ColumnName="PASSWD" />
+          <ScalarProperty Name="BADGE_NUMBER" ColumnName="BADGE_NUMBER" />
+          <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+          <ScalarProperty Name="DISABLE_FLG" ColumnName="DISABLE_FLG" />
+          <ScalarProperty Name="POWER_USER_FLG" ColumnName="POWER_USER_FLG" />
+          <ScalarProperty Name="ADMIN_FLG" ColumnName="ADMIN_FLG" />
+          <ScalarProperty Name="USER_GRP" ColumnName="USER_GRP" />
+          <ScalarProperty Name="DEPARTMENT" ColumnName="DEPARTMENT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACMD">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACMD)">
+        <MappingFragment StoreEntitySet="ACMD">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
+          <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
+          <ScalarProperty Name="CMD_TYPE" ColumnName="CMD_TYPE" />
+          <ScalarProperty Name="SOURCE" ColumnName="SOURCE" />
+          <ScalarProperty Name="DESTINATION" ColumnName="DESTINATION" />
+          <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
+          <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
+          <ScalarProperty Name="CMD_END_TIME" ColumnName="CMD_END_TIME" />
+          <ScalarProperty Name="CMD_PROGRESS" ColumnName="CMD_PROGRESS" />
+          <ScalarProperty Name="INTERRUPTED_REASON" ColumnName="INTERRUPTED_REASON" />
+          <ScalarProperty Name="ESTIMATED_TIME" ColumnName="ESTIMATED_TIME" />
+          <ScalarProperty Name="ESTIMATED_EXCESS_TIME" ColumnName="ESTIMATED_EXCESS_TIME" />
+          <ScalarProperty Name="TRANSFER_ID" ColumnName="TRANSFER_ID" />
+          <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
+          <ScalarProperty Name="SOURCE_PORT" ColumnName="SOURCE_PORT" />
+          <ScalarProperty Name="DESTINATION_PORT" ColumnName="DESTINATION_PORT" />
+          <ScalarProperty Name="CMD_STATUS" ColumnName="CMD_STATUS" />
+          <ScalarProperty Name="COMPLETE_STATUS" ColumnName="COMPLETE_STATUS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACMD_DETAIL">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACMD_DETAIL)">
+        <MappingFragment StoreEntitySet="ACMD_DETAIL">
+          <ScalarProperty Name="CMD_ID" ColumnName="CMD_ID" />
+          <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
+          <ScalarProperty Name="ADD_ID" ColumnName="ADD_ID" />
+          <ScalarProperty Name="ADD_ENTRY_TIME" ColumnName="ADD_ENTRY_TIME" />
+          <ScalarProperty Name="SEC_ID" ColumnName="SEC_ID" />
+          <ScalarProperty Name="SEG_NUM" ColumnName="SEG_NUM" />
+          <ScalarProperty Name="SEC_ENTRY_TIME" ColumnName="SEC_ENTRY_TIME" />
+          <ScalarProperty Name="SEC_LEAVE_TIME" ColumnName="SEC_LEAVE_TIME" />
+          <ScalarProperty Name="LOAD_START_TIME" ColumnName="LOAD_START_TIME" />
+          <ScalarProperty Name="LOAD_END_TIME" ColumnName="LOAD_END_TIME" />
+          <ScalarProperty Name="UNLOAD_START_TIME" ColumnName="UNLOAD_START_TIME" />
+          <ScalarProperty Name="UNLOAD_END_TIME" ColumnName="UNLOAD_END_TIME" />
+          <ScalarProperty Name="ESTIMATED_TIME" ColumnName="ESTIMATED_TIME" />
+          <ScalarProperty Name="IS_PASS" ColumnName="IS_PASS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ATRANSFER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ATRANSFER)">
+        <MappingFragment StoreEntitySet="ATRANSFER">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
+          <ScalarProperty Name="TRANSFERSTATE" ColumnName="TRANSFERSTATE" />
+          <ScalarProperty Name="COMMANDSTATE" ColumnName="COMMANDSTATE" />
+          <ScalarProperty Name="HOSTSOURCE" ColumnName="HOSTSOURCE" />
+          <ScalarProperty Name="HOSTDESTINATION" ColumnName="HOSTDESTINATION" />
+          <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
+          <ScalarProperty Name="CHECKCODE" ColumnName="CHECKCODE" />
+          <ScalarProperty Name="PAUSEFLAG" ColumnName="PAUSEFLAG" />
+          <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
+          <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
+          <ScalarProperty Name="CMD_FINISH_TIME" ColumnName="CMD_FINISH_TIME" />
+          <ScalarProperty Name="TIME_PRIORITY" ColumnName="TIME_PRIORITY" />
+          <ScalarProperty Name="PORT_PRIORITY" ColumnName="PORT_PRIORITY" />
+          <ScalarProperty Name="REPLACE" ColumnName="REPLACE" />
+          <ScalarProperty Name="PRIORITY_SUM" ColumnName="PRIORITY_SUM" />
+          <ScalarProperty Name="EXCUTE_CMD_ID" ColumnName="EXCUTE_CMD_ID" />
+          <ScalarProperty Name="RESULT_CODE" ColumnName="RESULT_CODE" />
+          <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACARRIER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACARRIER)">
+        <MappingFragment StoreEntitySet="ACARRIER">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="INSER_TIME" ColumnName="INSER_TIME" />
+          <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+          <ScalarProperty Name="INSTALLED_TIME" ColumnName="INSTALLED_TIME" />
+          <ScalarProperty Name="RENAME_ID" ColumnName="RENAME_ID" />
+          <ScalarProperty Name="STATE" ColumnName="STATE" />
+          <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="READ_STATUS" ColumnName="READ_STATUS" />
+          <ScalarProperty Name="FINISH_TIME" ColumnName="FINISH_TIME" />
+          <ScalarProperty Name="HOSTSOURCE" ColumnName="HOSTSOURCE" />
+          <ScalarProperty Name="HOSTDESTINATION" ColumnName="HOSTDESTINATION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AVEHICLE">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AVEHICLE)">
+        <MappingFragment StoreEntitySet="AVEHICLE">
+          <ScalarProperty Name="VEHICLE_ID" ColumnName="VEHICLE_ID" />
+          <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+          <ScalarProperty Name="VEHICLE_ACC_DIST" ColumnName="VEHICLE_ACC_DIST" />
+          <ScalarProperty Name="MANT_ACC_DIST" ColumnName="MANT_ACC_DIST" />
+          <ScalarProperty Name="MANT_DATE" ColumnName="MANT_DATE" />
+          <ScalarProperty Name="GRIP_COUNT" ColumnName="GRIP_COUNT" />
+          <ScalarProperty Name="GRIP_MANT_COUNT" ColumnName="GRIP_MANT_COUNT" />
+          <ScalarProperty Name="GRIP_MANT_DATE" ColumnName="GRIP_MANT_DATE" />
+          <ScalarProperty Name="LAST_FULLY_CHARGED_TIME" ColumnName="LAST_FULLY_CHARGED_TIME" />
+          <ScalarProperty Name="IS_INSTALLED" ColumnName="IS_INSTALLED" />
+          <ScalarProperty Name="INSTALLED_TIME" ColumnName="INSTALLED_TIME" />
+          <ScalarProperty Name="REMOVED_TIME" ColumnName="REMOVED_TIME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HCMD">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.HCMD)">
+        <MappingFragment StoreEntitySet="HCMD">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
+          <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
+          <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
+          <ScalarProperty Name="TRANSFER_ID" ColumnName="TRANSFER_ID" />
+          <ScalarProperty Name="CMD_TYPE" ColumnName="CMD_TYPE" />
+          <ScalarProperty Name="SOURCE" ColumnName="SOURCE" />
+          <ScalarProperty Name="DESTINATION" ColumnName="DESTINATION" />
+          <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
+          <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
+          <ScalarProperty Name="CMD_END_TIME" ColumnName="CMD_END_TIME" />
+          <ScalarProperty Name="CMD_STATUS" ColumnName="CMD_STATUS" />
+          <ScalarProperty Name="CMD_PROGRESS" ColumnName="CMD_PROGRESS" />
+          <ScalarProperty Name="INTERRUPTED_REASON" ColumnName="INTERRUPTED_REASON" />
+          <ScalarProperty Name="ESTIMATED_TIME" ColumnName="ESTIMATED_TIME" />
+          <ScalarProperty Name="ESTIMATED_EXCESS_TIME" ColumnName="ESTIMATED_EXCESS_TIME" />
+          <ScalarProperty Name="SOURCE_PORT" ColumnName="SOURCE_PORT" />
+          <ScalarProperty Name="DESTINATION_PORT" ColumnName="DESTINATION_PORT" />
+          <ScalarProperty Name="COMPLETE_STATUS" ColumnName="COMPLETE_STATUS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HTRANSFER">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.HTRANSFER)">
+        <MappingFragment StoreEntitySet="HTRANSFER">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
+          <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
+          <ScalarProperty Name="LOT_ID" ColumnName="LOT_ID" />
+          <ScalarProperty Name="TRANSFERSTATE" ColumnName="TRANSFERSTATE" />
+          <ScalarProperty Name="COMMANDSTATE" ColumnName="COMMANDSTATE" />
+          <ScalarProperty Name="HOSTSOURCE" ColumnName="HOSTSOURCE" />
+          <ScalarProperty Name="HOSTDESTINATION" ColumnName="HOSTDESTINATION" />
+          <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
+          <ScalarProperty Name="CHECKCODE" ColumnName="CHECKCODE" />
+          <ScalarProperty Name="PAUSEFLAG" ColumnName="PAUSEFLAG" />
+          <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
+          <ScalarProperty Name="CMD_FINISH_TIME" ColumnName="CMD_FINISH_TIME" />
+          <ScalarProperty Name="TIME_PRIORITY" ColumnName="TIME_PRIORITY" />
+          <ScalarProperty Name="PORT_PRIORITY" ColumnName="PORT_PRIORITY" />
+          <ScalarProperty Name="REPLACE" ColumnName="REPLACE" />
+          <ScalarProperty Name="PRIORITY_SUM" ColumnName="PRIORITY_SUM" />
+          <ScalarProperty Name="EXCUTE_CMD_ID" ColumnName="EXCUTE_CMD_ID" />
+          <ScalarProperty Name="RESULT_CODE" ColumnName="RESULT_CODE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AGROUPPORTSTATION">
+      <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.AGROUPPORTSTATION)">
+        <MappingFragment StoreEntitySet="AGROUPPORTSTATION">
+          <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
           <EntitySetMapping Name="VTRANSFER">
             <EntityTypeMapping TypeName="OHTC_DevModel.VTRANSFER">
               <MappingFragment StoreEntitySet="VTRANSFER">
@@ -3784,6 +3784,7 @@
                 <ScalarProperty Name="CMD_FINISH_TIME" ColumnName="CMD_FINISH_TIME" />
                 <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
                 <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
+                <ScalarProperty Name="PAUSEFLAG" ColumnName="PAUSEFLAG" />
                 <ScalarProperty Name="CHECKCODE" ColumnName="CHECKCODE" />
                 <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
                 <ScalarProperty Name="HOSTDESTINATION" ColumnName="HOSTDESTINATION" />
@@ -3796,9 +3797,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">

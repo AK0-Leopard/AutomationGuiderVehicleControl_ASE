@@ -130,12 +130,26 @@ namespace com.mirle.ibg3k0.sc
                 REPLACE = this.REPLACE
             };
         }
+        public AEQPT getSourcePortEQ(BLL.EqptBLL eqptBLL)
+        {
+            var eq = eqptBLL.OperateCatch.GetEqpt(this.HOSTSOURCE);
+            if (eq == null) return null;
+            return eq;
+        }
+
         public string getSourcePortGroupID(BLL.PortStationBLL portStationBLL)
         {
             var port_station = portStationBLL.OperateCatch.getPortStation(ID);
             if (port_station == null) return "";
             return SCUtility.Trim(port_station.GROUP_ID, true);
         }
+        public bool IsSourcePortAGVStation(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            var port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTSOURCE);
+            if (port_station == null) return false;
+            return port_station.GetEqpt(eqptBLL) is IAGVStationType;
+        }
+
         public override string ToString()
         {
             return $"Command:{this.ID},source:{this.HOSTSOURCE},desc:{this.HOSTDESTINATION},inser time:{CMD_INSER_TIME.ToString()}";

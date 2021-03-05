@@ -53,8 +53,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             cb_passCouplerStatus.Checked = DebugParameter.isPassCouplerStatus;
             cb_passCouplerHPSafetySingnal.Checked = DebugParameter.isPassCouplerHPSafetySignal;
-
             cb_needCheckPortUpdateTime.Checked = DebugParameter.isNeedCheckPortUpDateTime;
+            cb_test_ForceByPassWaitTransferEvent.Checked = DebugParameter.isForceByPassWaitTranEvent;
+
 
             List<string> lstVh = new List<string>();
             lstVh.Add(string.Empty);
@@ -1600,6 +1601,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void num_timePriorityIncrement_ValueChanged(object sender, EventArgs e)
         {
             sc.App.SystemParameter.setTransferCommandTimePriorityIncrement((int)num_timePriorityIncrement.Value);
+        }
+
+        private void cb_test_ForceByPassWaitTransferEvent_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.isForceByPassWaitTranEvent = cb_test_ForceByPassWaitTransferEvent.Checked;
         }
     }
 }

@@ -1919,8 +1919,14 @@ namespace com.mirle.ibg3k0.sc.Service
             VTRANSFER best_suitable_transfer = null;
             bool is_success = false;
 
+            //List<VTRANSFER> can_excute_after_on_the_way_tran = excutingTransfers.
+            //                                        Where(tr => tr.COMMANDSTATE < ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE).
+            //                                        ToList();
             List<VTRANSFER> can_excute_after_on_the_way_tran = excutingTransfers.
-                                                    Where(tr => tr.COMMANDSTATE < ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE).
+                                                    Where(tr => tr.COMMANDSTATE < ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE ||
+                                                                (tr.COMMANDSTATE == ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE &&
+                                                                 SCUtility.isMatche(tr.PAUSEFLAG, TransferBLL.TRANSFER_PAUSE_FLAG))
+                                                          ).
                                                     ToList();
 
             foreach (var excute_tran in can_excute_after_on_the_way_tran)

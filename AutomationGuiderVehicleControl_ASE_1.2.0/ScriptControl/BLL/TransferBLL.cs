@@ -11,6 +11,8 @@ namespace com.mirle.ibg3k0.sc.BLL
 {
     public class TransferBLL
     {
+        public const string TRANSFER_PAUSE_FLAG = "T";
+
         private static Logger logger = LogManager.GetCurrentClassLogger();
         public DB db = null;
         public Web web = null;
@@ -68,24 +70,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                     }
                     return isSuccess;
                 }
-                public bool isTransferStatusReady(string cmdID, int status)
-                {
-                    bool isSuccess = true;
-                    ATRANSFER cmd = null;
-                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                    {
-                        cmd = tranDao.getByID(con, cmdID);
-                    }
-                    if (cmd == null) return false;
-                    if (cmd.COMMANDSTATE >= status) return true;
-                    return isSuccess;
-                }
-                public bool updateTranStatus2Transferring(string cmdID)
+
+                public bool updateTranStatus2Transferring(string cmdID, bool isWating)
                 {
                     bool isSuccess = true;
                     using (DBConnection_EF con = DBConnection_EF.GetUContext())
                     {
                         ATRANSFER cmd = tranDao.getByID(con, cmdID);
+                        cmd.PAUSEFLAG = isWating ? TRANSFER_PAUSE_FLAG : "";
                         cmd.TRANSFERSTATE = E_TRAN_STATUS.Transferring;
                         cmd.COMMANDSTATE = cmd.COMMANDSTATE | ATRANSFER.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE;
                         tranDao.update(con, cmd);
@@ -188,6 +180,20 @@ namespace com.mirle.ibg3k0.sc.BLL
                     }
                     return rtnVTransfers;
 
+                }
+                public (bool isStatusReady, bool isPausing) isTransferStatusReady(string cmdID, int status)
+                {
+                    VTRANSFER cmd = null;
+                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                    {
+                        cmd = vtranDao.getVTransferByTransferID(con, cmdID);
+                    }
+                    if (cmd == null) return (false, false);
+                    int check_value = cmd.COMMANDSTATE & status;
+                    bool is_status_ready = check_value == status;
+                    bool is_pausing = SCUtility.isMatche(cmd.PAUSEFLAG, TRANSFER_PAUSE_FLAG);
+
+                    return (is_status_ready, is_pausing);
                 }
 
                 //public bool hasVTransferCommandUnfinished(string zoneID)
@@ -428,7 +434,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     logger.Error(ex, $"Exception:{url}");
                 }
             }
-            public bool checkIsNeedWaitForLoad(IAGVStationType agvStation)
+            public bool checkIsNeedWaitForLoad(IAGVStationType agvStation,int waitTimeOut)
             {
                 string result = "";
                 string url = "";
@@ -441,7 +447,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     string[] action_targets = new string[]
                     {
                     "TransferManagement",
-                    "TransferCheck",
+                    "IsAnyAdditionalCstToBeTransfer",
                     "Swap",
                     "AGVStation"
                     };
@@ -451,7 +457,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     };
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
                        Data: $"Try to pre open agv station cover,uri:{agv_url} station id:{agv_station_id} ");
-                    result = webClientManager.GetInfoFromServer(agv_url, action_targets, param);
+                    result = webClientManager.GetInfoFromServer(agv_url, action_targets, param, waitTimeOut);
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(TransferBLL), Device: "AGVC",
                        Data: $"Try to pre open agv station cover,uri:{agv_url} station id:{agv_station_id} ,result:{result}");
                     result = result.ToUpper();

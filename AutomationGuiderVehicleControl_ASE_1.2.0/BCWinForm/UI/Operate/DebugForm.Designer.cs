@@ -127,6 +127,7 @@
             this.cbTranMode = new System.Windows.Forms.ComboBox();
             this.label45 = new System.Windows.Forms.Label();
             this.groupBox19 = new System.Windows.Forms.GroupBox();
+            this.cb_test_ForceByPassWaitTransferEvent = new System.Windows.Forms.CheckBox();
             this.label44 = new System.Windows.Forms.Label();
             this.numer_commandWaitTime = new System.Windows.Forms.NumericUpDown();
             this.cb_test_command_over = new System.Windows.Forms.CheckBox();
@@ -1456,6 +1457,7 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.cb_test_ForceByPassWaitTransferEvent);
             this.tabPage1.Controls.Add(this.label97);
             this.tabPage1.Controls.Add(this.num_vh_idle_time);
             this.tabPage1.Controls.Add(this.btn_close_tcp_port);
@@ -1595,17 +1597,28 @@
             this.groupBox19.Controls.Add(this.cb_test_retry_LoadArrivals);
             this.groupBox19.Controls.Add(this.ck_test_retry_ReserveReq);
             this.groupBox19.Controls.Add(this.ck_continue_bcrreadfail);
-            this.groupBox19.Location = new System.Drawing.Point(1131, 476);
+            this.groupBox19.Location = new System.Drawing.Point(1131, 496);
             this.groupBox19.Name = "groupBox19";
-            this.groupBox19.Size = new System.Drawing.Size(288, 420);
+            this.groupBox19.Size = new System.Drawing.Size(288, 400);
             this.groupBox19.TabIndex = 27;
             this.groupBox19.TabStop = false;
             this.groupBox19.Text = "Test Flag";
             // 
+            // cb_test_ForceByPassWaitTransferEvent
+            // 
+            this.cb_test_ForceByPassWaitTransferEvent.AutoSize = true;
+            this.cb_test_ForceByPassWaitTransferEvent.Location = new System.Drawing.Point(1137, 464);
+            this.cb_test_ForceByPassWaitTransferEvent.Name = "cb_test_ForceByPassWaitTransferEvent";
+            this.cb_test_ForceByPassWaitTransferEvent.Size = new System.Drawing.Size(319, 26);
+            this.cb_test_ForceByPassWaitTransferEvent.TabIndex = 6;
+            this.cb_test_ForceByPassWaitTransferEvent.Text = "Force By Pass Wait Tran Event";
+            this.cb_test_ForceByPassWaitTransferEvent.UseVisualStyleBackColor = true;
+            this.cb_test_ForceByPassWaitTransferEvent.CheckedChanged += new System.EventHandler(this.cb_test_ForceByPassWaitTransferEvent_CheckedChanged);
+            // 
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(6, 343);
+            this.label44.Location = new System.Drawing.Point(6, 288);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(180, 22);
             this.label44.TabIndex = 4;
@@ -1613,7 +1626,7 @@
             // 
             // numer_commandWaitTime
             // 
-            this.numer_commandWaitTime.Location = new System.Drawing.Point(6, 370);
+            this.numer_commandWaitTime.Location = new System.Drawing.Point(12, 313);
             this.numer_commandWaitTime.Name = "numer_commandWaitTime";
             this.numer_commandWaitTime.Size = new System.Drawing.Size(120, 30);
             this.numer_commandWaitTime.TabIndex = 5;
@@ -1622,7 +1635,7 @@
             // cb_test_command_over
             // 
             this.cb_test_command_over.AutoSize = true;
-            this.cb_test_command_over.Location = new System.Drawing.Point(6, 314);
+            this.cb_test_command_over.Location = new System.Drawing.Point(6, 248);
             this.cb_test_command_over.Name = "cb_test_command_over";
             this.cb_test_command_over.Size = new System.Drawing.Size(199, 26);
             this.cb_test_command_over.TabIndex = 4;
@@ -1633,7 +1646,7 @@
             // cb_test_retry_Bcrread
             // 
             this.cb_test_retry_Bcrread.AutoSize = true;
-            this.cb_test_retry_Bcrread.Location = new System.Drawing.Point(6, 284);
+            this.cb_test_retry_Bcrread.Location = new System.Drawing.Point(6, 222);
             this.cb_test_retry_Bcrread.Name = "cb_test_retry_Bcrread";
             this.cb_test_retry_Bcrread.Size = new System.Drawing.Size(209, 26);
             this.cb_test_retry_Bcrread.TabIndex = 3;
@@ -1644,7 +1657,7 @@
             // cb_test_retry_Vhunloading
             // 
             this.cb_test_retry_Vhunloading.AutoSize = true;
-            this.cb_test_retry_Vhunloading.Location = new System.Drawing.Point(6, 253);
+            this.cb_test_retry_Vhunloading.Location = new System.Drawing.Point(6, 199);
             this.cb_test_retry_Vhunloading.Name = "cb_test_retry_Vhunloading";
             this.cb_test_retry_Vhunloading.Size = new System.Drawing.Size(249, 26);
             this.cb_test_retry_Vhunloading.TabIndex = 2;
@@ -1655,7 +1668,7 @@
             // cb_test_retry_Vhloading
             // 
             this.cb_test_retry_Vhloading.AutoSize = true;
-            this.cb_test_retry_Vhloading.Location = new System.Drawing.Point(6, 221);
+            this.cb_test_retry_Vhloading.Location = new System.Drawing.Point(6, 175);
             this.cb_test_retry_Vhloading.Name = "cb_test_retry_Vhloading";
             this.cb_test_retry_Vhloading.Size = new System.Drawing.Size(229, 26);
             this.cb_test_retry_Vhloading.TabIndex = 2;
@@ -1666,7 +1679,7 @@
             // cb_test_retry_UnloadComplete
             // 
             this.cb_test_retry_UnloadComplete.AutoSize = true;
-            this.cb_test_retry_UnloadComplete.Location = new System.Drawing.Point(6, 187);
+            this.cb_test_retry_UnloadComplete.Location = new System.Drawing.Point(6, 150);
             this.cb_test_retry_UnloadComplete.Name = "cb_test_retry_UnloadComplete";
             this.cb_test_retry_UnloadComplete.Size = new System.Drawing.Size(279, 26);
             this.cb_test_retry_UnloadComplete.TabIndex = 2;
@@ -1677,7 +1690,7 @@
             // cb_test_retry_UnloadArrivals
             // 
             this.cb_test_retry_UnloadArrivals.AutoSize = true;
-            this.cb_test_retry_UnloadArrivals.Location = new System.Drawing.Point(6, 155);
+            this.cb_test_retry_UnloadArrivals.Location = new System.Drawing.Point(6, 126);
             this.cb_test_retry_UnloadArrivals.Name = "cb_test_retry_UnloadArrivals";
             this.cb_test_retry_UnloadArrivals.Size = new System.Drawing.Size(279, 26);
             this.cb_test_retry_UnloadArrivals.TabIndex = 2;
@@ -1688,7 +1701,7 @@
             // cb_test_retry_LoadComplete
             // 
             this.cb_test_retry_LoadComplete.AutoSize = true;
-            this.cb_test_retry_LoadComplete.Location = new System.Drawing.Point(6, 124);
+            this.cb_test_retry_LoadComplete.Location = new System.Drawing.Point(6, 101);
             this.cb_test_retry_LoadComplete.Name = "cb_test_retry_LoadComplete";
             this.cb_test_retry_LoadComplete.Size = new System.Drawing.Size(259, 26);
             this.cb_test_retry_LoadComplete.TabIndex = 2;
@@ -1699,7 +1712,7 @@
             // cb_test_retry_LoadArrivals
             // 
             this.cb_test_retry_LoadArrivals.AutoSize = true;
-            this.cb_test_retry_LoadArrivals.Location = new System.Drawing.Point(7, 93);
+            this.cb_test_retry_LoadArrivals.Location = new System.Drawing.Point(7, 76);
             this.cb_test_retry_LoadArrivals.Name = "cb_test_retry_LoadArrivals";
             this.cb_test_retry_LoadArrivals.Size = new System.Drawing.Size(259, 26);
             this.cb_test_retry_LoadArrivals.TabIndex = 2;
@@ -1710,7 +1723,7 @@
             // ck_test_retry_ReserveReq
             // 
             this.ck_test_retry_ReserveReq.AutoSize = true;
-            this.ck_test_retry_ReserveReq.Location = new System.Drawing.Point(7, 61);
+            this.ck_test_retry_ReserveReq.Location = new System.Drawing.Point(7, 52);
             this.ck_test_retry_ReserveReq.Name = "ck_test_retry_ReserveReq";
             this.ck_test_retry_ReserveReq.Size = new System.Drawing.Size(239, 26);
             this.ck_test_retry_ReserveReq.TabIndex = 2;
@@ -4956,5 +4969,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn ForceEmergency;
         private System.Windows.Forms.NumericUpDown num_timePriorityIncrement;
         private System.Windows.Forms.Label label103;
+        private System.Windows.Forms.CheckBox cb_test_ForceByPassWaitTransferEvent;
     }
 }

@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/30/2020 10:10:07
--- Generated from EDMX file: C:\Git\AK0-Leopard\AutomationGuiderVehicleControl_ASE\AutomationGuiderVehicleControl_ASE\AutomationGuiderVehicleControl_ASE_1.2.0\ScriptControl\OHTCContext.edmx
+-- Date Created: 03/02/2021 05:07:40
+-- Generated from EDMX file: C:\Git\AK0-Leopard\AutomationGuiderVehicleControl_ASE\AutomationGuiderVehicleControl_ASE_1.2.0\ScriptControl\OHTCContext.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -1099,7 +1099,9 @@ CREATE TABLE [dbo].[ALARM] (
     [ALAM_DESC] char(80)  NULL,
     [CLEAR_DATE_TIME] datetime  NULL,
     [CMD_ID_1] char(64)  NULL,
-    [CMD_ID_2] char(64)  NULL
+    [CMD_ID_2] char(64)  NULL,
+    [CMD_ID_3] char(64)  NULL,
+    [CMD_ID_4] char(64)  NULL
 );
 GO
 
@@ -1690,10 +1692,10 @@ ADD CONSTRAINT [PK_ATRANSFER]
     PRIMARY KEY CLUSTERED ([ID] ASC);
 GO
 
--- Creating primary key on [ID] in table 'ACARRIER'
+-- Creating primary key on [ID], [INSER_TIME] in table 'ACARRIER'
 ALTER TABLE [dbo].[ACARRIER]
 ADD CONSTRAINT [PK_ACARRIER]
-    PRIMARY KEY CLUSTERED ([ID] ASC);
+    PRIMARY KEY CLUSTERED ([ID], [INSER_TIME] ASC);
 GO
 
 -- Creating primary key on [VEHICLE_ID] in table 'AVEHICLE'

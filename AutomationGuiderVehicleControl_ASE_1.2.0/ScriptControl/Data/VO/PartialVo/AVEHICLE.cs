@@ -553,7 +553,7 @@ namespace com.mirle.ibg3k0.sc
         }
         public virtual bool IsShelfFull
         {
-            get { return HAS_CST_L && HAS_CST_L; }
+            get { return HAS_CST_L && HAS_CST_R; }
         }
 
         [JsonIgnore]
@@ -711,8 +711,8 @@ namespace com.mirle.ibg3k0.sc
             get { return OP_PAUSE == VhStopSingle.On; }
             set { }
         }
-
         #endregion Pause Status
+
 
         public void Action()
         {
