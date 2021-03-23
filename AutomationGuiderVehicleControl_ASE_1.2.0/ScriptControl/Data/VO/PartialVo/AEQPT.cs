@@ -281,7 +281,7 @@ namespace com.mirle.ibg3k0.sc
             if (portStationList == null) return null;
             return portStationList.
                    Where(port_station => !port_station.PORT_ID.Contains("_ST0")).
-                   OrderBy(port_station => port_station.PORT_ID).
+                   OrderByDescending(port_station => port_station.PORT_ID).
                    ToList();
         }
         public List<string> getAGVStationPortAdrIDs()
@@ -298,7 +298,7 @@ namespace com.mirle.ibg3k0.sc
             if (portStationList == null) return null;
             return portStationList.
                    Where(port_station => !port_station.PORT_ID.Contains("_ST0") && port_station.IsInPutMode && port_station.PortReady).
-                   OrderBy(port_station => port_station.PORT_ID).
+                   OrderByDescending(port_station => port_station.PORT_ID).
                    ToList();
         }
         public APORTSTATION getAGVVirtruePort()
@@ -402,6 +402,14 @@ namespace com.mirle.ibg3k0.sc
         private int WATING_CST_WAIT_IN_TIME_SEC = 60;
         public bool isNeedWaitingCSTWaitIn => LastStartWaitingWaitOutTime.AddSeconds(WATING_CST_WAIT_IN_TIME_SEC) > DateTime.Now;
         public bool IsAskedWaitWaitOutCST => LastStartWaitingWaitOutTime != DateTime.MinValue;
+        private Stopwatch lastnotifypreOpencovertime = new Stopwatch();
+        public Stopwatch LastNotifyPreOpenCoverTime { get { return lastnotifypreOpencovertime; } }
+
+        public void RestartLastNotifyPreOpenCoverTime()
+        {
+            LastNotifyPreOpenCoverTime.Restart();
+        }
+
     }
 
 
@@ -440,6 +448,8 @@ namespace com.mirle.ibg3k0.sc
         DateTime LastStartWaitingWaitOutTime { get; set; }
         bool isNeedWaitingCSTWaitIn { get; }
         bool IsAskedWaitWaitOutCST { get; }
+        Stopwatch LastNotifyPreOpenCoverTime { get; }
+        void RestartLastNotifyPreOpenCoverTime();
 
     }
 

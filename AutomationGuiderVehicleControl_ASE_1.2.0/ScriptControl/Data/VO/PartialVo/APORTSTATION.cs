@@ -88,6 +88,13 @@ namespace com.mirle.ibg3k0.sc
             return true;
         }
         public Stopwatch LastNotifyPreOpenCoverTime = new Stopwatch();
+
+        const int OPEN_BOX_TIME_MS = 15000;
+        public bool IsBoxCoverOpeningByPreOpenCover
+        {
+            get { return LastNotifyPreOpenCoverTime.IsRunning && LastNotifyPreOpenCoverTime.ElapsedMilliseconds < OPEN_BOX_TIME_MS; }
+        }
+
     }
 
     public partial class APORTSTATION

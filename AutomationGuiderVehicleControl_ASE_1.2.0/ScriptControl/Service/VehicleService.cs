@@ -1214,12 +1214,31 @@ namespace com.mirle.ibg3k0.sc.Service
                     virtual_agv_station_port_infos = new RepeatedField<PortInfo>();
                     foreach (var port in agv_st_ports)
                     {
+                        bool is_port_ready = port.PortReady;
+                        bool is_in_put_mode = port.IsInPutMode;
+                        bool is_out_put_mode = port.IsOutPutMode;
+                        if (is_in_put_mode && !is_port_ready)
+                        {
+                            //如果當Port是In put mode但是port not ready時，
+                            //可以看一下是否在最近15秒內是否有進行過預開蓋
+                            //有的話代表還是可以進行送貨的
+                            if (port.IsBoxCoverOpeningByPreOpenCover)
+                            {
+                                is_port_ready = true;
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                   Data: $"Port ID:{port.PORT_ID} is in put mode:{is_port_ready} and is port ready:{is_port_ready}," +
+                                         $"but pre open cover this port in 10 ms , so force change to port ready.",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CST_ID_L: vh.CST_ID_L,
+                                   CST_ID_R: vh.CST_ID_R);
+                            }
+                        }
                         virtual_agv_station_port_infos.Add(new PortInfo()
                         {
                             ID = SCUtility.Trim(port.PORT_ID),
-                            IsAGVPortReady = port.PortReady,
-                            IsInputMode = port.IsInPutMode,
-                            IsOutputMode = port.IsOutPutMode
+                            IsAGVPortReady = is_port_ready,
+                            IsInputMode = is_in_put_mode,
+                            IsOutputMode = is_out_put_mode
                         });
                     }
                 }
@@ -3603,13 +3622,16 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(portID);
             if (port_station == null) return;
-            if (port_station.LastNotifyPreOpenCoverTime.ElapsedMilliseconds < MAX_PRE_OPEN_COVER_TIME_MILLISEC)
+            //if (port_station.LastNotifyPreOpenCoverTime.ElapsedMilliseconds < MAX_PRE_OPEN_COVER_TIME_MILLISEC)
+            if (agvStation.LastNotifyPreOpenCoverTime.IsRunning &&
+                agvStation.LastNotifyPreOpenCoverTime.ElapsedMilliseconds < MAX_PRE_OPEN_COVER_TIME_MILLISEC)
             {
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                    Data: $"想要進行Port:{portID}，但由於該port 前1分鐘內已進行過預該蓋，跳過該次預開蓋。");
                 return;
             }
             port_station.LastNotifyPreOpenCoverTime.Restart();
+            agvStation.RestartLastNotifyPreOpenCoverTime();
             Task.Run(() => scApp.TransferBLL.web.preOpenAGVStationCover(agvStation, portID));
         }
         enum PreOpenCoverType
