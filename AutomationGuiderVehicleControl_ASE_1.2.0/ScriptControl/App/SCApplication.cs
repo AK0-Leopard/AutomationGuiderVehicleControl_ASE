@@ -1639,6 +1639,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         public static int AllowVhIdleTime_ms = 300000;
         public static int TransferCommandTimePriorityIncrement = 1;
+        public static int AFTER_LOADING_UNLOADING_N_MILLISECOND = 30000;
 
 
         public static void setSECSConversactionTimeout(int timeout)
@@ -1701,6 +1702,10 @@ namespace com.mirle.ibg3k0.sc.App
         public static void setTransferCommandTimePriorityIncrement(int _TransferCommandTimePriorityIncrement)
         {
             TransferCommandTimePriorityIncrement = _TransferCommandTimePriorityIncrement;
+        }
+        public static void setAFTER_LOADING_UNLOADING_N_MILLISECOND(int _AFTER_LOADING_UNLOADING_N_MILLISECOND)
+        {
+            AFTER_LOADING_UNLOADING_N_MILLISECOND = _AFTER_LOADING_UNLOADING_N_MILLISECOND;
         }
 
     }

@@ -139,6 +139,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_by_pass_shelf_status.Checked = sc.App.SystemParameter.IsByPassAGVShelfStatus;
             num_vh_idle_time.Value = sc.App.SystemParameter.AllowVhIdleTime_ms;
             num_timePriorityIncrement.Value = sc.App.SystemParameter.TransferCommandTimePriorityIncrement;
+            num_after_loading_unloading_action_time.Value = sc.App.SystemParameter.AFTER_LOADING_UNLOADING_N_MILLISECOND;
 
             agvPortStation = bcApp.SCApplication.PortStationBLL.OperateCatch.loadAllPortStation();
             dgv_cache_object_data_portstation.DataSource = agvPortStation;
@@ -1606,6 +1607,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_test_ForceByPassWaitTransferEvent_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.isForceByPassWaitTranEvent = cb_test_ForceByPassWaitTransferEvent.Checked;
+        }
+
+        private void num_after_loading_unloading_action_time_ValueChanged(object sender, EventArgs e)
+        {
+            sc.App.SystemParameter.setAFTER_LOADING_UNLOADING_N_MILLISECOND((int)num_after_loading_unloading_action_time.Value);
         }
     }
 }

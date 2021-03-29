@@ -307,6 +307,16 @@ namespace com.mirle.ibg3k0.sc.BLL
                 if (port_station == null) return false;
                 return port_station.GetEqptType(eqptBLL) == SCAppConstants.EqptType.AGVStation;
             }
+            public (bool isAGVSt, IAGVStationType IAGVStationType) IsAGVStationPortByAdrID(EqptBLL eqptBLL, string adrID)
+            {
+                if (SCUtility.isEmpty(adrID)) return (false, null);
+                List<APORTSTATION> portTemp = CacheManager.getALLPortStation().Where(port_station => port_station.ADR_ID.Trim() == adrID.Trim()).
+                                                                         ToList();
+                if (portTemp == null || portTemp.Count == 0) return (false, null);
+                IAGVStationType agvStationType = portTemp[0].GetEqpt(eqptBLL) as IAGVStationType;
+                return (agvStationType != null, agvStationType);
+            }
+
 
             public bool updatePriority(string portID, int priority)
             {

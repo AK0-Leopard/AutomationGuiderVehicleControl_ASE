@@ -108,12 +108,13 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
 
         public List<ATRANSFER> loadFinishCMD_MCS(DBConnection_EF con)
         {
+            DateTime lastTime = DateTime.Now.AddMinutes(-1);
             var query = from cmd in con.ATRANSFER
-                        where cmd.TRANSFERSTATE >= E_TRAN_STATUS.Canceled
+                        where cmd.TRANSFERSTATE >= E_TRAN_STATUS.Canceled &&
+                              cmd.CMD_FINISH_TIME <= lastTime
                         select cmd;
             return query.ToList();
         }
-
 
 
         public int getCMD_MCSMaxPrioritySum(DBConnection_EF con)

@@ -90,6 +90,7 @@ namespace com.mirle.ibg3k0.sc
         /// 當要求狀態失敗N次後，會重新啟動連線的機制
         /// </summary>
         public const int MAX_STATUS_REQUEST_FAIL_TIMES = 3;
+        public const int AFTER_LOADING_UNLOADING_N_MILLISECOND = 30000;
 
         VehicleTimerAction vehicleTimer = null;
         public VehicleStateMachine vhStateMachine;
@@ -135,6 +136,7 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler<string> CurrentExcuteCmdChange;
         public event EventHandler<int> StatusRequestFailOverTimes;
         public event EventHandler CanNotFindTheCharger;
+        public event EventHandler AfterLoadingUnloadingNSecond;
 
         public void onExcuteCommandStatusChange()
         {
@@ -205,6 +207,10 @@ namespace com.mirle.ibg3k0.sc
                 isCanNotFindTheCharger = true;
                 CanNotFindTheCharger?.Invoke(this, EventArgs.Empty);
             }
+        }
+        public void onVehicleLoadingUnloadingAfterNSecsond()
+        {
+            AfterLoadingUnloadingNSecond?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion Event
@@ -440,6 +446,8 @@ namespace com.mirle.ibg3k0.sc
         public virtual DriveDirction CurrentDriveDirction { get; set; }
         [JsonIgnore]
         public virtual double Speed { get; set; }
+        [JsonIgnore]
+        public virtual EventType LastTranEventType { get; set; }
         [JsonIgnore]
         public virtual string ObsVehicleID { get; set; }
         [JsonIgnore]
@@ -712,7 +720,7 @@ namespace com.mirle.ibg3k0.sc
             set { }
         }
         #endregion Pause Status
-
+        public Stopwatch StartLoadingUnloadingTime { get; private set; }
 
         public void Action()
         {
@@ -721,6 +729,11 @@ namespace com.mirle.ibg3k0.sc
         public void Stop()
         {
             CurrentCommandExcuteTime.Reset();
+        }
+
+        public void StartLoadingUnload()
+        {
+            StartLoadingUnloadingTime.Restart();
         }
         #region Send Message
         public bool send_Str1(ID_1_HOST_BASIC_INFO_VERSION_REP send_gpb, out ID_101_HOST_BASIC_INFO_VERSION_RESPONSE receive_gpp)
@@ -1541,6 +1554,12 @@ namespace com.mirle.ibg3k0.sc
                         {
                             var currnet_excute_ids = getVhCurrentExcuteCommandID(line.CurrentExcuteCommand);
                             vh.onLongTimeInaction(currnet_excute_ids);
+                        }
+                        if (vh.StartLoadingUnloadingTime.IsRunning &&
+                            vh.StartLoadingUnloadingTime.ElapsedMilliseconds > sc.App.SystemParameter.AFTER_LOADING_UNLOADING_N_MILLISECOND)
+                        {
+                            vh.StartLoadingUnloadingTime.Reset();
+                            vh.onVehicleLoadingUnloadingAfterNSecsond();
                         }
                     }
                     catch (Exception ex)

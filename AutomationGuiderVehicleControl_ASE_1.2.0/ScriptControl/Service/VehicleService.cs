@@ -773,7 +773,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 var reserveInfos = recive_str.ReserveInfos;
                 BCRReadResult bCRReadResult = recive_str.BCRReadResult;
                 AGVLocation cst_location = recive_str.Location;
-
+                vh.LastTranEventType = eventType;
                 switch (eventType)
                 {
                     case EventType.ReserveReq:
@@ -1560,14 +1560,13 @@ namespace com.mirle.ibg3k0.sc.Service
                    CST_ID_L: vh.CST_ID_L,
                    CST_ID_R: vh.CST_ID_R);
                 string vh_id = vh.VEHICLE_ID;
-
                 ACMD cmd = scApp.CMDBLL.GetCMD_OHTCByID(cmdID);
                 if (cmd == null)
                 {
                     replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
                     return;
                 }
-
+                vh.StartLoadingUnload();
                 bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 if (isTranCmd)
                 {
@@ -1617,7 +1616,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     replyTranEventReport(bcfApp, eventType, vh, seqNum, cmdID);
                     return;
                 }
-
+                vh.StartLoadingUnload();
                 bool isTranCmd = !SCUtility.isEmpty(cmd.TRANSFER_ID);
                 if (isTranCmd)
                 {
@@ -2294,6 +2293,8 @@ namespace com.mirle.ibg3k0.sc.Service
                         bool isTransfer = !SCUtility.isEmpty(finish_fransfer_cmd_id);
                         if (isTransfer)
                         {
+                            Task.Run(() => scApp.VehicleBLL.redis.setFinishTransferCommandID(vh.VEHICLE_ID, finish_fransfer_cmd_id));
+
                             //if (scApp.PortStationBLL.OperateCatch.IsEqPort(scApp.EqptBLL, cmd.DESTINATION_PORT))
                             //scApp.ReportBLL.newReportUnloadComplete(cmd.TRANSFER_ID, null);
 
@@ -2313,7 +2314,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                    VehicleID: vh_id);
                             }
                             tryRemoveFinishTransferInCurrentCache(finish_fransfer_cmd_id);
-                            Task.Run(() => scApp.VehicleBLL.redis.setFinishTransferCommandID(vh.VEHICLE_ID, finish_fransfer_cmd_id));
+                            //Task.Run(() => scApp.VehicleBLL.redis.setFinishTransferCommandID(vh.VEHICLE_ID, finish_fransfer_cmd_id));
                         }
                     }
                     catch (Exception ex)
@@ -3039,7 +3040,107 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.Idling += Vh_Idling;
                 vh.CurrentExcuteCmdChange += Vh_CurrentExcuteCmdChange;
                 vh.StatusRequestFailOverTimes += Vh_StatusRequestFailOverTimes;
+                vh.AfterLoadingUnloadingNSecond += Vh_AfterLoadingUnloadingNSecond; ;
                 vh.SetupTimerAction();
+            }
+        }
+
+        private void Vh_AfterLoadingUnloadingNSecond(object sender, EventArgs e)
+        {
+            //在經過了Loading或Unloading N秒以後，可以開始確認是否可以進行另外一個Port的預開蓋
+            //1.先確認是否有大於一筆搬送命令有的話才繼續判斷是否需要對另一個Port進行預開蓋
+            //2.若大於一筆，則判斷目前excuting的命令，Loading/Unloading是不是在對AGV St的Port進行交握
+            //  是則需再判斷是否為Loading，則需再確認是否另外一筆是Unloading是的話，也不用再多判斷因為會執行Continue
+            try
+            {
+                AVEHICLE vh = sender as AVEHICLE;
+                string vh_id = vh.VEHICLE_ID;
+                string cur_adr_id = SCUtility.Trim(vh.CUR_ADR_ID, true);
+                string cur_excute_cmd_id = SCUtility.Trim(vh.CurrentExcuteCmdID, true);
+                if (SCUtility.isEmpty(cur_excute_cmd_id)) return;
+                var check_result = scApp.PortStationBLL.OperateCatch.IsAGVStationPortByAdrID(scApp.EqptBLL, cur_adr_id);
+                if (check_result.isAGVSt)
+                {
+                    List<ACMD> cmds = scApp.CMDBLL.cache.loadExcuteCmds(vh_id);
+                    if (cmds == null || cmds.Count < 2)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"vh:{vh_id}，執行命令小於2筆，離開另一蓋子的預開蓋流程",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                        return;
+                    }
+                    foreach (var cmd in cmds.ToList())
+                    {
+                        if (SCUtility.isMatche(cur_excute_cmd_id, cmd.ID))
+                        {
+                            cmds.Remove(cmd);
+                            continue;
+                        }
+                        var check_is_to_result = CheckIsGoToAGVStationLoadUnload(vh, cmd);
+                        if (!check_is_to_result.isGoToSt)
+                        {
+                            cmds.Remove(cmd);
+                            continue;
+                        }
+                    }
+                    if (cmds.Count == 0)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"vh:{vh_id}，沒有適合執行的第二筆預開蓋命令，離開另一蓋子的預開蓋流程",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                        return;
+                    }
+                    ACMD orther_st_cmd = cmds.First();
+                    if (vh.LastTranEventType == EventType.Vhloading)
+                    {
+                        if (orther_st_cmd.isWillPutToSt(scApp.VehicleBLL, scApp.PortStationBLL, scApp.EqptBLL))
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"vh:{vh_id}，將進行continue流程，不進行另外一個Port預開蓋",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                        }
+                        else if (orther_st_cmd.isWillGetFromSt(scApp.VehicleBLL, scApp.PortStationBLL, scApp.EqptBLL))
+                        {
+                            APORTSTATION source_port = scApp.PortStationBLL.OperateCatch.getPortStation(orther_st_cmd.SOURCE_PORT);
+                            var source_port_station = source_port.GetEqpt(scApp.EqptBLL) as IAGVStationType;
+                            procNotifyPreOpenAGVStationCover(source_port_station, source_port.PORT_ID);
+                        }
+                    }
+                    else if (vh.LastTranEventType == EventType.Vhunloading)
+                    {
+                        if (orther_st_cmd.isWillPutToSt(scApp.VehicleBLL, scApp.PortStationBLL, scApp.EqptBLL))
+                        {
+                            IAGVStationType traget_agv_st = check_result.IAGVStationType;
+                            APORTSTATION first_ready_port_stations = traget_agv_st.getAGVStationReadyLoadPorts().FirstOrDefault();
+                            if (first_ready_port_stations == null)
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                   Data: $"Target eq:{traget_agv_st.getAGVStationID()} not ready load port，離開第二次預開蓋流程。",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CST_ID_L: vh.CST_ID_L,
+                                   CST_ID_R: vh.CST_ID_R);
+                                return;
+                            }
+                            procNotifyPreOpenAGVStationCover(traget_agv_st, first_ready_port_stations.PORT_ID);
+                        }
+                        else if (orther_st_cmd.isWillGetFromSt(scApp.VehicleBLL, scApp.PortStationBLL, scApp.EqptBLL))
+                        {
+                            APORTSTATION source_port = scApp.PortStationBLL.OperateCatch.getPortStation(orther_st_cmd.SOURCE_PORT);
+                            var source_port_station = source_port.GetEqpt(scApp.EqptBLL) as IAGVStationType;
+                            procNotifyPreOpenAGVStationCover(source_port_station, source_port.PORT_ID);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
             }
         }
 
@@ -3553,15 +3654,15 @@ namespace com.mirle.ibg3k0.sc.Service
                     return;
                 }
                 string vh_cur_adr_id = SCUtility.Trim(vh.CUR_ADR_ID, true);
-                if (target_port_station.getAGVStationPortAdrIDs().Contains(vh_cur_adr_id))
-                {
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                       Data: $"vh:{vh.VEHICLE_ID} current adr:{vh_cur_adr_id} 已經在 st:{target_port_station.getAGVStationID()}中，不需確認是否要預開蓋",
-                       VehicleID: vh.VEHICLE_ID,
-                       CST_ID_L: vh.CST_ID_L,
-                       CST_ID_R: vh.CST_ID_R);
-                    return;
-                }
+                //if (target_port_station.getAGVStationPortAdrIDs().Contains(vh_cur_adr_id))
+                //{
+                //    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                //       Data: $"vh:{vh.VEHICLE_ID} current adr:{vh_cur_adr_id} 已經在 st:{target_port_station.getAGVStationID()}中，不需確認是否要預開蓋",
+                //       VehicleID: vh.VEHICLE_ID,
+                //       CST_ID_L: vh.CST_ID_L,
+                //       CST_ID_R: vh.CST_ID_R);
+                //    return;
+                //}
                 string vh_id = vh.VEHICLE_ID;
                 bool is_virtual_agv_station_port = target_port.IsVirtualAGVStation(scApp.EqptBLL);
                 if (is_virtual_agv_station_port)

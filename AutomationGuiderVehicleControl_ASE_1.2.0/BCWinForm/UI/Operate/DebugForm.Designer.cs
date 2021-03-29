@@ -117,6 +117,7 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cb_test_ForceByPassWaitTransferEvent = new System.Windows.Forms.CheckBox();
             this.label97 = new System.Windows.Forms.Label();
             this.num_vh_idle_time = new System.Windows.Forms.NumericUpDown();
             this.btn_close_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
@@ -127,7 +128,6 @@
             this.cbTranMode = new System.Windows.Forms.ComboBox();
             this.label45 = new System.Windows.Forms.Label();
             this.groupBox19 = new System.Windows.Forms.GroupBox();
-            this.cb_test_ForceByPassWaitTransferEvent = new System.Windows.Forms.CheckBox();
             this.label44 = new System.Windows.Forms.Label();
             this.numer_commandWaitTime = new System.Windows.Forms.NumericUpDown();
             this.cb_test_command_over = new System.Windows.Forms.CheckBox();
@@ -413,6 +413,8 @@
             this.comboBox_port11 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btn_online = new System.Windows.Forms.Button();
+            this.label104 = new System.Windows.Forms.Label();
+            this.num_after_loading_unloading_action_time = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -461,6 +463,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_BatteryLowBoundaryValue)).BeginInit();
             this.DIO_DEVICE_TEST.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_after_loading_unloading_action_time)).BeginInit();
             this.SuspendLayout();
             // 
             // cmb_tcpipctr_Vehicle
@@ -1457,6 +1460,8 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.label104);
+            this.tabPage1.Controls.Add(this.num_after_loading_unloading_action_time);
             this.tabPage1.Controls.Add(this.cb_test_ForceByPassWaitTransferEvent);
             this.tabPage1.Controls.Add(this.label97);
             this.tabPage1.Controls.Add(this.num_vh_idle_time);
@@ -1480,6 +1485,17 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cb_test_ForceByPassWaitTransferEvent
+            // 
+            this.cb_test_ForceByPassWaitTransferEvent.AutoSize = true;
+            this.cb_test_ForceByPassWaitTransferEvent.Location = new System.Drawing.Point(1137, 464);
+            this.cb_test_ForceByPassWaitTransferEvent.Name = "cb_test_ForceByPassWaitTransferEvent";
+            this.cb_test_ForceByPassWaitTransferEvent.Size = new System.Drawing.Size(319, 26);
+            this.cb_test_ForceByPassWaitTransferEvent.TabIndex = 6;
+            this.cb_test_ForceByPassWaitTransferEvent.Text = "Force By Pass Wait Tran Event";
+            this.cb_test_ForceByPassWaitTransferEvent.UseVisualStyleBackColor = true;
+            this.cb_test_ForceByPassWaitTransferEvent.CheckedChanged += new System.EventHandler(this.cb_test_ForceByPassWaitTransferEvent_CheckedChanged);
             // 
             // label97
             // 
@@ -1599,26 +1615,15 @@
             this.groupBox19.Controls.Add(this.ck_continue_bcrreadfail);
             this.groupBox19.Location = new System.Drawing.Point(1131, 496);
             this.groupBox19.Name = "groupBox19";
-            this.groupBox19.Size = new System.Drawing.Size(288, 400);
+            this.groupBox19.Size = new System.Drawing.Size(288, 339);
             this.groupBox19.TabIndex = 27;
             this.groupBox19.TabStop = false;
             this.groupBox19.Text = "Test Flag";
             // 
-            // cb_test_ForceByPassWaitTransferEvent
-            // 
-            this.cb_test_ForceByPassWaitTransferEvent.AutoSize = true;
-            this.cb_test_ForceByPassWaitTransferEvent.Location = new System.Drawing.Point(1137, 464);
-            this.cb_test_ForceByPassWaitTransferEvent.Name = "cb_test_ForceByPassWaitTransferEvent";
-            this.cb_test_ForceByPassWaitTransferEvent.Size = new System.Drawing.Size(319, 26);
-            this.cb_test_ForceByPassWaitTransferEvent.TabIndex = 6;
-            this.cb_test_ForceByPassWaitTransferEvent.Text = "Force By Pass Wait Tran Event";
-            this.cb_test_ForceByPassWaitTransferEvent.UseVisualStyleBackColor = true;
-            this.cb_test_ForceByPassWaitTransferEvent.CheckedChanged += new System.EventHandler(this.cb_test_ForceByPassWaitTransferEvent_CheckedChanged);
-            // 
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(6, 288);
+            this.label44.Location = new System.Drawing.Point(6, 273);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(180, 22);
             this.label44.TabIndex = 4;
@@ -1626,7 +1631,7 @@
             // 
             // numer_commandWaitTime
             // 
-            this.numer_commandWaitTime.Location = new System.Drawing.Point(12, 313);
+            this.numer_commandWaitTime.Location = new System.Drawing.Point(12, 298);
             this.numer_commandWaitTime.Name = "numer_commandWaitTime";
             this.numer_commandWaitTime.Size = new System.Drawing.Size(120, 30);
             this.numer_commandWaitTime.TabIndex = 5;
@@ -1916,7 +1921,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4491,6 +4496,28 @@
             this.btn_online.UseVisualStyleBackColor = true;
             this.btn_online.Click += new System.EventHandler(this.btn_online_Click);
             // 
+            // label104
+            // 
+            this.label104.AutoSize = true;
+            this.label104.Location = new System.Drawing.Point(846, 830);
+            this.label104.Name = "label104";
+            this.label104.Size = new System.Drawing.Size(370, 22);
+            this.label104.TabIndex = 56;
+            this.label104.Text = "After Loading / Unloding Action Time";
+            // 
+            // num_after_loading_unloading_action_time
+            // 
+            this.num_after_loading_unloading_action_time.Location = new System.Drawing.Point(850, 855);
+            this.num_after_loading_unloading_action_time.Maximum = new decimal(new int[] {
+            600000,
+            0,
+            0,
+            0});
+            this.num_after_loading_unloading_action_time.Name = "num_after_loading_unloading_action_time";
+            this.num_after_loading_unloading_action_time.Size = new System.Drawing.Size(120, 30);
+            this.num_after_loading_unloading_action_time.TabIndex = 57;
+            this.num_after_loading_unloading_action_time.ValueChanged += new System.EventHandler(this.num_after_loading_unloading_action_time_ValueChanged);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -4580,6 +4607,7 @@
             this.DIO_DEVICE_TEST.ResumeLayout(false);
             this.DIO_DEVICE_TEST.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.num_after_loading_unloading_action_time)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4970,5 +4998,7 @@
         private System.Windows.Forms.NumericUpDown num_timePriorityIncrement;
         private System.Windows.Forms.Label label103;
         private System.Windows.Forms.CheckBox cb_test_ForceByPassWaitTransferEvent;
+        private System.Windows.Forms.Label label104;
+        private System.Windows.Forms.NumericUpDown num_after_loading_unloading_action_time;
     }
 }

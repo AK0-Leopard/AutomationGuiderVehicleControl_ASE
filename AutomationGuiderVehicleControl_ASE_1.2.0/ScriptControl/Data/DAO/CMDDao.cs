@@ -76,8 +76,10 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
         }
         public List<ACMD> loadfinishCmd(DBConnection_EF con)
         {
+            DateTime lastTime = DateTime.Now.AddMinutes(-1);
             var query = from cmd in con.ACMD
-                        where cmd.CMD_STATUS >= E_CMD_STATUS.NormalEnd
+                        where cmd.CMD_STATUS >= E_CMD_STATUS.NormalEnd &&
+                              cmd.CMD_END_TIME <= lastTime
                         select cmd;
             return query.ToList();
         }

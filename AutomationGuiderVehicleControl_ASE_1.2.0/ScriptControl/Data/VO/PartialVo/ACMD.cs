@@ -16,7 +16,6 @@ namespace com.mirle.ibg3k0.sc
 {
     public partial class ACMD
     {
-
         public bool IsMoveCommand
         {
             get
@@ -72,7 +71,34 @@ namespace com.mirle.ibg3k0.sc
             if (sections == null || sections.Count == 0) return "";
             return sc.Common.SCUtility.Trim(sections.First().SEC_ID, true);
         }
-
+        public bool isWillGetFromSt(BLL.VehicleBLL vehicleBLL, BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            if (!IsCarryCommand) return false;
+            bool is_carry_cmd_cst = vehicleBLL.cache.IsCarryCstByCstID(VH_ID, ID);
+            if (is_carry_cmd_cst)
+            {
+                return (false);
+            }
+            else
+            {
+                bool is_source_port_agv_st = IsSourcePortAGVStation(portStationBLL, eqptBLL);
+                return is_source_port_agv_st;
+            }
+        }
+        public bool isWillPutToSt(BLL.VehicleBLL vehicleBLL, BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
+        {
+            if (!IsCarryCommand) return false;
+            bool is_carry_cmd_cst = vehicleBLL.cache.IsCarryCstByCstID(VH_ID, ID);
+            if (is_carry_cmd_cst)
+            {
+                bool is_target_port_agv_st = IsTargetPortAGVStation(portStationBLL, eqptBLL);
+                return is_target_port_agv_st;
+            }
+            else
+            {
+                return (false);
+            }
+        }
         public HCMD ToHCMD()
         {
             return new HCMD()
