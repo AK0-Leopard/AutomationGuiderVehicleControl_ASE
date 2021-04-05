@@ -3053,11 +3053,25 @@ namespace com.mirle.ibg3k0.sc.Service
             //  是則需再判斷是否為Loading，則需再確認是否另外一筆是Unloading是的話，也不用再多判斷因為會執行Continue
             try
             {
+
                 AVEHICLE vh = sender as AVEHICLE;
                 string vh_id = vh.VEHICLE_ID;
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                   Data: $"vh:{vh_id}，開始確認是否需要進行第二次預開蓋流程，間隔時間:{SystemParameter.AFTER_LOADING_UNLOADING_N_MILLISECOND}...",
+                   VehicleID: vh.VEHICLE_ID,
+                   CST_ID_L: vh.CST_ID_L,
+                   CST_ID_R: vh.CST_ID_R);
                 string cur_adr_id = SCUtility.Trim(vh.CUR_ADR_ID, true);
                 string cur_excute_cmd_id = SCUtility.Trim(vh.CurrentExcuteCmdID, true);
-                if (SCUtility.isEmpty(cur_excute_cmd_id)) return;
+                if (SCUtility.isEmpty(cur_excute_cmd_id))
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                       Data: $"vh:{vh_id}，無目前執行命令，不進行第二次預開蓋確認。",
+                       VehicleID: vh.VEHICLE_ID,
+                       CST_ID_L: vh.CST_ID_L,
+                       CST_ID_R: vh.CST_ID_R);
+                    return;
+                }
                 var check_result = scApp.PortStationBLL.OperateCatch.IsAGVStationPortByAdrID(scApp.EqptBLL, cur_adr_id);
                 if (check_result.isAGVSt)
                 {
@@ -3094,7 +3108,18 @@ namespace com.mirle.ibg3k0.sc.Service
                            CST_ID_R: vh.CST_ID_R);
                         return;
                     }
-                    ACMD orther_st_cmd = cmds.First();
+                    ACMD orther_st_cmd = null;
+                    foreach (var cmd in cmds)
+                    {
+                        if (cmd.isWillGetFromSt(scApp.VehicleBLL, scApp.PortStationBLL, scApp.EqptBLL))
+                        {
+                            orther_st_cmd = cmd;
+                            break;
+                        }
+                    }
+                    if (orther_st_cmd == null)
+                        orther_st_cmd = cmds.First();
+
                     if (vh.LastTranEventType == EventType.Vhloading)
                     {
                         if (orther_st_cmd.isWillPutToSt(scApp.VehicleBLL, scApp.PortStationBLL, scApp.EqptBLL))
@@ -3109,7 +3134,20 @@ namespace com.mirle.ibg3k0.sc.Service
                         {
                             APORTSTATION source_port = scApp.PortStationBLL.OperateCatch.getPortStation(orther_st_cmd.SOURCE_PORT);
                             var source_port_station = source_port.GetEqpt(scApp.EqptBLL) as IAGVStationType;
-                            procNotifyPreOpenAGVStationCover(source_port_station, source_port.PORT_ID);
+                            procNotifyPreOpenAGVStationCover(source_port_station, source_port.PORT_ID, true);
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"vh:{vh_id}，對 port:{source_port.PORT_ID}進行第二次預開蓋。",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"vh:{vh_id}，另一筆命令:{orther_st_cmd.ID} 並非從St取貨，不進行第二次預開蓋。",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
                         }
                     }
                     else if (vh.LastTranEventType == EventType.Vhunloading)
@@ -3127,15 +3165,50 @@ namespace com.mirle.ibg3k0.sc.Service
                                    CST_ID_R: vh.CST_ID_R);
                                 return;
                             }
-                            procNotifyPreOpenAGVStationCover(traget_agv_st, first_ready_port_stations.PORT_ID);
+                            procNotifyPreOpenAGVStationCover(traget_agv_st, first_ready_port_stations.PORT_ID, true);
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"vh:{vh_id}，對 port:{first_ready_port_stations.PORT_ID}進行第二次預開蓋。",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+
                         }
                         else if (orther_st_cmd.isWillGetFromSt(scApp.VehicleBLL, scApp.PortStationBLL, scApp.EqptBLL))
                         {
                             APORTSTATION source_port = scApp.PortStationBLL.OperateCatch.getPortStation(orther_st_cmd.SOURCE_PORT);
                             var source_port_station = source_port.GetEqpt(scApp.EqptBLL) as IAGVStationType;
-                            procNotifyPreOpenAGVStationCover(source_port_station, source_port.PORT_ID);
+                            procNotifyPreOpenAGVStationCover(source_port_station, source_port.PORT_ID, true);
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"vh:{vh_id}，對 port:{source_port.PORT_ID}進行第二次預開蓋。",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"vh:{vh_id}，另一筆命令:{orther_st_cmd.ID} 並非從St取貨/放貨，不進行第二次預開蓋。",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
                         }
                     }
+                    else
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"vh:{vh_id}，last event type is:{vh.LastTranEventType},不進行第二次預開蓋。",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+                    }
+                }
+                else
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                       Data: $"vh:{vh_id} Current adr:{cur_adr_id} 不是AGV St，不進行第二次預開蓋確認。",
+                       VehicleID: vh.VEHICLE_ID,
+                       CST_ID_L: vh.CST_ID_L,
+                       CST_ID_R: vh.CST_ID_R);
                 }
             }
             catch (Exception ex)
@@ -3719,16 +3792,17 @@ namespace com.mirle.ibg3k0.sc.Service
                 logger.Error(ex, "Exception:");
             }
         }
-        private void procNotifyPreOpenAGVStationCover(IAGVStationType agvStation, string portID)
+        private void procNotifyPreOpenAGVStationCover(IAGVStationType agvStation, string portID, bool isPassTimeCheck = false)
         {
             APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(portID);
             if (port_station == null) return;
             //if (port_station.LastNotifyPreOpenCoverTime.ElapsedMilliseconds < MAX_PRE_OPEN_COVER_TIME_MILLISEC)
-            if (agvStation.LastNotifyPreOpenCoverTime.IsRunning &&
+            if (isPassTimeCheck == false &&
+                agvStation.LastNotifyPreOpenCoverTime.IsRunning &&
                 agvStation.LastNotifyPreOpenCoverTime.ElapsedMilliseconds < MAX_PRE_OPEN_COVER_TIME_MILLISEC)
             {
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                   Data: $"想要進行Port:{portID}，但由於該port 前1分鐘內已進行過預該蓋，跳過該次預開蓋。");
+                   Data: $"想要進行Port:{portID}，但由於該station 前1分鐘內已進行過預該蓋，跳過該次預開蓋。");
                 return;
             }
             port_station.LastNotifyPreOpenCoverTime.Restart();
@@ -3817,7 +3891,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 return (is_go_to_st, target_port_id);
             }
         }
-        const int MAX_PRE_OPEN_COVER_TIME_MILLISEC = 60000;
+        const int MAX_PRE_OPEN_COVER_TIME_MILLISEC = 30000;
         private void checkIsNeedPreOpenAGVStationCoverOnStationAllPort(AVEHICLE vh, string checkPortStationID)
         {
             if (vh == null) return;

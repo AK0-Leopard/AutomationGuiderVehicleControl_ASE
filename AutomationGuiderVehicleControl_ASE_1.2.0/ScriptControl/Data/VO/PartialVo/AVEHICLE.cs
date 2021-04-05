@@ -106,6 +106,7 @@ namespace com.mirle.ibg3k0.sc
             CurrentCommandExcuteTime = new Stopwatch();
             CommandActionTimer = new Stopwatch();
             IdleTimer = new Stopwatch();
+            StartLoadingUnloadingTime = new Stopwatch();
         }
 
 
@@ -1524,6 +1525,11 @@ namespace com.mirle.ibg3k0.sc
                 {
                     try
                     {
+                        if (SCUtility.isMatche(vh.VEHICLE_ID, "AGV04") ||
+                            SCUtility.isMatche(vh.VEHICLE_ID, "AGV10"))
+                        {
+                            return;
+                        }
                         //1.檢查是否已經大於一定時間沒有進行通訊
                         double from_last_comm_time = vh.getFromTheLastCommTime(scApp.getBCFApplication());
                         if (from_last_comm_time > AVEHICLE.MAX_ALLOW_NO_COMMUNICATION_TIME_SECOND)
@@ -1555,11 +1561,14 @@ namespace com.mirle.ibg3k0.sc
                             var currnet_excute_ids = getVhCurrentExcuteCommandID(line.CurrentExcuteCommand);
                             vh.onLongTimeInaction(currnet_excute_ids);
                         }
-                        if (vh.StartLoadingUnloadingTime.IsRunning &&
-                            vh.StartLoadingUnloadingTime.ElapsedMilliseconds > sc.App.SystemParameter.AFTER_LOADING_UNLOADING_N_MILLISECOND)
+                        if (sc.App.SystemParameter.AFTER_LOADING_UNLOADING_N_MILLISECOND > 0)
                         {
-                            vh.StartLoadingUnloadingTime.Reset();
-                            vh.onVehicleLoadingUnloadingAfterNSecsond();
+                            if (vh.StartLoadingUnloadingTime.IsRunning &&
+                                vh.StartLoadingUnloadingTime.ElapsedMilliseconds > sc.App.SystemParameter.AFTER_LOADING_UNLOADING_N_MILLISECOND)
+                            {
+                                vh.StartLoadingUnloadingTime.Reset();
+                                vh.onVehicleLoadingUnloadingAfterNSecsond();
+                            }
                         }
                     }
                     catch (Exception ex)

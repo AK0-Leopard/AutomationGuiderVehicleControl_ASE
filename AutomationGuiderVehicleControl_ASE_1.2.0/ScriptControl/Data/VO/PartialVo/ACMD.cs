@@ -74,7 +74,7 @@ namespace com.mirle.ibg3k0.sc
         public bool isWillGetFromSt(BLL.VehicleBLL vehicleBLL, BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
         {
             if (!IsCarryCommand) return false;
-            bool is_carry_cmd_cst = vehicleBLL.cache.IsCarryCstByCstID(VH_ID, ID);
+            bool is_carry_cmd_cst = vehicleBLL.cache.IsCarryCstByCstID(VH_ID, CARRIER_ID);
             if (is_carry_cmd_cst)
             {
                 return (false);
@@ -88,7 +88,7 @@ namespace com.mirle.ibg3k0.sc
         public bool isWillPutToSt(BLL.VehicleBLL vehicleBLL, BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL)
         {
             if (!IsCarryCommand) return false;
-            bool is_carry_cmd_cst = vehicleBLL.cache.IsCarryCstByCstID(VH_ID, ID);
+            bool is_carry_cmd_cst = vehicleBLL.cache.IsCarryCstByCstID(VH_ID, CARRIER_ID);
             if (is_carry_cmd_cst)
             {
                 bool is_target_port_agv_st = IsTargetPortAGVStation(portStationBLL, eqptBLL);
