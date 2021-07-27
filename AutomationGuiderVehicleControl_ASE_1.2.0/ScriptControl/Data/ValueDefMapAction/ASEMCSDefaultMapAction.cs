@@ -745,13 +745,24 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             if (command_id_item != null)
             {
                 command_id = command_id_item.CPVAL;
-                return (false, SECSConst.HCACK_Rejected, command_id);//由於AGVM尚未準備好Cancel流程，因此一律先拒絕。20210115
+                //return (false, SECSConst.HCACK_Rejected, command_id);//由於AGVM尚未準備好Cancel流程，因此一律先拒絕。20210115
 
                 ATRANSFER cmd_mcs = scApp.CMDBLL.GetTransferByID(command_id);
                 if (cmd_mcs == null)
                 {
                     check_result = SECSConst.HCACK_Obj_Not_Exist;
                     is_ok = false;
+                }
+                else
+                {
+                    if (cmd_mcs.TRANSFERSTATE == E_TRAN_STATUS.Queue)
+                    {
+                        //not thing...
+                    }
+                    else
+                    {
+                        return (false, SECSConst.HCACK_Rejected, command_id);//由於與AGVM確認好Cancel流程，因此若已經是下給車子的一律先拒絕。20210627
+                    }
                 }
             }
             else

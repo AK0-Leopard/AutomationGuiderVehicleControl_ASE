@@ -57,18 +57,25 @@ namespace com.mirle.ibg3k0.sc
             if (sections.Count == 1) return sections;
             if (SCUtility.isMatche(SEG_ID, "900")) return new List<ASECTION>();
             List<ASECTION> order_sections = new List<ASECTION>();
-            string next_from_adr = RealFromAddress;
-            for (int i = 0; i < sections.Count; i++)
+            try
             {
-                //ASECTION section = sections.Where(s => s.FROM_ADR_ID.Trim() == next_from_adr.Trim()).SingleOrDefault();
-                ASECTION section = sections.Where(s => s.REAL_FROM_ADR_ID.Trim() == next_from_adr.Trim()).SingleOrDefault();
-                order_sections.Add(section);
-                //next_from_adr = section.TO_ADR_ID;
-                if (section == null)
+                string next_from_adr = RealFromAddress;
+                for (int i = 0; i < sections.Count; i++)
                 {
+                    //ASECTION section = sections.Where(s => s.FROM_ADR_ID.Trim() == next_from_adr.Trim()).SingleOrDefault();
+                    ASECTION section = sections.Where(s => s.REAL_FROM_ADR_ID.Trim() == next_from_adr.Trim()).SingleOrDefault();
+                    order_sections.Add(section);
+                    //next_from_adr = section.TO_ADR_ID;
+                    if (section == null)
+                    {
 
+                    }
+                    next_from_adr = section.REAL_TO_ADR_ID;
                 }
-                next_from_adr = section.REAL_TO_ADR_ID;
+            }
+            catch(InvalidOperationException ex)
+            {
+                throw ex;
             }
             return order_sections;
         }

@@ -1268,7 +1268,7 @@ AGV_NODE,92004113,1,ES off.
 AGV_NODE,92004112,1,EQ not in auto mode.(HO_AVBL off)
 AGV_NODE,92004111,1,VS_1 on.
 AGV_NODE,92004110,1,VS_0 on.
-AGV_NODE,93036884,1,VehicleStucked
+AGV_NODE,93036884,1,Vehicle Stucked
 AGV_NODE,93036881,1,movewhenmanual
 AGV_NODE,93036880,1,movewhenrobotnothome
 AGV_NODE,93036883,1,ChargingSignalLoss
