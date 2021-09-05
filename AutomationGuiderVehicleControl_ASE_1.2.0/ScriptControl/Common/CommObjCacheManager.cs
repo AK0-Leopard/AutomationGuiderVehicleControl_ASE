@@ -51,6 +51,7 @@ namespace com.mirle.ibg3k0.sc.Common
         //PORT_INFO
         private List<PORT_INFO> PortInfos;
         private List<string> EnhanceSubAddresses = new List<string>();
+        private List<ALARMRPTCOND> AlarmReportCond;
         private CommonInfo CommonInfo;
         //
 
@@ -287,6 +288,10 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             return GroupPortStations;
         }
+        public List<ALARMRPTCOND> getAlarmReportConds()
+        {
+            return AlarmReportCond;
+        }
 
 
         public (bool isBlockControlSec, ReserveEnhanceInfoSection enhanceInfo) IsBlockControlSection(string sectionID)
@@ -334,6 +339,10 @@ namespace com.mirle.ibg3k0.sc.Common
 
         #region 從DB取得最新EQ Object，並更新Cache
         //NotImplemented
+        public void RefreshAlarmReportCond()
+        {
+            AlarmReportCond = scApp.AlarmBLL.loadAllAlarmRptCond();
+        }
         #endregion
 
 

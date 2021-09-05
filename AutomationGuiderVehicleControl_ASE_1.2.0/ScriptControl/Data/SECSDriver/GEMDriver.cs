@@ -570,7 +570,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECSDriver
                 string alarm_code = s5f3.ALID;
 
 
-                isSuccess = scApp.AlarmBLL.enableAlarmReport(alarm_code, isEnable);
+                //isSuccess = scApp.AlarmBLL.enableAlarmReport(alarm_code, isEnable);
 
                 S5F4 s5f4 = null;
                 s5f4 = new S5F4();
