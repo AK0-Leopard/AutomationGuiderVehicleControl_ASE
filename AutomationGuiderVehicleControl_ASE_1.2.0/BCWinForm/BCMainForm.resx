@@ -465,33 +465,6 @@
   <data name="mataToolStripMenuItem.Text" xml:space="preserve">
     <value>Maintenance</value>
   </data>
-  <data name="englishToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 26</value>
-  </data>
-  <data name="englishToolStripMenuItem.Text" xml:space="preserve">
-    <value>English</value>
-  </data>
-  <data name="zh_twToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 26</value>
-  </data>
-  <data name="zh_twToolStripMenuItem.Text" xml:space="preserve">
-    <value>繁體中文</value>
-  </data>
-  <data name="zh_chToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 26</value>
-  </data>
-  <data name="zh_chToolStripMenuItem.Text" xml:space="preserve">
-    <value>简体中文</value>
-  </data>
-  <data name="languageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 26</value>
-  </data>
-  <data name="languageToolStripMenuItem.Text" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="languageToolStripMenuItem.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="debugToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>235, 26</value>
   </data>
@@ -509,6 +482,33 @@
   </data>
   <data name="engineerToolStripMenuItem1.Text" xml:space="preserve">
     <value>Engineer Function</value>
+  </data>
+  <data name="englishToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 26</value>
+  </data>
+  <data name="englishToolStripMenuItem.Text" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="zh_twToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 26</value>
+  </data>
+  <data name="zh_twToolStripMenuItem.Text" xml:space="preserve">
+    <value>繁體中文</value>
+  </data>
+  <data name="zh_chToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 26</value>
+  </data>
+  <data name="zh_chToolStripMenuItem.Text" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="languageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 26</value>
+  </data>
+  <data name="languageToolStripMenuItem.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="languageToolStripMenuItem.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="tipMessageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>131, 26</value>

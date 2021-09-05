@@ -254,8 +254,8 @@ namespace com.mirle.ibg3k0.bc.winform
             this.operatorToolStripMenuItem,
             this.queryToolStripMenuItem,
             this.mataToolStripMenuItem,
-            this.languageToolStripMenuItem,
             this.engineerToolStripMenuItem1,
+            this.languageToolStripMenuItem,
             this.tipMessageToolStripMenuItem});
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.menuStrip1_MouseDoubleClick);
