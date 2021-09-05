@@ -39,6 +39,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         public const string VEHICLE_BATTERY_LEVEL_IS_LOW = "10002";
         public const string VEHICLE_CAN_NOT_FIND_THE_COUPLER_TO_CHARGING = "10003";
         public const string SEND_TRAN_CMD_TO_VEHICLE_FAIL_0_1 = "10004";
+        public const string VEHICLE_BATTERY_LEVEL_IS_MIDDLE = "10005";
 
         public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE1_ST01 = "10101";
         public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE1_ST02 = "10102";

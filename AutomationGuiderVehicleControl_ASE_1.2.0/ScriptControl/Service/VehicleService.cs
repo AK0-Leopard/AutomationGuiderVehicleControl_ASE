@@ -2466,6 +2466,13 @@ namespace com.mirle.ibg3k0.sc.Service
                             {
                                 continue;
                             }
+                            if (assignVH.MODE_STATUS == VHModeStatus.Manual)
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(CMDBLL), Device: string.Empty,
+                                   Data: $" process command ,id:{SCUtility.Trim(cmd.ID)},but vh id:{SCUtility.Trim(cmd.VH_ID)} is manual force finish command.");
+                                CommandInitialFail(cmd);
+                                continue;
+                            }
 
                             bool is_success = service.Send.Command(assignVH, cmd);
                             if (!is_success)

@@ -266,6 +266,7 @@
             this.btn_toDest.TabIndex = 87;
             this.btn_toDest.Text = "To Destination";
             this.btn_toDest.UseVisualStyleBackColor = true;
+            this.btn_toDest.Visible = false;
             this.btn_toDest.Click += new System.EventHandler(this.btn_toDest_Click);
             // 
             // btn_refresh

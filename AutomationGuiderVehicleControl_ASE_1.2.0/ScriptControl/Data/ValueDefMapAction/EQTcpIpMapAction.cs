@@ -393,6 +393,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //如果發了Time out則就直接在丟一次
                 if (result == TrxTcpIp.ReturnCode.Timeout)
                 {
+                    //發生了Time out 但車子是在手動模式下就不再重新送一次，直接結束命令
+                    if (eqpt.MODE_STATUS == VHModeStatus.Manual)
+                    {
+                        reason = "vh in manual mode.";
+                        return false;
+                    }
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(EQTcpIpMapAction), Device: "AGV",
                        Data: $"發送命令時，Time our 發生再次重新傳送,CMD ID:{send_gpp.CmdID} from:{send_gpp.LoadPortID} to:{send_gpp.UnloadPortID} to(adr):{send_gpp.DestinationAdr}",
                        VehicleID: eqpt.VEHICLE_ID,
@@ -415,13 +421,14 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //reason = receive_gpp.NgReason;
                 if (isSuccess)
                     isSuccess = receive_gpp.ReplyCode == 0 ||
-                                receive_gpp.ReplyCode == 2;
+                                receive_gpp.ReplyCode == 2;//2代表已經執行中，所以也就當作成功，繼續進行命令
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception");
                 receive_gpp = null;
                 reason = "命令下達時發生錯誤!";
+                isSuccess = false;
             }
             return isSuccess;
         }

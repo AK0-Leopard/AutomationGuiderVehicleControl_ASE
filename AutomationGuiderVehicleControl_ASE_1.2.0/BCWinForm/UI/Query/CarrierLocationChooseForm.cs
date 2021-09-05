@@ -33,6 +33,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                                       .Where(e => e == CompleteStatus.ForceAbnormalFinishByOp ||
                                                   e == CompleteStatus.ForceNormalFinishByOp
                                                   ).ToList();
+            cmd_force_finish_status.SelectedIndex = 0;
         }
 
         private void initialVhLocationCmd()
@@ -98,6 +99,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void radioBtn_Click(object sender, EventArgs e)
         {
+            m_confirmBtn.Enabled = true;
             if ((sender is RadioButton))
             {
                 RadioButton radio = sender as RadioButton;
@@ -114,5 +116,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 }
             }
         }
+
     }
 }

@@ -718,16 +718,17 @@ namespace com.mirle.ibg3k0.bc.winform
         private void BCMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //TODO 確認Authority
-            if (!BCUtility.doLogin(this, bcApp, BCAppConstants.FUNC_CLOSE_MASTER_PC))
-            {
-                e.Cancel = true;
-                return;
-            }
-            DialogResult confirmResult = MessageBox.Show(this, "Do you want to close OHTC?",
+            DialogResult confirmResult = MessageBox.Show(this, "Do you want to close AGVC?",
                 BCApplication.getMessageString("CONFIRM"), MessageBoxButtons.YesNo);
             if (confirmResult != System.Windows.Forms.DialogResult.Yes)
             {
                 e.Cancel = true;
+                return;
+            }
+            if (!BCUtility.doLogin(this, bcApp, BCAppConstants.FUNC_CLOSE_MASTER_PC, true))
+            {
+                e.Cancel = true;
+                return;
             }
             if (e.Cancel == false)
             {
@@ -936,7 +937,8 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void debugToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            openForm(typeof(DebugForm).Name, true, false);
+            //openForm(typeof(DebugForm).Name, true, false);
+            openForm(typeof(DebugFormNew).Name, true, false);
         }
 
         private void engineeringModeToolStripMenuItem_Click(object sender, EventArgs e)

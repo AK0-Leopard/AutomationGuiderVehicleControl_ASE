@@ -206,13 +206,19 @@ namespace com.mirle.ibg3k0.sc.Module
                         }
                         break;
                 }
-                if (e == BatteryLevel.Low)
+
+                if (e == BatteryLevel.Middle)
                 {
-                    lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_BATTERY_LEVEL_IS_LOW, ErrorStatus.ErrSet, $"vehicle:{vh.VEHICLE_ID} is in low battery status");
+                    lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_BATTERY_LEVEL_IS_MIDDLE, ErrorStatus.ErrSet, $"vehicle:{vh.VEHICLE_ID} is in warning battery status,pay your attention");
+                }
+                else if (e == BatteryLevel.Low)
+                {
+                    lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_BATTERY_LEVEL_IS_LOW, ErrorStatus.ErrSet, $"vehicle:{vh.VEHICLE_ID} is in low battery ,will stop excute command");
                 }
                 else
                 {
-                    lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_BATTERY_LEVEL_IS_LOW, ErrorStatus.ErrReset, $"vehicle:{vh.VEHICLE_ID} is in low battery status");
+                    lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_BATTERY_LEVEL_IS_MIDDLE, ErrorStatus.ErrReset, $"vehicle:{vh.VEHICLE_ID} Warning voltage,pay your attention");
+                    lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_BATTERY_LEVEL_IS_LOW, ErrorStatus.ErrReset, $"vehicle:{vh.VEHICLE_ID} is in low battery ,will stop excute command");
                     lineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_FIND_THE_COUPLER_TO_CHARGING, ErrorStatus.ErrReset, $"vehicle:{vh.VEHICLE_ID} can't find coupler to charging");
                 }
             }
@@ -587,6 +593,5 @@ namespace com.mirle.ibg3k0.sc.Module
                 }
             }
         }
-
     }
 }

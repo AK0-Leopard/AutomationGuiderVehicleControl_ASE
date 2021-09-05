@@ -444,7 +444,6 @@ namespace com.mirle.ibg3k0.sc.App
 
         private string[] ForceBanSections = new string[]
         {
-            "20212",
             "31101"
         };
         private void init()
@@ -1633,7 +1632,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static int PortMaxPriority = 99;
 
         public static int OpenAGVStationCoverDistance_mm = 5000;
-        public static bool IsByPassAGVShelfStatus { get; private set; } = true;
+        public static bool IsByPassAGVShelfStatus { get; private set; } = false;
 
         public static int TransferCommandExcuteTimeOut_mSec = 1200000;
 

@@ -31,6 +31,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             string[] allVh = lstVh.ToArray();
             BCUtility.setComboboxDataSource(cmb_force_assign, allVh);
 
+            if (sc.Common.SCUtility.isMatche(mainform.BCApp.LoginUserID, "ADMIN"))
+            {
+                pnl_forceAssign.Visible = true;
+            }
+
         }
 
         private void updateTransferCommand()
@@ -124,6 +129,13 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                     MessageBox.Show($"Transfer cmd ID:{SCUtility.Trim(mcs_cmd.CMD_ID, true)} not exist.", "Check command fail.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+                DialogResult confirmResult = MessageBox.Show(this, $"Do you want to force finish transfer cmd:{sc.Common.SCUtility.Trim(transfer.ID, true)}?",
+                    "Confirm", MessageBoxButtons.YesNo);
+                if (confirmResult != System.Windows.Forms.DialogResult.Yes)
+                {
+                    return;
+                }
+
                 CarrierLocationChooseForm carrierLocationChooseForm = new CarrierLocationChooseForm(mainform.BCApp.SCApplication, transfer);
                 System.Windows.Forms.DialogResult result = carrierLocationChooseForm.ShowDialog(this);
                 if (result != DialogResult.OK) return;

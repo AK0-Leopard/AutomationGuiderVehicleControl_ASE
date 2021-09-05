@@ -35,7 +35,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnl_Map = new System.Windows.Forms.Panel();
+            this.uctl_Map = new com.mirle.ibg3k0.bc.winform.UI.Components.uctl_Map();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lbl_SCState = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.lbl_hostconnAndMode = new System.Windows.Forms.Label();
@@ -127,8 +129,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.timer_TimedUpdates = new System.Windows.Forms.Timer(this.components);
             this.vehicleObjToShowBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.aCMDMCSBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.uctl_Map = new com.mirle.ibg3k0.bc.winform.UI.Components.uctl_Map();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -136,6 +137,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.tableLayoutPanel1.SuspendLayout();
             this.pnl_Map.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.gb_PortNameType.SuspendLayout();
             this.tbcList.SuspendLayout();
@@ -153,7 +155,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Alarm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aCMDMCSBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -203,6 +204,19 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.pnl_Map.Size = new System.Drawing.Size(1626, 855);
             this.pnl_Map.TabIndex = 0;
             // 
+            // uctl_Map
+            // 
+            this.uctl_Map.AutoScroll = true;
+            this.uctl_Map.BackColor = System.Drawing.Color.MidnightBlue;
+            this.uctl_Map.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uctl_Map.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uctl_Map.Location = new System.Drawing.Point(0, 0);
+            this.uctl_Map.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uctl_Map.Name = "uctl_Map";
+            this.uctl_Map.Size = new System.Drawing.Size(1626, 855);
+            this.uctl_Map.TabIndex = 0;
+            this.uctl_Map.Load += new System.EventHandler(this.uctl_Map_Load);
+            // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
@@ -224,6 +238,16 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(278, 855);
             this.panel1.TabIndex = 1;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::com.mirle.ibg3k0.bc.winform.Properties.Resources.Mirle;
+            this.pictureBox1.Location = new System.Drawing.Point(28, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(205, 108);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 14;
+            this.pictureBox1.TabStop = false;
             // 
             // lbl_SCState
             // 
@@ -348,6 +372,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.cbm_Action_admin);
             this.groupBox1.Controls.Add(this.cbm_Action_op);
             this.groupBox1.Controls.Add(this.cb_autoOverride);
@@ -1138,28 +1163,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             this.aCMDMCSBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ATRANSFER);
             // 
-            // pictureBox1
+            // label6
             // 
-            this.pictureBox1.Image = global::com.mirle.ibg3k0.bc.winform.Properties.Resources.Mirle;
-            this.pictureBox1.Location = new System.Drawing.Point(28, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(205, 108);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 14;
-            this.pictureBox1.TabStop = false;
-            // 
-            // uctl_Map
-            // 
-            this.uctl_Map.AutoScroll = true;
-            this.uctl_Map.BackColor = System.Drawing.Color.MidnightBlue;
-            this.uctl_Map.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uctl_Map.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uctl_Map.Location = new System.Drawing.Point(0, 0);
-            this.uctl_Map.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uctl_Map.Name = "uctl_Map";
-            this.uctl_Map.Size = new System.Drawing.Size(1626, 855);
-            this.uctl_Map.TabIndex = 0;
-            this.uctl_Map.Load += new System.EventHandler(this.uctl_Map_Load);
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(4, 71);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(117, 19);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Command Type";
             // 
             // OHT_Form
             // 
@@ -1184,6 +1195,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.pnl_Map.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.gb_PortNameType.ResumeLayout(false);
@@ -1203,7 +1215,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Alarm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aCMDMCSBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1314,5 +1325,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDINSERTIMEDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDSTARTTIMEDataGridViewTextBoxColumn;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label6;
     }
 }

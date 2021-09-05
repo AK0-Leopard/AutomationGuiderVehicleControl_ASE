@@ -67,7 +67,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 {
                     check_result = scApp.TransferService.ForceInstallCarrierInVehicle(vh_id, location_id, cst_id);
                 });
-                MessageBox.Show("Carrier installed info", check_result.result, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(check_result.result, "Carrier installed info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 await Task.Run(() =>
                 {
                     SpinWait.SpinUntil(() => false, 2000);
@@ -87,10 +87,17 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
                 if (dgv_current_in_line_carrier.SelectedRows[0].Index < 0)
                 {
-                    MessageBox.Show("Carrier Remove info", "No select remove carrier.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No select remove carrier.", "Carrier Remove info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 string carrier_id = dgv_current_in_line_carrier.SelectedRows[0].Cells[0].Value as string;
+
+                DialogResult confirmResult = MessageBox.Show(this, $"Do you want to remove carrier:{carrier_id}?",
+                    "Confirm", MessageBoxButtons.YesNo);
+                if (confirmResult != System.Windows.Forms.DialogResult.Yes)
+                {
+                    return;
+                }
                 btn_remove.Enabled = false;
                 (bool isSuccess, string result) check_result = (false, "");
                 await Task.Run(() =>

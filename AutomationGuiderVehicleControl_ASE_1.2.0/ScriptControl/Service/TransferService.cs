@@ -1820,7 +1820,8 @@ namespace com.mirle.ibg3k0.sc.Service
                                                                 ToList();
                                 List<VTRANSFER> tran_queue_in_group = transfer_group.
                                                               Where(tran => tran.TRANSFERSTATE == E_TRAN_STATUS.Queue).
-                                                              OrderBy(tran => tran.CARRIER_INSER_TIME).
+                                                              //OrderBy(tran => tran.CARRIER_INSER_TIME).
+                                                              OrderByDescending(tran => tran.PRIORITY_SUM).
                                                               ToList();
 
 

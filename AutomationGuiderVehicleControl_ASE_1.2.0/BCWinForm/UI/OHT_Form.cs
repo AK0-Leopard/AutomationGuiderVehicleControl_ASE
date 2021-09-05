@@ -289,7 +289,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                                                               e != E_CMD_TYPE.Round &&
                                                               e != E_CMD_TYPE.Override &&
                                                               e != E_CMD_TYPE.MTLHome &&
-                                                              e != E_CMD_TYPE.Move_Teaching
+                                                              e != E_CMD_TYPE.Move_Teaching &&
+                                                              e != E_CMD_TYPE.Home
                                                               ).ToList();
 
             cbm_Action_op.DataSource = Enum.GetValues(typeof(E_CMD_TYPE)).Cast<E_CMD_TYPE>()
@@ -432,7 +433,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             //updateDGVCommandAsync();
             updateDGVCommand(line);
         }
-   
+
         private void updateDGVVTransferCommand(ALINE line)
         {
             List<VTRANSFER> cmd_mcs_lst = line.CurrentExcuteTransferCommand;

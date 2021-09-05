@@ -256,49 +256,54 @@
             // radioBtn_Source
             // 
             this.radioBtn_Source.AutoSize = true;
+            this.radioBtn_Source.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.radioBtn_Source.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radioBtn_Source.Location = new System.Drawing.Point(182, 91);
             this.radioBtn_Source.Name = "radioBtn_Source";
             this.radioBtn_Source.Size = new System.Drawing.Size(39, 38);
             this.radioBtn_Source.TabIndex = 7;
             this.radioBtn_Source.TabStop = true;
-            this.radioBtn_Source.UseVisualStyleBackColor = true;
+            this.radioBtn_Source.UseVisualStyleBackColor = false;
             this.radioBtn_Source.Click += new System.EventHandler(this.radioBtn_Click);
             // 
             // radioBtn_InVehicle
             // 
             this.radioBtn_InVehicle.AutoSize = true;
+            this.radioBtn_InVehicle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.radioBtn_InVehicle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radioBtn_InVehicle.Location = new System.Drawing.Point(182, 135);
             this.radioBtn_InVehicle.Name = "radioBtn_InVehicle";
             this.radioBtn_InVehicle.Size = new System.Drawing.Size(39, 38);
             this.radioBtn_InVehicle.TabIndex = 8;
             this.radioBtn_InVehicle.TabStop = true;
-            this.radioBtn_InVehicle.UseVisualStyleBackColor = true;
+            this.radioBtn_InVehicle.UseVisualStyleBackColor = false;
             this.radioBtn_InVehicle.Click += new System.EventHandler(this.radioBtn_Click);
             // 
             // radioBtn_dest
             // 
             this.radioBtn_dest.AutoSize = true;
+            this.radioBtn_dest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.radioBtn_dest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radioBtn_dest.Location = new System.Drawing.Point(182, 179);
             this.radioBtn_dest.Name = "radioBtn_dest";
             this.radioBtn_dest.Size = new System.Drawing.Size(39, 38);
             this.radioBtn_dest.TabIndex = 8;
             this.radioBtn_dest.TabStop = true;
-            this.radioBtn_dest.UseVisualStyleBackColor = true;
+            this.radioBtn_dest.UseVisualStyleBackColor = false;
             this.radioBtn_dest.Click += new System.EventHandler(this.radioBtn_Click);
             // 
             // radioBtn_manual
             // 
             this.radioBtn_manual.AutoSize = true;
+            this.radioBtn_manual.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.radioBtn_manual.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radioBtn_manual.Location = new System.Drawing.Point(182, 223);
             this.radioBtn_manual.Name = "radioBtn_manual";
             this.radioBtn_manual.Size = new System.Drawing.Size(39, 44);
             this.radioBtn_manual.TabIndex = 14;
             this.radioBtn_manual.TabStop = true;
-            this.radioBtn_manual.UseVisualStyleBackColor = true;
+            this.radioBtn_manual.UseVisualStyleBackColor = false;
+            this.radioBtn_manual.Click += new System.EventHandler(this.radioBtn_Click);
             // 
             // m_confirmBtn
             // 
@@ -307,6 +312,7 @@
             this.m_confirmBtn.BorderColor = System.Drawing.Color.Black;
             this.m_confirmBtn.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.m_confirmBtn.DownBack = null;
+            this.m_confirmBtn.Enabled = false;
             this.m_confirmBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.m_confirmBtn.Font = new System.Drawing.Font("Arial", 14.25F);
             this.m_confirmBtn.ForeColor = System.Drawing.Color.Black;
@@ -376,6 +382,7 @@
             this.cmd_force_finish_status.Name = "cmd_force_finish_status";
             this.cmd_force_finish_status.Size = new System.Drawing.Size(302, 29);
             this.cmd_force_finish_status.TabIndex = 10;
+            this.cmd_force_finish_status.Visible = false;
             // 
             // label3
             // 
@@ -389,6 +396,7 @@
             this.label3.Size = new System.Drawing.Size(183, 24);
             this.label3.TabIndex = 13;
             this.label3.Text = "Force finish status";
+            this.label3.Visible = false;
             // 
             // CarrierLocationChooseForm
             // 

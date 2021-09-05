@@ -31,18 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dgv_TransferCommand = new System.Windows.Forms.DataGridView();
-            this.pel_button = new System.Windows.Forms.Panel();
-            this.lbl_st_port_id = new System.Windows.Forms.Label();
-            this.lbl_vhid = new System.Windows.Forms.Label();
-            this.cmb_st_port_ids = new System.Windows.Forms.ComboBox();
-            this.btn_force_assign = new System.Windows.Forms.Button();
-            this.cmb_force_assign = new System.Windows.Forms.ComboBox();
-            this.btn_force_finish = new System.Windows.Forms.Button();
-            this.btn_refresh = new System.Windows.Forms.Button();
-            this.num_PriorityValue = new System.Windows.Forms.NumericUpDown();
-            this.btn_cancel_abort = new System.Windows.Forms.Button();
-            this.btnPriorityUpdate = new System.Windows.Forms.Button();
-            this.cMDMCSObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.cMDIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cARRIERIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tRANSFERSTATEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,11 +41,25 @@
             this.cMDINSERTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cMDSTARTTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rEPLACEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cMDMCSObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.pel_button = new System.Windows.Forms.Panel();
+            this.btnPriorityUpdate = new System.Windows.Forms.Button();
+            this.num_PriorityValue = new System.Windows.Forms.NumericUpDown();
+            this.lbl_st_port_id = new System.Windows.Forms.Label();
+            this.lbl_vhid = new System.Windows.Forms.Label();
+            this.cmb_st_port_ids = new System.Windows.Forms.ComboBox();
+            this.btn_force_assign = new System.Windows.Forms.Button();
+            this.cmb_force_assign = new System.Windows.Forms.ComboBox();
+            this.btn_force_finish = new System.Windows.Forms.Button();
+            this.btn_refresh = new System.Windows.Forms.Button();
+            this.btn_cancel_abort = new System.Windows.Forms.Button();
+            this.pnl_forceAssign = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).BeginInit();
             this.pel_button.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_PriorityValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).BeginInit();
+            this.pnl_forceAssign.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -107,128 +109,6 @@
             this.dgv_TransferCommand.Size = new System.Drawing.Size(1596, 652);
             this.dgv_TransferCommand.TabIndex = 8;
             this.dgv_TransferCommand.SelectionChanged += new System.EventHandler(this.dgv_TransferCommand_SelectionChanged);
-            // 
-            // pel_button
-            // 
-            this.pel_button.Controls.Add(this.btnPriorityUpdate);
-            this.pel_button.Controls.Add(this.num_PriorityValue);
-            this.pel_button.Controls.Add(this.lbl_st_port_id);
-            this.pel_button.Controls.Add(this.lbl_vhid);
-            this.pel_button.Controls.Add(this.cmb_st_port_ids);
-            this.pel_button.Controls.Add(this.btn_force_assign);
-            this.pel_button.Controls.Add(this.cmb_force_assign);
-            this.pel_button.Controls.Add(this.btn_force_finish);
-            this.pel_button.Controls.Add(this.btn_refresh);
-            this.pel_button.Controls.Add(this.btn_cancel_abort);
-            this.pel_button.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pel_button.Location = new System.Drawing.Point(5, 664);
-            this.pel_button.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.pel_button.Name = "pel_button";
-            this.pel_button.Size = new System.Drawing.Size(1592, 131);
-            this.pel_button.TabIndex = 6;
-            // 
-            // lbl_st_port_id
-            // 
-            this.lbl_st_port_id.AutoSize = true;
-            this.lbl_st_port_id.Location = new System.Drawing.Point(1261, 50);
-            this.lbl_st_port_id.Name = "lbl_st_port_id";
-            this.lbl_st_port_id.Size = new System.Drawing.Size(130, 22);
-            this.lbl_st_port_id.TabIndex = 9;
-            this.lbl_st_port_id.Text = "St. Port ID:";
-            // 
-            // lbl_vhid
-            // 
-            this.lbl_vhid.AutoSize = true;
-            this.lbl_vhid.Location = new System.Drawing.Point(1322, 6);
-            this.lbl_vhid.Name = "lbl_vhid";
-            this.lbl_vhid.Size = new System.Drawing.Size(70, 22);
-            this.lbl_vhid.TabIndex = 9;
-            this.lbl_vhid.Text = "Vh ID:";
-            // 
-            // cmb_st_port_ids
-            // 
-            this.cmb_st_port_ids.FormattingEnabled = true;
-            this.cmb_st_port_ids.Location = new System.Drawing.Point(1398, 47);
-            this.cmb_st_port_ids.Name = "cmb_st_port_ids";
-            this.cmb_st_port_ids.Size = new System.Drawing.Size(187, 30);
-            this.cmb_st_port_ids.TabIndex = 8;
-            // 
-            // btn_force_assign
-            // 
-            this.btn_force_assign.Location = new System.Drawing.Point(1445, 83);
-            this.btn_force_assign.Name = "btn_force_assign";
-            this.btn_force_assign.Size = new System.Drawing.Size(140, 42);
-            this.btn_force_assign.TabIndex = 7;
-            this.btn_force_assign.Text = "Force Assign";
-            this.btn_force_assign.UseVisualStyleBackColor = true;
-            this.btn_force_assign.Click += new System.EventHandler(this.btn_force_assign_Click);
-            // 
-            // cmb_force_assign
-            // 
-            this.cmb_force_assign.FormattingEnabled = true;
-            this.cmb_force_assign.Location = new System.Drawing.Point(1398, 3);
-            this.cmb_force_assign.Name = "cmb_force_assign";
-            this.cmb_force_assign.Size = new System.Drawing.Size(187, 30);
-            this.cmb_force_assign.TabIndex = 6;
-            this.cmb_force_assign.SelectedIndexChanged += new System.EventHandler(this.cmb_force_assign_SelectedIndexChanged);
-            // 
-            // btn_force_finish
-            // 
-            this.btn_force_finish.Location = new System.Drawing.Point(282, 80);
-            this.btn_force_finish.Name = "btn_force_finish";
-            this.btn_force_finish.Size = new System.Drawing.Size(171, 42);
-            this.btn_force_finish.TabIndex = 5;
-            this.btn_force_finish.Text = "Force finish";
-            this.btn_force_finish.UseVisualStyleBackColor = true;
-            this.btn_force_finish.Click += new System.EventHandler(this.btn_force_finish_Click);
-            // 
-            // btn_refresh
-            // 
-            this.btn_refresh.Location = new System.Drawing.Point(7, 12);
-            this.btn_refresh.Name = "btn_refresh";
-            this.btn_refresh.Size = new System.Drawing.Size(119, 42);
-            this.btn_refresh.TabIndex = 4;
-            this.btn_refresh.Text = "Refresh";
-            this.btn_refresh.UseVisualStyleBackColor = true;
-            this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
-            // 
-            // num_PriorityValue
-            // 
-            this.num_PriorityValue.Location = new System.Drawing.Point(156, 18);
-            this.num_PriorityValue.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.num_PriorityValue.Name = "num_PriorityValue";
-            this.num_PriorityValue.Size = new System.Drawing.Size(120, 30);
-            this.num_PriorityValue.TabIndex = 10;
-            // 
-            // btn_cancel_abort
-            // 
-            this.btn_cancel_abort.Location = new System.Drawing.Point(986, 80);
-            this.btn_cancel_abort.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.btn_cancel_abort.Name = "btn_cancel_abort";
-            this.btn_cancel_abort.Size = new System.Drawing.Size(200, 42);
-            this.btn_cancel_abort.TabIndex = 2;
-            this.btn_cancel_abort.Text = "Cancel / Abort";
-            this.btn_cancel_abort.UseVisualStyleBackColor = true;
-            this.btn_cancel_abort.Visible = false;
-            this.btn_cancel_abort.Click += new System.EventHandler(this.btn_cancel_abort_Click);
-            // 
-            // btnPriorityUpdate
-            // 
-            this.btnPriorityUpdate.Location = new System.Drawing.Point(282, 12);
-            this.btnPriorityUpdate.Name = "btnPriorityUpdate";
-            this.btnPriorityUpdate.Size = new System.Drawing.Size(171, 42);
-            this.btnPriorityUpdate.TabIndex = 11;
-            this.btnPriorityUpdate.Text = "Priority Update";
-            this.btnPriorityUpdate.UseVisualStyleBackColor = true;
-            this.btnPriorityUpdate.Click += new System.EventHandler(this.btnPriorityUpdate_Click);
-            // 
-            // cMDMCSObjToShowBindingSource
-            // 
-            this.cMDMCSObjToShowBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.TRANSFERObjToShow);
             // 
             // cMDIDDataGridViewTextBoxColumn
             // 
@@ -307,6 +187,137 @@
             this.rEPLACEDataGridViewTextBoxColumn.Name = "rEPLACEDataGridViewTextBoxColumn";
             this.rEPLACEDataGridViewTextBoxColumn.ReadOnly = true;
             // 
+            // cMDMCSObjToShowBindingSource
+            // 
+            this.cMDMCSObjToShowBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.TRANSFERObjToShow);
+            // 
+            // pel_button
+            // 
+            this.pel_button.Controls.Add(this.pnl_forceAssign);
+            this.pel_button.Controls.Add(this.btnPriorityUpdate);
+            this.pel_button.Controls.Add(this.num_PriorityValue);
+            this.pel_button.Controls.Add(this.btn_force_finish);
+            this.pel_button.Controls.Add(this.btn_refresh);
+            this.pel_button.Controls.Add(this.btn_cancel_abort);
+            this.pel_button.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pel_button.Location = new System.Drawing.Point(5, 664);
+            this.pel_button.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.pel_button.Name = "pel_button";
+            this.pel_button.Size = new System.Drawing.Size(1592, 131);
+            this.pel_button.TabIndex = 6;
+            // 
+            // btnPriorityUpdate
+            // 
+            this.btnPriorityUpdate.Location = new System.Drawing.Point(282, 12);
+            this.btnPriorityUpdate.Name = "btnPriorityUpdate";
+            this.btnPriorityUpdate.Size = new System.Drawing.Size(171, 42);
+            this.btnPriorityUpdate.TabIndex = 11;
+            this.btnPriorityUpdate.Text = "Priority Update";
+            this.btnPriorityUpdate.UseVisualStyleBackColor = true;
+            this.btnPriorityUpdate.Click += new System.EventHandler(this.btnPriorityUpdate_Click);
+            // 
+            // num_PriorityValue
+            // 
+            this.num_PriorityValue.Location = new System.Drawing.Point(156, 18);
+            this.num_PriorityValue.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.num_PriorityValue.Name = "num_PriorityValue";
+            this.num_PriorityValue.Size = new System.Drawing.Size(120, 30);
+            this.num_PriorityValue.TabIndex = 10;
+            // 
+            // lbl_st_port_id
+            // 
+            this.lbl_st_port_id.AutoSize = true;
+            this.lbl_st_port_id.Location = new System.Drawing.Point(12, 49);
+            this.lbl_st_port_id.Name = "lbl_st_port_id";
+            this.lbl_st_port_id.Size = new System.Drawing.Size(130, 22);
+            this.lbl_st_port_id.TabIndex = 9;
+            this.lbl_st_port_id.Text = "St. Port ID:";
+            // 
+            // lbl_vhid
+            // 
+            this.lbl_vhid.AutoSize = true;
+            this.lbl_vhid.Location = new System.Drawing.Point(73, 9);
+            this.lbl_vhid.Name = "lbl_vhid";
+            this.lbl_vhid.Size = new System.Drawing.Size(70, 22);
+            this.lbl_vhid.TabIndex = 9;
+            this.lbl_vhid.Text = "Vh ID:";
+            // 
+            // cmb_st_port_ids
+            // 
+            this.cmb_st_port_ids.FormattingEnabled = true;
+            this.cmb_st_port_ids.Location = new System.Drawing.Point(149, 46);
+            this.cmb_st_port_ids.Name = "cmb_st_port_ids";
+            this.cmb_st_port_ids.Size = new System.Drawing.Size(187, 30);
+            this.cmb_st_port_ids.TabIndex = 8;
+            // 
+            // btn_force_assign
+            // 
+            this.btn_force_assign.Location = new System.Drawing.Point(196, 82);
+            this.btn_force_assign.Name = "btn_force_assign";
+            this.btn_force_assign.Size = new System.Drawing.Size(140, 42);
+            this.btn_force_assign.TabIndex = 7;
+            this.btn_force_assign.Text = "Force Assign";
+            this.btn_force_assign.UseVisualStyleBackColor = true;
+            this.btn_force_assign.Click += new System.EventHandler(this.btn_force_assign_Click);
+            // 
+            // cmb_force_assign
+            // 
+            this.cmb_force_assign.FormattingEnabled = true;
+            this.cmb_force_assign.Location = new System.Drawing.Point(149, 6);
+            this.cmb_force_assign.Name = "cmb_force_assign";
+            this.cmb_force_assign.Size = new System.Drawing.Size(187, 30);
+            this.cmb_force_assign.TabIndex = 6;
+            this.cmb_force_assign.SelectedIndexChanged += new System.EventHandler(this.cmb_force_assign_SelectedIndexChanged);
+            // 
+            // btn_force_finish
+            // 
+            this.btn_force_finish.Location = new System.Drawing.Point(282, 80);
+            this.btn_force_finish.Name = "btn_force_finish";
+            this.btn_force_finish.Size = new System.Drawing.Size(171, 42);
+            this.btn_force_finish.TabIndex = 5;
+            this.btn_force_finish.Text = "Force finish";
+            this.btn_force_finish.UseVisualStyleBackColor = true;
+            this.btn_force_finish.Click += new System.EventHandler(this.btn_force_finish_Click);
+            // 
+            // btn_refresh
+            // 
+            this.btn_refresh.Location = new System.Drawing.Point(7, 12);
+            this.btn_refresh.Name = "btn_refresh";
+            this.btn_refresh.Size = new System.Drawing.Size(119, 42);
+            this.btn_refresh.TabIndex = 4;
+            this.btn_refresh.Text = "Refresh";
+            this.btn_refresh.UseVisualStyleBackColor = true;
+            this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
+            // 
+            // btn_cancel_abort
+            // 
+            this.btn_cancel_abort.Location = new System.Drawing.Point(986, 80);
+            this.btn_cancel_abort.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btn_cancel_abort.Name = "btn_cancel_abort";
+            this.btn_cancel_abort.Size = new System.Drawing.Size(200, 42);
+            this.btn_cancel_abort.TabIndex = 2;
+            this.btn_cancel_abort.Text = "Cancel / Abort";
+            this.btn_cancel_abort.UseVisualStyleBackColor = true;
+            this.btn_cancel_abort.Visible = false;
+            this.btn_cancel_abort.Click += new System.EventHandler(this.btn_cancel_abort_Click);
+            // 
+            // pnl_forceAssign
+            // 
+            this.pnl_forceAssign.Controls.Add(this.btn_force_assign);
+            this.pnl_forceAssign.Controls.Add(this.cmb_force_assign);
+            this.pnl_forceAssign.Controls.Add(this.cmb_st_port_ids);
+            this.pnl_forceAssign.Controls.Add(this.lbl_st_port_id);
+            this.pnl_forceAssign.Controls.Add(this.lbl_vhid);
+            this.pnl_forceAssign.Location = new System.Drawing.Point(1222, 6);
+            this.pnl_forceAssign.Name = "pnl_forceAssign";
+            this.pnl_forceAssign.Size = new System.Drawing.Size(363, 125);
+            this.pnl_forceAssign.TabIndex = 12;
+            this.pnl_forceAssign.Visible = false;
+            // 
             // TransferCommandQureyListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -320,10 +331,11 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TransferCommandQureyListForm_FormClosed);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).EndInit();
-            this.pel_button.ResumeLayout(false);
-            this.pel_button.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_PriorityValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).EndInit();
+            this.pel_button.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.num_PriorityValue)).EndInit();
+            this.pnl_forceAssign.ResumeLayout(false);
+            this.pnl_forceAssign.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -353,5 +365,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDINSERTIMEDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDSTARTTIMEDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn rEPLACEDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Panel pnl_forceAssign;
     }
 }
