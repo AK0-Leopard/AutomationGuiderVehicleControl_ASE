@@ -100,15 +100,17 @@ namespace com.mirle.ibg3k0.bc.winform
             this.mataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.roadControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reserveSectionInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.engineerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.debugToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.engineeringModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zh_twToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zh_chToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.engineerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.debugToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.engineeringModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tipMessageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.alarmEnableDisableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.CMS_OnLineMode.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -436,7 +438,9 @@ namespace com.mirle.ibg3k0.bc.winform
             // 
             this.mataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.roadControlToolStripMenuItem,
-            this.reserveSectionInfoToolStripMenuItem});
+            this.toolStripSeparator1,
+            this.reserveSectionInfoToolStripMenuItem,
+            this.alarmEnableDisableToolStripMenuItem});
             this.mataToolStripMenuItem.Name = "mataToolStripMenuItem";
             resources.ApplyResources(this.mataToolStripMenuItem, "mataToolStripMenuItem");
             this.mataToolStripMenuItem.Click += new System.EventHandler(this.mataToolStripMenuItem_Click);
@@ -452,6 +456,26 @@ namespace com.mirle.ibg3k0.bc.winform
             this.reserveSectionInfoToolStripMenuItem.Name = "reserveSectionInfoToolStripMenuItem";
             resources.ApplyResources(this.reserveSectionInfoToolStripMenuItem, "reserveSectionInfoToolStripMenuItem");
             this.reserveSectionInfoToolStripMenuItem.Click += new System.EventHandler(this.reserveSectionInfoToolStripMenuItem_Click);
+            // 
+            // engineerToolStripMenuItem1
+            // 
+            this.engineerToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.debugToolStripMenuItem1,
+            this.engineeringModeToolStripMenuItem});
+            this.engineerToolStripMenuItem1.Name = "engineerToolStripMenuItem1";
+            resources.ApplyResources(this.engineerToolStripMenuItem1, "engineerToolStripMenuItem1");
+            // 
+            // debugToolStripMenuItem1
+            // 
+            this.debugToolStripMenuItem1.Name = "debugToolStripMenuItem1";
+            resources.ApplyResources(this.debugToolStripMenuItem1, "debugToolStripMenuItem1");
+            this.debugToolStripMenuItem1.Click += new System.EventHandler(this.debugToolStripMenuItem1_Click);
+            // 
+            // engineeringModeToolStripMenuItem
+            // 
+            this.engineeringModeToolStripMenuItem.Name = "engineeringModeToolStripMenuItem";
+            resources.ApplyResources(this.engineeringModeToolStripMenuItem, "engineeringModeToolStripMenuItem");
+            this.engineeringModeToolStripMenuItem.Click += new System.EventHandler(this.engineeringModeToolStripMenuItem_Click);
             // 
             // languageToolStripMenuItem
             // 
@@ -480,26 +504,6 @@ namespace com.mirle.ibg3k0.bc.winform
             resources.ApplyResources(this.zh_chToolStripMenuItem, "zh_chToolStripMenuItem");
             this.zh_chToolStripMenuItem.Click += new System.EventHandler(this.zh_chToolStripMenuItem_Click);
             // 
-            // engineerToolStripMenuItem1
-            // 
-            this.engineerToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.debugToolStripMenuItem1,
-            this.engineeringModeToolStripMenuItem});
-            this.engineerToolStripMenuItem1.Name = "engineerToolStripMenuItem1";
-            resources.ApplyResources(this.engineerToolStripMenuItem1, "engineerToolStripMenuItem1");
-            // 
-            // debugToolStripMenuItem1
-            // 
-            this.debugToolStripMenuItem1.Name = "debugToolStripMenuItem1";
-            resources.ApplyResources(this.debugToolStripMenuItem1, "debugToolStripMenuItem1");
-            this.debugToolStripMenuItem1.Click += new System.EventHandler(this.debugToolStripMenuItem1_Click);
-            // 
-            // engineeringModeToolStripMenuItem
-            // 
-            this.engineeringModeToolStripMenuItem.Name = "engineeringModeToolStripMenuItem";
-            resources.ApplyResources(this.engineeringModeToolStripMenuItem, "engineeringModeToolStripMenuItem");
-            this.engineeringModeToolStripMenuItem.Click += new System.EventHandler(this.engineeringModeToolStripMenuItem_Click);
-            // 
             // tipMessageToolStripMenuItem
             // 
             this.tipMessageToolStripMenuItem.Name = "tipMessageToolStripMenuItem";
@@ -510,6 +514,17 @@ namespace com.mirle.ibg3k0.bc.winform
             // 
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            // 
+            // alarmEnableDisableToolStripMenuItem
+            // 
+            this.alarmEnableDisableToolStripMenuItem.Name = "alarmEnableDisableToolStripMenuItem";
+            resources.ApplyResources(this.alarmEnableDisableToolStripMenuItem, "alarmEnableDisableToolStripMenuItem");
+            this.alarmEnableDisableToolStripMenuItem.Click += new System.EventHandler(this.alarmEnableDisableToolStripMenuItem_Click);
             // 
             // BCMainForm
             // 
@@ -671,6 +686,8 @@ namespace com.mirle.ibg3k0.bc.winform
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem carrierInstalledRemoveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem transferCommandToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem alarmEnableDisableToolStripMenuItem;
     }
 
     /// <summary>

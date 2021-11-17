@@ -23,7 +23,6 @@ namespace com.mirle.ibg3k0.sc
         public string HOSTDESTINATION { get; set; }
         public int PRIORITY { get; set; }
         public string CHECKCODE { get; set; }
-        public string PAUSEFLAG { get; set; }
         public System.DateTime CMD_INSER_TIME { get; set; }
         public Nullable<System.DateTime> CMD_START_TIME { get; set; }
         public Nullable<System.DateTime> CMD_FINISH_TIME { get; set; }
@@ -39,5 +38,6 @@ namespace com.mirle.ibg3k0.sc
         public Nullable<com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.E_ID_READ_STSTUS> CARRIER_READ_STATUS { get; set; }
         public string VH_ID { get; set; }
         public Nullable<com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.CompleteStatus> COMPLETE_STATUS { get; set; }
+        public string PAUSEFLAG { get; set; }
     }
 }

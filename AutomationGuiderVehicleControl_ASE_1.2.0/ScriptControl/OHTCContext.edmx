@@ -326,6 +326,9 @@
           <Property Name="EQPT_ID" Type="char" MaxLength="15" Nullable="false" />
           <Property Name="ALAM_CODE" Type="char" MaxLength="10" Nullable="false" />
           <Property Name="ENABLE_FLG" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="USER_ID" Type="char" MaxLength="10" />
+          <Property Name="REASON" Type="nvarchar" MaxLength="80" />
+          <Property Name="DISABLE_TIME" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="ALINE">
           <Key>
@@ -1120,12 +1123,12 @@
             <PropertyRef Name="HOSTDESTINATION" />
             <PropertyRef Name="PRIORITY" />
             <PropertyRef Name="CHECKCODE" />
-            <PropertyRef Name="PAUSEFLAG" />
             <PropertyRef Name="CMD_INSER_TIME" />
             <PropertyRef Name="TIME_PRIORITY" />
             <PropertyRef Name="PORT_PRIORITY" />
             <PropertyRef Name="REPLACE" />
             <PropertyRef Name="PRIORITY_SUM" />
+            <PropertyRef Name="PAUSEFLAG" />
           </Key>
           <Property Name="ID" Type="char" MaxLength="64" Nullable="false" />
           <Property Name="CARRIER_ID" Type="char" MaxLength="64" Nullable="false" />
@@ -1136,7 +1139,6 @@
           <Property Name="HOSTDESTINATION" Type="char" MaxLength="64" Nullable="false" />
           <Property Name="PRIORITY" Type="int" Nullable="false" />
           <Property Name="CHECKCODE" Type="char" MaxLength="2" Nullable="false" />
-          <Property Name="PAUSEFLAG" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="CMD_INSER_TIME" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="CMD_START_TIME" Type="datetime2" Precision="7" />
           <Property Name="CMD_FINISH_TIME" Type="datetime2" Precision="7" />
@@ -1152,6 +1154,7 @@
           <Property Name="CARRIER_READ_STATUS" Type="int" />
           <Property Name="VH_ID" Type="char" MaxLength="5" />
           <Property Name="COMPLETE_STATUS" Type="int" />
+          <Property Name="PAUSEFLAG" Type="char" MaxLength="1" Nullable="false" />
         </EntityType>
         <EntityContainer Name="OHTC_DevModelStoreContainer">
           <EntitySet Name="AADDRESS" EntityType="Self.AADDRESS" Schema="dbo" store:Type="Tables" />
@@ -1283,7 +1286,6 @@
     [VTRANSFER].[HOSTDESTINATION] AS [HOSTDESTINATION], 
     [VTRANSFER].[PRIORITY] AS [PRIORITY], 
     [VTRANSFER].[CHECKCODE] AS [CHECKCODE], 
-    [VTRANSFER].[PAUSEFLAG] AS [PAUSEFLAG], 
     [VTRANSFER].[CMD_INSER_TIME] AS [CMD_INSER_TIME], 
     [VTRANSFER].[CMD_START_TIME] AS [CMD_START_TIME], 
     [VTRANSFER].[CMD_FINISH_TIME] AS [CMD_FINISH_TIME], 
@@ -1298,7 +1300,8 @@
     [VTRANSFER].[CARRIER_INSTALLED_TIME] AS [CARRIER_INSTALLED_TIME], 
     [VTRANSFER].[CARRIER_READ_STATUS] AS [CARRIER_READ_STATUS], 
     [VTRANSFER].[VH_ID] AS [VH_ID], 
-    [VTRANSFER].[COMPLETE_STATUS] AS [COMPLETE_STATUS]
+    [VTRANSFER].[COMPLETE_STATUS] AS [COMPLETE_STATUS], 
+    [VTRANSFER].[PAUSEFLAG] AS [PAUSEFLAG]
     FROM [dbo].[VTRANSFER] AS [VTRANSFER]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
@@ -2190,6 +2193,9 @@
           <Property Name="EQPT_ID" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
           <Property Name="ALAM_CODE" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="ENABLE_FLG" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="USER_ID" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="REASON" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="DISABLE_TIME" Type="DateTime" Precision="7" />
         </EntityType>
         <EnumType Name="E_PORT_STATUS">
           <Member Name="OutOfService" Value="1" />
@@ -2620,12 +2626,12 @@
             <PropertyRef Name="HOSTDESTINATION" />
             <PropertyRef Name="PRIORITY" />
             <PropertyRef Name="CHECKCODE" />
-            <PropertyRef Name="PAUSEFLAG" />
             <PropertyRef Name="CMD_INSER_TIME" />
             <PropertyRef Name="TIME_PRIORITY" />
             <PropertyRef Name="PORT_PRIORITY" />
             <PropertyRef Name="REPLACE" />
             <PropertyRef Name="PRIORITY_SUM" />
+            <PropertyRef Name="PAUSEFLAG" />
           </Key>
           <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="CARRIER_ID" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="false" />
@@ -2636,7 +2642,6 @@
           <Property Name="HOSTDESTINATION" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="PRIORITY" Type="Int32" Nullable="false" />
           <Property Name="CHECKCODE" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
-          <Property Name="PAUSEFLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="CMD_INSER_TIME" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="CMD_START_TIME" Type="DateTime" Precision="7" />
           <Property Name="CMD_FINISH_TIME" Type="DateTime" Precision="7" />
@@ -2652,6 +2657,7 @@
           <Property Name="CARRIER_READ_STATUS" Type="OHTC_DevModel.E_ID_READ_STSTUS" />
           <Property Name="VH_ID" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
           <Property Name="COMPLETE_STATUS" Type="OHTC_DevModel.CompleteStatus" />
+          <Property Name="PAUSEFLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3387,7 +3393,10 @@
     <EntitySetMapping Name="ALARMRPTCOND">
       <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALARMRPTCOND)">
         <MappingFragment StoreEntitySet="ALARMRPTCOND">
-          <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
+          <ScalarProperty Name="DISABLE_TIME" ColumnName="DISABLE_TIME" />
+                <ScalarProperty Name="REASON" ColumnName="REASON" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
           <ScalarProperty Name="ALAM_CODE" ColumnName="ALAM_CODE" />
           <ScalarProperty Name="ENABLE_FLG" ColumnName="ENABLE_FLG" />
         </MappingFragment>
@@ -3769,6 +3778,7 @@
           <EntitySetMapping Name="VTRANSFER">
             <EntityTypeMapping TypeName="OHTC_DevModel.VTRANSFER">
               <MappingFragment StoreEntitySet="VTRANSFER">
+                <ScalarProperty Name="PAUSEFLAG" ColumnName="PAUSEFLAG" />
                 <ScalarProperty Name="COMPLETE_STATUS" ColumnName="COMPLETE_STATUS" />
                 <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
                 <ScalarProperty Name="CARRIER_READ_STATUS" ColumnName="CARRIER_READ_STATUS" />
@@ -3784,7 +3794,6 @@
                 <ScalarProperty Name="CMD_FINISH_TIME" ColumnName="CMD_FINISH_TIME" />
                 <ScalarProperty Name="CMD_START_TIME" ColumnName="CMD_START_TIME" />
                 <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
-                <ScalarProperty Name="PAUSEFLAG" ColumnName="PAUSEFLAG" />
                 <ScalarProperty Name="CHECKCODE" ColumnName="CHECKCODE" />
                 <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
                 <ScalarProperty Name="HOSTDESTINATION" ColumnName="HOSTDESTINATION" />

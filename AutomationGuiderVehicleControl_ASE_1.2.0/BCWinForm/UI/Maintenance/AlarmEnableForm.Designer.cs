@@ -33,6 +33,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txt_alarmCode = new System.Windows.Forms.TextBox();
             this.dgv_alarmList = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
@@ -41,11 +46,6 @@
             this.txt_userID = new System.Windows.Forms.TextBox();
             this.txt_reason = new System.Windows.Forms.TextBox();
             this.txt_disableTime = new System.Windows.Forms.TextBox();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_alarmList)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -65,7 +65,7 @@
             // 
             this.cb_eqType.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_eqType.FormattingEnabled = true;
-            this.cb_eqType.Location = new System.Drawing.Point(146, 3);
+            this.cb_eqType.Location = new System.Drawing.Point(146, 5);
             this.cb_eqType.Name = "cb_eqType";
             this.cb_eqType.Size = new System.Drawing.Size(186, 27);
             this.cb_eqType.TabIndex = 1;
@@ -107,6 +107,41 @@
             this.dgv_alarmList.Size = new System.Drawing.Size(1205, 513);
             this.dgv_alarmList.TabIndex = 4;
             this.dgv_alarmList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "EQPT_REAL_ID";
+            this.Column1.HeaderText = "EQ";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "ALARM_ID";
+            this.Column2.FillWeight = 200F;
+            this.Column2.HeaderText = "Alarm Code";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 200;
+            // 
+            // Column5
+            // 
+            this.Column5.DataPropertyName = "ALARM_LVL";
+            this.Column5.HeaderText = "Level";
+            this.Column5.Name = "Column5";
+            // 
+            // Column3
+            // 
+            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column3.DataPropertyName = "ALARM_DESC";
+            this.Column3.HeaderText = "Desc.";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column4
+            // 
+            this.Column4.DataPropertyName = "IS_REPORT";
+            this.Column4.HeaderText = "Is Report";
+            this.Column4.Name = "Column4";
             // 
             // tableLayoutPanel1
             // 
@@ -208,41 +243,6 @@
             this.txt_disableTime.ReadOnly = true;
             this.txt_disableTime.Size = new System.Drawing.Size(1043, 26);
             this.txt_disableTime.TabIndex = 1;
-            // 
-            // Column1
-            // 
-            this.Column1.DataPropertyName = "EQPT_REAL_ID";
-            this.Column1.HeaderText = "EQ";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.DataPropertyName = "ALARM_ID";
-            this.Column2.FillWeight = 200F;
-            this.Column2.HeaderText = "Alarm Code";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 200;
-            // 
-            // Column5
-            // 
-            this.Column5.DataPropertyName = "ALARM_LVL";
-            this.Column5.HeaderText = "Level";
-            this.Column5.Name = "Column5";
-            // 
-            // Column3
-            // 
-            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column3.DataPropertyName = "ALARM_DESC";
-            this.Column3.HeaderText = "Desc.";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            // 
-            // Column4
-            // 
-            this.Column4.DataPropertyName = "IS_REPORT";
-            this.Column4.HeaderText = "Is Report";
-            this.Column4.Name = "Column4";
             // 
             // AlarmEnableForm
             // 

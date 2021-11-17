@@ -321,7 +321,7 @@ Charger10,350,2,
 Charger10,351,2,
 AGV_NODE,14024494,2,Overcurrent in DCBUS
 AGV_NODE,14004409,2,Failed to turn into Safe OP Mode in the EtherCAT Loop.
-AGV_NODE,14004408,2,Failed to turn Servo On in Joint Driver
+AGV_NODE,14006882,2,Calculating the generalized Cartesian force acting on robot's TCP failed
 AGV_NODE,14004407,2,Clear Robot Alarm Failure
 AGV_NODE,14004406,2,Absolution Position Calibration Failure in the Joint Drivers.
 AGV_NODE,14004405,2,Joint Drivers Alarm
@@ -346,8 +346,10 @@ AGV_NODE,13004147,2,movewhengrip
 AGV_NODE,13004146,2,ChargingWhenE84Off
 AGV_NODE,13004149,2,RobotCmdInManualMode
 AGV_NODE,13004148,2,LeaveStationFail
+AGV_NODE,14004408,2,Failed to turn Servo On in Joint Driver
 AGV_NODE,14065290,2,[Error][Safety Function]J2 Velocity exceeds limit
 AGV_NODE,14019228,2,[Error][External Device]Force-Torque sensor open failed
+AGV_NODE,13004131,2,LoadUnloadNotReady
 AGV_NODE,12000069,2,ES off.
 AGV_NODE,14016428,2,[System][Error]Project Compile failed
 AGV_NODE,14016429,2,[Error][System]Project Run failed
@@ -378,7 +380,7 @@ AGV_NODE,12008262,2,ES off.
 AGV_NODE,14004458,2,It is a test command to disconnect with safety monitor board
 AGV_NODE,13008336,2,WrongRunningID
 AGV_NODE,14065511,2,Runin process: the process of g sensor calibration is NG
-AGV_NODE,12000055,2,VA on.
+AGV_NODE,14000272,2,Arm_LDULD_Sensor_Check_NG
 AGV_NODE,14012289,2,[Error][User Setting]Invalid plane points
 AGV_NODE,14017409,2,Actioner Run failed
 AGV_NODE,14017408,2,Actioner Start failed
@@ -388,10 +390,11 @@ AGV_NODE,14065515,2,[Hardware][Error]The voltage of 12V is NG
 AGV_NODE,14024519,2,Runin process R2: AB signal is NG
 AGV_NODE,15000001,2,BatteryPortOpenFail
 AGV_NODE,14017028,2,"ProxyServer initialize failure, SystemFile error"
+AGV_NODE,14012549,2,Invalid Point
 AGV_NODE,14005026,2,Quaternion setting failed
-AGV_NODE,14065288,2,[Error][Safety Function]J1 Torque exceeds limit
+AGV_NODE,14005027,2,Quaternion transfer to angle-axis failed
 AGV_NODE,14005024,2,Illegal dimension of a quaternion
-AGV_NODE,14005025,2,Illegal string format of a quaternion
+AGV_NODE,14024529,2,The data is abnormal when reading magnetic encoder.
 AGV_NODE,14005022,2,No initial guessing matrix
 AGV_NODE,14005023,2,Transform type mismatch
 AGV_NODE,14005020,2,Specific axis are parallel
@@ -407,7 +410,7 @@ AGV_NODE,14024525,2,Encoder connection failed
 AGV_NODE,14004399,2,Pose error by g-sensor g sensor
 AGV_NODE,14004398,2,gear ratio is not match the model
 AGV_NODE,11004117,2,MoveEMOStop
-AGV_NODE,11004104,2,PoseSetAbnormal
+AGV_NODE,21000017,2,FrontCameraNoFrame
 AGV_NODE,14004392,2,Driver mode switching timeout.
 AGV_NODE,14004397,2,Joint Signature mismatch with vendor
 AGV_NODE,13008208,2,GripperInitialError
@@ -428,14 +431,13 @@ AGV_NODE,14005503,2,Move to target with respect to tool base failed
 AGV_NODE,14005502,2,Target approaching failed
 AGV_NODE,11000051,2,Arm_TM_Var2NG
 AGV_NODE,11000050,2,Arm_TM_VarNG
-AGV_NODE,14024550,2,The result is NG in position initialization process
-AGV_NODE,14000036,2,Arm_GripperObject2
-AGV_NODE,14065284,2,[Error][Safety Function]TCP speed exceeds limit
+AGV_NODE,14065283,2,Collaboration Area
+AGV_NODE,14024557,2,The compensation of encoder signal is too high in ABS mode
 AGV_NODE,14018944,2,TMManager object initialization error
 AGV_NODE,14012550,2,Invalid Parameter
-AGV_NODE,14065285,2,[Error][Safety Function]TCP force exceeds limit
+AGV_NODE,14012551,2,Over angle limit
 AGV_NODE,14016385,2,Undefined error code
-AGV_NODE,14024555,2,The voltage of 12V is NG
+AGV_NODE,14065286,2,[Error][Safety Function]J1 Position exceeds limit
 AGV_NODE,14019461,2,[Flow][Warning]Warning for Network path could not be access
 AGV_NODE,14019460,2,[Flow][Warning]Warning for String Format include Variables
 AGV_NODE,11004099,2,MoveManualCancel
@@ -465,7 +467,6 @@ AGV_NODE,14005477,2,Differential orientation transfer failed
 AGV_NODE,14005476,2,Robot is at singular point
 AGV_NODE,14005479,2,Forward dynamics computation failed
 AGV_NODE,14005478,2,The transfer between geometric and analytical Jacobian failed
-AGV_NODE,14024534,2,The process of I2C control flow is out of control
 AGV_NODE,14019218,2,[Error][Software]Missing Right Parentheses
 AGV_NODE,14019219,2,[Error][Flow]Missing Right Brackets
 AGV_NODE,14005715,2,Visual move06 failed
@@ -473,7 +474,7 @@ AGV_NODE,14019210,2,[Error][Flow]Calculation is not a Number
 AGV_NODE,14019211,2,[Error][Flow]Calculation is not an Integer Number
 AGV_NODE,14019212,2,[Error][Flow]Calculation is not a Variables
 AGV_NODE,14019213,2,[Flow][Error]Calculation is not an Integer Variables
-AGV_NODE,14005237,2,End effector data lost
+AGV_NODE,14019214,2,[Error][Software]Calculation is not a Boolean
 AGV_NODE,14019215,2,"[Error][Flow]Data type is different, can not assign operation"
 AGV_NODE,14019216,2,"[Error][Software]Data type is different, can not compare operation"
 AGV_NODE,14019217,2,[Error][Flow]Invalid Number Range
@@ -487,7 +488,7 @@ AGV_NODE,14024503,2,Brake release failed.
 AGV_NODE,11004105,2,ArmWorkAbnormal
 AGV_NODE,14017417,2,Actioner execute robot failed
 AGV_NODE,14017026,2,"ProxyServer initialize failure, ServerParams error"
-AGV_NODE,14024493,2,The index angle of encoder is not calibrated
+AGV_NODE,14065288,2,[Error][Safety Function]J1 Torque exceeds limit
 AGV_NODE,14024490,2,The overcurrent is protected by current sensor of V phase
 AGV_NODE,14004592,2,HIM Command to shout down the robot system
 AGV_NODE,14024497,2,The communication of SPI is timeout
@@ -503,7 +504,7 @@ AGV_NODE,14008193,2,Camera in use
 AGV_NODE,14008192,2,[Error][Hardware]Camera NOT found
 AGV_NODE,14008195,2,[Error][Hardware]Camera is disconnected. Please check whether the connection of camera is broken or the USB slots are overloaded.
 AGV_NODE,14008194,2,Unexpected error
-AGV_NODE,14008197,2,[Warning][User Setting]Missing Dongle Key: ?
+AGV_NODE,14008197,2,[Warning][User Setting]Missing Dongle Key: ??
 AGV_NODE,14008196,2,Unmatched job version. The job was made by PreAPR version but current Vision is APR version
 AGV_NODE,14008199,2,Vision error
 AGV_NODE,14008198,2,Grab image failed
@@ -530,17 +531,18 @@ AGV_NODE,12008250,2,VS_0 on.
 AGV_NODE,14024533,2,The parameters for joint module are abnormal
 AGV_NODE,12008252,2,HO_AVBL off.
 AGV_NODE,12008253,2,ES off.
-AGV_NODE,14012551,2,Over angle limit
 AGV_NODE,14024532,2,The data in EEPROM is dislocated
 AGV_NODE,12008258,2,READY off.
-AGV_NODE,12008259,2,VS_0 on.
+AGV_NODE,21000020,2,LeftCameraNoFrame
 AGV_NODE,14024552,2,The output of g sensor is NG
+AGV_NODE,14000342,2,Arm_Not found active
 AGV_NODE,14005723,2,Rotate around Y axis failed
 AGV_NODE,14006162,2,The visual servo damping factor should be positive
 AGV_NODE,14006163,2,Acquiring joint velocity command (via two feature points) failed
 AGV_NODE,14006160,2,The DOF of image point must be 2
 AGV_NODE,14006161,2,Camera should be attached with flange/tool frame
 AGV_NODE,14006164,2,Visual servo simulation test failed
+AGV_NODE,12008259,2,VS_0 on.
 AGV_NODE,13000080,2,VisitStepPrecheckException
 AGV_NODE,13000081,2,CstPositionError
 AGV_NODE,13000082,2,RecvRobotCommandEnd
@@ -553,7 +555,7 @@ AGV_NODE,12004165,2,ES off.
 AGV_NODE,12004162,2,VS_0 on.
 AGV_NODE,12004163,2,VS_1 on.
 AGV_NODE,12004160,2,VA on.
-AGV_NODE,12004161,2,READY off.
+AGV_NODE,14004996,2,Illegal skew matrix
 AGV_NODE,12000049,2,VS_0 on.
 AGV_NODE,12000048,2,READY off.
 AGV_NODE,12065530,2,Gate type error.(Please check AGVM setting)
@@ -569,7 +571,7 @@ AGV_NODE,14005722,2,Illegal number of changing robot posture
 AGV_NODE,14065491,2,[Error][Hardware]The origin of joint module is out of preset
 AGV_NODE,14065490,2,[Error][Hardware]The magnet is NG judged by magnetic encoder
 AGV_NODE,14065493,2,The parameters for joint module are abnormal
-AGV_NODE,14065492,2,The data in EEPROM is dislocated
+AGV_NODE,21000019,2,RightCameraNoFrame
 AGV_NODE,14065495,2,Runin process R2: index calibration failed
 AGV_NODE,14065494,2,The process of I2C control flow is out of control
 AGV_NODE,14065497,2,[Hardware][Error]The connection sequence of UVW of motor is not correct
@@ -600,6 +602,7 @@ AGV_NODE,14000017,2,Arm_GripInitFail
 AGV_NODE,14020480,2,No Error
 AGV_NODE,14000018,2,Arm_GripLoss
 AGV_NODE,14000019,2,Arm_GripError
+AGV_NODE,14065506,2,The magnetic encoder data is not stable in the position initialization process
 AGV_NODE,14005703,2,Get current robot Cartesian posture failed
 AGV_NODE,12008234,2,VS_1 on.
 AGV_NODE,14004432,2,Power Board Lost Connection
@@ -608,20 +611,20 @@ AGV_NODE,14004430,2,The S/N of the Joints does not match the default setting
 AGV_NODE,14004431,2,Power Board is Missing
 AGV_NODE,14004436,2,The Current is still out of range under current limit constrain
 AGV_NODE,14004437,2,The Current is out of range in the 24V Power Supply
-AGV_NODE,14004434,2,Robot performed Cat.1 stop.?
+AGV_NODE,14004434,2,?Robot performed Cat.1 stop.??
 AGV_NODE,14004435,2,The Current or Voltage in the 48V Power Supply is out of range
 AGV_NODE,14018176,2,[Error][External Device]USB with correct name does not exist.
 AGV_NODE,14018177,2,[Error][Software]No Space for External Device
 AGV_NODE,14004438,2,I/O Board Lost Connection
 AGV_NODE,14004439,2,Joints Lost Connection
 AGV_NODE,14016391,2,[Hardware][Error]Robot is not connected
-AGV_NODE,14024554,2,The voltage of 5V is NG
+AGV_NODE,13004137,2,AutoWhenRobotNotHome
 AGV_NODE,12008235,2,TP3 timeout or EQ error.(HO_AVBL off)
-AGV_NODE,14016644,2,MD5 file is not existed.
+AGV_NODE,14019234,2,Parameter key is not exist
 AGV_NODE,14000128,2,Arm_NoRunning
 AGV_NODE,14000129,2,Arm_RBNotInInitPos
 AGV_NODE,13004136,2,ToPortIsFull
-AGV_NODE,14016645,2,"MD5 is not matched, the file may be damaged."
+AGV_NODE,14019235,2,Parameter value is invalid
 AGV_NODE,13004130,2,IncorrectRobotCommand
 AGV_NODE,14005688,2,Illegal DOF of eye in hand transform
 AGV_NODE,13004132,2,AGVMConnectionAbnormal
@@ -670,6 +673,7 @@ AGV_NODE,14000261,2,Arm_AGVLPortGETFail
 AGV_NODE,14000260,2,Arm_CoverSensorError
 AGV_NODE,14065312,2,[Error][Hardware]Solenoid current is NG
 AGV_NODE,14065313,2,[Error][Hardware]Joint movement range is NG in brake release status
+AGV_NODE,14000265,2,Arm_RB_IPC_LAG
 AGV_NODE,14000264,2,Arm_EQPortPUTFail
 AGV_NODE,14012295,2,Detection point is out of safety space
 AGV_NODE,14012294,2,Incorrect command format
@@ -680,17 +684,16 @@ AGV_NODE,14012290,2,[Error][User Setting]Invalid cube points
 AGV_NODE,14012293,2,Invalid selected planes
 AGV_NODE,14012292,2,[Error][User Setting]Failed to build operation space with the new stop plane
 AGV_NODE,13004135,2,FromPortIsEmpty
-AGV_NODE,14005493,2,TCP computation failed
 AGV_NODE,14000037,2,Arm_GripperObject3
 AGV_NODE,16000001,2,EncoderDataReadFail
 AGV_NODE,14004412,2,This Model is not supported
-AGV_NODE,16000002,2,EncoderDataEmpty
+AGV_NODE,14065285,2,[Error][Safety Function]TCP force exceeds limit
 AGV_NODE,11000020,2,Arm_GripFail
 AGV_NODE,15000004,2,BatteryExceptionError
 AGV_NODE,12008200,2,ES off.
 AGV_NODE,15000002,2,BatteryReadTimeout
 AGV_NODE,15000003,2,BatteryFormatError
-AGV_NODE,14012544,2,[Error][System]Can not connect to Viewer
+AGV_NODE,11000021,2,Arm_ReleaseError
 AGV_NODE,14006649,2,DH compensation failed
 AGV_NODE,14006648,2,Calculate DH compensation terms failed
 AGV_NODE,14024539,2,Runin process R4: UVW calibration result is out of limit
@@ -698,7 +701,7 @@ AGV_NODE,14024538,2,Runin process R2: the current in UVW phase is NG
 AGV_NODE,11004101,2,ResetRouteInWrongState
 AGV_NODE,11004100,2,MoveManualCancelFail
 AGV_NODE,12008193,2,ES off.
-AGV_NODE,14006642,2,Record Robot posture failed in DH calibration
+AGV_NODE,14024534,2,The process of I2C control flow is out of control
 AGV_NODE,14006641,2,Initialization of DH calibration process has not yet been done
 AGV_NODE,14006640,2,Initialization of DH calibration process failed
 AGV_NODE,14006647,2,DH calibration calculation (for 6DOF type robot) failed
@@ -726,17 +729,22 @@ AGV_NODE,14016390,2,Write SystemFile.ini failed
 AGV_NODE,14004427,2,The Slave Numbers does not Match the Default Numbers
 AGV_NODE,14016392,2,Illegal Privilege
 AGV_NODE,14016393,2,Log In/Out failed
+AGV_NODE,14065287,2,[Error][Safety Function]J1 Velocity exceeds limit
 AGV_NODE,12000070,2,GO off.
 AGV_NODE,14005920,2,Move camera to target failed
 AGV_NODE,14017030,2,"ProxyServer initialize failure, OpenService error"
 AGV_NODE,11000024,2,Arm_GripperTooDeep
 AGV_NODE,11000025,2,Arm_GripperReleaseSensorError
 AGV_NODE,14012545,2,Send data to Viewer failed
-AGV_NODE,11000021,2,Arm_ReleaseError
+AGV_NODE,14012544,2,[Error][System]Can not connect to Viewer
 AGV_NODE,14012547,2,Get invalid data from Viewer
 AGV_NODE,14012546,2,Receive data from Viewer failed
-AGV_NODE,14012549,2,Invalid Point
+AGV_NODE,22000004,2,LeftCameraNoFrame
 AGV_NODE,14012548,2,Get no data from Viewer
+AGV_NODE,14006642,2,Record Robot posture failed in DH calibration
+AGV_NODE,22000001,2,FrontCameraNoFrame
+AGV_NODE,22000002,2,BackCameraNoFrame
+AGV_NODE,22000003,2,RightCameraNoFrame
 AGV_NODE,14024548,2,"The position initialization process is timeout (""Z search"" is not finished)"
 AGV_NODE,14024549,2,The position initialization process is timeout
 AGV_NODE,14019458,2,[Warning][Flow]Warning for String Format
@@ -759,6 +767,7 @@ AGV_NODE,12008333,2,READY off.
 AGV_NODE,12008332,2,VA on.
 AGV_NODE,12008331,2,U_REQ on.
 AGV_NODE,12008330,2,GO off.
+AGV_NODE,14065492,2,The data in EEPROM is dislocated
 AGV_NODE,14017411,2,Actioner Warning
 AGV_NODE,14024541,2,An error occurs when command changes the control mode.
 AGV_NODE,14000001,2,Arm_Running
@@ -767,7 +776,7 @@ AGV_NODE,14000048,2,Arm_VisionFixedFail
 AGV_NODE,14018189,2,UNC path could not be access
 AGV_NODE,14018188,2,[Hardware][Error]No Space for Application Directory
 AGV_NODE,14018187,2,[Error][Com.]Configure network failed
-AGV_NODE,14018186,2,[Error][Com.]TCP listener error
+AGV_NODE,13004166,2,MoveTimeoutRVLidar
 AGV_NODE,14018185,2,Command timeout
 AGV_NODE,14018184,2,[Error][Com.]Client send command failed
 AGV_NODE,14018183,2,[Error][Com.]Client connection failed
@@ -782,11 +791,10 @@ AGV_NODE,14019201,2,[Flow][Error]Invalid number format
 AGV_NODE,14000000,2,Arm_NoError
 AGV_NODE,14019207,2,[Flow][Error]Function operation is not allowed
 AGV_NODE,14019206,2,[Error][Flow]Undefined functions
-AGV_NODE,14019205,2,Undefined variables
+AGV_NODE,14016386,2,HMI server error
 AGV_NODE,14019204,2,[Error][Flow]Invalid expression error
 AGV_NODE,14004469,2,Vision Servoing failed to get image
 AGV_NODE,14004468,2,Operation Mode Switching Failure occurred in the Joint Drivers during Vision Servoing
-AGV_NODE,14005701,2,Initialization of camera intrinsic parameter calibration process failed
 AGV_NODE,14004463,2,3D Viewer Lost Connection
 AGV_NODE,12008341,2,VA on.
 AGV_NODE,14004465,2,Stop the Vision Servoing Process
@@ -804,8 +812,9 @@ AGV_NODE,14024482,2,The acceleration on X direction of G sensor is out of range
 AGV_NODE,14004357,2,Stop Motion Command
 AGV_NODE,14004353,2,"Inverse Kinematics Failure, Working Range Issue"
 AGV_NODE,14004352,2,No Alarm
+AGV_NODE,13004168,2,MoveTimeoutRHLidar
 AGV_NODE,14001365,2,Arm_ModbusDisconnected
-AGV_NODE,13004163,2,StoppedByAGVM
+AGV_NODE,13004163,2,StopByAGVM
 AGV_NODE,13004162,2,LowVoltage
 AGV_NODE,13004161,2,AutoWhenRobotNotInitial
 AGV_NODE,13004160,2,PauseTimeout
@@ -815,6 +824,7 @@ AGV_NODE,14008203,2,Servoing and Vision-IO threads conflict
 AGV_NODE,14008202,2,This job can only be run on X64 platform
 AGV_NODE,14016408,2,[Error][Software]Base is in use
 AGV_NODE,11000023,2,Arm_GripperRetryFail
+AGV_NODE,12000052,2,ES off.
 AGV_NODE,14016400,2,Generate file error
 AGV_NODE,14016401,2,[Error][Motion]Step run failed
 AGV_NODE,14016402,2,Changed base failed
@@ -828,7 +838,7 @@ AGV_NODE,14005709,2,EIH calibration should be done first
 AGV_NODE,14005708,2,Visual move02 failed
 AGV_NODE,14005707,2,Visual move11 failed
 AGV_NODE,14005706,2,Visual move01 failed
-AGV_NODE,13000024,2,MapCheckFail
+AGV_NODE,14005705,2,Change robot tip's orientation failed
 AGV_NODE,14005704,2,Change tool parameters failed
 AGV_NODE,11000150,2,Arm_DI2_SensorError
 AGV_NODE,14024528,2,The UVW signal of encoder is NG
@@ -837,7 +847,7 @@ AGV_NODE,11000153,2,Arm_ModbusTCPError
 AGV_NODE,12008247,2,L_REQ on.
 AGV_NODE,12008246,2,GO off.
 AGV_NODE,12008245,2,ES off.
-AGV_NODE,14024529,2,The data is abnormal when reading magnetic encoder.
+AGV_NODE,14005025,2,Illegal string format of a quaternion
 AGV_NODE,12008243,2,VS_1 on.
 AGV_NODE,12008242,2,VS_0 on.
 AGV_NODE,12008241,2,READY off.
@@ -846,19 +856,20 @@ AGV_NODE,14017412,2,Actioner exception when Start Or Pause
 AGV_NODE,12008249,2,READY off.
 AGV_NODE,12008248,2,VA on.
 AGV_NODE,14004995,2,Illegal homogeneous transformation
-AGV_NODE,14004994,2,Illegal rotation matrix
+AGV_NODE,14000352,2,Arm_Unable to initialize
 AGV_NODE,14004496,2,Process Line Motion Failure
-AGV_NODE,14004996,2,Illegal skew matrix
-AGV_NODE,11004116,2,ChargeRouteEmpty
+AGV_NODE,21000018,2,BackCameraNoFrame
+AGV_NODE,14000357,2,First code is not 1 or 2
 AGV_NODE,11004112,2,NormalProcessAbnormal
 AGV_NODE,14004993,2,At least one element of a matrix or vector is with illegal index
 AGV_NODE,14004992,2,Illegal dimension of a matrix or vector
 AGV_NODE,11004113,2,RouteFileEmpty
 AGV_NODE,14004999,2,Illegal norm value
 AGV_NODE,14004998,2,Matrix inverse failed
+AGV_NODE,14018186,2,[Error][Com.]TCP listener error
 AGV_NODE,14024522,2,Multi Z index happened in encoder output
 AGV_NODE,14004521,2,[Warning][External Device] Discrapency was detected between dual channels of Safeguard Port A.
-AGV_NODE,13004128,2,RFIDReaderAbnormal
+AGV_NODE,12004161,2,READY off.
 AGV_NODE,14024523,2,The deviation between command and current position is too high
 AGV_NODE,11000132,2,Arm_RunningNotTeach
 AGV_NODE,14024520,2,Failure in loading data from EEPROM
@@ -878,7 +889,7 @@ AGV_NODE,14005000,2,Householder transformation failed
 AGV_NODE,14005001,2,Eigen value calculation failed
 AGV_NODE,14005002,2,Illegal number of Eigen values
 AGV_NODE,14005003,2,Matrix is singular
-AGV_NODE,14005004,2,Illegal upper/lower triangular matrix
+AGV_NODE,11004104,2,PoseSetAbnormal
 AGV_NODE,14005005,2,Elementary matrix operation failed
 AGV_NODE,14005006,2,Gaussian Elimination failed
 AGV_NODE,14005007,2,Null space does not exist
@@ -893,14 +904,16 @@ AGV_NODE,14024501,2,FW version doesn't match HW version
 AGV_NODE,14024502,2,The process in main loop is timeout
 AGV_NODE,11000146,2,Arm_RBMoveing_DI1_Fash
 AGV_NODE,11000145,2,Arm_RBMoveing_DI0_Fash
-AGV_NODE,14016441,2,Base name is not accepted
 AGV_NODE,14004519,2,[Error][Safety Function] Discrapency was detected between dual channels Encoder Standstill Output.
 AGV_NODE,14007105,2,Left arm failed
 AGV_NODE,14007104,2,Right arm failed
 AGV_NODE,11004119,2,TMRunningIDWrong
+AGV_NODE,14000153,2,Arm_ModbusTCPError
 AGV_NODE,14024486,2,The current in U phase of motor is too high
+AGV_NODE,14005004,2,Illegal upper/lower triangular matrix
 AGV_NODE,14005521,2,Check robot configuration failed
 AGV_NODE,14005520,2,At least one joint position will reach boundary
+AGV_NODE,14004525,2,[Error][Safety Function] Discrapency was detected between dual channels of Emergency Stop Output.
 AGV_NODE,14004516,2,[Error][Safety Function]Violate Encoder Standstill in stop area
 AGV_NODE,14019247,2,Ethernet Slave (TCP/IP Server) Item name does not exist
 AGV_NODE,14019246,2,Ethernet Slave (TCP/IP Server) is disabled
@@ -951,7 +964,7 @@ AGV_NODE,14016445,2,SendDataFail
 AGV_NODE,14016446,2,ReceiveDataFail
 AGV_NODE,14016447,2,InvalidReturnValue
 AGV_NODE,14016440,2,[Error]Node is in offline mode
-AGV_NODE,14000153,2,Arm_ModbusTCPError
+AGV_NODE,14016441,2,Base name is not accepted
 AGV_NODE,14016442,2,[Error][User Setting]Over maximum loading
 AGV_NODE,14016443,2,[Error][User Setting]Over maximum loading with TCP loading
 AGV_NODE,14006154,2,Establishing interaction matrix of a single image point failed
@@ -976,8 +989,8 @@ AGV_NODE,14004514,2,[Error][Safety Function]Violate Encoder Standstill when Safe
 AGV_NODE,14004450,2,The Pose of the Robot is closer to the singularity in the manual mode
 AGV_NODE,14019203,2,[Flow][Error]Duplicate declaration
 AGV_NODE,14004484,2,TmSync : Robot ID Conflict In The Group
-AGV_NODE,18000002,2,RFIDAbnormalFail
-AGV_NODE,14065301,2,[Error][Safety Function]J6 Position exceeds limit
+AGV_NODE,12004152,2,READY off.
+AGV_NODE,14005237,2,End effector data lost
 AGV_NODE,14065300,2,[Error][Safety Function]J5 Torque exceeds limit
 AGV_NODE,14005235,2,End effector has connected with robot
 AGV_NODE,14005234,2,End effector connection with robot failed
@@ -989,7 +1002,7 @@ AGV_NODE,14000256,2,Arm_LDPort1StatusError
 AGV_NODE,14000257,2,Arm_LDPort2StatusError
 AGV_NODE,14006883,2,Calculating the effective norm of the generalized Cartesian force acting on robot's TCP failed
 AGV_NODE,14019200,2,[Error][Flow]Invalid syntax error
-AGV_NODE,14017416,2,Actioner variable type mismatch
+AGV_NODE,14019205,2,Undefined variables
 AGV_NODE,14004451,2,The Pose of the Robot is closer to the singularity in the Compliance Mode
 AGV_NODE,13000071,2,RobotStateErrorPreAuto
 AGV_NODE,14004480,2,TmSync : Group Members Over Specification
@@ -997,7 +1010,10 @@ AGV_NODE,14000258,2,Arm_ULDPort1StatusError
 AGV_NODE,13000070,2,MoveStateErrorPreAuto
 AGV_NODE,14006159,2,Illegal number of image errors
 AGV_NODE,13000072,2,RobotIsNotHomePreAuto
+AGV_NODE,14065301,2,[Error][Safety Function]J6 Position exceeds limit
+AGV_NODE,14065302,2,[Error][Safety Function]J6 Velocity exceeds limit
 AGV_NODE,11000064,2,Arm_PostureError
+AGV_NODE,16000002,2,EncoderDataEmpty
 AGV_NODE,14005505,2,DH compensation failed
 AGV_NODE,12008238,2,L_REQ on.
 AGV_NODE,14005504,2,Move to target with respect to base failed
@@ -1009,8 +1025,13 @@ AGV_NODE,11004136,2,CassetteDoorCloseCloseNG
 AGV_NODE,11004137,2,CassetteDoorControlException
 AGV_NODE,11004134,2,CassetteDoorOpenCloseNG
 AGV_NODE,11004135,2,CassetteDoorCloseOpenNG
-AGV_NODE,14065302,2,[Error][Safety Function]J6 Velocity exceeds limit
-AGV_NODE,14005702,2,Initialization of camera intrinsic parameter calibration process has not yet been done
+AGV_NODE,21000007,2,ABCS charge station off failed.
+AGV_NODE,21000006,2,ABCS battery unlock failed.
+AGV_NODE,21000005,2,ABCS battery lock failed.
+AGV_NODE,21000004,2,ABCS head charger off failed.
+AGV_NODE,21000003,2,ABCS head charger on failed.
+AGV_NODE,21000002,2,ABCS battery info. off failed.
+AGV_NODE,21000001,2,ABCS battery info. on failed.
 AGV_NODE,14000021,2,Arm_ReleaseError
 AGV_NODE,14032773,2,[Warning][External Device] Discrepancy was detected between dual channels of User Connected ESTOP Input Port without Robot ESTOP Output.
 AGV_NODE,14004462,2,[Error][Safety Function]Encoder Standstill function activated
@@ -1020,7 +1041,7 @@ AGV_NODE,12004149,2,GO off.
 AGV_NODE,13000068,2,SectionLostPreAuto
 AGV_NODE,13000069,2,AddressLostPreAuto
 AGV_NODE,14000023,2,Arm_GripperRetryFail
-AGV_NODE,14005496,2,"At least one of Position, Px, or Py is not recorded in task frame establishing process"
+AGV_NODE,12000053,2,GO off.
 AGV_NODE,14065303,2,[Error][Safety Function]J6 Torque exceeds limit
 AGV_NODE,12004141,2,L_REQ on.
 AGV_NODE,12004142,2,U_REQ off.
@@ -1036,7 +1057,7 @@ AGV_NODE,14005489,2,TCP calibration process initialization has done
 AGV_NODE,14016389,2,[Error][Flow]Program Exception
 AGV_NODE,14016388,2,Undefined Signal
 AGV_NODE,14016387,2,Robot is unlocked
-AGV_NODE,14016386,2,HMI server error
+AGV_NODE,14005493,2,TCP computation failed
 AGV_NODE,14005486,2,Acquiring equivalent axis-angle rotation matrix between two frames failed
 AGV_NODE,14016384,2,Client is not connected to any proxy server
 AGV_NODE,14005480,2,Inertia tensor computation failed
@@ -1064,6 +1085,8 @@ AGV_NODE,11000035,2,Arm_GripperObject1
 AGV_NODE,11000034,2,Arm_GripperInitializeERROR
 AGV_NODE,11000033,2,Arm_GripperOutOfRange
 AGV_NODE,11000032,2,Arm_GripperPosError
+AGV_NODE,11004116,2,ChargeRouteEmpty
+AGV_NODE,13004128,2,RFIDReaderAbnormal
 AGV_NODE,14005697,2,"Camera does not move, but image changes"
 AGV_NODE,14032770,2,[Warning][External Device] Discrepancy was detected between dual channels of User Connected External Safeguard Input Port.
 AGV_NODE,14065289,2,[Error][Safety Function]J2 Position exceeds limit
@@ -1076,16 +1099,15 @@ AGV_NODE,14032777,2,[Error][Safety Function] Discrepancy was detected between du
 AGV_NODE,14024553,2,The check sum result from EEPROM data is abnormal
 AGV_NODE,14065281,2,[Error][Safety Function]Momentum exceeds limit
 AGV_NODE,14024551,2,Runin process: the process of g sensor calibration is NG
-AGV_NODE,14065283,2,Collaboration Area
-AGV_NODE,14024557,2,The compensation of encoder signal is too high in ABS mode
+AGV_NODE,14024550,2,The result is NG in position initialization process
+AGV_NODE,14065284,2,[Error][Safety Function]TCP speed exceeds limit
 AGV_NODE,14024556,2,The ADC compensation is out of limit
-AGV_NODE,14065286,2,[Error][Safety Function]J1 Position exceeds limit
-AGV_NODE,14065287,2,[Error][Safety Function]J1 Velocity exceeds limit
+AGV_NODE,14024555,2,The voltage of 12V is NG
+AGV_NODE,14024554,2,The voltage of 5V is NG
 AGV_NODE,14019230,2,Serial Port open failed
 AGV_NODE,14017413,2,Actioner exception when Stop
 AGV_NODE,14065304,2,J7 Position exceeds limit
 AGV_NODE,14065516,2,The ADC compensation is out of limit
-AGV_NODE,14006882,2,Calculating the generalized Cartesian force acting on robot's TCP failed
 AGV_NODE,14000259,2,Arm_ULDPort2StatusError
 AGV_NODE,14018178,2,No support offered
 AGV_NODE,14024489,2,The overcurrent is protected by current sensor of U phase
@@ -1099,13 +1121,13 @@ AGV_NODE,14019238,2,File is read only
 AGV_NODE,14019239,2,"File is exists, could not write"
 AGV_NODE,14019236,2,File does not exist
 AGV_NODE,14019237,2,File size is too large
-AGV_NODE,14019234,2,Parameter key is not exist
-AGV_NODE,14019235,2,Parameter value is invalid
+AGV_NODE,14016644,2,MD5 file is not existed.
+AGV_NODE,14016645,2,"MD5 is not matched, the file may be damaged."
 AGV_NODE,14016642,2,[Warning][User Setting]Host and client versions conflict
 AGV_NODE,14016643,2,"[Error][User Setting]Certification does not match. Please get the certification file from the product provider, and put it under TMflow folder located under the installation directory to enable TMflow Editor."
 AGV_NODE,14016640,2,Certification does not match
 AGV_NODE,14016641,2,Certification does not match
-AGV_NODE,14032778,2,[Error][Safety Function] Discrepancy was detected between dual channels of User Connected External Safeguard Output Port for Human ?Machine Safety Settings.
+AGV_NODE,14032778,2,[Error][Safety Function] Discrepancy was detected between dual channels of User Connected External Safeguard Output Port for Human ??Machine Safety Settings.
 AGV_NODE,14004418,2,Failed to read Manufacturer ID
 AGV_NODE,14004419,2,Failed to initialize EtherCAT
 AGV_NODE,14004414,2,the 48V power NG on the ESM-PreOP mode
@@ -1121,6 +1143,7 @@ AGV_NODE,14004361,2,Robot Controller Function Library Issue
 AGV_NODE,14065510,2,The result is NG in position initialization process
 AGV_NODE,14004368,2,Tool Connected Failure With Robot
 AGV_NODE,14004369,2,"Inverse Kinematics Failure, Motion Blending Issue"
+AGV_NODE,14017416,2,Actioner variable type mismatch
 AGV_NODE,13004152,2,AutoWhenRobotStatusNotReset
 AGV_NODE,13004153,2,AutoWhenRobotStatusNotReady
 AGV_NODE,13004150,2,PoseNotInit
@@ -1128,6 +1151,7 @@ AGV_NODE,13004151,2,BatteryReadTimeout
 AGV_NODE,14016419,2,[Error][User Setting]Line teach failed
 AGV_NODE,14016418,2,[Error][User Setting]Compliance teach failed
 AGV_NODE,14005712,2,Visual move04 failed
+AGV_NODE,14065487,2,[Error][Hardware]The protection is on for motor hold (type 2)
 AGV_NODE,14016413,2,Failed to re-record the point to another base
 AGV_NODE,14016412,2,[Error][Flow]Start Node Not Connected
 AGV_NODE,14016411,2,Set Component List failed
@@ -1151,11 +1175,11 @@ AGV_NODE,11001365,2,Arm_ModbusDisconnected
 AGV_NODE,14004522,2,[Warning][External Device] Discrapency was detected between dual channels of Safeguard Port B.
 AGV_NODE,14004523,2,[Warning][External Device] Discrapency was detected between dual channels of Enabling Device Ports.
 AGV_NODE,14005713,2,Visual move05 failed
-AGV_NODE,14004525,2,[Error][Safety Function] Discrapency was detected between dual channels of Emergency Stop Output.
+AGV_NODE,13004165,2,MoveTimeoutLVLidar
 AGV_NODE,14004526,2,[Error][Safety Function] Discrapency was detected between dual channels of Safeguard Port A Output.
 AGV_NODE,14004527,2,[Error][Safety Function] Discrapency was detected between dual channels of Safeguard Port B Output.
 AGV_NODE,12008328,2,TP3 timeout or EQ error.(HO_AVBL off)
-AGV_NODE,13004164,2,MoveTimeout
+AGV_NODE,13004164,2,MoveStuckedTimeout
 AGV_NODE,12008244,2,TP3 timeout or EQ error.(HO_AVBL off)
 AGV_NODE,12008329,2,ES off.
 AGV_NODE,14017410,2,Actioner Pause failed
@@ -1179,16 +1203,18 @@ AGV_NODE,12008327,2,VS_1 on.
 AGV_NODE,11004160,2,PathPlanningFail
 AGV_NODE,14019712,2,Could not Play if Previous Project is not stopped
 AGV_NODE,14017673,2,Vision found nothing
-AGV_NODE,13004137,2,AutoWhenRobotNotHome
+AGV_NODE,11004163,2,LOAD PL/PS Not Empty
+AGV_NODE,11004162,2,UNLOAD PL/PS Empty
 AGV_NODE,12008322,2,L_REQ off.
+AGV_NODE,14005017,2,Solve A sin(x) + B cos(x) = C failed
 AGV_NODE,12008323,2,U_REQ on.
 AGV_NODE,14065291,2,[Error][Safety Function]J2 Torque exceeds limit
-AGV_NODE,13004131,2,LoadUnloadNotReady
+AGV_NODE,11004164,2,PL/PS Port Unknow
 AGV_NODE,14005013,2,Kalman filter initialization need to be done
 AGV_NODE,14005012,2,Kalman gain calculation failed
 AGV_NODE,14005011,2,Circle path planning initialization failed
 AGV_NODE,14005010,2,Circle path center calculation failed
-AGV_NODE,14005017,2,Solve A sin(x) + B cos(x) = C failed
+AGV_NODE,11004165,2,Process Time Out
 AGV_NODE,14005016,2,Illegal size/format of function returned variables
 AGV_NODE,14005015,2,Illegal size/format of function input variables
 AGV_NODE,14005014,2,Illegal index to get/set a component of a matrix/vector
@@ -1201,13 +1227,15 @@ AGV_NODE,14024515,2,Runin process R2: U signal NG
 AGV_NODE,14024514,2,Runin process R2: multi Z index happened
 AGV_NODE,14024513,2,Runin process R2: Z index miss
 AGV_NODE,14024512,2,The deviation is too high when initializing joint coordinate
-AGV_NODE,14032771,2,[Warning][External Device] Discrepancy was detected between dual channels of User Connected External Safeguard Input Port for Human ?Machine Safety Settings.
+AGV_NODE,14032771,2,[Warning][External Device] Discrepancy was detected between dual channels of User Connected External Safeguard Input Port for Human ??Machine Safety Settings.
 AGV_NODE,14065294,2,[Error][Safety Function]J3 Torque exceeds limit
 AGV_NODE,14004385,2,Velocity or Angular Velocity Over Range
 AGV_NODE,14004386,2,Force or Torque Over Range
 AGV_NODE,14004387,2,Both Alarm in Error(HEX)21 and Error(HEX)22
 AGV_NODE,14017675,2,[Error][VISION]Vision actioner reply data is not applicable
+AGV_NODE,11000152,2,Arm_ProjectError
 AGV_NODE,12008239,2,U_REQ off.
+AGV_NODE,14024493,2,The index angle of encoder is not calibrated
 AGV_NODE,12008236,2,ES off.
 AGV_NODE,14005518,2,Homing check failed
 AGV_NODE,14005519,2,Modify IK solution failed
@@ -1233,7 +1261,8 @@ AGV_NODE,12008232,2,READY off.
 AGV_NODE,12008233,2,VS_0 on.
 AGV_NODE,12008230,2,U_REQ off.
 AGV_NODE,12008231,2,VA on.
-AGV_NODE,14005705,2,Change robot tip's orientation failed
+AGV_NODE,14005702,2,Initialization of camera intrinsic parameter calibration process has not yet been done
+AGV_NODE,13000024,2,MapCheckFail
 AGV_NODE,12008319,2,TP3 timeout or EQ error.(HO_AVBL off)
 AGV_NODE,14024491,2,The protection is on for motor hold
 AGV_NODE,12008261,2,TP4 timeout or EQ error.(HO_AVBL off)
@@ -1241,7 +1270,7 @@ AGV_NODE,11000151,2,Arm_DataSortNotSame
 AGV_NODE,13008324,2,NotTeachYet
 AGV_NODE,13004118,2,LoadUnloadMacroIncorrect
 AGV_NODE,13004119,2,LoadUnloadE84Fail
-AGV_NODE,11000152,2,Arm_ProjectError
+AGV_NODE,14005701,2,Initialization of camera intrinsic parameter calibration process failed
 AGV_NODE,13004112,2,movewhencharging
 AGV_NODE,14024517,2,Runin process R2: W signal NG
 AGV_NODE,14005700,2,"There are constraints on the effective robot moving area, please change the initial robot posture or the virtual radius"
@@ -1269,7 +1298,7 @@ AGV_NODE,10000000,2,OdometryEncoderMiss
 AGV_NODE,14065509,2,The position initialization process is timeout
 AGV_NODE,14065508,2,"[Error][System]The position initialization process is timeout (""Z search"" is not finished)"
 AGV_NODE,14065507,2,"The joint angle between ""power on"" and ""position initialization"" exceeds limit"
-AGV_NODE,14065506,2,The magnetic encoder data is not stable in the position initialization process
+AGV_NODE,14000400,2,Arm_Unable to Return
 AGV_NODE,14065505,2,Online multiturn calibration failed
 AGV_NODE,14065504,2,[Hardware][Error]The voltage of DC bus is low in EtherCAT OP mode
 AGV_NODE,14065503,2,Unknown EtherCAT ESM command
@@ -1287,12 +1316,13 @@ AGV_NODE,14004444,2,Buzzer Failure in the Robot Stick Key
 AGV_NODE,14004449,2,The Motion Command Executed with Compliance Mode at the same time
 AGV_NODE,14004448,2,The Motion Command Executed with manual mode at the same time
 AGV_NODE,14065444,2,The acceleration on Z direction of G sensor is out of range
-AGV_NODE,14005027,2,Quaternion transfer to angle-axis failed
+AGV_NODE,11004166,2,Initial Process NG
 AGV_NODE,14000147,2,Arm_RBMoveing_DI2_Fash
 AGV_NODE,11004115,2,MainRouteEmpty
-AGV_NODE,14005497,2,Linking task frame failed
+AGV_NODE,12000055,2,VA on.
 AGV_NODE,14000145,2,Arm_RBMoveing_DI0_Fash
 AGV_NODE,14017415,2,Actioner code error
+AGV_NODE,14004994,2,Illegal rotation matrix
 AGV_NODE,14004997,2,Illegal square matrix
 AGV_NODE,11000137,2,Arm_AGV_LDULD_AddressError
 AGV_NODE,11000134,2,Arm_RunningVisionFail
@@ -1306,7 +1336,6 @@ AGV_NODE,11004121,2,MainRouteVSCurrentRouteDisconnect
 AGV_NODE,11004120,2,MainRouteVSGoalRouteDisconnect
 AGV_NODE,12008316,2,READY off.
 AGV_NODE,12004143,2,VA on.
-AGV_NODE,14019214,2,[Error][Software]Calculation is not a Boolean
 AGV_NODE,14005495,2,Task frame establishing calculation failed
 AGV_NODE,13000067,2,AgvlTryAutoFail
 AGV_NODE,14006157,2,Acquiring joint velocity command failed
@@ -1317,7 +1346,7 @@ AGV_NODE,14006153,2,Feature point coordinates transfer (robot base frame to came
 AGV_NODE,14006152,2,Feature point coordinates transfer (robot base frame to image frame) failed
 AGV_NODE,13004129,2,PositionError
 AGV_NODE,12004153,2,VS_0 on.
-AGV_NODE,12004152,2,READY off.
+AGV_NODE,18000002,2,RFIDAbnormalFail
 AGV_NODE,12004151,2,VA on.
 AGV_NODE,12004150,2,L_REQ on.
 AGV_NODE,12004157,2,GO off.
@@ -1328,8 +1357,8 @@ AGV_NODE,12000058,2,VS_1 on.
 AGV_NODE,12000059,2,TP4 timeout or EQ error.(HO_AVBL off)
 AGV_NODE,14005499,2,Task space coordinates transfer failed : from RTX to HMI
 AGV_NODE,14005498,2,Illegal number of task parameters
-AGV_NODE,12000052,2,ES off.
-AGV_NODE,12000053,2,GO off.
+AGV_NODE,14005497,2,Linking task frame failed
+AGV_NODE,14005496,2,"At least one of Position, Px, or Py is not recorded in task frame establishing process"
 AGV_NODE,12000050,2,VS_1 on.
 AGV_NODE,12000051,2,TP3 timeout or EQ error.(HO_AVBL off)
 AGV_NODE,12000056,2,READY off.
@@ -1342,11 +1371,12 @@ AGV_NODE,13004134,2,RobotCmdWhenMoving
 AGV_NODE,11000000,2,Arm_NoError
 AGV_NODE,11000001,2,Arm_Running
 AGV_NODE,14024498,2,Illegal interrupt to MCU
+AGV_NODE,13004167,2,MoveTimeoutLHLidar
 AGV_NODE,14005511,2,Inner workspace limit
 AGV_NODE,14065488,2,The UVW signal of encoder is NG
 AGV_NODE,14065489,2,[Error][Hardware]The data is abnormal when reading magnetic encoder.
 AGV_NODE,14065486,2,[Error][Hardware]The compensation of encoder signal is too high
-AGV_NODE,14065487,2,[Error][Hardware]The protection is on for motor hold (type 2)
+AGV_NODE,14000036,2,Arm_GripperObject2
 AGV_NODE,14065484,2,[Error][Hardware]The Z index signal is missing
 AGV_NODE,14065485,2,[Error][Hardware]Encoder connection failed
 AGV_NODE,14065482,2,[Error][Hardware]Multi Z index happened in encoder output
@@ -1393,6 +1423,7 @@ AGV_NODE,14000144,2,Arm_RunningError
 AGV_NODE,14017161,2,Rtx start failure
 AGV_NODE,11000257,2,Arm_LDPort2StatusError
 AGV_NODE,11000256,2,Arm_LDPort1StatusError
+AGV_NODE,14000065,2,Arm_Initialize RB Pos Error
 AGV_NODE,14000064,2,Arm_PostureError
 AGV_NODE,14005547,2,Acquiring robot flange generalized position failed
 AGV_NODE,14005546,2,Set robot parameter from string failed
@@ -1588,7 +1619,7 @@ AGV_NODE,92004113,1,ES off.
 AGV_NODE,92004112,1,EQ not in auto mode.(HO_AVBL off)
 AGV_NODE,92004111,1,VS_1 on.
 AGV_NODE,92004110,1,VS_0 on.
-AGV_NODE,93036884,1,Vehicle Stucked
+AGV_NODE,93036884,1,VehicleStucked
 AGV_NODE,93036881,1,movewhenmanual
 AGV_NODE,93036880,1,movewhenrobotnothome
 AGV_NODE,93036883,1,ChargingSignalLoss
@@ -1664,6 +1695,7 @@ AGV_NODE,91000004,1,NoCameraFrameFound
 AGV_NODE,92000024,1,VS_0 on.
 AGV_NODE,92000029,1,L_REQ off.
 AGV_NODE,92000028,1,GO off.
+AGV_NODE,98000001,1,RFIDSerialTimeOut
 AGV_NODE,92000039,1,VA on.
 AGV_NODE,92008300,1,VS_1 on.
 AGV_NODE,1,1,Agv already have a transfer command on middler get new transfer command.

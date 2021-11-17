@@ -148,8 +148,14 @@ namespace com.mirle.ibg3k0.sc.BLL
             try
             {
                 string device_type = eqID;
-                //if (!isDeviceTpye)
-                //    device_type = getAlarmDeviceType(eqID);
+                if (!isDeviceTpye)
+                {
+                    var vh = scApp.VehicleBLL.cache.getVehicle(eqID);
+                    if (vh != null)
+                    {
+                        device_type = vh.NODE_ID;
+                    }
+                }
                 var alarm_report_conds = scApp.getCommObjCacheManager().getAlarmReportConds();
                 if (alarm_report_conds == null) return true;
                 var alarm_report_cond = alarm_report_conds.Where(cond => SCUtility.isMatche(cond.EQPT_ID, device_type) &&
@@ -175,8 +181,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                                                         SCUtility.isMatche(cond.ALAM_CODE, alarmID))
                                                           .FirstOrDefault();
                 if (alarm_report_cond == null) return "";
-                //return alarm_report_cond.USER_ID;
-                return "";
+                return alarm_report_cond.USER_ID;
             }
             catch (Exception ex)
             {
@@ -194,8 +199,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                                                         SCUtility.isMatche(cond.ALAM_CODE, alarmID))
                                                           .FirstOrDefault();
                 if (alarm_report_cond == null) return "";
-                //return alarm_report_cond.REASON;
-                return "";
+                return alarm_report_cond.REASON;
             }
             catch (Exception ex)
             {
@@ -213,11 +217,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                                                                         SCUtility.isMatche(cond.ALAM_CODE, alarmID))
                                                           .FirstOrDefault();
                 if (alarm_report_cond == null) return "";
-                //var disable_dateTime = alarm_report_cond.DISABLE_TIME.HasValue ?
-                //                       alarm_report_cond.DISABLE_TIME.Value.ToString(SCAppConstants.DateTimeFormat_22) :
-                //                       "";
-                //return disable_dateTime;
-                return "";
+                var disable_dateTime = alarm_report_cond.DISABLE_TIME.HasValue ?
+                                       alarm_report_cond.DISABLE_TIME.Value.ToString(SCAppConstants.DateTimeFormat_22) :
+                                       "";
+                return disable_dateTime;
             }
             catch (Exception ex)
             {
@@ -225,6 +228,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return "";
             }
         }
+
         public List<AlarmMap> loadAlarmMaps()
         {
             List<AlarmMap> alarmMaps = alarmMapDao.loadAlarmMaps();
@@ -509,9 +513,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                     if (cond != null)
                     {
                         cond.ENABLE_FLG = enable_flag;
-                        //cond.USER_ID = userID;
-                        //cond.REASON = reason;
-                        //cond.DISABLE_TIME = disable_time;
+                        cond.USER_ID = userID;
+                        cond.REASON = reason;
+                        cond.DISABLE_TIME = disable_time;
                         alarmRptCondDao.updateRptCond(con, cond);
                     }
                     else
@@ -521,9 +525,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                             EQPT_ID = eqID,
                             ALAM_CODE = alarm_id,
                             ENABLE_FLG = enable_flag,
-                            //USER_ID = userID,
-                            //REASON = reason,
-                            //DISABLE_TIME = disable_time
+                            USER_ID = userID,
+                            REASON = reason,
+                            DISABLE_TIME = disable_time
                         };
                         alarmRptCondDao.insertRptCond(con, cond);
                     }

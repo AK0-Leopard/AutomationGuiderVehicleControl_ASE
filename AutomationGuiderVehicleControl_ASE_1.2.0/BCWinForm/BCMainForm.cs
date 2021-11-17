@@ -1153,5 +1153,10 @@ namespace com.mirle.ibg3k0.bc.winform
         {
             this.Close();
         }
+
+        private void alarmEnableDisableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openForm(typeof(AlarmEnableForm).Name, true, false);
+        }
     }
 }
