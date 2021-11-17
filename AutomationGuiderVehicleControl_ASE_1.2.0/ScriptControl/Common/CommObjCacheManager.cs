@@ -85,6 +85,7 @@ namespace com.mirle.ibg3k0.sc.Common
 
             ReserveEnhanceInfosSections = scApp.ReserveEnhanceInfoDao.getReserveEnhanceInfoSections(scApp);
             TrafficControlInfos = scApp.TrafficControlInfoDao.getTrafficControlInfos(scApp);
+            AlarmReportCond = scApp.AlarmBLL.loadAllAlarmRptCond();
 
             for (int i = 0; i < Addresses.Count; i++)
             {

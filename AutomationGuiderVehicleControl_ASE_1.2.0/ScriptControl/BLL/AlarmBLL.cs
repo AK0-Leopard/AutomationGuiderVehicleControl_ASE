@@ -167,7 +167,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception:");
-                return false;
+                return true;
             }
         }
 
