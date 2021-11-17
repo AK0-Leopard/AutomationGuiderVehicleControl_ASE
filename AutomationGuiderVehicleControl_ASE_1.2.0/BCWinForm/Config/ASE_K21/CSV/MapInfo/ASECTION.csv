@@ -281,6 +281,7 @@ Id,FromAddress,ToAddress,Speed,Type,PermitDirection
 38001,10158,10159,0,Horizontal,Forward
 38302,10240,10271,0,Horizontal,Forward
 38401,10157,10261,0,Horizontal,Forward
+38501,10177,10181,0,Horizontal,Forward
 90072,10072,90072,0,Vertical,Forward
 90073,10073,90073,0,Vertical,Forward
 90074,10074,90074,0,Vertical,Forward
