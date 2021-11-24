@@ -1755,3 +1755,5 @@ AGV_NODE,56,1,Agvc disconnect when sending command.
 AGV_NODE,57,1,Local disconnect when sending command.
 AGV_NODE,58,1,ChargeWhenMove.
 AGV_NODE,59,1,Manual.
+AGVC,10121,2,AGVC has trnasfer commmand in queue over time
+CHARGE_NODE,10201,2,Coupler position not safety

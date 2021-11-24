@@ -453,7 +453,8 @@ namespace com.mirle.ibg3k0.sc.Service
                     if (report_alarm == null) continue;
                     if (report_alarm.ALAM_LVL == E_ALARM_LVL.Warn) continue;
                     //需判斷Alarm是否存在如果有的話則需再判斷MCS是否有Disable該Alarm的上報
-                    if (scApp.AlarmBLL.IsReportToHost(report_alarm.ALAM_CODE))
+                    //if (scApp.AlarmBLL.IsReportToHost(report_alarm.ALAM_CODE))
+                    if (scApp.AlarmBLL.isReportAlarmReport2MCS(report_alarm.EQPT_ID, report_alarm.ALAM_CODE))
                     {
                         string alarm_code = report_alarm.ALAM_CODE;
                         List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
