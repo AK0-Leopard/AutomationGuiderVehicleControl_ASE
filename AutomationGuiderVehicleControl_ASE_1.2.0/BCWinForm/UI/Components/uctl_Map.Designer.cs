@@ -30,24 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnl_color_desc = new System.Windows.Forms.Panel();
-            this.cb_SecAdrMark = new System.Windows.Forms.CheckBox();
-            this.cb_railDirection = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.num_VhID = new System.Windows.Forms.NumericUpDown();
-            this.btn_entry = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txt_Adr = new System.Windows.Forms.TextBox();
-            this.txt_SegID = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cmb_selectSeg = new System.Windows.Forms.ComboBox();
-            this.lbl_maxScale = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.trackBar_scale = new System.Windows.Forms.TrackBar();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnl_Map = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lab_auto_remote_name = new System.Windows.Forms.Label();
@@ -62,6 +47,7 @@
             this.lbl_error_value = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label10 = new System.Windows.Forms.Label();
@@ -78,249 +64,102 @@
             this.lbl_transfer_count = new System.Windows.Forms.Label();
             this.lbl_cst_wating_count = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.pnl_color_desc = new System.Windows.Forms.Panel();
+            this.tlp_Through_Times = new System.Windows.Forms.TableLayoutPanel();
+            this.lbl_Through_Times_Lv1 = new System.Windows.Forms.Label();
+            this.lbl_Through_Times_Lv2 = new System.Windows.Forms.Label();
+            this.lbl_Through_Times_Lv3 = new System.Windows.Forms.Label();
+            this.lbl_Through_Times_Lv4 = new System.Windows.Forms.Label();
+            this.lbl_Through_Times_Lv5 = new System.Windows.Forms.Label();
+            this.lbl_Through_Times_Lv6 = new System.Windows.Forms.Label();
+            this.lbl_Through_Times_Lv7 = new System.Windows.Forms.Label();
+            this.lbl_Through_Times_Lv8 = new System.Windows.Forms.Label();
+            this.lbl_Through_Times_Lv9 = new System.Windows.Forms.Label();
+            this.lbl_Through_Times_Lv10 = new System.Windows.Forms.Label();
+            this.cb_SecAdrMark = new System.Windows.Forms.CheckBox();
+            this.cb_railDirection = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.num_VhID = new System.Windows.Forms.NumericUpDown();
+            this.btn_entry = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txt_Adr = new System.Windows.Forms.TextBox();
+            this.txt_SegID = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmb_selectSeg = new System.Windows.Forms.ComboBox();
+            this.lbl_maxScale = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.trackBar_scale = new System.Windows.Forms.TrackBar();
             this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.tlp_Through_Times = new System.Windows.Forms.TableLayoutPanel();
-            this.lbl_Through_Times_Lv10 = new System.Windows.Forms.Label();
-            this.lbl_Through_Times_Lv9 = new System.Windows.Forms.Label();
-            this.lbl_Through_Times_Lv8 = new System.Windows.Forms.Label();
-            this.lbl_Through_Times_Lv7 = new System.Windows.Forms.Label();
-            this.lbl_Through_Times_Lv6 = new System.Windows.Forms.Label();
-            this.lbl_Through_Times_Lv5 = new System.Windows.Forms.Label();
-            this.lbl_Through_Times_Lv4 = new System.Windows.Forms.Label();
-            this.lbl_Through_Times_Lv3 = new System.Windows.Forms.Label();
-            this.lbl_Through_Times_Lv2 = new System.Windows.Forms.Label();
-            this.lbl_Through_Times_Lv1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
-            this.pnl_color_desc.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_VhID)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
             this.panel1.SuspendLayout();
             this.pnl_Map.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.pnl_color_desc.SuspendLayout();
             this.tlp_Through_Times.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_VhID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.AutoScroll = true;
-            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Controls.Add(this.pnl_color_desc, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1872, 862);
             this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // pnl_color_desc
-            // 
-            this.pnl_color_desc.Controls.Add(this.tlp_Through_Times);
-            this.pnl_color_desc.Controls.Add(this.cb_SecAdrMark);
-            this.pnl_color_desc.Controls.Add(this.cb_railDirection);
-            this.pnl_color_desc.Controls.Add(this.groupBox1);
-            this.pnl_color_desc.Controls.Add(this.label3);
-            this.pnl_color_desc.Controls.Add(this.cmb_selectSeg);
-            this.pnl_color_desc.Controls.Add(this.lbl_maxScale);
-            this.pnl_color_desc.Controls.Add(this.label1);
-            this.pnl_color_desc.Controls.Add(this.trackBar_scale);
-            this.pnl_color_desc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_color_desc.Location = new System.Drawing.Point(3, 789);
-            this.pnl_color_desc.Name = "pnl_color_desc";
-            this.pnl_color_desc.Size = new System.Drawing.Size(1846, 70);
-            this.pnl_color_desc.TabIndex = 1;
-            // 
-            // cb_SecAdrMark
-            // 
-            this.cb_SecAdrMark.AutoSize = true;
-            this.cb_SecAdrMark.ForeColor = System.Drawing.Color.Transparent;
-            this.cb_SecAdrMark.Location = new System.Drawing.Point(1258, 37);
-            this.cb_SecAdrMark.Name = "cb_SecAdrMark";
-            this.cb_SecAdrMark.Size = new System.Drawing.Size(145, 23);
-            this.cb_SecAdrMark.TabIndex = 94;
-            this.cb_SecAdrMark.Text = "Sec、Adr Mark";
-            this.cb_SecAdrMark.UseVisualStyleBackColor = true;
-            this.cb_SecAdrMark.CheckedChanged += new System.EventHandler(this.cb_SecAdrMark_CheckedChanged);
-            // 
-            // cb_railDirection
-            // 
-            this.cb_railDirection.AutoSize = true;
-            this.cb_railDirection.ForeColor = System.Drawing.Color.Transparent;
-            this.cb_railDirection.Location = new System.Drawing.Point(975, 40);
-            this.cb_railDirection.Name = "cb_railDirection";
-            this.cb_railDirection.Size = new System.Drawing.Size(154, 23);
-            this.cb_railDirection.TabIndex = 94;
-            this.cb_railDirection.Text = "Rail Direction";
-            this.cb_railDirection.UseVisualStyleBackColor = true;
-            this.cb_railDirection.CheckedChanged += new System.EventHandler(this.cb_railDirection_CheckedChanged);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.BackColor = System.Drawing.Color.Black;
-            this.groupBox1.Controls.Add(this.num_VhID);
-            this.groupBox1.Controls.Add(this.btn_entry);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.txt_Adr);
-            this.groupBox1.Controls.Add(this.txt_SegID);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(1409, 19);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(548, 85);
-            this.groupBox1.TabIndex = 93;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Vehicle Test";
-            this.groupBox1.Visible = false;
-            // 
-            // num_VhID
-            // 
-            this.num_VhID.Location = new System.Drawing.Point(34, 44);
-            this.num_VhID.Name = "num_VhID";
-            this.num_VhID.Size = new System.Drawing.Size(120, 26);
-            this.num_VhID.TabIndex = 4;
-            // 
-            // btn_entry
-            // 
-            this.btn_entry.ForeColor = System.Drawing.Color.Black;
-            this.btn_entry.Location = new System.Drawing.Point(458, 40);
-            this.btn_entry.Name = "btn_entry";
-            this.btn_entry.Size = new System.Drawing.Size(83, 31);
-            this.btn_entry.TabIndex = 3;
-            this.btn_entry.Text = "Entry";
-            this.btn_entry.UseVisualStyleBackColor = true;
-            this.btn_entry.Click += new System.EventHandler(this.btn_entry_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.Transparent;
-            this.label5.Location = new System.Drawing.Point(30, 22);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(54, 19);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Vh ID";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.Transparent;
-            this.label6.Location = new System.Drawing.Point(184, 22);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(99, 19);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Segment ID";
-            // 
-            // txt_Adr
-            // 
-            this.txt_Adr.Location = new System.Drawing.Point(326, 43);
-            this.txt_Adr.Name = "txt_Adr";
-            this.txt_Adr.Size = new System.Drawing.Size(114, 26);
-            this.txt_Adr.TabIndex = 2;
-            // 
-            // txt_SegID
-            // 
-            this.txt_SegID.Location = new System.Drawing.Point(188, 43);
-            this.txt_SegID.Name = "txt_SegID";
-            this.txt_SegID.Size = new System.Drawing.Size(114, 26);
-            this.txt_SegID.TabIndex = 2;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.Transparent;
-            this.label4.Location = new System.Drawing.Point(322, 22);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(99, 19);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "Address ID";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Transparent;
-            this.label3.Location = new System.Drawing.Point(971, -13);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(135, 19);
-            this.label3.TabIndex = 92;
-            this.label3.Text = "Select Segment";
-            this.label3.Visible = false;
-            // 
-            // cmb_selectSeg
-            // 
-            this.cmb_selectSeg.FormattingEnabled = true;
-            this.cmb_selectSeg.Location = new System.Drawing.Point(975, 9);
-            this.cmb_selectSeg.Name = "cmb_selectSeg";
-            this.cmb_selectSeg.Size = new System.Drawing.Size(121, 27);
-            this.cmb_selectSeg.TabIndex = 91;
-            this.cmb_selectSeg.Visible = false;
-            this.cmb_selectSeg.SelectedIndexChanged += new System.EventHandler(this.cmb_selectSeg_SelectedIndexChanged);
-            // 
-            // lbl_maxScale
-            // 
-            this.lbl_maxScale.AutoSize = true;
-            this.lbl_maxScale.ForeColor = System.Drawing.Color.Transparent;
-            this.lbl_maxScale.Location = new System.Drawing.Point(936, 0);
-            this.lbl_maxScale.Name = "lbl_maxScale";
-            this.lbl_maxScale.Size = new System.Drawing.Size(27, 19);
-            this.lbl_maxScale.TabIndex = 90;
-            this.lbl_maxScale.Text = "10";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(709, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(18, 19);
-            this.label1.TabIndex = 89;
-            this.label1.Text = "0";
-            // 
-            // trackBar_scale
-            // 
-            this.trackBar_scale.LargeChange = 1;
-            this.trackBar_scale.Location = new System.Drawing.Point(703, 20);
-            this.trackBar_scale.Maximum = 5;
-            this.trackBar_scale.Minimum = 1;
-            this.trackBar_scale.Name = "trackBar_scale";
-            this.trackBar_scale.Size = new System.Drawing.Size(260, 45);
-            this.trackBar_scale.TabIndex = 88;
-            this.trackBar_scale.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.trackBar_scale.Value = 5;
-            this.trackBar_scale.Scroll += new System.EventHandler(this.trackBar_scale_Scroll);
             // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.pnl_Map);
+            this.panel1.Controls.Add(this.pnl_color_desc);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1846, 780);
+            this.panel1.Size = new System.Drawing.Size(1866, 856);
             this.panel1.TabIndex = 2;
             // 
             // pnl_Map
             // 
             this.pnl_Map.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_Map.Controls.Add(this.pictureBox3);
             this.pnl_Map.Controls.Add(this.groupBox4);
+            this.pnl_Map.Controls.Add(this.pictureBox2);
             this.pnl_Map.Controls.Add(this.groupBox3);
             this.pnl_Map.Controls.Add(this.groupBox2);
             this.pnl_Map.Location = new System.Drawing.Point(1, 0);
             this.pnl_Map.Name = "pnl_Map";
-            this.pnl_Map.Size = new System.Drawing.Size(1208, 631);
+            this.pnl_Map.Size = new System.Drawing.Size(1287, 853);
             this.pnl_Map.TabIndex = 0;
             this.pnl_Map.DoubleClick += new System.EventHandler(this.pnl_Map_DoubleClick);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::com.mirle.ibg3k0.bc.winform.Properties.Resources.Vehicle_Pause_Status;
+            this.pictureBox3.Location = new System.Drawing.Point(9, 163);
+            this.pictureBox3.Margin = new System.Windows.Forms.Padding(50, 3, 3, 3);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(212, 68);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 6;
+            this.pictureBox3.TabStop = false;
             // 
             // groupBox4
             // 
@@ -535,6 +374,16 @@
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(5, 20);
             this.panel9.TabIndex = 3;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::com.mirle.ibg3k0.bc.winform.Properties.Resources.VehicleMode;
+            this.pictureBox2.Location = new System.Drawing.Point(9, 49);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(363, 84);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 5;
+            this.pictureBox2.TabStop = false;
             // 
             // groupBox3
             // 
@@ -778,14 +627,22 @@
             this.panel3.Size = new System.Drawing.Size(5, 19);
             this.panel3.TabIndex = 3;
             // 
-            // tmrRefresh
+            // pnl_color_desc
             // 
-            this.tmrRefresh.Interval = 300;
-            this.tmrRefresh.Tick += new System.EventHandler(this.tmrRefresh_Tick);
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
+            this.pnl_color_desc.Controls.Add(this.tlp_Through_Times);
+            this.pnl_color_desc.Controls.Add(this.cb_SecAdrMark);
+            this.pnl_color_desc.Controls.Add(this.cb_railDirection);
+            this.pnl_color_desc.Controls.Add(this.groupBox1);
+            this.pnl_color_desc.Controls.Add(this.label3);
+            this.pnl_color_desc.Controls.Add(this.cmb_selectSeg);
+            this.pnl_color_desc.Controls.Add(this.lbl_maxScale);
+            this.pnl_color_desc.Controls.Add(this.label1);
+            this.pnl_color_desc.Controls.Add(this.trackBar_scale);
+            this.pnl_color_desc.Location = new System.Drawing.Point(5, 766);
+            this.pnl_color_desc.Name = "pnl_color_desc";
+            this.pnl_color_desc.Size = new System.Drawing.Size(1846, 70);
+            this.pnl_color_desc.TabIndex = 1;
+            this.pnl_color_desc.Visible = false;
             // 
             // tlp_Through_Times
             // 
@@ -820,101 +677,17 @@
             this.tlp_Through_Times.TabIndex = 95;
             this.tlp_Through_Times.Visible = false;
             // 
-            // lbl_Through_Times_Lv10
+            // lbl_Through_Times_Lv1
             // 
-            this.lbl_Through_Times_Lv10.AutoSize = true;
-            this.lbl_Through_Times_Lv10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_Through_Times_Lv10.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Through_Times_Lv10.Location = new System.Drawing.Point(632, 0);
-            this.lbl_Through_Times_Lv10.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.lbl_Through_Times_Lv10.Name = "lbl_Through_Times_Lv10";
-            this.lbl_Through_Times_Lv10.Size = new System.Drawing.Size(71, 62);
-            this.lbl_Through_Times_Lv10.TabIndex = 0;
-            this.lbl_Through_Times_Lv10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbl_Through_Times_Lv9
-            // 
-            this.lbl_Through_Times_Lv9.AutoSize = true;
-            this.lbl_Through_Times_Lv9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_Through_Times_Lv9.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Through_Times_Lv9.Location = new System.Drawing.Point(562, 0);
-            this.lbl_Through_Times_Lv9.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.lbl_Through_Times_Lv9.Name = "lbl_Through_Times_Lv9";
-            this.lbl_Through_Times_Lv9.Size = new System.Drawing.Size(68, 62);
-            this.lbl_Through_Times_Lv9.TabIndex = 0;
-            this.lbl_Through_Times_Lv9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbl_Through_Times_Lv8
-            // 
-            this.lbl_Through_Times_Lv8.AutoSize = true;
-            this.lbl_Through_Times_Lv8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_Through_Times_Lv8.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Through_Times_Lv8.Location = new System.Drawing.Point(492, 0);
-            this.lbl_Through_Times_Lv8.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.lbl_Through_Times_Lv8.Name = "lbl_Through_Times_Lv8";
-            this.lbl_Through_Times_Lv8.Size = new System.Drawing.Size(68, 62);
-            this.lbl_Through_Times_Lv8.TabIndex = 0;
-            this.lbl_Through_Times_Lv8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbl_Through_Times_Lv7
-            // 
-            this.lbl_Through_Times_Lv7.AutoSize = true;
-            this.lbl_Through_Times_Lv7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_Through_Times_Lv7.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Through_Times_Lv7.Location = new System.Drawing.Point(422, 0);
-            this.lbl_Through_Times_Lv7.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.lbl_Through_Times_Lv7.Name = "lbl_Through_Times_Lv7";
-            this.lbl_Through_Times_Lv7.Size = new System.Drawing.Size(68, 62);
-            this.lbl_Through_Times_Lv7.TabIndex = 0;
-            this.lbl_Through_Times_Lv7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbl_Through_Times_Lv6
-            // 
-            this.lbl_Through_Times_Lv6.AutoSize = true;
-            this.lbl_Through_Times_Lv6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_Through_Times_Lv6.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Through_Times_Lv6.Location = new System.Drawing.Point(352, 0);
-            this.lbl_Through_Times_Lv6.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.lbl_Through_Times_Lv6.Name = "lbl_Through_Times_Lv6";
-            this.lbl_Through_Times_Lv6.Size = new System.Drawing.Size(68, 62);
-            this.lbl_Through_Times_Lv6.TabIndex = 0;
-            this.lbl_Through_Times_Lv6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbl_Through_Times_Lv5
-            // 
-            this.lbl_Through_Times_Lv5.AutoSize = true;
-            this.lbl_Through_Times_Lv5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_Through_Times_Lv5.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Through_Times_Lv5.Location = new System.Drawing.Point(282, 0);
-            this.lbl_Through_Times_Lv5.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.lbl_Through_Times_Lv5.Name = "lbl_Through_Times_Lv5";
-            this.lbl_Through_Times_Lv5.Size = new System.Drawing.Size(68, 62);
-            this.lbl_Through_Times_Lv5.TabIndex = 0;
-            this.lbl_Through_Times_Lv5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbl_Through_Times_Lv4
-            // 
-            this.lbl_Through_Times_Lv4.AutoSize = true;
-            this.lbl_Through_Times_Lv4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_Through_Times_Lv4.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Through_Times_Lv4.Location = new System.Drawing.Point(212, 0);
-            this.lbl_Through_Times_Lv4.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.lbl_Through_Times_Lv4.Name = "lbl_Through_Times_Lv4";
-            this.lbl_Through_Times_Lv4.Size = new System.Drawing.Size(68, 62);
-            this.lbl_Through_Times_Lv4.TabIndex = 0;
-            this.lbl_Through_Times_Lv4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbl_Through_Times_Lv3
-            // 
-            this.lbl_Through_Times_Lv3.AutoSize = true;
-            this.lbl_Through_Times_Lv3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_Through_Times_Lv3.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Through_Times_Lv3.Location = new System.Drawing.Point(142, 0);
-            this.lbl_Through_Times_Lv3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.lbl_Through_Times_Lv3.Name = "lbl_Through_Times_Lv3";
-            this.lbl_Through_Times_Lv3.Size = new System.Drawing.Size(68, 62);
-            this.lbl_Through_Times_Lv3.TabIndex = 0;
-            this.lbl_Through_Times_Lv3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_Through_Times_Lv1.AutoSize = true;
+            this.lbl_Through_Times_Lv1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_Through_Times_Lv1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Through_Times_Lv1.Location = new System.Drawing.Point(2, 0);
+            this.lbl_Through_Times_Lv1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.lbl_Through_Times_Lv1.Name = "lbl_Through_Times_Lv1";
+            this.lbl_Through_Times_Lv1.Size = new System.Drawing.Size(68, 62);
+            this.lbl_Through_Times_Lv1.TabIndex = 0;
+            this.lbl_Through_Times_Lv1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbl_Through_Times_Lv2
             // 
@@ -928,17 +701,269 @@
             this.lbl_Through_Times_Lv2.TabIndex = 0;
             this.lbl_Through_Times_Lv2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lbl_Through_Times_Lv1
+            // lbl_Through_Times_Lv3
             // 
-            this.lbl_Through_Times_Lv1.AutoSize = true;
-            this.lbl_Through_Times_Lv1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_Through_Times_Lv1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Through_Times_Lv1.Location = new System.Drawing.Point(2, 0);
-            this.lbl_Through_Times_Lv1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.lbl_Through_Times_Lv1.Name = "lbl_Through_Times_Lv1";
-            this.lbl_Through_Times_Lv1.Size = new System.Drawing.Size(68, 62);
-            this.lbl_Through_Times_Lv1.TabIndex = 0;
-            this.lbl_Through_Times_Lv1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_Through_Times_Lv3.AutoSize = true;
+            this.lbl_Through_Times_Lv3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_Through_Times_Lv3.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Through_Times_Lv3.Location = new System.Drawing.Point(142, 0);
+            this.lbl_Through_Times_Lv3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.lbl_Through_Times_Lv3.Name = "lbl_Through_Times_Lv3";
+            this.lbl_Through_Times_Lv3.Size = new System.Drawing.Size(68, 62);
+            this.lbl_Through_Times_Lv3.TabIndex = 0;
+            this.lbl_Through_Times_Lv3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_Through_Times_Lv4
+            // 
+            this.lbl_Through_Times_Lv4.AutoSize = true;
+            this.lbl_Through_Times_Lv4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_Through_Times_Lv4.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Through_Times_Lv4.Location = new System.Drawing.Point(212, 0);
+            this.lbl_Through_Times_Lv4.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.lbl_Through_Times_Lv4.Name = "lbl_Through_Times_Lv4";
+            this.lbl_Through_Times_Lv4.Size = new System.Drawing.Size(68, 62);
+            this.lbl_Through_Times_Lv4.TabIndex = 0;
+            this.lbl_Through_Times_Lv4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_Through_Times_Lv5
+            // 
+            this.lbl_Through_Times_Lv5.AutoSize = true;
+            this.lbl_Through_Times_Lv5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_Through_Times_Lv5.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Through_Times_Lv5.Location = new System.Drawing.Point(282, 0);
+            this.lbl_Through_Times_Lv5.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.lbl_Through_Times_Lv5.Name = "lbl_Through_Times_Lv5";
+            this.lbl_Through_Times_Lv5.Size = new System.Drawing.Size(68, 62);
+            this.lbl_Through_Times_Lv5.TabIndex = 0;
+            this.lbl_Through_Times_Lv5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_Through_Times_Lv6
+            // 
+            this.lbl_Through_Times_Lv6.AutoSize = true;
+            this.lbl_Through_Times_Lv6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_Through_Times_Lv6.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Through_Times_Lv6.Location = new System.Drawing.Point(352, 0);
+            this.lbl_Through_Times_Lv6.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.lbl_Through_Times_Lv6.Name = "lbl_Through_Times_Lv6";
+            this.lbl_Through_Times_Lv6.Size = new System.Drawing.Size(68, 62);
+            this.lbl_Through_Times_Lv6.TabIndex = 0;
+            this.lbl_Through_Times_Lv6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_Through_Times_Lv7
+            // 
+            this.lbl_Through_Times_Lv7.AutoSize = true;
+            this.lbl_Through_Times_Lv7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_Through_Times_Lv7.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Through_Times_Lv7.Location = new System.Drawing.Point(422, 0);
+            this.lbl_Through_Times_Lv7.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.lbl_Through_Times_Lv7.Name = "lbl_Through_Times_Lv7";
+            this.lbl_Through_Times_Lv7.Size = new System.Drawing.Size(68, 62);
+            this.lbl_Through_Times_Lv7.TabIndex = 0;
+            this.lbl_Through_Times_Lv7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_Through_Times_Lv8
+            // 
+            this.lbl_Through_Times_Lv8.AutoSize = true;
+            this.lbl_Through_Times_Lv8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_Through_Times_Lv8.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Through_Times_Lv8.Location = new System.Drawing.Point(492, 0);
+            this.lbl_Through_Times_Lv8.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.lbl_Through_Times_Lv8.Name = "lbl_Through_Times_Lv8";
+            this.lbl_Through_Times_Lv8.Size = new System.Drawing.Size(68, 62);
+            this.lbl_Through_Times_Lv8.TabIndex = 0;
+            this.lbl_Through_Times_Lv8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_Through_Times_Lv9
+            // 
+            this.lbl_Through_Times_Lv9.AutoSize = true;
+            this.lbl_Through_Times_Lv9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_Through_Times_Lv9.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Through_Times_Lv9.Location = new System.Drawing.Point(562, 0);
+            this.lbl_Through_Times_Lv9.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.lbl_Through_Times_Lv9.Name = "lbl_Through_Times_Lv9";
+            this.lbl_Through_Times_Lv9.Size = new System.Drawing.Size(68, 62);
+            this.lbl_Through_Times_Lv9.TabIndex = 0;
+            this.lbl_Through_Times_Lv9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_Through_Times_Lv10
+            // 
+            this.lbl_Through_Times_Lv10.AutoSize = true;
+            this.lbl_Through_Times_Lv10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_Through_Times_Lv10.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Through_Times_Lv10.Location = new System.Drawing.Point(632, 0);
+            this.lbl_Through_Times_Lv10.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.lbl_Through_Times_Lv10.Name = "lbl_Through_Times_Lv10";
+            this.lbl_Through_Times_Lv10.Size = new System.Drawing.Size(71, 62);
+            this.lbl_Through_Times_Lv10.TabIndex = 0;
+            this.lbl_Through_Times_Lv10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cb_SecAdrMark
+            // 
+            this.cb_SecAdrMark.AutoSize = true;
+            this.cb_SecAdrMark.ForeColor = System.Drawing.Color.Transparent;
+            this.cb_SecAdrMark.Location = new System.Drawing.Point(1258, 37);
+            this.cb_SecAdrMark.Name = "cb_SecAdrMark";
+            this.cb_SecAdrMark.Size = new System.Drawing.Size(145, 23);
+            this.cb_SecAdrMark.TabIndex = 94;
+            this.cb_SecAdrMark.Text = "Sec、Adr Mark";
+            this.cb_SecAdrMark.UseVisualStyleBackColor = true;
+            this.cb_SecAdrMark.CheckedChanged += new System.EventHandler(this.cb_SecAdrMark_CheckedChanged);
+            // 
+            // cb_railDirection
+            // 
+            this.cb_railDirection.AutoSize = true;
+            this.cb_railDirection.ForeColor = System.Drawing.Color.Transparent;
+            this.cb_railDirection.Location = new System.Drawing.Point(975, 40);
+            this.cb_railDirection.Name = "cb_railDirection";
+            this.cb_railDirection.Size = new System.Drawing.Size(154, 23);
+            this.cb_railDirection.TabIndex = 94;
+            this.cb_railDirection.Text = "Rail Direction";
+            this.cb_railDirection.UseVisualStyleBackColor = true;
+            this.cb_railDirection.CheckedChanged += new System.EventHandler(this.cb_railDirection_CheckedChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.Black;
+            this.groupBox1.Controls.Add(this.num_VhID);
+            this.groupBox1.Controls.Add(this.btn_entry);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.txt_Adr);
+            this.groupBox1.Controls.Add(this.txt_SegID);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
+            this.groupBox1.Location = new System.Drawing.Point(1409, 19);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(548, 85);
+            this.groupBox1.TabIndex = 93;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Vehicle Test";
+            this.groupBox1.Visible = false;
+            // 
+            // num_VhID
+            // 
+            this.num_VhID.Location = new System.Drawing.Point(34, 44);
+            this.num_VhID.Name = "num_VhID";
+            this.num_VhID.Size = new System.Drawing.Size(120, 26);
+            this.num_VhID.TabIndex = 4;
+            // 
+            // btn_entry
+            // 
+            this.btn_entry.ForeColor = System.Drawing.Color.Black;
+            this.btn_entry.Location = new System.Drawing.Point(458, 40);
+            this.btn_entry.Name = "btn_entry";
+            this.btn_entry.Size = new System.Drawing.Size(83, 31);
+            this.btn_entry.TabIndex = 3;
+            this.btn_entry.Text = "Entry";
+            this.btn_entry.UseVisualStyleBackColor = true;
+            this.btn_entry.Click += new System.EventHandler(this.btn_entry_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Transparent;
+            this.label5.Location = new System.Drawing.Point(30, 22);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(54, 19);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Vh ID";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.Transparent;
+            this.label6.Location = new System.Drawing.Point(184, 22);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(99, 19);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "Segment ID";
+            // 
+            // txt_Adr
+            // 
+            this.txt_Adr.Location = new System.Drawing.Point(326, 43);
+            this.txt_Adr.Name = "txt_Adr";
+            this.txt_Adr.Size = new System.Drawing.Size(114, 26);
+            this.txt_Adr.TabIndex = 2;
+            // 
+            // txt_SegID
+            // 
+            this.txt_SegID.Location = new System.Drawing.Point(188, 43);
+            this.txt_SegID.Name = "txt_SegID";
+            this.txt_SegID.Size = new System.Drawing.Size(114, 26);
+            this.txt_SegID.TabIndex = 2;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.Transparent;
+            this.label4.Location = new System.Drawing.Point(322, 22);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(99, 19);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Address ID";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Transparent;
+            this.label3.Location = new System.Drawing.Point(971, -13);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(135, 19);
+            this.label3.TabIndex = 92;
+            this.label3.Text = "Select Segment";
+            this.label3.Visible = false;
+            // 
+            // cmb_selectSeg
+            // 
+            this.cmb_selectSeg.FormattingEnabled = true;
+            this.cmb_selectSeg.Location = new System.Drawing.Point(975, 9);
+            this.cmb_selectSeg.Name = "cmb_selectSeg";
+            this.cmb_selectSeg.Size = new System.Drawing.Size(121, 27);
+            this.cmb_selectSeg.TabIndex = 91;
+            this.cmb_selectSeg.Visible = false;
+            this.cmb_selectSeg.SelectedIndexChanged += new System.EventHandler(this.cmb_selectSeg_SelectedIndexChanged);
+            // 
+            // lbl_maxScale
+            // 
+            this.lbl_maxScale.AutoSize = true;
+            this.lbl_maxScale.ForeColor = System.Drawing.Color.Transparent;
+            this.lbl_maxScale.Location = new System.Drawing.Point(936, 0);
+            this.lbl_maxScale.Name = "lbl_maxScale";
+            this.lbl_maxScale.Size = new System.Drawing.Size(27, 19);
+            this.lbl_maxScale.TabIndex = 90;
+            this.lbl_maxScale.Text = "10";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Transparent;
+            this.label1.Location = new System.Drawing.Point(709, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(18, 19);
+            this.label1.TabIndex = 89;
+            this.label1.Text = "0";
+            // 
+            // trackBar_scale
+            // 
+            this.trackBar_scale.LargeChange = 1;
+            this.trackBar_scale.Location = new System.Drawing.Point(703, 20);
+            this.trackBar_scale.Maximum = 5;
+            this.trackBar_scale.Minimum = 1;
+            this.trackBar_scale.Name = "trackBar_scale";
+            this.trackBar_scale.Size = new System.Drawing.Size(260, 45);
+            this.trackBar_scale.TabIndex = 88;
+            this.trackBar_scale.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
+            this.trackBar_scale.Value = 5;
+            this.trackBar_scale.Scroll += new System.EventHandler(this.trackBar_scale_Scroll);
+            // 
+            // tmrRefresh
+            // 
+            this.tmrRefresh.Interval = 300;
+            this.tmrRefresh.Tick += new System.EventHandler(this.tmrRefresh_Tick);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
             // 
             // uctl_Map
             // 
@@ -954,25 +979,27 @@
             this.Size = new System.Drawing.Size(1872, 862);
             this.Load += new System.EventHandler(this.uctl_Map_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.pnl_color_desc.ResumeLayout(false);
-            this.pnl_color_desc.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_VhID)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).EndInit();
             this.panel1.ResumeLayout(false);
             this.pnl_Map.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.pnl_color_desc.ResumeLayout(false);
+            this.pnl_color_desc.PerformLayout();
             this.tlp_Through_Times.ResumeLayout(false);
             this.tlp_Through_Times.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_VhID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1041,5 +1068,7 @@
         private System.Windows.Forms.Label lbl_Through_Times_Lv8;
         private System.Windows.Forms.Label lbl_Through_Times_Lv9;
         private System.Windows.Forms.Label lbl_Through_Times_Lv10;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox3;
     }
 }
