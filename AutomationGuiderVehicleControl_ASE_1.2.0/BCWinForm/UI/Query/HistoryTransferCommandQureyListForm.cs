@@ -28,9 +28,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void updateTransferCommand()
         {
-            cmdMCSList = mainform.BCApp.SCApplication.CMDBLL.loadHCMD_MCSs();
-            cmsMCS_bindingSource.DataSource = cmdMCSList;
-            dgv_TransferCommand.Refresh();
+            //cmdMCSList = mainform.BCApp.SCApplication.CMDBLL.loadHCMD_MCSs();
+            //cmsMCS_bindingSource.DataSource = cmdMCSList;
+            //dgv_TransferCommand.Refresh();
         }
 
         private void btn_refresh_Click(object sender, EventArgs e)

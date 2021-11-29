@@ -535,6 +535,9 @@
     <Compile Include="HTRANSFER.cs">
       <DependentUpon>OHTCContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="HVTRANSFER.cs">
+      <DependentUpon>OHTCContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Module\AvoidVehicleModule.cs" />
     <Compile Include="BLL\GuideBLL.cs" />
     <Compile Include="BLL\HIDBLL.cs" />

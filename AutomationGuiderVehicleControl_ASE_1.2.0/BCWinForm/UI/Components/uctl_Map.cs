@@ -415,7 +415,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
                     pic_CstIcon_l.Image = Resources.Action__Cassette_;
 
                     m_objItemNewVhcl[ii] = new uctlNewVehicle(lstEq[ii], this, pic_AlarmStatus, pic_CstIcon_r, pic_CstIcon_l);
-                    int num = ii + 1;
+
+                    int num = getVhNum(lstEq[ii]);
+                    //int num = ii + 1;
                     m_objItemNewVhcl[ii].Num = num;
                     m_objItemNewVhcl[ii].PrcSetLocation((uctlNewVehicle.UNKNOW_DEFAULT_X_LOCATION_VALUE * num) + 2, uctlNewVehicle.UNKNOW_DEFAULT_Y_LOCATION_VALUE);
                     //m_objItemNewVhcl[ii].p_SizeW = m_objItemVhcl[ii].Width;
@@ -442,6 +444,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
             }
 
             return (bRet);
+        }
+
+        private int getVhNum(AVEHICLE aVEHICLE)
+        {
+            string vh_id = aVEHICLE.VEHICLE_ID;
+            string s_num = vh_id.Substring(vh_id.Length - 2, 2);//取出最後兩碼的編號
+            int.TryParse(s_num, out int num);
+            return num;
         }
 
         private void adjustTheLayerOrder()

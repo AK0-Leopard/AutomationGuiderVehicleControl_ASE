@@ -18,21 +18,31 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
 
         public List<ObjectRelay.HCMD_MCSObjToShow> loadLast24Hours(DBConnection_EF con)
         {
-            DateTime query_time = DateTime.Now.AddHours(-24);
-            var query = from cmd in con.HTRANSFER
-                        where cmd.CMD_INSER_TIME > query_time
-                        orderby cmd.CMD_INSER_TIME descending
-                        select new ObjectRelay.HCMD_MCSObjToShow() { cmd_mcs = cmd };
-            return query.ToList();
+            return new List<ObjectRelay.HCMD_MCSObjToShow>();
+            //DateTime query_time = DateTime.Now.AddHours(-24);
+            //var query = from cmd in con.HTRANSFER
+            //            where cmd.CMD_INSER_TIME > query_time
+            //            orderby cmd.CMD_INSER_TIME descending
+            //            select new ObjectRelay.HCMD_MCSObjToShow() { hvTran = cmd };
+            //return query.ToList();
         }
-        public List<HTRANSFER> loadByInsertTimeEndTime(DBConnection_EF con, DateTime insertTime, DateTime finishTime)
+        public List<HVTRANSFER> loadByInsertTimeEndTime(DBConnection_EF con, DateTime startTime, DateTime endTime)
         {
-            var query = from cmd in con.HTRANSFER
-                        where cmd.CMD_START_TIME > insertTime && (cmd.CMD_FINISH_TIME != null && cmd.CMD_FINISH_TIME < finishTime)
+            var query = from cmd in con.HVTRANSFER
+                        where cmd.CMD_INSER_TIME >= startTime && cmd.CMD_INSER_TIME <= endTime
                         orderby cmd.CMD_START_TIME descending
                         select cmd;
             return query.ToList();
         }
+        public int getByInsertTimeEndTimeCount(DBConnection_EF con, DateTime startTime, DateTime endTime)
+        {
+            var query = from cmd in con.HVTRANSFER
+                        where cmd.CMD_INSER_TIME >= startTime && cmd.CMD_INSER_TIME <= endTime
+                        select cmd;
+            return query.Count();
+        }
+
+
 
     }
 

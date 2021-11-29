@@ -2292,6 +2292,24 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return hcmds;
         }
+        public List<HVTRANSFER> loadByInsertTimeEndTime(DateTime startTime, DateTime endTime)
+        {
+            List<HVTRANSFER> hcmds = null;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                hcmds = hTransferDao.loadByInsertTimeEndTime(con, startTime, endTime);
+            }
+            return hcmds;
+        }
+        public int getByInsertTimeEndTimeCount(DateTime startTime, DateTime endTime)
+        {
+            int count = 0;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                count = hTransferDao.getByInsertTimeEndTimeCount(con, startTime, endTime);
+            }
+            return count;
+        }
         #endregion HCMD_MCS
 
         #region HCMD

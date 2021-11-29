@@ -483,6 +483,12 @@
     <Compile Include="UI\Query\HistoryAlarmsForm.Designer.cs">
       <DependentUpon>HistoryAlarmsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Query\HistoryTransferCommand.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Query\HistoryTransferCommand.Designer.cs">
+      <DependentUpon>HistoryTransferCommand.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Query\TransferCommandQureyListForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -921,7 +927,9 @@
     <None Include="Properties\DataSources\com.mirle.ibg3k0.sc.ObjectRelay.ALARMObjToShow.datasource" />
     <None Include="Properties\DataSources\com.mirle.ibg3k0.sc.ObjectRelay.CMDObjToShow.datasource" />
     <None Include="Properties\DataSources\com.mirle.ibg3k0.sc.ObjectRelay.CMD_MCSObjToShow.datasource" />
+    <None Include="Properties\DataSources\com.mirle.ibg3k0.sc.ObjectRelay.HCMD_MCSObjToShow.datasource" />
     <None Include="Properties\DataSources\com.mirle.ibg3k0.sc.ObjectRelay.SectionObjToShow.datasource" />
+    <None Include="Properties\DataSources\com.mirle.ibg3k0.sc.ObjectRelay.TRANSFERObjToShow.datasource" />
     <None Include="Properties\DataSources\com.mirle.ibg3k0.sc.ObjectRelay.VehicleObjToShow.datasource" />
     <None Include="Resources\alert-red_org.png" />
     <Content Include="Resources\arrow.PNG" />
@@ -1187,6 +1195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Query\HistoryAlarmsForm.resx">
       <DependentUpon>HistoryAlarmsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Query\HistoryTransferCommand.resx">
+      <DependentUpon>HistoryTransferCommand.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Query\TransferCommandQureyListForm.resx">
       <DependentUpon>TransferCommandQureyListForm.cs</DependentUpon>

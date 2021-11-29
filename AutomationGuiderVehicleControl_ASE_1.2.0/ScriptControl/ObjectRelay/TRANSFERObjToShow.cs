@@ -77,29 +77,31 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
     }
     public class HCMD_MCSObjToShow
     {
-        public static App.SCApplication app = App.SCApplication.getInstance();
-        public HTRANSFER cmd_mcs = null;
-        public HCMD_MCSObjToShow()
+        public App.SCApplication app = null;
+        public HVTRANSFER hvTran = null;
+        public HCMD_MCSObjToShow(App.SCApplication _app , HVTRANSFER _hvTran)
         {
+            app = _app;
+            hvTran = _hvTran;
         }
-        public string ID { get { return cmd_mcs.ID; } }
-        public string CARRIER_ID { get { return cmd_mcs.CARRIER_ID; } }
-        public string LOT_ID { get { return cmd_mcs.LOT_ID; } }
-        public E_TRAN_STATUS TRANSFERSTATE { get { return cmd_mcs.TRANSFERSTATE; } }
+        public string ID { get { return  hvTran.ID; } }
+        public string CARRIER_ID { get { return hvTran.CARRIER_ID; } }
+        public string LOT_ID { get { return hvTran.LOT_ID; } }
+        public E_TRAN_STATUS TRANSFERSTATE { get { return hvTran.TRANSFERSTATE; } }
         public string HOSTSOURCE
         {
             get
             {
-                var portstation = app.PortStationBLL.OperateCatch.getPortStation(cmd_mcs.HOSTSOURCE);
-                return portstation == null ? cmd_mcs.HOSTSOURCE : portstation.ToString();
+                var portstation = app.PortStationBLL.OperateCatch.getPortStation(hvTran.HOSTSOURCE);
+                return portstation == null ? hvTran.HOSTSOURCE : portstation.ToString();
             }
         }
         public string HOSTDESTINATION
         {
             get
             {
-                var portstation = app.PortStationBLL.OperateCatch.getPortStation(cmd_mcs.HOSTDESTINATION);
-                return portstation == null ? cmd_mcs.HOSTDESTINATION : portstation.ToString();
+                var portstation = app.PortStationBLL.OperateCatch.getPortStation(hvTran.HOSTDESTINATION);
+                return portstation == null ? hvTran.HOSTDESTINATION : portstation.ToString();
             }
         }
 
@@ -108,14 +110,21 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
         {
             get
             {
-                int priority = cmd_mcs.PRIORITY_SUM > 99 ? 99 : cmd_mcs.PRIORITY_SUM;
+                int priority = hvTran.PRIORITY_SUM > 99 ? 99 : hvTran.PRIORITY_SUM;
                 return priority;
             }
         }
-        public System.DateTime CMD_INSER_TIME { get { return cmd_mcs.CMD_INSER_TIME; } }
-        public Nullable<System.DateTime> CMD_START_TIME { get { return cmd_mcs.CMD_START_TIME; } }
-        public Nullable<System.DateTime> CMD_FINISH_TIME { get { return cmd_mcs.CMD_FINISH_TIME; } }
-        public int REPLACE { get { return cmd_mcs.REPLACE; } }
+        public string CHECKCODE { get { return hvTran.CHECKCODE; } }
+        public string PAUSEFLAG { get { return hvTran.PAUSEFLAG; } }
+
+        public System.DateTime CMD_INSER_TIME { get { return hvTran.CMD_INSER_TIME; } }
+        public Nullable<System.DateTime> CMD_START_TIME { get { return hvTran.CMD_START_TIME; } }
+        public Nullable<System.DateTime> CMD_FINISH_TIME { get { return hvTran.CMD_FINISH_TIME; } }
+        public int TIME_PRIORITY { get { return hvTran.TIME_PRIORITY; } }
+        public int PORT_PRIORITY { get { return hvTran.PORT_PRIORITY; } }
+        public int REPLACE { get { return hvTran.REPLACE; } }
+        public int PRIORITY_SUM { get { return hvTran.PRIORITY_SUM; } }
+        public string VH_ID { get { return hvTran.VH_ID; } }
 
     }
 }

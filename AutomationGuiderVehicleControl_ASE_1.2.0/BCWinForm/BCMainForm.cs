@@ -1060,7 +1060,8 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void transferCommandHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openForm(typeof(HistoryTransferCommandQureyListForm).Name, true, false);
+            //openForm(typeof(HistoryTransferCommandQureyListForm).Name, true, false);
+            openForm(typeof(HistoryTransferCommand).Name, true, false);
 
         }
 

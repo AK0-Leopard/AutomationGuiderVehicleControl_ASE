@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 09/05/2021 21:26:18
+-- Date Created: 11/24/2021 16:26:40
 -- Generated from EDMX file: C:\Git\AK0-Leopard\AutomationGuiderVehicleControl_ASE\AutomationGuiderVehicleControl_ASE_1.2.0\ScriptControl\OHTCContext.edmx
 -- --------------------------------------------------
 
@@ -913,7 +913,10 @@ GO
 CREATE TABLE [dbo].[ALARMRPTCOND] (
     [EQPT_ID] char(15)  NOT NULL,
     [ALAM_CODE] char(10)  NOT NULL,
-    [ENABLE_FLG] char(1)  NOT NULL
+    [ENABLE_FLG] char(1)  NOT NULL,
+    [USER_ID] char(10)  NULL,
+    [REASON] nvarchar(80)  NULL,
+    [DISABLE_TIME] datetime  NULL
 );
 GO
 
@@ -1286,7 +1289,6 @@ CREATE TABLE [dbo].[VTRANSFER] (
     [HOSTDESTINATION] char(64)  NOT NULL,
     [PRIORITY] int  NOT NULL,
     [CHECKCODE] char(2)  NOT NULL,
-    [PAUSEFLAG] char(1)  NOT NULL,
     [CMD_INSER_TIME] datetime  NOT NULL,
     [CMD_START_TIME] datetime  NULL,
     [CMD_FINISH_TIME] datetime  NULL,
@@ -1301,7 +1303,8 @@ CREATE TABLE [dbo].[VTRANSFER] (
     [CARRIER_INSTALLED_TIME] datetime  NULL,
     [CARRIER_READ_STATUS] int  NULL,
     [VH_ID] char(5)  NULL,
-    [COMPLETE_STATUS] int  NULL
+    [COMPLETE_STATUS] int  NULL,
+    [PAUSEFLAG] char(1)  NOT NULL
 );
 GO
 
@@ -1723,10 +1726,10 @@ ADD CONSTRAINT [PK_AGROUPPORTSTATION]
     PRIMARY KEY CLUSTERED ([GROUP_ID] ASC);
 GO
 
--- Creating primary key on [ID], [CARRIER_ID], [TRANSFERSTATE], [COMMANDSTATE], [HOSTDESTINATION], [PRIORITY], [CHECKCODE], [PAUSEFLAG], [CMD_INSER_TIME], [TIME_PRIORITY], [PORT_PRIORITY], [REPLACE], [PRIORITY_SUM] in table 'VTRANSFER'
+-- Creating primary key on [ID], [CARRIER_ID], [TRANSFERSTATE], [COMMANDSTATE], [HOSTDESTINATION], [PRIORITY], [CHECKCODE], [CMD_INSER_TIME], [TIME_PRIORITY], [PORT_PRIORITY], [REPLACE], [PRIORITY_SUM], [PAUSEFLAG] in table 'VTRANSFER'
 ALTER TABLE [dbo].[VTRANSFER]
 ADD CONSTRAINT [PK_VTRANSFER]
-    PRIMARY KEY CLUSTERED ([ID], [CARRIER_ID], [TRANSFERSTATE], [COMMANDSTATE], [HOSTDESTINATION], [PRIORITY], [CHECKCODE], [PAUSEFLAG], [CMD_INSER_TIME], [TIME_PRIORITY], [PORT_PRIORITY], [REPLACE], [PRIORITY_SUM] ASC);
+    PRIMARY KEY CLUSTERED ([ID], [CARRIER_ID], [TRANSFERSTATE], [COMMANDSTATE], [HOSTDESTINATION], [PRIORITY], [CHECKCODE], [CMD_INSER_TIME], [TIME_PRIORITY], [PORT_PRIORITY], [REPLACE], [PRIORITY_SUM], [PAUSEFLAG] ASC);
 GO
 
 -- --------------------------------------------------
