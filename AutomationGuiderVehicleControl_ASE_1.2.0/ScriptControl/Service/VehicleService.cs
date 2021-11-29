@@ -3898,7 +3898,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 return (is_go_to_st, target_port_id);
             }
         }
-        const int MAX_PRE_OPEN_COVER_TIME_MILLISEC = 30000;
+        //const int MAX_PRE_OPEN_COVER_TIME_MILLISEC = 30000;
+        const int MAX_PRE_OPEN_COVER_TIME_MILLISEC = 60000;
         private void checkIsNeedPreOpenAGVStationCoverOnStationAllPort(AVEHICLE vh, string checkPortStationID)
         {
             if (vh == null) return;
