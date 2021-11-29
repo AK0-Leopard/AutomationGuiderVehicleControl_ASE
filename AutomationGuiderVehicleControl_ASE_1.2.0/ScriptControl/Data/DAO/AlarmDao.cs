@@ -186,7 +186,14 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             }
         }
 
-
+        public int getAlarmsCount(DBConnection_EF conn, DateTime startTime, DateTime endTime)
+        {
+            var alarm = from b in conn.ALARM
+                        where b.RPT_DATE_TIME >= startTime &&
+                         b.RPT_DATE_TIME <= endTime
+                        select b;
+            return alarm.Count();
+        }
 
     }
 }

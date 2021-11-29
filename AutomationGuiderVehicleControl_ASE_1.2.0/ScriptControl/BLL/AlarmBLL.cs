@@ -383,6 +383,15 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return alarm;
         }
+        public int GetAlarmCount(DateTime startTime, DateTime endTime)
+        {
+            int count = 0;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                count = alarmDao.getAlarmsCount(con, startTime, endTime);
+            }
+            return count;
+        }
 
         public List<ALARM> getCurrentAlarms()
         {

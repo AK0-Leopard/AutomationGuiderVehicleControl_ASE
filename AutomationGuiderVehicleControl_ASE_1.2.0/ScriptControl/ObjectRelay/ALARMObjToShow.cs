@@ -31,5 +31,9 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
         public Nullable<System.DateTime> CLEAR_DATE_TIME { get { return alarm_obj.CLEAR_DATE_TIME; } }
         [Description("Description")]
         public string ALAM_DESC { get { return alarm_obj.ALAM_DESC; } }
+        public string CommandID1 { get { return alarm_obj.CMD_ID_1; } }
+        public string CommandID2 { get { return alarm_obj.CMD_ID_2; } }
+        public string CommandID3 { get { return alarm_obj.CMD_ID_3; } }
+        public string CommandID4 { get { return alarm_obj.CMD_ID_4; } }
     }
 }

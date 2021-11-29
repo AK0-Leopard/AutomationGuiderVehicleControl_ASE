@@ -114,7 +114,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                      }
 
                  });
-                dgv_TransferCommand.DataSource = cmd_mcs_temp;
+                dgv_TransferCommand.DataSource = showHCMD_MCSList;
                 dgv_TransferCommand.Refresh();
             }
             catch (Exception ex)
