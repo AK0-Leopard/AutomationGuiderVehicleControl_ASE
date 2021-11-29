@@ -981,6 +981,33 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         private ConcurrentDictionary<string, GuideQuickSearch> dicGuideQuickSearch =
                  new ConcurrentDictionary<string, GuideQuickSearch>();
+        private ConcurrentDictionary<string, string> dicServiceVhQuickSearch =
+         new ConcurrentDictionary<string, string>();
+        public string getServiceVhID(string portID)
+        {
+            string port_id = SCUtility.Trim(portID, true);
+            var has_value = dicServiceVhQuickSearch.TryGetValue(port_id, out string vhID);
+            if (has_value)
+                return vhID;
+            var port_st = scApp.PortStationBLL.OperateCatch.getPortStation(port_id);
+            if (port_st == null)
+            {
+                return "";
+            }
+            var vhs = scApp.VehicleBLL.cache.loadAllVh();
+            foreach (var vh in vhs)
+            {
+                string vh_adr = vh.CUR_ADR_ID;
+                if (SCUtility.isEmpty(vh_adr)) continue;
+                bool is_walk_able = IsRoadWalkable(vh_adr, port_st.ADR_ID);
+                if (is_walk_able)
+                {
+                    dicServiceVhQuickSearch.TryAdd(port_id, vh.VEHICLE_ID);
+                    return vh.VEHICLE_ID;
+                }
+            }
+            return "";
+        }
         public bool IsRoadWalkable(string startAddress, string targetAddress)
         {
             return IsRoadWalkable(startAddress, targetAddress, out int total_cost);
@@ -1031,8 +1058,8 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
         public void clearAllDirGuideQuickSearchInfo()
         {
-            DebugParameter.GuideQuickSearchTimes=0;
-            DebugParameter.GuideSearchTimes=0;
+            DebugParameter.GuideQuickSearchTimes = 0;
+            DebugParameter.GuideSearchTimes = 0;
 
             dicGuideQuickSearch.Clear();
         }

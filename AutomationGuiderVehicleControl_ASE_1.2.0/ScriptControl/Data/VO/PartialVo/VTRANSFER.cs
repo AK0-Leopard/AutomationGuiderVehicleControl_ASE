@@ -17,7 +17,7 @@ namespace com.mirle.ibg3k0.sc
 {
     public partial class VTRANSFER
     {
-
+        public string ServiceVhID { get; private set; }
         public ACMD ConvertToCmd(BLL.PortStationBLL portStationBLL, BLL.SequenceBLL sequenceBLL, AVEHICLE assignVehicle)
         {
             var source_port_station = portStationBLL.OperateCatch.getPortStation(this.HOSTSOURCE);
@@ -147,6 +147,19 @@ namespace com.mirle.ibg3k0.sc
         public override string ToString()
         {
             return $"Command:{this.ID},source:{this.HOSTSOURCE},desc:{this.HOSTDESTINATION},inser time:{CMD_INSER_TIME.ToString()}";
+        }
+
+        public void setServiceVh(sc.App.SCApplication scApp)
+        {
+            try
+            {
+                string service_vh_id = scApp.GuideBLL.getServiceVhID(HOSTDESTINATION);
+                ServiceVhID = service_vh_id;
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception:");
+            }
         }
 
     }

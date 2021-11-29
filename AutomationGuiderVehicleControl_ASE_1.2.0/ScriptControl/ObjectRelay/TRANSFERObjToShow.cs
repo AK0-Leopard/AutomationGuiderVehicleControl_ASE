@@ -36,7 +36,18 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
         public string CMD_ID { get { return vtrnasfer.ID; } }
         public string CARRIER_ID { get { return vtrnasfer.CARRIER_ID; } }
         public string LOT_ID { get { return vtrnasfer.LOT_ID; } }
-        public string VEHICLE_ID { get { return vtrnasfer.VH_ID; } }
+        public string VEHICLE_ID
+
+        {
+            get
+            {
+                if (!sc.Common.SCUtility.isEmpty(vtrnasfer.VH_ID))
+                {
+                    return vtrnasfer.VH_ID;
+                }
+                return vtrnasfer.ServiceVhID;
+            }
+        }
 
         public E_TRAN_STATUS TRANSFERSTATE { get { return vtrnasfer.TRANSFERSTATE; } }
         public string HOSTSOURCE
@@ -79,12 +90,12 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
     {
         public App.SCApplication app = null;
         public HVTRANSFER hvTran = null;
-        public HCMD_MCSObjToShow(App.SCApplication _app , HVTRANSFER _hvTran)
+        public HCMD_MCSObjToShow(App.SCApplication _app, HVTRANSFER _hvTran)
         {
             app = _app;
             hvTran = _hvTran;
         }
-        public string ID { get { return  hvTran.ID; } }
+        public string ID { get { return hvTran.ID; } }
         public string CARRIER_ID { get { return hvTran.CARRIER_ID; } }
         public string LOT_ID { get { return hvTran.LOT_ID; } }
         public E_TRAN_STATUS TRANSFERSTATE { get { return hvTran.TRANSFERSTATE; } }
