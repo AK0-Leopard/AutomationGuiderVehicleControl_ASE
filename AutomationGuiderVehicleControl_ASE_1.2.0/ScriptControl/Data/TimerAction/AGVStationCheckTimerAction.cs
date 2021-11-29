@@ -688,9 +688,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                 }
                             }
 
-                            string reserved_time_out_alarm_code = getAGVStationReservedTimeOutCode(agv_station.getAGVStationID());
-                            scApp.LineService.ProcessAlarmReport("AGVC", reserved_time_out_alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
-                                        $"AGV Station:[{agv_station.getAGVStationID()} reserved time out]");
+                            //string reserved_time_out_alarm_code = getAGVStationReservedTimeOutCode(agv_station.getAGVStationID());
+                            //scApp.LineService.ProcessAlarmReport("AGVC", reserved_time_out_alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrReset,
+                            //            $"AGV Station:[{agv_station.getAGVStationID()} reserved time out]");
                             return;
                         }
                         else
@@ -717,9 +717,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(AGVStationCheckTimerAction), Device: "AGVC",
                                        Data: $"agv station:[{agv_station.getAGVStationID()}] is reserved time out, reset it and then ask again...");
                                     agv_station.IsReservation = false;
-                                    string reserved_time_out_alarm_code = getAGVStationReservedTimeOutCode(agv_station.getAGVStationID());
-                                    scApp.LineService.ProcessAlarmReport("AGVC", reserved_time_out_alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
-                                                                         $"AGV Station:[{agv_station.getAGVStationID()} reserved time out]");
+                                    //string reserved_time_out_alarm_code = getAGVStationReservedTimeOutCode(agv_station.getAGVStationID());
+                                    //scApp.LineService.ProcessAlarmReport("AGVC", reserved_time_out_alarm_code, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
+                                    //                                     $"AGV Station:[{agv_station.getAGVStationID()} reserved time out]");
                                 }
                             }
                             else
