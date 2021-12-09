@@ -128,7 +128,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(selected_vh_id);
             if (vh == null) return;
             List<string> location_ids = vh.CarrierLocation.Select(loc => loc.ID).ToList();
-            cmb_location_ids.DataSource = vh.CarrierLocation;
+            cmb_location_ids.DataSource = vh.CarrierLocation;   
         }
 
         private void cmb_location_ids_SelectedIndexChanged(object sender, EventArgs e)
