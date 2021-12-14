@@ -140,6 +140,7 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler<int> StatusRequestFailOverTimes;
         public event EventHandler CanNotFindTheCharger;
         public event EventHandler AfterLoadingUnloadingNSecond;
+        public event EventHandler StopChargeFailHappend;
 
         public void onExcuteCommandStatusChange()
         {
@@ -214,6 +215,11 @@ namespace com.mirle.ibg3k0.sc
         public void onVehicleLoadingUnloadingAfterNSecsond()
         {
             AfterLoadingUnloadingNSecond?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void onVehicleStopChargeFailHappend()
+        {
+            StopChargeFailHappend?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion Event

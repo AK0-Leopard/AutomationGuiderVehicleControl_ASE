@@ -2141,6 +2141,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             #endregion ID_172 RangeTeachingCompleteReport
             #region ID_194 AlarmReport
+            const string SPECIFY_WATCH_ERROR_CODE_STOP_CHARGE_FAIL = "14";
             [ClassAOPAspect]
             public void AlarmReport(BCFApplication bcfApp, AVEHICLE vh, ID_194_ALARM_REPORT recive_str, int seq_num)
             {
@@ -2169,6 +2170,13 @@ namespace com.mirle.ibg3k0.sc.Service
                     SCUtility.RecodeReportInfo(vh.VEHICLE_ID, seq_num, recive_str);
                     Boolean resp_cmp = vh.sendMessage(wrapper, true);
                     SCUtility.RecodeReportInfo(vh.VEHICLE_ID, seq_num, send_str, resp_cmp.ToString());
+
+                    if (SCUtility.isMatche(SPECIFY_WATCH_ERROR_CODE_STOP_CHARGE_FAIL, err_code) &&
+                        status == ErrorStatus.ErrSet)
+                    {
+                        vh.onVehicleStopChargeFailHappend();
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -3048,7 +3056,27 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.CurrentExcuteCmdChange += Vh_CurrentExcuteCmdChange;
                 vh.StatusRequestFailOverTimes += Vh_StatusRequestFailOverTimes;
                 vh.AfterLoadingUnloadingNSecond += Vh_AfterLoadingUnloadingNSecond; ;
+                vh.StopChargeFailHappend += Vh_StopChargeFailHappend;
                 vh.SetupTimerAction();
+            }
+        }
+
+        private void Vh_StopChargeFailHappend(object sender, EventArgs e)
+        {
+            try
+            {
+                AVEHICLE vh = sender as AVEHICLE;
+                string vh_id = vh.VEHICLE_ID;
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"vh:{vh_id} Stop charge fail.",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                Task.Run(() => scApp.VehicleBLL.web.vhCallChargerStopChargefail());
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception:");
             }
         }
 

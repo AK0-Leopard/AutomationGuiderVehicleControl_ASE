@@ -1,6 +1,7 @@
 ﻿
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Common;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,11 @@ namespace com.mirle.ibg3k0.sc.BLL
 {
     public class UnitBLL
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public DB OperateDB { private set; get; }
         public Catch OperateCatch { private set; get; }
+        public Web web { get; private set; }
 
         public UnitBLL()
         {
@@ -21,6 +25,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             OperateDB = new DB();
             OperateCatch = new Catch(_app.getEQObjCacheManager());
+            web = new Web(_app.webClientManager);
         }
         public class DB
         {
@@ -48,6 +53,46 @@ namespace com.mirle.ibg3k0.sc.BLL
                              ToList();
                 return units;
             }
+        }
+        public class Web
+        {
+            WebClientManager webClientManager = null;
+            List<string> notify_urls = new List<string>()
+            {
+                //"http://stk01.asek21.mirle.com.tw:15000",
+                 "http://agvc.asek21.mirle.com.tw:15000"
+            };
+            const string CAHRGE_STATUS_IS_ABNORMAL_CONST = "ChargeStatusIsAbnormal";
+
+            public Web(WebClientManager _webClient)
+            {
+                webClientManager = _webClient;
+            }
+
+            public void ChargerStatusIsAbnormal()
+            {
+                try
+                {
+                    string[] action_targets = new string[]
+                    {
+                    "weatherforecast"
+                    };
+                    string[] param = new string[]
+                    {
+                    CAHRGE_STATUS_IS_ABNORMAL_CONST,
+                    };
+                    foreach (string notify_url in notify_urls)
+                    {
+                        string result = webClientManager.GetInfoFromServer(notify_url, action_targets, param);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
+
+
         }
     }
 }

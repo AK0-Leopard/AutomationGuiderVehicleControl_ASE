@@ -187,6 +187,29 @@ namespace com.mirle.ibg3k0.sc
             return false;
         }
 
+        public bool IsAbnormalHappend
+        {
+            get
+            {
+                if (IsAbnormalStatus(Coupler1Status))
+                    return true;
+                if (IsAbnormalStatus(Coupler2Status))
+                    return true;
+                if (IsAbnormalStatus(Coupler3Status))
+                    return true;
+                return false;
+            }
+        }
+        private bool IsAbnormalStatus(SCAppConstants.CouplerStatus couplerStatus)
+        {
+            if (couplerStatus == SCAppConstants.CouplerStatus.Error)
+                return true;
+            if (couplerStatus == SCAppConstants.CouplerStatus.Manual)
+                return true;
+            if (couplerStatus == SCAppConstants.CouplerStatus.None)
+                return true;
+            return false;
+        }
 
         private SCAppConstants.CouplerHPSafety coupler1hpsafety;
         public SCAppConstants.CouplerHPSafety coupler1HPSafety

@@ -147,6 +147,8 @@ namespace com.mirle.ibg3k0.sc.Module
         {
             try
             {
+                AUNIT charger = sender as AUNIT;
+
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
                    Data: $"Start sysc coupler status...");
                 lock (charger_status_notify_lock_obj)
@@ -155,10 +157,29 @@ namespace com.mirle.ibg3k0.sc.Module
                 }
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
                    Data: $"End sysc coupler status.");
+
+                checkHasChargeErrorHappend(charger);
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception:");
+            }
+        }
+
+        private void checkHasChargeErrorHappend(AUNIT charger)
+        {
+            try
+            {
+                if (charger.IsAbnormalHappend)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                       Data: $"Start notify charger:{charger.UNIT_ID} is abnormal.");
+                    Task.Run(() => unitBLL.web.ChargerStatusIsAbnormal());
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
             }
         }
 

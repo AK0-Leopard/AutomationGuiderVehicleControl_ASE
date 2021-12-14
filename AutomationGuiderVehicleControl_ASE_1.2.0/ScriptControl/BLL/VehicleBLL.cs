@@ -1370,6 +1370,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                  "http://agvc.asek21.mirle.com.tw:15000"
             };
             const string ERROR_HAPPEND_CONST = "99";
+            const string STOP_CHARGE_FAIL_CONST = "AGV_StopChargeFail";
             const string OBSTACLE_HAPPEND_CONST = "XXXX";
 
             public Web(WebClientManager _webClient)
@@ -1474,6 +1475,29 @@ namespace com.mirle.ibg3k0.sc.BLL
                     logger.Error(ex, "Exception");
                 }
             }
+            public void vhCallChargerStopChargefail()
+            {
+                try
+                {
+                    string[] action_targets = new string[]
+                    {
+                    "weatherforecast"
+                    };
+                    string[] param = new string[]
+                    {
+                    STOP_CHARGE_FAIL_CONST,
+                    };
+                    foreach (string notify_url in notify_urls)
+                    {
+                        string result = webClientManager.GetInfoFromServer(notify_url, action_targets, param);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
+
 
         }
 
