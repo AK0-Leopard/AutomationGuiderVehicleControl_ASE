@@ -958,7 +958,7 @@
             // 
             // tmrRefresh
             // 
-            this.tmrRefresh.Interval = 300;
+            this.tmrRefresh.Interval = 5000;
             this.tmrRefresh.Tick += new System.EventHandler(this.tmrRefresh_Tick);
             // 
             // timer1

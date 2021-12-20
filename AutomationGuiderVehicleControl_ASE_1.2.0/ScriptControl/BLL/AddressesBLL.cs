@@ -70,6 +70,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                 CouplerAddresses = CouplerAddresses.Where(coupler => SCUtility.isMatche(coupler.ChargerID, chargerID)).ToList();
                 return CouplerAddresses;
             }
+            public CouplerAddress getCouplerAddresses(string chargerID, CouplerNum couplerNum)
+            {
+                List<CouplerAddress> CouplerAddresses = CommObjCacheManager.getCouplerAddresses();
+                var CouplerAddress = CouplerAddresses.Where(coupler => SCUtility.isMatche(coupler.ChargerID, chargerID) &&
+                                                          coupler.CouplerNum == couplerNum).
+                                                          FirstOrDefault();
+                return CouplerAddress;
+            }
             public List<CouplerAddress> GetEnableCouplerAddresses(UnitBLL unitBLL)
             {
                 List<CouplerAddress> CouplerAddresses = CommObjCacheManager.getCouplerAddresses();

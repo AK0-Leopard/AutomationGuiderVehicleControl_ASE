@@ -201,8 +201,7 @@
             this.tb_ErrorReportCode1 = new System.Windows.Forms.TextBox();
             this.label55 = new System.Windows.Forms.Label();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.cb_passCouplerStatus = new System.Windows.Forms.CheckBox();
-            this.cb_passCouplerHPSafetySingnal = new System.Windows.Forms.CheckBox();
+            this.cb_PassSafetyCheckToPause = new System.Windows.Forms.CheckBox();
             this.label24 = new System.Windows.Forms.Label();
             this.tb_ChargerAlive = new System.Windows.Forms.TextBox();
             this.groupBox22 = new System.Windows.Forms.GroupBox();
@@ -292,6 +291,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.textBox_chargePower = new System.Windows.Forms.TextBox();
+            this.cb_passCouplerStatus = new System.Windows.Forms.CheckBox();
+            this.cb_passCouplerHPSafetySingnal = new System.Windows.Forms.CheckBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.tb_agvcAlive = new System.Windows.Forms.TextBox();
             this.label51 = new System.Windows.Forms.Label();
@@ -1718,6 +1719,8 @@
             // 
             this.tabPage4.Controls.Add(this.groupBox23);
             this.tabPage4.Controls.Add(this.groupBox14);
+            this.tabPage4.Controls.Add(this.cb_passCouplerStatus);
+            this.tabPage4.Controls.Add(this.cb_passCouplerHPSafetySingnal);
             this.tabPage4.Controls.Add(this.groupBox10);
             this.tabPage4.Controls.Add(this.num_BatteryHighBoundaryValue);
             this.tabPage4.Controls.Add(this.label38);
@@ -2141,8 +2144,7 @@
             // 
             // groupBox14
             // 
-            this.groupBox14.Controls.Add(this.cb_passCouplerStatus);
-            this.groupBox14.Controls.Add(this.cb_passCouplerHPSafetySingnal);
+            this.groupBox14.Controls.Add(this.cb_PassSafetyCheckToPause);
             this.groupBox14.Controls.Add(this.label24);
             this.groupBox14.Controls.Add(this.tb_ChargerAlive);
             this.groupBox14.Controls.Add(this.groupBox22);
@@ -2159,27 +2161,17 @@
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Charger";
             // 
-            // cb_passCouplerStatus
+            // cb_PassSafetyCheckToPause
             // 
-            this.cb_passCouplerStatus.AutoSize = true;
-            this.cb_passCouplerStatus.Location = new System.Drawing.Point(484, 741);
-            this.cb_passCouplerStatus.Name = "cb_passCouplerStatus";
-            this.cb_passCouplerStatus.Size = new System.Drawing.Size(219, 26);
-            this.cb_passCouplerStatus.TabIndex = 34;
-            this.cb_passCouplerStatus.Text = "Pass Coupler Status";
-            this.cb_passCouplerStatus.UseVisualStyleBackColor = true;
-            this.cb_passCouplerStatus.CheckedChanged += new System.EventHandler(this.cb_passCouplerStatus_CheckedChanged);
-            // 
-            // cb_passCouplerHPSafetySingnal
-            // 
-            this.cb_passCouplerHPSafetySingnal.AutoSize = true;
-            this.cb_passCouplerHPSafetySingnal.Location = new System.Drawing.Point(483, 711);
-            this.cb_passCouplerHPSafetySingnal.Name = "cb_passCouplerHPSafetySingnal";
-            this.cb_passCouplerHPSafetySingnal.Size = new System.Drawing.Size(319, 26);
-            this.cb_passCouplerHPSafetySingnal.TabIndex = 35;
-            this.cb_passCouplerHPSafetySingnal.Text = "Pass Coupler HP Safety Signal";
-            this.cb_passCouplerHPSafetySingnal.UseVisualStyleBackColor = true;
-            this.cb_passCouplerHPSafetySingnal.CheckedChanged += new System.EventHandler(this.cb_passCouplerHPSafetySingnal_CheckedChanged);
+            this.cb_PassSafetyCheckToPause.AutoSize = true;
+            this.cb_PassSafetyCheckToPause.Enabled = false;
+            this.cb_PassSafetyCheckToPause.Location = new System.Drawing.Point(502, 28);
+            this.cb_PassSafetyCheckToPause.Name = "cb_PassSafetyCheckToPause";
+            this.cb_PassSafetyCheckToPause.Size = new System.Drawing.Size(199, 26);
+            this.cb_PassSafetyCheckToPause.TabIndex = 36;
+            this.cb_PassSafetyCheckToPause.Text = "Pass Safety Check";
+            this.cb_PassSafetyCheckToPause.UseVisualStyleBackColor = true;
+            this.cb_PassSafetyCheckToPause.CheckedChanged += new System.EventHandler(this.cb_PassSafetyCheckToPause_CheckedChanged);
             // 
             // label24
             // 
@@ -3061,6 +3053,28 @@
             this.textBox_chargePower.Size = new System.Drawing.Size(167, 23);
             this.textBox_chargePower.TabIndex = 29;
             // 
+            // cb_passCouplerStatus
+            // 
+            this.cb_passCouplerStatus.AutoSize = true;
+            this.cb_passCouplerStatus.Location = new System.Drawing.Point(1117, 839);
+            this.cb_passCouplerStatus.Name = "cb_passCouplerStatus";
+            this.cb_passCouplerStatus.Size = new System.Drawing.Size(219, 26);
+            this.cb_passCouplerStatus.TabIndex = 34;
+            this.cb_passCouplerStatus.Text = "Pass Coupler Status";
+            this.cb_passCouplerStatus.UseVisualStyleBackColor = true;
+            this.cb_passCouplerStatus.CheckedChanged += new System.EventHandler(this.cb_passCouplerStatus_CheckedChanged);
+            // 
+            // cb_passCouplerHPSafetySingnal
+            // 
+            this.cb_passCouplerHPSafetySingnal.AutoSize = true;
+            this.cb_passCouplerHPSafetySingnal.Location = new System.Drawing.Point(1116, 809);
+            this.cb_passCouplerHPSafetySingnal.Name = "cb_passCouplerHPSafetySingnal";
+            this.cb_passCouplerHPSafetySingnal.Size = new System.Drawing.Size(319, 26);
+            this.cb_passCouplerHPSafetySingnal.TabIndex = 35;
+            this.cb_passCouplerHPSafetySingnal.Text = "Pass Coupler HP Safety Signal";
+            this.cb_passCouplerHPSafetySingnal.UseVisualStyleBackColor = true;
+            this.cb_passCouplerHPSafetySingnal.CheckedChanged += new System.EventHandler(this.cb_passCouplerHPSafetySingnal_CheckedChanged);
+            // 
             // groupBox10
             // 
             this.groupBox10.Controls.Add(this.tb_agvcAlive);
@@ -3625,5 +3639,6 @@
         private System.Windows.Forms.Label label103;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox cb_PassSafetyCheckToPause;
     }
 }

@@ -350,8 +350,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
                 m_objItemPortNew = new uctlPortNew[iPortIconCount];
                 foreach (APORTICON adr in enumerportIcon)
                 {
-                    m_objItemPortNew[index] = new uctlPortNew();
+                    //m_objItemPortNew[index] = new uctlPortNew();
+                    m_objItemPortNew[index] = getPortNewObj(adr);
                     m_objItemPortNew[index].p_PortName = adr.PORT_ID;
+                    m_objItemPortNew[index].p_Note = adr.RAIL_ID;
                     m_objItemPortNew[index].p_Address = adr.ADR_ID;
                     m_objItemPortNew[index].p_LocX = adr.LOCATIONX;
                     m_objItemPortNew[index].p_LocY = adr.LOCATIONY;
@@ -377,6 +379,16 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
             return (bRet);
         }
 
+        private uctlPortNew getPortNewObj(APORTICON icon)
+        {
+            AUNIT charge = mainForm.BCApp.SCApplication.UnitBLL.OperateCatch.getUnit(icon.RAIL_ID);
+            if (charge == null)
+                return new uctlPortNew();
+            else
+            {
+                return new uctlPortNew(charge);
+            }
+        }
 
         private bool readNewVehicleDatas()
         {
@@ -721,27 +733,44 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
         Boolean change_flag = false;
         private void tmrRefresh_Tick(object sender, EventArgs e)
         {
-            change_flag = !change_flag;
-            if (!BCFUtility.isEmpty(current_SelectSegment))
+            refreshPortIcon();
+            //change_flag = !change_flag;
+            //if (!BCFUtility.isEmpty(current_SelectSegment))
+            //{
+            //    List<GroupRails> lstGroupRails = m_DicSegmentGroupRails[current_SelectSegment];
+            //    foreach (GroupRails groupRails in lstGroupRails)
+            //    {
+            //        groupRails.GroupColorChange(change_flag ? RailOriginalColor : Color.Yellow);
+            //    }
+            //}
+
+            //if (current_FlashingSectionGroup != null
+            //    && current_FlashingSectionGroup.Count() > 0)
+            //{
+            //    foreach (string[] section_ids in current_FlashingSectionGroup)
+            //    {
+            //        foreach (string section_id in section_ids)
+            //        {
+            //            m_DicSectionGroupRails[section_id]
+            //                .GroupColorChange(change_flag ? RailOriginalColor : Color.Yellow);
+            //        }
+            //    }
+            //}
+        }
+
+        private void refreshPortIcon()
+        {
+            try
             {
-                List<GroupRails> lstGroupRails = m_DicSegmentGroupRails[current_SelectSegment];
-                foreach (GroupRails groupRails in lstGroupRails)
+                foreach (var port in m_objItemPortNew)
                 {
-                    groupRails.GroupColorChange(change_flag ? RailOriginalColor : Color.Yellow);
+                    port.refreshColor();
                 }
             }
-
-            if (current_FlashingSectionGroup != null
-                && current_FlashingSectionGroup.Count() > 0)
+            catch (Exception ex)
             {
-                foreach (string[] section_ids in current_FlashingSectionGroup)
-                {
-                    foreach (string section_id in section_ids)
-                    {
-                        m_DicSectionGroupRails[section_id]
-                            .GroupColorChange(change_flag ? RailOriginalColor : Color.Yellow);
-                    }
-                }
+                logger.Error(ex, "Exception:");
+
             }
         }
 

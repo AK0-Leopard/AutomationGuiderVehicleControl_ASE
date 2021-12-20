@@ -1730,7 +1730,7 @@
           </Key>
           <Property Name="PORT_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="ADR_ID" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
-          <Property Name="RAIL_ID" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="RAIL_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="ADRTYPE" Type="OHTC_DevModel.E_ADR_TYPE" Nullable="false" />
           <Property Name="LOCATIONX" Type="Int32" Nullable="false" />
           <Property Name="LOCATIONY" Type="Int32" Nullable="false" />

@@ -22,6 +22,8 @@ namespace com.mirle.ibg3k0.sc
         private AlarmHisList alarmHisList = new AlarmHisList();
         #region charger 
 
+        public bool isPassSafetySignalToSendPause = true;
+
         #region Event
         public event EventHandler CouplerStatusChanged;
         public event EventHandler<SCAppConstants.CouplerHPSafety> CouplerHPSafetyChaged;
@@ -193,10 +195,10 @@ namespace com.mirle.ibg3k0.sc
             {
                 if (IsAbnormalStatus(Coupler1Status))
                     return true;
-                if (IsAbnormalStatus(Coupler2Status))
-                    return true;
-                if (IsAbnormalStatus(Coupler3Status))
-                    return true;
+                //if (IsAbnormalStatus(Coupler2Status)) //目前只有Coupler1
+                //    return true;
+                //if (IsAbnormalStatus(Coupler3Status))
+                //    return true;
                 return false;
             }
         }
@@ -211,14 +213,19 @@ namespace com.mirle.ibg3k0.sc
             return false;
         }
 
+        public bool NeedProcessCoupler1HPSafetyChange = false;
         private SCAppConstants.CouplerHPSafety coupler1hpsafety;
         public SCAppConstants.CouplerHPSafety coupler1HPSafety
         {
-            get { return coupler1hpsafety; }
+            get
+            {
+                return coupler1hpsafety;
+            }
             set
             {
                 if (coupler1hpsafety != value)
                 {
+                    NeedProcessCoupler1HPSafetyChange = true;
                     coupler1hpsafety = value;
                     onCouplerHPSafetyChaged(value);
                 }

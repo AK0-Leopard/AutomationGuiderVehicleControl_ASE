@@ -54,7 +54,7 @@ namespace com.mirle.ibg3k0.sc.Module
             foreach (AUNIT charger in chargers)
             {
                 charger.CouplerStatusChanged += Charger_CouplerStatusChanged;
-                charger.CouplerHPSafetyChaged += Charger_CouplerHPSafetyChaged;
+                //charger.CouplerHPSafetyChaged += Charger_CouplerHPSafetyChaged;
             }
         }
 
@@ -494,125 +494,257 @@ namespace com.mirle.ibg3k0.sc.Module
 
         public void CouplerTimingCheck()
         {
-            //List<CouplerAddress> coupler_addresses = addressesBLL.cache.GetCouplerAddresses();
-            List<CouplerAddress> coupler_addresses = addressesBLL.cache.GetEnableCouplerAddresses(unitBLL);
-            foreach (CouplerAddress coupler_address in coupler_addresses)
+            try
             {
-                if (coupler_address.hasVh(vehicleBLL))
+                //List<CouplerAddress> coupler_addresses = addressesBLL.cache.GetCouplerAddresses();
+                List<CouplerAddress> coupler_addresses = addressesBLL.cache.GetEnableCouplerAddresses(unitBLL);
+                foreach (CouplerAddress coupler_address in coupler_addresses)
                 {
-                    AVEHICLE ChargingVh = vehicleBLL.cache.getVhOnAddress(coupler_address.ADR_ID);
-
-                    //1.如果N分鐘前，都沒有充飽過，就要等他充飽以後才可以再叫他回去工作
-                    //if (ChargingVh.LAST_FULLY_CHARGED_TIME.HasValue &&
-                    //   DateTime.Now > ChargingVh.LAST_FULLY_CHARGED_TIME?.AddMinutes(SystemParameter.TheLongestFullyChargedIntervalTime_Mim))
-                    //{
-                    //    if (ChargingVh.BatteryLevel == BatteryLevel.Full
-                    //        && ChargingVh.MODE_STATUS == VHModeStatus.AutoCharging)
-                    //    {
-                    //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                    //                 Data: $"ask vh:{ChargingVh.VEHICLE_ID} recover to auto remmote " +
-                    //                 $"and unban segment id:{string.Join(",", coupler_address.TrafficControlSegment)} ",
-                    //                 VehicleID: ChargingVh.VEHICLE_ID);
-                    //        vehicleService.changeVhStatusToAutoRemote(ChargingVh.VEHICLE_ID);
-                    //        RoadControl(ChargingVh.VEHICLE_ID, ChargingVh.CUR_ADR_ID, true);
-                    //    }
-                    //    else
-                    //    {
-                    //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                    //                 Data: $"ChargingVh:{ChargingVh},Not yet charging condition." +
-                    //                       $"a.charged time interval(min){SystemParameter.TheLongestFullyChargedIntervalTime_Mim}" +
-                    //                       $"b.current battrty level:{ChargingVh.BatteryLevel} (need to be full)",
-                    //                 VehicleID: ChargingVh.VEHICLE_ID);
-                    //    }
-                    //}
-                    //else
+                    if (coupler_address.hasVh(vehicleBLL))
                     {
-                        //if (ChargingVh.BatteryLevel > BatteryLevel.Low &&
-                        //    ChargingVh.MODE_STATUS == VHModeStatus.AutoCharging)
-                        //if (ChargingVh.BatteryLevel > BatteryLevel.High &&
-                        if (ChargingVh.BatteryLevel >= BatteryLevel.High &&
-                            ChargingVh.MODE_STATUS == VHModeStatus.AutoCharging)
+                        AVEHICLE ChargingVh = vehicleBLL.cache.getVhOnAddress(coupler_address.ADR_ID);
+
+                        //1.如果N分鐘前，都沒有充飽過，就要等他充飽以後才可以再叫他回去工作
+                        //if (ChargingVh.LAST_FULLY_CHARGED_TIME.HasValue &&
+                        //   DateTime.Now > ChargingVh.LAST_FULLY_CHARGED_TIME?.AddMinutes(SystemParameter.TheLongestFullyChargedIntervalTime_Mim))
+                        //{
+                        //    if (ChargingVh.BatteryLevel == BatteryLevel.Full
+                        //        && ChargingVh.MODE_STATUS == VHModeStatus.AutoCharging)
+                        //    {
+                        //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                        //                 Data: $"ask vh:{ChargingVh.VEHICLE_ID} recover to auto remmote " +
+                        //                 $"and unban segment id:{string.Join(",", coupler_address.TrafficControlSegment)} ",
+                        //                 VehicleID: ChargingVh.VEHICLE_ID);
+                        //        vehicleService.changeVhStatusToAutoRemote(ChargingVh.VEHICLE_ID);
+                        //        RoadControl(ChargingVh.VEHICLE_ID, ChargingVh.CUR_ADR_ID, true);
+                        //    }
+                        //    else
+                        //    {
+                        //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                        //                 Data: $"ChargingVh:{ChargingVh},Not yet charging condition." +
+                        //                       $"a.charged time interval(min){SystemParameter.TheLongestFullyChargedIntervalTime_Mim}" +
+                        //                       $"b.current battrty level:{ChargingVh.BatteryLevel} (need to be full)",
+                        //                 VehicleID: ChargingVh.VEHICLE_ID);
+                        //    }
+                        //}
+                        //else
+                        {
+                            //if (ChargingVh.BatteryLevel > BatteryLevel.Low &&
+                            //    ChargingVh.MODE_STATUS == VHModeStatus.AutoCharging)
+                            //if (ChargingVh.BatteryLevel > BatteryLevel.High &&
+                            if (ChargingVh.BatteryLevel >= BatteryLevel.High &&
+                                ChargingVh.MODE_STATUS == VHModeStatus.AutoCharging)
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                                         Data: $"ask vh:{ChargingVh.VEHICLE_ID} recover to auto remmote " +
+                                         $"and unban segment id:{string.Join(",", coupler_address.TrafficControlSegment)} ",
+                                         VehicleID: ChargingVh.VEHICLE_ID);
+                                vehicleService.changeVhStatusToAutoRemote(ChargingVh.VEHICLE_ID);
+                                RoadControl(ChargingVh.VEHICLE_ID, ChargingVh.CUR_ADR_ID, true);
+                            }
+                            else
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                                         Data: $"ChargingVh:{ChargingVh},Not yet charging condition." +
+                                               $"a.current battrty level:{ChargingVh.BatteryLevel} (need to be above High)",
+                                         VehicleID: ChargingVh.VEHICLE_ID);
+                            }
+                        }
+                    }
+                }
+
+                //找出所有低電量的VH
+                //List<AVEHICLE> low_level_battrty_vh = vehicleBLL.cache.loadLowBattrtyVh();
+                //if (low_level_battrty_vh != null)
+                //{
+                //    foreach (AVEHICLE low_level_vh in low_level_battrty_vh)
+                //    {
+                //        AADDRESS current_adr = addressesBLL.cache.GetAddress(low_level_vh.CUR_ADR_ID);
+                //        //確定它是在Auto charge mode 且 已經沒有在執行命令 且 目前所在的Addres不在充電站上 
+                //        if (low_level_vh.MODE_STATUS == VHModeStatus.AutoCharging &&
+                //            low_level_vh.ACT_STATUS == VHActionStatus.NoCommand &&
+                //            !SCUtility.isEmpty(low_level_vh.CUR_ADR_ID) &&
+                //            !(current_adr is CouplerAddress))
+                //        {
+                //            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                //                     Data: $"ask vh:{low_level_vh.VEHICLE_ID} to charging by timer. ",
+                //                     VehicleID: low_level_vh.VEHICLE_ID);
+                //            askVhToCharging(low_level_vh);
+                //        }
+                //    }
+                //}
+
+                //找出目前線內的VH，如果Mode = AutoCharging、No command的狀態且不在Coupler
+                //1.如果處於低電位的話，則將他派送至Coupler，進行充電
+                //2.如果是高於低電位的話，則將它切換回AutoRemote
+                List<AVEHICLE> vhs = vehicleBLL.cache.loadAllVh();
+                foreach (AVEHICLE vh in vhs)
+                {
+                    if (SCUtility.isEmpty(vh.CUR_ADR_ID)) continue;
+                    AADDRESS current_adr = addressesBLL.cache.GetAddress(vh.CUR_ADR_ID);
+                    if (vh.BatteryLevel == BatteryLevel.Low)
+                    {
+                        //確定它是在Auto charge mode 且 已經沒有在執行命令 且 目前所在的Addres不在充電站上 
+                        if (vh.MODE_STATUS == VHModeStatus.AutoCharging &&
+                            vh.ACT_STATUS == VHActionStatus.NoCommand &&
+                            (!(current_adr is CouplerAddress) ||
+                            //((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsEnable))
+                            ((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsWork(unitBLL)))
+                           )
                         {
                             LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                                     Data: $"ask vh:{ChargingVh.VEHICLE_ID} recover to auto remmote " +
-                                     $"and unban segment id:{string.Join(",", coupler_address.TrafficControlSegment)} ",
-                                     VehicleID: ChargingVh.VEHICLE_ID);
-                            vehicleService.changeVhStatusToAutoRemote(ChargingVh.VEHICLE_ID);
-                            RoadControl(ChargingVh.VEHICLE_ID, ChargingVh.CUR_ADR_ID, true);
+                                     Data: $"ask vh:{vh.VEHICLE_ID} to charging by timer. ",
+                                     VehicleID: vh.VEHICLE_ID);
+                            askVhToCharging(vh);
                         }
-                        else
+                    }
+                    else if (vh.BatteryLevel > BatteryLevel.Low)
+                    {
+                        if (vh.MODE_STATUS == VHModeStatus.AutoCharging &&
+                            vh.ACT_STATUS == VHActionStatus.NoCommand &&
+                            (!(current_adr is CouplerAddress) ||
+                            //((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsEnable))
+                            //((current_adr is CouplerAddress) && !addressesBLL.cache.IsCouplerWork(current_adr as CouplerAddress, unitBLL)))
+                            ((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsWork(unitBLL)))
+                           )
                         {
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                                     Data: $"ChargingVh:{ChargingVh},Not yet charging condition." +
-                                           $"a.current battrty level:{ChargingVh.BatteryLevel} (need to be above High)",
-                                     VehicleID: ChargingVh.VEHICLE_ID);
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                                     Data: $"ask vh:{vh.VEHICLE_ID} recover to auto remmote by timer",
+                                     VehicleID: vh.VEHICLE_ID);
+                            vehicleService.changeVhStatusToAutoRemote(vh.VEHICLE_ID);
                         }
                     }
                 }
             }
-
-            //找出所有低電量的VH
-            //List<AVEHICLE> low_level_battrty_vh = vehicleBLL.cache.loadLowBattrtyVh();
-            //if (low_level_battrty_vh != null)
-            //{
-            //    foreach (AVEHICLE low_level_vh in low_level_battrty_vh)
-            //    {
-            //        AADDRESS current_adr = addressesBLL.cache.GetAddress(low_level_vh.CUR_ADR_ID);
-            //        //確定它是在Auto charge mode 且 已經沒有在執行命令 且 目前所在的Addres不在充電站上 
-            //        if (low_level_vh.MODE_STATUS == VHModeStatus.AutoCharging &&
-            //            low_level_vh.ACT_STATUS == VHActionStatus.NoCommand &&
-            //            !SCUtility.isEmpty(low_level_vh.CUR_ADR_ID) &&
-            //            !(current_adr is CouplerAddress))
-            //        {
-            //            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-            //                     Data: $"ask vh:{low_level_vh.VEHICLE_ID} to charging by timer. ",
-            //                     VehicleID: low_level_vh.VEHICLE_ID);
-            //            askVhToCharging(low_level_vh);
-            //        }
-            //    }
-            //}
-
-            //找出目前線內的VH，如果Mode = AutoCharging、No command的狀態且不在Coupler
-            //1.如果處於低電位的話，則將他派送至Coupler，進行充電
-            //2.如果是高於低電位的話，則將它切換回AutoRemote
-            List<AVEHICLE> vhs = vehicleBLL.cache.loadAllVh();
-            foreach (AVEHICLE vh in vhs)
+            catch (Exception ex)
             {
-                if (SCUtility.isEmpty(vh.CUR_ADR_ID)) continue;
-                AADDRESS current_adr = addressesBLL.cache.GetAddress(vh.CUR_ADR_ID);
-                if (vh.BatteryLevel == BatteryLevel.Low)
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+        public void checkAllCopulerSafetyCehck()
+        {
+            List<AUNIT> charges = unitBLL.OperateCatch.loadUnits();
+            foreach (var charge in charges)
+            {
+                checkCopulerSafetyCehck(charge);
+            }
+        }
+        private void checkCopulerSafetyCehck(AUNIT charger)
+        {
+            try
+            {
+                if (DebugParameter.isPassCouplerHPSafetySignal)
                 {
-                    //確定它是在Auto charge mode 且 已經沒有在執行命令 且 目前所在的Addres不在充電站上 
-                    if (vh.MODE_STATUS == VHModeStatus.AutoCharging &&
-                        vh.ACT_STATUS == VHActionStatus.NoCommand &&
-                        (!(current_adr is CouplerAddress) ||
-                        //((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsEnable))
-                        ((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsWork(unitBLL)))
-                       )
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                       Data: $"pass coupler hp safey signal,flag:{DebugParameter.isPassCouplerHPSafetySignal}");
+                    return;
+                }
+                if (charger == null)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                       Data: $"charger is null");
+                    return;
+                }
+
+                var e = charger.coupler1HPSafety;
+                var coupler_one = addressesBLL.cache.getCouplerAddresses(charger.UNIT_ID, CouplerNum.NumberOne);
+                string coupler_adr_id = coupler_one.ADR_ID;
+                if (charger.NeedProcessCoupler1HPSafetyChange)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                       Data: $"Coupler hp safyte has changed,charge id:{charger.UNIT_ID},coupler id:{1},coupler adr id:{coupler_adr_id}, safety status:{e}");
+                    charger.NeedProcessCoupler1HPSafetyChange = false;
+                    switch (e)
                     {
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                                 Data: $"ask vh:{vh.VEHICLE_ID} to charging by timer. ",
-                                 VehicleID: vh.VEHICLE_ID);
-                        askVhToCharging(vh);
+                        case SCAppConstants.CouplerHPSafety.NonSafety:
+                            lineService.ProcessAlarmReport(charger.UNIT_ID, AlarmBLL.AGVC_CHARGER_HP_NOT_SAFETY, ErrorStatus.ErrSet, $"Coupler position not safety.");
+                            break;
+                        case SCAppConstants.CouplerHPSafety.Safyte:
+                            lineService.ProcessAlarmReport(charger.UNIT_ID, AlarmBLL.AGVC_CHARGER_HP_NOT_SAFETY, ErrorStatus.ErrReset, $"Coupler position not safety.");
+                            break;
                     }
                 }
-                else if (vh.BatteryLevel > BatteryLevel.Low)
+
+                if (charger.isPassSafetySignalToSendPause)
                 {
-                    if (vh.MODE_STATUS == VHModeStatus.AutoCharging &&
-                        vh.ACT_STATUS == VHActionStatus.NoCommand &&
-                        (!(current_adr is CouplerAddress) ||
-                        //((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsEnable))
-                        //((current_adr is CouplerAddress) && !addressesBLL.cache.IsCouplerWork(current_adr as CouplerAddress, unitBLL)))
-                        ((current_adr is CouplerAddress) && !(current_adr as CouplerAddress).IsWork(unitBLL)))
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                       Data: $"Coupler hp safyte has changed,charge id:{charger.UNIT_ID},coupler id:{1},coupler adr id:{coupler_adr_id}, safety status:{e}," +
+                             $"but current is pass safety signal ");
+                    return;
+                }
+
+                PauseType pauseType = PauseType.Normal;
+                PauseEvent pauseEvent = PauseEvent.Pause;
+                if (e == SCAppConstants.CouplerHPSafety.Safyte)
+                {
+                    pauseEvent = PauseEvent.Continue;
+                }
+                else
+                {
+                    pauseEvent = PauseEvent.Pause;
+                }
+
+                var vhs = vehicleBLL.cache.loadAllVh();
+                foreach (var vh in vhs)
+                {
+                    if (vh.isTcpIpConnect &&
+                        (vh.MODE_STATUS == VHModeStatus.AutoRemote ||
+                         vh.MODE_STATUS == VHModeStatus.AutoLocal ||
+                         vh.MODE_STATUS == VHModeStatus.AutoCharging)
                        )
                     {
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
-                                 Data: $"ask vh:{vh.VEHICLE_ID} recover to auto remmote by timer",
-                                 VehicleID: vh.VEHICLE_ID);
-                        vehicleService.changeVhStatusToAutoRemote(vh.VEHICLE_ID);
+                        string vh_cur_adr_id = vh.CUR_ADR_ID;
+                        bool is_walkable = guideBLL.IsRoadWalkable(coupler_adr_id, vh_cur_adr_id);
+                        if (is_walkable)
+                        {
+                            string vh_id = vh.VEHICLE_ID;
+                            bool is_need_send_pause_cmd = checkIsNeedSendPausdEvent(vh, pauseEvent);
+                            if (is_need_send_pause_cmd)
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                                   Data: $"Coupler hp safyte and vh pause status out of sync, sned pause event,pause type:{pauseType} pause event:{pauseEvent}");
+
+                                Task.Run(() =>
+                                {
+                                    try
+                                    {
+                                        vehicleService.Send.Pause(vh_id, pauseEvent, pauseType);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        logger.Error(ex, "Exception:");
+                                    }
+                                });
+                            }
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+        private bool checkIsNeedSendPausdEvent(AVEHICLE vh, PauseEvent pauseEvent)
+        {
+            bool is_need_send_pause_cmd = false;
+            if (pauseEvent == PauseEvent.Continue)
+            {
+                if (vh.CMD_PAUSE == VhStopSingle.On)
+                {
+                    is_need_send_pause_cmd = true;
+                }
+            }
+            else if (pauseEvent == PauseEvent.Pause)
+            {
+                if (vh.CMD_PAUSE == VhStopSingle.Off)
+                {
+                    is_need_send_pause_cmd = true;
+                }
+            }
+            return is_need_send_pause_cmd;
         }
     }
 }

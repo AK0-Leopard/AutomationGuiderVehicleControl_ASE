@@ -128,6 +128,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             if (sc.Common.SCUtility.isMatche(bcApp.LoginUserID, "ADMIN"))
             {
                 cb_by_pass_shelf_status.Visible = true;
+                cb_PassSafetyCheckToPause.Enabled = true;
             }
         }
 
@@ -322,6 +323,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             AUNIT unit = bcApp.SCApplication.getEQObjCacheManager().getUnitByUnitID(cb_ChargerID.Text);
             if (unit != null)
             {
+                cb_PassSafetyCheckToPause.Checked = unit.isPassSafetySignalToSendPause;
+
                 tb_ChargerAlive.Text = unit.ChargerAlive.ToString();
                 tb_inputVoltage.Text = unit.inputVoltage.ToString();
                 tb_chargeVoltage.Text = unit.chargeVoltage.ToString();
@@ -1298,5 +1301,12 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             sc.App.SystemParameter.setTransferCommandTimePriorityIncrement((int)num_timePriorityIncrement.Value);
         }
 
+        private void cb_PassSafetyCheckToPause_CheckedChanged(object sender, EventArgs e)
+        {
+            string current_selected_charger_id = cb_ChargerID.Text;
+            AUNIT charger = bcApp.SCApplication.UnitBLL.OperateCatch.getUnit(current_selected_charger_id);
+            if (charger == null) return;
+            charger.isPassSafetySignalToSendPause = cb_PassSafetyCheckToPause.Checked;
+        }
     }
 }

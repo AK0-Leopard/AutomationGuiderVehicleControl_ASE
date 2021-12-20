@@ -9,6 +9,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
         #region "Internal Variable"
 
         private string m_sPortName;
+        private string m_sNote;
         private string m_sAddress;
         private int m_iLocX;
         private int m_iLocY;
@@ -32,6 +33,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
             set
             {
                 m_sPortName = value;
+            }
+        }
+        public string p_Note
+        {
+            get { return (m_sNote); }
+            set
+            {
+                m_sNote = value;
             }
         }
 
@@ -97,7 +106,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
         }
 
 
-      
+
 
         #endregion	/* Property */
 
@@ -114,8 +123,45 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
 
 
             this.lblPort.BackColor = m_clrColor;
-            this.lblPort.Text = m_sPortName.Trim();
+
+            string display_text = $"{sc.Common.SCUtility.Trim(m_sPortName, true)}\r\n({sc.Common.SCUtility.Trim(m_sNote, true)})";
+            lblPort.Text = display_text;
+            //this.lblPort.Text = m_sPortName.Trim();
+
         }
 
     }
+    public partial class uctlPortNew : UserControl
+    {
+        private Color errorColor = Common.BCUtility.ConvStr2Color("FFFF88C2");
+
+        private sc.AUNIT UNIT;
+        public uctlPortNew(sc.AUNIT unit)
+        {
+            InitializeComponent();
+            UNIT = unit;
+        }
+        public void refreshColor()
+        {
+            if (UNIT == null) return;
+            Color judge_color = Color.Empty;
+            if (UNIT.IsAbnormalHappend ||
+                UNIT.coupler1HPSafety == sc.App.SCAppConstants.CouplerHPSafety.NonSafety)
+            {
+                judge_color = errorColor;
+            }
+            else
+            {
+                judge_color = m_clrColor;
+            }
+
+            if (this.lblPort.BackColor != judge_color)
+            {
+                this.lblPort.BackColor = judge_color;
+            }
+        }
+
+
+    }
+
 }
