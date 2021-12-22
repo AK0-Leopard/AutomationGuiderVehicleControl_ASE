@@ -710,6 +710,13 @@ namespace com.mirle.ibg3k0.sc.Module
                                     try
                                     {
                                         vehicleService.Send.Pause(vh_id, pauseEvent, pauseType);
+
+                                        if (pauseEvent == PauseEvent.Pause)
+                                        {
+                                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleChargerModule), Device: DEVICE_NAME,
+                                               Data: $"Start notify charger:{charger.UNIT_ID} is abnormal.");
+                                            unitBLL.web.ChargerStatusIsAbnormal();
+                                        }
                                     }
                                     catch (Exception ex)
                                     {
