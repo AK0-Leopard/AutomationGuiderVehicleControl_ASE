@@ -508,7 +508,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         ALARM alarm = null;
                         if (is_all_alarm_clear)
                         {
-                            alarms = scApp.AlarmBLL.resetAllAlarmReport(vh_id);
+                            alarms = scApp.AlarmBLL.resetAllAlarmReport(vh_id, isResetByVh: true);
                             scApp.AlarmBLL.resetAllAlarmReport2Redis(vh_id);
                         }
                         else

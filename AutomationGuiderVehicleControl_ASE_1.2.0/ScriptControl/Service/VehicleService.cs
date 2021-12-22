@@ -629,7 +629,30 @@ namespace com.mirle.ibg3k0.sc.Service
                         scApp.LineService.TSCStateToPause();
                     }
                 }
+                checkIsLongTimeInactionFinish(vh);
                 //tryAskVh2ChargerIdle(vh);
+            }
+
+            private void checkIsLongTimeInactionFinish(AVEHICLE vh)
+            {
+                try
+                {
+                    if (vh.isLongTimeInaction)
+                    {
+                        vh.isLongTimeInaction = false;
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                           Data: $"Process vehicle long time inaction finish",
+                           VehicleID: vh.VEHICLE_ID,
+                           CST_ID_L: vh.CST_ID_L,
+                           CST_ID_R: vh.CST_ID_R);
+
+                        scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_LONG_TIME_INACTION_0, ErrorStatus.ErrReset, $"vehicle long time inaction finish");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
             }
 
 

@@ -535,7 +535,7 @@ namespace com.mirle.ibg3k0.sc
         [JsonIgnore]
         public virtual E_CMD_STATUS vh_CMD_Status { get; set; }
         public virtual bool isIdling { get; private set; }
-        public virtual bool isLongTimeInaction { get; private set; }
+        public virtual bool isLongTimeInaction { get;  set; }
         public virtual bool isCanNotFindTheCharger { get; private set; }
         public virtual bool isAuto
         {
@@ -1635,7 +1635,7 @@ namespace com.mirle.ibg3k0.sc
                     {
                         vh.CommandActionTimer.Reset();
                     }
-                    vh.isLongTimeInaction = false;
+                    //vh.isLongTimeInaction = false;
                 }
             }
 

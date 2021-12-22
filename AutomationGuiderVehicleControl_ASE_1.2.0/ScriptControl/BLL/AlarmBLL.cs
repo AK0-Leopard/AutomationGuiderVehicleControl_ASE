@@ -32,13 +32,29 @@ namespace com.mirle.ibg3k0.sc.BLL
     /// </summary>
     public class AlarmBLL
     {
+        const int CONTROL_REPORT_ALARM_CODE_MIN = 10000;
+        const int CONTROL_REPORT_ALARM_CODE_MAX = 20000;
+        public static bool IsReportByControl(string alarmCode)
+        {
+            bool is_success = int.TryParse(alarmCode, out int i_alarm_code);
+            if(!is_success)
+            {
+                return false;
+            }
 
-        public const string VEHICLE_ALARM_HAPPEND = "00000";
+            if (i_alarm_code >= CONTROL_REPORT_ALARM_CODE_MIN &&
+                i_alarm_code <= CONTROL_REPORT_ALARM_CODE_MAX)
+            {
+                return true;
+            }
+            return false;
+        }
+        //public const string VEHICLE_ALARM_HAPPEND = "00000";
         public const string VEHICLE_LONG_TIME_INACTION_0 = "10000";
         public const string VEHICLE_CAN_NOT_SERVICE = "10001";
         public const string VEHICLE_BATTERY_LEVEL_IS_LOW = "10002";
         public const string VEHICLE_CAN_NOT_FIND_THE_COUPLER_TO_CHARGING = "10003";
-        public const string SEND_TRAN_CMD_TO_VEHICLE_FAIL_0_1 = "10004";
+        //public const string SEND_TRAN_CMD_TO_VEHICLE_FAIL_0_1 = "10004";
         public const string VEHICLE_BATTERY_LEVEL_IS_MIDDLE = "10005";
 
         public const string AGVC_AGVSTATION_RESERVED_TIME_OUT_LINE1_ST01 = "10101";
@@ -443,7 +459,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
 
-        public List<ALARM> resetAllAlarmReport(string eq_id)
+        public List<ALARM> resetAllAlarmReport(string eq_id, bool isResetByVh = false)
         {
             List<ALARM> alarms = null;
             lock (lock_obj_alarm)
@@ -456,18 +472,25 @@ namespace com.mirle.ibg3k0.sc.BLL
                     {
                         foreach (ALARM alarm in alarms.ToList())
                         {
-                            if (!SCUtility.isMatche(alarm.ALAM_CODE, VEHICLE_ALARM_HAPPEND))
+                            if (isResetByVh)
                             {
-                                alarm.ALAM_STAT = ProtocolFormat.OHTMessage.ErrorStatus.ErrReset;
-                                alarm.CLEAR_DATE_TIME = DateTime.Now;
-                                alarmDao.updateAlarm(con, alarm);
+                                if (IsReportByControl(SCUtility.Trim(alarm.ALAM_CODE, true)))
+                                {
+                                    alarms.Remove(alarm);
+                                    continue;
+                                }
                             }
-                            else
-                            {
-                                alarms.Remove(alarm);
-                            }
+                            //if (SCUtility.isMatche(alarm.ALAM_CODE, VEHICLE_ALARM_HAPPEND))
+                            //{
+                            //    alarms.Remove(alarm);
+                            //    continue;
+                            //}
+
+                            alarm.ALAM_STAT = ProtocolFormat.OHTMessage.ErrorStatus.ErrReset;
+                            alarm.CLEAR_DATE_TIME = DateTime.Now;
+                            alarmDao.updateAlarm(con, alarm);
                         }
-                        CheckSetAlarm();
+                        //CheckSetAlarm();
                     }
                 }
             }
