@@ -171,19 +171,19 @@ namespace com.mirle.ibg3k0.sc.BLL
                     {
                         device_type = vh.NODE_ID;
                     }
-                    else
-                    {
-                        AUNIT charger = scApp.UnitBLL.OperateCatch.getUnit(eqID);
-                        if (charger != null)
-                        {
-                            string eq_id_temp = charger.EQPT_ID;
-                            var eq = scApp.EqptBLL.OperateCatch.GetEqpt(eq_id_temp);
-                            if (eq != null)
-                            {
-                                device_type = eq.NODE_ID;
-                            }
-                        }
-                    }
+                    //else
+                    //{
+                    //    AUNIT charger = scApp.UnitBLL.OperateCatch.getUnit(eqID);
+                    //    if (charger != null)
+                    //    {
+                    //        string eq_id_temp = charger.EQPT_ID;
+                    //        var eq = scApp.EqptBLL.OperateCatch.GetEqpt(eq_id_temp);
+                    //        if (eq != null)
+                    //        {
+                    //            device_type = eq.NODE_ID;
+                    //        }
+                    //    }
+                    //}
                 }
                 var alarm_report_conds = scApp.getCommObjCacheManager().getAlarmReportConds();
                 if (alarm_report_conds == null) return true;
