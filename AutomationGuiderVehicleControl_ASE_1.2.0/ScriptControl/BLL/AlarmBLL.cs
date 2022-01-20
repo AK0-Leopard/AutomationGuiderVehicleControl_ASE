@@ -183,9 +183,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                 device_type = eq.NODE_ID;
                             }
                         }
-
                     }
-
                 }
                 var alarm_report_conds = scApp.getCommObjCacheManager().getAlarmReportConds();
                 if (alarm_report_conds == null) return true;

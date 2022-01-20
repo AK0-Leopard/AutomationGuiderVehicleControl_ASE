@@ -14,6 +14,7 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
     {
         //public static App.SCApplication app = App.SCApplication.getInstance();
         public BLL.PortStationBLL PortStationBLL = null;
+        public BLL.EqptBLL EqptBLL = null;
         public BLL.VehicleBLL VehicleBLL = null;
         //public ATRANSFER cmd_mcs = null;
         public VTRANSFER vtrnasfer { get; private set; }
@@ -21,10 +22,18 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
         public TRANSFERObjToShow()
         {
         }
-        public TRANSFERObjToShow(BLL.PortStationBLL portStationBLL, VTRANSFER _cmd_mcs)
+        public TRANSFERObjToShow(BLL.PortStationBLL portStationBLL, BLL.EqptBLL eqptBLL, BLL.VehicleBLL vehicleBLL, VTRANSFER _cmd_mcs)
         {
+            sc.Common.SCUtility.TrimAllParameter(_cmd_mcs);
             vtrnasfer = _cmd_mcs;
             PortStationBLL = portStationBLL;
+            EqptBLL = eqptBLL;
+            VehicleBLL = vehicleBLL;
+        }
+        public void setVTRANSFER(VTRANSFER _cmd_mcs)
+        {
+            sc.Common.SCUtility.TrimAllParameter(_cmd_mcs);
+            vtrnasfer = _cmd_mcs;
         }
 
         //public TRANSFERObjToShow(BLL.VehicleBLL vehicleBLL, BLL.PortStationBLL portStationBLL, ATRANSFER _cmd_mcs)
@@ -37,7 +46,6 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
         public string CARRIER_ID { get { return vtrnasfer.CARRIER_ID; } }
         public string LOT_ID { get { return vtrnasfer.LOT_ID; } }
         public string VEHICLE_ID
-
         {
             get
             {
@@ -55,7 +63,7 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
             get
             {
                 var portstation = PortStationBLL.OperateCatch.getPortStation(vtrnasfer.HOSTSOURCE);
-                return portstation == null ? vtrnasfer.HOSTSOURCE : portstation.ToString();
+                return portstation == null ? sc.Common.SCUtility.Trim(vtrnasfer.HOSTSOURCE, true) : portstation.ToString();
             }
         }
         public string HOSTDESTINATION
@@ -63,8 +71,54 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
             get
             {
                 var portstation = PortStationBLL.OperateCatch.getPortStation(vtrnasfer.HOSTDESTINATION);
-                return portstation == null ? vtrnasfer.HOSTDESTINATION : portstation.ToString();
+                return portstation == null ? sc.Common.SCUtility.Trim(vtrnasfer.HOSTDESTINATION, true) : portstation.ToString();
             }
+        }
+
+        public string REQUEST_REASON
+        {
+            get
+            {
+                try
+                {
+                    if (TRANSFERSTATE != E_TRAN_STATUS.Queue) return "";
+                    bool is_service_vh_error_or_disconnection = checkServiceVhIsErrorOrDisConnection();
+                    if (is_service_vh_error_or_disconnection)
+                    {
+                        return "車子故障或離線中";
+                    }
+                    var portstation = PortStationBLL.OperateCatch.getPortStation(vtrnasfer.HOSTDESTINATION);
+                    if (portstation == null)
+                        return "";
+                    if (!portstation.IsVirtualAGVStation(EqptBLL))
+                        return "";
+                    var eq_st_obj = portstation.GetEqpt(EqptBLL) as AGVStation;
+                    if (eq_st_obj == null)
+                        return "";
+                    return sc.Common.SCUtility.Trim(eq_st_obj.RequestReason, true);
+                }
+                catch (Exception ex)
+                {
+                    NLog.LogManager.GetCurrentClassLogger().Warn(ex, "Exception:");
+                    return "";
+                }
+            }
+        }
+
+        private bool checkServiceVhIsErrorOrDisConnection()
+        {
+            if (!sc.Common.SCUtility.isEmpty(VEHICLE_ID))
+            {
+                var vh = VehicleBLL.cache.getVehicle(VEHICLE_ID);
+                if (vh != null)
+                {
+                    if (vh.IsError || !vh.isTcpIpConnect)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         //public int PRIORITY { get { return cmd_mcs.PRIORITY; } }

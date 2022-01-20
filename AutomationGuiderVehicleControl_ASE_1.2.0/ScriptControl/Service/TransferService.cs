@@ -223,7 +223,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         != SCAppConstants.AppServiceMode.Active)
                         return;
                     List<VTRANSFER> un_finish_trnasfer = scApp.TransferBLL.db.vTransfer.loadUnfinishedVTransfer();
-                    line.CurrentExcuteTransferCommand = un_finish_trnasfer;
+                    line.CurrentExcuteTransferCommand = un_finish_trnasfer.ToList();
 
                     Task.Run(() => queueTimeOutCheck(un_finish_trnasfer));
                     if (un_finish_trnasfer == null || un_finish_trnasfer.Count == 0) return;
@@ -1663,7 +1663,11 @@ namespace com.mirle.ibg3k0.sc.Service
                         != SCAppConstants.AppServiceMode.Active)
                         return;
                     List<VTRANSFER> un_finish_trnasfer = scApp.TransferBLL.db.vTransfer.loadUnfinishedVTransfer();
-                    un_finish_trnasfer.ForEach(tran => tran.setServiceVh(scApp));
+                    un_finish_trnasfer.ForEach(tran =>
+                    {
+                        SCUtility.TrimAllParameter(tran);
+                        tran.setServiceVh(scApp);
+                    });
 
                     line.CurrentExcuteTransferCommand = un_finish_trnasfer;
 

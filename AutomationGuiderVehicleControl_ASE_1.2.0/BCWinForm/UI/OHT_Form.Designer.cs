@@ -121,7 +121,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.aCMDMCSBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.cMDIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cARRIERIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LOT_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.REQUEST_REASON = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VEHICLE_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tRANSFERSTATEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.hOSTSOURCEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -130,6 +130,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.TIME_PRIORITY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cMDINSERTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cMDSTARTTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LOT_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -853,13 +855,13 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             // 
             this.dgv_TransferCommand.AllowUserToAddRows = false;
             this.dgv_TransferCommand.AutoGenerateColumns = false;
-            this.dgv_TransferCommand.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_TransferCommand.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgv_TransferCommand.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgv_TransferCommand.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_TransferCommand.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.cMDIDDataGridViewTextBoxColumn,
             this.cARRIERIDDataGridViewTextBoxColumn,
-            this.LOT_ID,
+            this.REQUEST_REASON,
             this.VEHICLE_ID,
             this.tRANSFERSTATEDataGridViewTextBoxColumn,
             this.hOSTSOURCEDataGridViewTextBoxColumn,
@@ -867,7 +869,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.pRIORITYDataGridViewTextBoxColumn,
             this.TIME_PRIORITY,
             this.cMDINSERTIMEDataGridViewTextBoxColumn,
-            this.cMDSTARTTIMEDataGridViewTextBoxColumn});
+            this.cMDSTARTTIMEDataGridViewTextBoxColumn,
+            this.LOT_ID,
+            this.Column1});
             this.dgv_TransferCommand.DataSource = this.cMDMCSObjToShowBindingSource;
             this.dgv_TransferCommand.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_TransferCommand.GridColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -1095,6 +1099,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.cMDIDDataGridViewTextBoxColumn.HeaderText = "ID";
             this.cMDIDDataGridViewTextBoxColumn.Name = "cMDIDDataGridViewTextBoxColumn";
             this.cMDIDDataGridViewTextBoxColumn.ReadOnly = true;
+            this.cMDIDDataGridViewTextBoxColumn.Width = 54;
             // 
             // cARRIERIDDataGridViewTextBoxColumn
             // 
@@ -1102,13 +1107,15 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.cARRIERIDDataGridViewTextBoxColumn.HeaderText = "Carrier ID";
             this.cARRIERIDDataGridViewTextBoxColumn.Name = "cARRIERIDDataGridViewTextBoxColumn";
             this.cARRIERIDDataGridViewTextBoxColumn.ReadOnly = true;
+            this.cARRIERIDDataGridViewTextBoxColumn.Width = 124;
             // 
-            // LOT_ID
+            // REQUEST_REASON
             // 
-            this.LOT_ID.DataPropertyName = "LOT_ID";
-            this.LOT_ID.HeaderText = "LOT ID";
-            this.LOT_ID.Name = "LOT_ID";
-            this.LOT_ID.ReadOnly = true;
+            this.REQUEST_REASON.DataPropertyName = "REQUEST_REASON";
+            this.REQUEST_REASON.HeaderText = "Desc.";
+            this.REQUEST_REASON.Name = "REQUEST_REASON";
+            this.REQUEST_REASON.ReadOnly = true;
+            this.REQUEST_REASON.Width = 87;
             // 
             // VEHICLE_ID
             // 
@@ -1116,6 +1123,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.VEHICLE_ID.HeaderText = "Vh";
             this.VEHICLE_ID.Name = "VEHICLE_ID";
             this.VEHICLE_ID.ReadOnly = true;
+            this.VEHICLE_ID.Width = 60;
             // 
             // tRANSFERSTATEDataGridViewTextBoxColumn
             // 
@@ -1124,6 +1132,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.tRANSFERSTATEDataGridViewTextBoxColumn.HeaderText = "State";
             this.tRANSFERSTATEDataGridViewTextBoxColumn.Name = "tRANSFERSTATEDataGridViewTextBoxColumn";
             this.tRANSFERSTATEDataGridViewTextBoxColumn.ReadOnly = true;
+            this.tRANSFERSTATEDataGridViewTextBoxColumn.Width = 82;
             // 
             // hOSTSOURCEDataGridViewTextBoxColumn
             // 
@@ -1132,6 +1141,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.hOSTSOURCEDataGridViewTextBoxColumn.HeaderText = "Source";
             this.hOSTSOURCEDataGridViewTextBoxColumn.Name = "hOSTSOURCEDataGridViewTextBoxColumn";
             this.hOSTSOURCEDataGridViewTextBoxColumn.ReadOnly = true;
+            this.hOSTSOURCEDataGridViewTextBoxColumn.Width = 102;
             // 
             // hOSTDESTINATIONDataGridViewTextBoxColumn
             // 
@@ -1140,6 +1150,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.hOSTDESTINATIONDataGridViewTextBoxColumn.HeaderText = "Dest.";
             this.hOSTDESTINATIONDataGridViewTextBoxColumn.Name = "hOSTDESTINATIONDataGridViewTextBoxColumn";
             this.hOSTDESTINATIONDataGridViewTextBoxColumn.ReadOnly = true;
+            this.hOSTDESTINATIONDataGridViewTextBoxColumn.Width = 82;
             // 
             // pRIORITYDataGridViewTextBoxColumn
             // 
@@ -1148,6 +1159,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.pRIORITYDataGridViewTextBoxColumn.HeaderText = "Priority";
             this.pRIORITYDataGridViewTextBoxColumn.Name = "pRIORITYDataGridViewTextBoxColumn";
             this.pRIORITYDataGridViewTextBoxColumn.ReadOnly = true;
+            this.pRIORITYDataGridViewTextBoxColumn.Width = 103;
             // 
             // TIME_PRIORITY
             // 
@@ -1155,6 +1167,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.TIME_PRIORITY.HeaderText = "Time Priority";
             this.TIME_PRIORITY.Name = "TIME_PRIORITY";
             this.TIME_PRIORITY.ReadOnly = true;
+            this.TIME_PRIORITY.Width = 154;
             // 
             // cMDINSERTIMEDataGridViewTextBoxColumn
             // 
@@ -1163,6 +1176,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.cMDINSERTIMEDataGridViewTextBoxColumn.HeaderText = "Inser Time";
             this.cMDINSERTIMEDataGridViewTextBoxColumn.Name = "cMDINSERTIMEDataGridViewTextBoxColumn";
             this.cMDINSERTIMEDataGridViewTextBoxColumn.ReadOnly = true;
+            this.cMDINSERTIMEDataGridViewTextBoxColumn.Width = 133;
             // 
             // cMDSTARTTIMEDataGridViewTextBoxColumn
             // 
@@ -1171,6 +1185,22 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             this.cMDSTARTTIMEDataGridViewTextBoxColumn.HeaderText = "Start Time";
             this.cMDSTARTTIMEDataGridViewTextBoxColumn.Name = "cMDSTARTTIMEDataGridViewTextBoxColumn";
             this.cMDSTARTTIMEDataGridViewTextBoxColumn.ReadOnly = true;
+            this.cMDSTARTTIMEDataGridViewTextBoxColumn.Width = 130;
+            // 
+            // LOT_ID
+            // 
+            this.LOT_ID.DataPropertyName = "LOT_ID";
+            this.LOT_ID.HeaderText = "LOT ID";
+            this.LOT_ID.Name = "LOT_ID";
+            this.LOT_ID.ReadOnly = true;
+            this.LOT_ID.Width = 99;
+            // 
+            // Column1
+            // 
+            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column1.HeaderText = "";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
             // 
             // OHT_Form
             // 
@@ -1317,7 +1347,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDIDDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn cARRIERIDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LOT_ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn REQUEST_REASON;
         private System.Windows.Forms.DataGridViewTextBoxColumn VEHICLE_ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn tRANSFERSTATEDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn hOSTSOURCEDataGridViewTextBoxColumn;
@@ -1326,5 +1356,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private System.Windows.Forms.DataGridViewTextBoxColumn TIME_PRIORITY;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDINSERTIMEDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMDSTARTTIMEDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LOT_ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
     }
 }

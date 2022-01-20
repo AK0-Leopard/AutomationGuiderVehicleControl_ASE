@@ -328,6 +328,7 @@ namespace com.mirle.ibg3k0.sc
                    ToList();
         }
         public E_AGVStationTranMode TransferMode { get; set; }
+        public string RequestReason { get; set; }
 
         public E_AGVStationDeliveryMode DeliveryMode { get { return GetDeliveryMode(); } }
 
@@ -435,6 +436,7 @@ namespace com.mirle.ibg3k0.sc
         string BindingVh { get; }
         DateTime ReservedSuccessTime { get; set; }
         E_AGVStationTranMode TransferMode { get; set; }
+        string RequestReason { get; set; }
 
         E_AGVStationDeliveryMode DeliveryMode { get; }
         bool IsEmergency { get; set; }

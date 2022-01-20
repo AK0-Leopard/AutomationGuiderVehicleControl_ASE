@@ -44,7 +44,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             ALINE line = mainform.BCApp.SCApplication.getEQObjCacheManager().getLine();
             var transfers = line.CurrentExcuteTransferCommand;
             cmdMCSshowList = transfers.
-                Select(mcs_cmd => new TRANSFERObjToShow(mainform.BCApp.SCApplication.PortStationBLL, mcs_cmd)).
+                Select(mcs_cmd => new TRANSFERObjToShow(mainform.BCApp.SCApplication.PortStationBLL, mainform.BCApp.SCApplication.EqptBLL, mainform.BCApp.SCApplication.VehicleBLL, mcs_cmd)).
                 ToList();
             cmsMCS_bindingSource.DataSource = cmdMCSshowList;
             dgv_TransferCommand.Refresh();

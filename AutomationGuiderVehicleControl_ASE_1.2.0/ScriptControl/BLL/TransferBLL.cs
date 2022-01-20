@@ -279,7 +279,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return result.Contains(UNLOAD_CHECK_RESULT_OK);
             }
 
-            public (bool isCan, E_AGVStationTranMode tranMode) checkExcuteUnloadTransferToAGVStationStatus(IAGVStationType agvStation, int unfinishCmdCount, bool isEmergency)
+            public (bool isCan, E_AGVStationTranMode tranMode, string requestReason) checkExcuteUnloadTransferToAGVStationStatus(IAGVStationType agvStation, int unfinishCmdCount, bool isEmergency)
             {
                 //if (DebugParameter.CanUnloadToAGVStationTest)
                 //    return true;
@@ -287,7 +287,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 //    return false;
                 string result = "";
                 string url = "";
-                (bool isCan, E_AGVStationTranMode tranMode) parsing_result = (false, E_AGVStationTranMode.None);
+                (bool isCan, E_AGVStationTranMode tranMode, string requestReason) parsing_result = (false, E_AGVStationTranMode.None, "");
                 try
                 {
                     string agv_url = agvStation.RemoveURI;
@@ -318,39 +318,89 @@ namespace com.mirle.ibg3k0.sc.BLL
                 catch (Exception ex)
                 {
                     logger.Error(ex, $"Exception:{url}");
+                    agvStation.RequestReason = "通訊失敗";
                     throw ex;
                 }
                 //return SCUtility.isMatche(result, UNLOAD_CHECK_RESULT_OK);
 
 
 
-                return (parsing_result.isCan, parsing_result.tranMode);
+                return (parsing_result.isCan, parsing_result.tranMode, parsing_result.requestReason);
             }
-
-            private (bool isCan, E_AGVStationTranMode tranMode) ParsingCheckAGVStationStatusResult(string checkResult)
+            public enum AGVStRequestResult
+            {
+                OK,
+                AGVStIsOutService,
+                HasCmdFromAGVSt,  //有命令正在準備由該AGV St取走
+                NoPortIsWorkable,     //沒有Auto的Port可以使用
+                PortStatusIsNotReady,     //沒有Auto的Port可以使用
+                HasFullBoxOnPort, //有實盒在Port上
+                HasCmdToAGVSt,    //有命令正在準備前往該AGV St
+                ForceReject,      //強制拒絕AGVC預約的要求
+                CanNotChangeInOutMode //無法切換Port的InOutMode
+            }
+            //private (bool isCan, E_AGVStationTranMode tranMode) ParsingCheckAGVStationStatusResult(string checkResult)
+            private (bool isCan, E_AGVStationTranMode tranMode, string requestReason) ParsingCheckAGVStationStatusResult(string checkResult)
             {
                 bool is_can = false;
                 E_AGVStationTranMode tran_mode = default(E_AGVStationTranMode);
                 if (!checkResult.Contains(","))
                 {
-                    return (false, E_AGVStationTranMode.None);
+                    return (false, E_AGVStationTranMode.None, "");
                 }
                 string[] s_result_array = checkResult.Split(',');
                 string s_is_can = s_result_array[0];
                 string s_tran_mode = s_result_array[1];
+                string s_request_reason = tryGetRequestReason(s_result_array);
                 string first_s_tran_mode_num = s_tran_mode.First().ToString();
                 int i_tran_mode = 0;
                 is_can = s_is_can.Contains(UNLOAD_CHECK_RESULT_OK);
                 if (!int.TryParse(first_s_tran_mode_num, out i_tran_mode))
                 {
-                    return (is_can, E_AGVStationTranMode.MoreOut);
+                    return (is_can, E_AGVStationTranMode.MoreOut, s_request_reason);
                 }
                 tran_mode = (E_AGVStationTranMode)i_tran_mode;
                 if (!Enum.IsDefined(typeof(E_AGVStationTranMode), tran_mode))
                 {
-                    return (is_can, E_AGVStationTranMode.MoreOut);
+                    return (is_can, E_AGVStationTranMode.MoreOut, s_request_reason);
                 }
-                return (is_can, tran_mode);
+                return (is_can, tran_mode, s_request_reason);
+            }
+
+            Dictionary<AGVStRequestResult, string> dicRequestResult = new Dictionary<AGVStRequestResult, string>()
+            {
+                {AGVStRequestResult.OK,"預約成功"},
+                {AGVStRequestResult.AGVStIsOutService,"AGV St out of service,請確認OHBC狀態"},
+                {AGVStRequestResult.HasCmdFromAGVSt,"OHBC正在退空/實盒中"},//OHBC正在退空/實盒中
+                {AGVStRequestResult.NoPortIsWorkable,"該Station非自動模式"},//該Station非自動模式
+                {AGVStRequestResult.PortStatusIsNotReady,"Port狀態動作中"},
+                {AGVStRequestResult.HasFullBoxOnPort,"有實盒在Port上"},
+                {AGVStRequestResult.HasCmdToAGVSt,"OHBC正在補空/實盒中"},//OHBC正在補空/實盒中
+                {AGVStRequestResult.ForceReject,"強制拒絕"},
+                {AGVStRequestResult.CanNotChangeInOutMode,"等待OHBC切換Port流向"},//等待OHBC切換Port流向
+            };
+
+            private string tryGetRequestReason(string[] sResultArray)
+            {
+                if (sResultArray == null || sResultArray.Length < 3)
+                {
+                    return "";
+                }
+                string s_request_reason = sResultArray[2];
+                if (!int.TryParse(s_request_reason, out int i_request_reason))
+                {
+                    return "";
+                }
+                AGVStRequestResult request_result = (AGVStRequestResult)i_request_reason;
+                if (!Enum.IsDefined(typeof(AGVStRequestResult), request_result))
+                {
+                    return "";
+                }
+                if (!dicRequestResult.ContainsKey(request_result))
+                {
+                    return "";
+                }
+                return dicRequestResult[request_result];
             }
 
             List<string> notify_urls = new List<string>()
@@ -434,7 +484,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     logger.Error(ex, $"Exception:{url}");
                 }
             }
-            public bool checkIsNeedWaitForLoad(IAGVStationType agvStation,int waitTimeOut)
+            public bool checkIsNeedWaitForLoad(IAGVStationType agvStation, int waitTimeOut)
             {
                 string result = "";
                 string url = "";

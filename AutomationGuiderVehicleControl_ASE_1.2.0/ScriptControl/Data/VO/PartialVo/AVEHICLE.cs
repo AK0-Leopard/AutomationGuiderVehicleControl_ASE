@@ -535,7 +535,7 @@ namespace com.mirle.ibg3k0.sc
         [JsonIgnore]
         public virtual E_CMD_STATUS vh_CMD_Status { get; set; }
         public virtual bool isIdling { get; private set; }
-        public virtual bool isLongTimeInaction { get;  set; }
+        public virtual bool isLongTimeInaction { get; set; }
         public virtual bool isCanNotFindTheCharger { get; private set; }
         public virtual bool isAuto
         {
@@ -918,12 +918,12 @@ namespace com.mirle.ibg3k0.sc
             this.REMOVED_TIME = null;
         }
 
-        public void setCarrierLocationInfo(string location_id_r, string location_id_l)
+        public void setCarrierLocationInfo(string location_id_r, string location_id_l, string location_mark_id_r, string location_mark_id_l)
         {
             CarrierLocation = new List<Location>()
             {
-                new Location(location_id_r),
-                new Location(location_id_l),
+                new Location(location_id_r,location_mark_id_r),
+                new Location(location_id_l,location_mark_id_l),
             };
         }
 
@@ -1676,14 +1676,23 @@ namespace com.mirle.ibg3k0.sc
 
         public class Location
         {
-            public string ID { get; set; }
+            public string ID { get; set; } = "";
             public bool HAS_CST { get; private set; }
             public string CST_ID { get; private set; }
+            public string Mark_ID { get; private set; } = "";
+            public string DisplayID 
+            {
+                get 
+                {
+                    return $"{ID}({Mark_ID})";
+                }
+            }
             public ShelfStatus ShelfStatus { get; private set; }
 
-            public Location(string id)
+            public Location(string id, string mark_id)
             {
                 ID = id;
+                Mark_ID = mark_id;
             }
 
             public void setCstID(string cst_id)

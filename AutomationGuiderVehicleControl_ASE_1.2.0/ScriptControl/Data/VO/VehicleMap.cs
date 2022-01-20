@@ -12,5 +12,7 @@ namespace com.mirle.ibg3k0.sc.Data.VO
         public string REAL_ID;
         public string LOCATION_ID_R;
         public string LOCATION_ID_L;
+        public string LOCATION_MARK_ID_R;
+        public string LOCATION_MARK_ID_L;
     }
 }

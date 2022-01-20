@@ -655,7 +655,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                       Data: $"No vh can service agv station:{agv_station.getAGVStationID()}, pass this one ask");
 
                         checkCanCloseReservationFlagWhenNoVhCanService(v_trans, agv_station);
-
+                        //agv_station.RequestReason = "無車可以服務";
+                        agv_station.RequestReason = "車子忙碌中";
                         return;
                     }
 
@@ -739,6 +740,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                 {
                                     agv_station.TransferMode = check_result.tranMode;
                                     agv_station.IsReservation = true;
+                                    agv_station.RequestReason = "";
                                     //scApp.TransferService.ScanByVTransfer_v2();
                                     scApp.TransferService.ScanByVTransfer_v3();
                                 }
@@ -746,6 +748,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                 {
                                     agv_station.IsReservation = false;
                                     agv_station.TransferMode = E_AGVStationTranMode.None;
+                                    agv_station.RequestReason = check_result.requestReason;
                                 }
                             }
                         }
@@ -754,6 +757,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                             var check_result = scApp.TransferBLL.web.checkExcuteUnloadTransferToAGVStationStatus(agv_station, 0, false);
                             agv_station.IsReservation = false;
                             agv_station.TransferMode = E_AGVStationTranMode.None;
+                            agv_station.RequestReason = "";
 
                             //checkIsNeedPreMoveToAGVStation(agv_station, service_vh, is_reserve_success, 0);
                         }
@@ -763,6 +767,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                         var check_result = scApp.TransferBLL.web.checkExcuteUnloadTransferToAGVStationStatus(agv_station, 0, false);
                         agv_station.IsReservation = false;
                         agv_station.TransferMode = E_AGVStationTranMode.None;
+                        agv_station.RequestReason = "";
 
                         //checkIsNeedPreMoveToAGVStation(agv_station, service_vh, is_reserve_success, 0);
                     }

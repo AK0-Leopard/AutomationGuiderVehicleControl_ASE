@@ -34,7 +34,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         BindingSource bindingSource = new BindingSource();
         BindingSource transfer_bindingSource = new BindingSource();
         BindingSource cmd_bindingSource = new BindingSource();
-        List<TRANSFERObjToShow> transfer_obj_to_show = null;
+        List<TRANSFERObjToShow> transfer_obj_to_show = new List<TRANSFERObjToShow>();
         List<CMDObjToShow> cmd_obj_to_show = null;
 
         string[] allAdr_ID = null;
@@ -434,16 +434,72 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             updateDGVCommand(line);
         }
 
+
+        private long tran_cmd_to_show_syncpoint = 0;
         private void updateDGVVTransferCommand(ALINE line)
         {
-            List<VTRANSFER> cmd_mcs_lst = line.CurrentExcuteTransferCommand;
-            if (cmd_mcs_lst == null) return;
-            transfer_obj_to_show = cmd_mcs_lst.
-                Select(vTran => new TRANSFERObjToShow(scApp.PortStationBLL, vTran)).
-                ToList();
-            transfer_bindingSource.DataSource = transfer_obj_to_show;
-            dgv_TransferCommand.Refresh();
+            if (System.Threading.Interlocked.Exchange(ref tran_cmd_to_show_syncpoint, 1) == 0)
+            {
+                try
+                {
+                    List<VTRANSFER> cmd_mcs_lst = line.CurrentExcuteTransferCommand;
+                    if (cmd_mcs_lst == null) return;
+                    refreshACMD_MCSInfoList(cmd_mcs_lst);
+                    dgv_TransferCommand.Refresh();
+                }
+                catch (Exception e)
+                {
+                    NLog.LogManager.GetCurrentClassLogger().Error(e, "Exception");
+                }
+                finally
+                {
+                    System.Threading.Interlocked.Exchange(ref tran_cmd_to_show_syncpoint, 0);
+                }
+            }
         }
+
+
+        private void refreshACMD_MCSInfoList(List<VTRANSFER> currentExcuteTranCmd)
+        {
+            try
+            {
+                List<string> new_current_excute_tran_cmd = currentExcuteTranCmd.Select(cmd => SCUtility.Trim(cmd.ID, true)).ToList();
+                List<string> old_current_excute_tran_cmd = transfer_obj_to_show.Select(cmd => cmd.CMD_ID).ToList();
+
+                List<string> new_add_mcs_cmds = new_current_excute_tran_cmd.Except(old_current_excute_tran_cmd).ToList();
+                //1.新增多出來的命令
+                foreach (string new_cmd in new_add_mcs_cmds)
+                {
+                    var cmd_obj = currentExcuteTranCmd.Where(cmd => SCUtility.isMatche(cmd.ID, new_cmd)).FirstOrDefault();
+                    if (cmd_obj == null) continue;
+                    TRANSFERObjToShow new_cmd_obj = new TRANSFERObjToShow(scApp.PortStationBLL, scApp.EqptBLL, scApp.VehicleBLL, cmd_obj);
+                    transfer_bindingSource.Add(new_cmd_obj);
+                }
+                //2.刪除以結束的命令
+                List<string> will_del_mcs_cmds = old_current_excute_tran_cmd.Except(new_current_excute_tran_cmd).ToList();
+                foreach (string old_cmd in will_del_mcs_cmds)
+                {
+                    var cmd_obj = transfer_obj_to_show.Where(cmd => SCUtility.isMatche(cmd.CMD_ID, old_cmd)).FirstOrDefault();
+                    transfer_bindingSource.Remove(cmd_obj);
+                }
+                //3.更新現有命令
+                foreach (var tran_obj_show_item in transfer_obj_to_show)
+                {
+                    var cmd_obj = currentExcuteTranCmd.Where(cmd => SCUtility.isMatche(cmd.ID, tran_obj_show_item.CMD_ID)).FirstOrDefault();
+                    if (cmd_obj == null)
+                    {
+                        continue;
+                    }
+                    tran_obj_show_item.setVTRANSFER(cmd_obj);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
+            }
+        }
+
         private async void updateDGVCommandAsync()
         {
             List<ACMD> cmd_mcs_lst = null;
@@ -942,6 +998,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void OHT_Form_Load(object sender, EventArgs e)
         {
             ck_montor_vh.Checked = true;
+            transfer_bindingSource.DataSource = transfer_obj_to_show;
             dgv_TransferCommand.DataSource = transfer_bindingSource;
             dgv_TaskCommand.DataSource = cmd_bindingSource;
         }

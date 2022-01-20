@@ -48,7 +48,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             lstVh.Add(string.Empty);
             lstVh.AddRange(scApp.VehicleBLL.cache.loadAllVh().Select(vh => vh.VEHICLE_ID).ToList());
             Common.BCUtility.setComboboxDataSource(cmb_InstalledVhID, lstVh.ToArray());
-            cmb_location_ids.DisplayMember = "ID";
+            cmb_location_ids.DisplayMember = "DisplayID";
             cmb_readyAgvSt.DisplayMember = "PortAdrInfo";
             cmb_readyAgvSt.ValueMember = "PORT_ID";
 
@@ -127,7 +127,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             string selected_vh_id = cmb_InstalledVhID.Text;
             AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(selected_vh_id);
             if (vh == null) return;
-            List<string> location_ids = vh.CarrierLocation.Select(loc => loc.ID).ToList();
             cmb_location_ids.DataSource = vh.CarrierLocation;   
         }
 
