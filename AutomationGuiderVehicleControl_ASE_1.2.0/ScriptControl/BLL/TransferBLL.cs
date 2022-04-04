@@ -386,7 +386,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     return "";
                 }
-                string s_request_reason = sResultArray[2];
+                string s_request_reason = sc.Common.SCUtility.Trim(sResultArray[2], true);
+                // " 2\" "
+                s_request_reason = s_request_reason.Replace('"',' ');
+                s_request_reason = sc.Common.SCUtility.Trim(s_request_reason, true);
                 if (!int.TryParse(s_request_reason, out int i_request_reason))
                 {
                     return "";
