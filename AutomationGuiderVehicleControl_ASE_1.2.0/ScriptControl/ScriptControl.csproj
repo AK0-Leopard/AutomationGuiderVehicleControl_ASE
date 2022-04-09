@@ -439,6 +439,7 @@
     </Compile>
     <Compile Include="BLL\CarrierBLL.cs" />
     <Compile Include="BLL\GroupPortStationBLL.cs" />
+    <Compile Include="BLL\NodeBLL.cs" />
     <Compile Include="BLL\ReserveBLL.cs" />
     <Compile Include="BLL\TransferBLL.cs" />
     <Compile Include="BLL\EqptBLL.cs" />

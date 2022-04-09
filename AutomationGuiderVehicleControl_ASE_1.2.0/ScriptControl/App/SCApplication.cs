@@ -300,6 +300,8 @@ namespace com.mirle.ibg3k0.sc.App
         public BlockControlBLL BlockControlBLL { get { return blockcontrolBLL; } }
         private TransferBLL transferBLL = null;
         public TransferBLL TransferBLL { get { return transferBLL; } }
+        private NodeBLL nodeBLL = null;
+        public NodeBLL NodeBLL { get { return nodeBLL; } }
 
 
 
@@ -1015,7 +1017,7 @@ namespace com.mirle.ibg3k0.sc.App
             blockcontrolBLL = new BlockControlBLL();
             transferBLL = new TransferBLL();
             datasynBLL = new DataSyncBLL();
-
+            nodeBLL = new NodeBLL();
             hidBLL = new HIDBLL();
             guideBLL = new GuideBLL();
 
@@ -1066,6 +1068,7 @@ namespace com.mirle.ibg3k0.sc.App
             blockcontrolBLL.start(this);
             transferBLL.start(this);
             datasynBLL.start(this);
+            nodeBLL.start(this);
 
             hidBLL.start(this);
             guideBLL.start(this);

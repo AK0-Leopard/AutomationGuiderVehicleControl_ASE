@@ -35,6 +35,8 @@ namespace com.mirle.ibg3k0.sc.Common
                     = new Lazy<ConnectionMultiplexer>(
                         () => ConnectionMultiplexer.Connect(configOptions.Value));
 
+        private static Dictionary<ANODE, ConnectionMultiplexer> DirLSCOfRedisConnections = new Dictionary<ANODE, ConnectionMultiplexer>();
+
         Logger logger = LogManager.GetCurrentClassLogger();
         int DBConnectionNum = -1;
         public RedisCacheManager(SCApplication _app, string product_id, int db_connection_num = -1)
@@ -45,6 +47,30 @@ namespace com.mirle.ibg3k0.sc.Common
             REDIS_KEY_WORK_REDIS_USING_COUNT = $"{productID}_{REDIS_KEY_WORK_REDIS_USING_COUNT}";
             GetConnection().ConnectionFailed += RedisCacheManager_ConnectionFailed;
             GetConnection().ConnectionRestored += RedisCacheManager_ConnectionRestored;
+            initialNodeConnection(_app);
+        }
+
+        private void initialNodeConnection(SCApplication _app)
+        {
+            var lcs_nodes = _app.NodeBLL.OperateCatch.loadLCSNodes();
+            foreach (var lcs_node in lcs_nodes)
+            {
+                var config = GetConfigurationOptions(lcs_node.NODE_ID, lcs_node.TcpIpAgentName);
+                var conn = ConnectionMultiplexer.Connect(config);
+                conn.ConnectionFailed += RedisCacheManager_NodeConnectionFailed;
+                conn.ConnectionRestored += RedisCacheManager_NodeConnectionRestored;
+                DirLSCOfRedisConnections.Add(lcs_node, conn);
+            }
+        }
+        private ConfigurationOptions GetConfigurationOptions(string nodeID, string endPointIP)
+        {
+            var configOptions = new ConfigurationOptions();
+            configOptions.EndPoints.Add(endPointIP);
+            configOptions.ClientName = $"{nodeID}_RedisConnection";
+            configOptions.ConnectTimeout = 100000;
+            configOptions.SyncTimeout = 100000;
+            configOptions.AbortOnConnectFail = false;
+            return configOptions;
         }
 
         private void RedisCacheManager_ConnectionRestored(object sender, ConnectionFailedEventArgs e)
@@ -68,6 +94,19 @@ namespace com.mirle.ibg3k0.sc.Common
             {
                 line.Redis_Link_Stat = SCAppConstants.LinkStatus.LinkFail;
             }
+        }
+
+        private void RedisCacheManager_NodeConnectionRestored(object sender, ConnectionFailedEventArgs e)
+        {
+            logger.Info("ConnectionRestored");
+        }
+
+        private void RedisCacheManager_NodeConnectionFailed(object sender, ConnectionFailedEventArgs e)
+        {
+            logger.Info(e.Exception,
+                        "Redis ConnectionFailed.ConnectionType[{0}],FailureType[{1}]",
+                        e.ConnectionType,
+                        e.FailureType);
         }
 
         object _lock = new object();
@@ -421,7 +460,7 @@ namespace com.mirle.ibg3k0.sc.Common
             UsingCount();
             return db.HashSetAsync(key, hashField, value, when); ;
         }
-        
+
         public Task<bool> HashDeleteAsync(RedisKey key, RedisValue hashField, When when = When.Always)
         {
             key = $"{productID}_{key}";
