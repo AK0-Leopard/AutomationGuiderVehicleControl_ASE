@@ -47,7 +47,11 @@ namespace com.mirle.ibg3k0.sc.Common
             REDIS_KEY_WORK_REDIS_USING_COUNT = $"{productID}_{REDIS_KEY_WORK_REDIS_USING_COUNT}";
             GetConnection().ConnectionFailed += RedisCacheManager_ConnectionFailed;
             GetConnection().ConnectionRestored += RedisCacheManager_ConnectionRestored;
-            initialNodeConnection(_app);
+        }
+        public void start()
+        {
+            initialNodeConnection(scApp);
+
         }
 
         private void initialNodeConnection(SCApplication _app)
@@ -109,6 +113,19 @@ namespace com.mirle.ibg3k0.sc.Common
                         e.FailureType);
         }
 
+        public ConnectionMultiplexer GetConnection(ANODE node)
+        {
+            bool is_exist = DirLSCOfRedisConnections.TryGetValue(node, out var connection);
+            if (is_exist)
+            {
+                return connection;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         object _lock = new object();
         bool redisConnectionValid = true;
 
@@ -155,6 +172,18 @@ namespace com.mirle.ibg3k0.sc.Common
             catch (Exception ex)
             {
                 redisConnectionValid = false;
+                logger.Error(String.Format("Unable to create Redis connection: {0}", ex.Message));
+                return null;
+            }
+        }
+        public IDatabase Database(ConnectionMultiplexer connection)
+        {
+            try
+            {
+                return connection.GetDatabase(DBConnectionNum);
+            }
+            catch (Exception ex)
+            {
                 logger.Error(String.Format("Unable to create Redis connection: {0}", ex.Message));
                 return null;
             }
@@ -512,6 +541,14 @@ namespace com.mirle.ibg3k0.sc.Common
             IDatabase db = Database();
             if (db == null) return null;
             var value = db.HashValuesAsync(key);
+            UsingCount();
+            return value;
+        }
+        public RedisValue[] HashValues(ConnectionMultiplexer connection, string key)
+        {
+            IDatabase db = Database(connection);
+            if (db == null) return null;
+            var value = db.HashValues(key);
             UsingCount();
             return value;
         }

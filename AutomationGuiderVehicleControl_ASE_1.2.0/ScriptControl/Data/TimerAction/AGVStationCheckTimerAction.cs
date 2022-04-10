@@ -80,6 +80,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             try
             {
                 scApp.PortStationBLL.updatePortStatusByRedis();
+                var nodes = scApp.NodeBLL.OperateCatch.loadLCSNodes();
+                scApp.PortStationBLL.updatePortStatusByEachNodeRedis(nodes);
 
                 if (DebugParameter.CanAutoRandomGeneratesCommand ||
                 (scApp.getEQObjCacheManager().getLine().SCStats == ALINE.TSCState.AUTO && scApp.getEQObjCacheManager().getLine().MCSCommandAutoAssign))

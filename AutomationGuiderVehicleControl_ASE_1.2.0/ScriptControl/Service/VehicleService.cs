@@ -1237,23 +1237,40 @@ namespace com.mirle.ibg3k0.sc.Service
                     virtual_agv_station_port_infos = new RepeatedField<PortInfo>();
                     foreach (var port in agv_st_ports)
                     {
-                        bool is_port_ready = port.PortReady;
-                        bool is_in_put_mode = port.IsInPutMode;
-                        bool is_out_put_mode = port.IsOutPutMode;
-                        if (is_in_put_mode && !is_port_ready)
+
+                        bool is_port_ready = false;
+                        bool is_in_put_mode = false;
+                        bool is_out_put_mode = false;
+                        if (port.IsDirtyData)
                         {
-                            //如果當Port是In put mode但是port not ready時，
-                            //可以看一下是否在最近15秒內是否有進行過預開蓋
-                            //有的話代表還是可以進行送貨的
-                            if (port.IsBoxCoverOpeningByPreOpenCover)
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                               Data: $"Port ID:{port.PORT_ID} is dirty data,last update time:{port.Timestamp.ToString(SCAppConstants.DateTimeFormat_19)},force reply not ready.",
+                               VehicleID: vh.VEHICLE_ID,
+                               CST_ID_L: vh.CST_ID_L,
+                               CST_ID_R: vh.CST_ID_R);
+                        }
+                        else
+                        {
+                            is_port_ready = port.PortReady;
+                            is_in_put_mode = port.IsInPutMode;
+                            is_out_put_mode = port.IsOutPutMode;
+
+
+                            if (is_in_put_mode && !is_port_ready)
                             {
-                                is_port_ready = true;
-                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
-                                   Data: $"Port ID:{port.PORT_ID} is in put mode:{is_port_ready} and is port ready:{is_port_ready}," +
-                                         $"but pre open cover this port in 10 ms , so force change to port ready.",
-                                   VehicleID: vh.VEHICLE_ID,
-                                   CST_ID_L: vh.CST_ID_L,
-                                   CST_ID_R: vh.CST_ID_R);
+                                //如果當Port是In put mode但是port not ready時，
+                                //可以看一下是否在最近15秒內是否有進行過預開蓋
+                                //有的話代表還是可以進行送貨的
+                                if (port.IsBoxCoverOpeningByPreOpenCover)
+                                {
+                                    is_port_ready = true;
+                                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
+                                       Data: $"Port ID:{port.PORT_ID} is in put mode:{is_port_ready} and is port ready:{is_port_ready}," +
+                                             $"but pre open cover this port in 10 ms , so force change to port ready.",
+                                       VehicleID: vh.VEHICLE_ID,
+                                       CST_ID_L: vh.CST_ID_L,
+                                       CST_ID_R: vh.CST_ID_R);
+                                }
                             }
                         }
                         virtual_agv_station_port_infos.Add(new PortInfo()

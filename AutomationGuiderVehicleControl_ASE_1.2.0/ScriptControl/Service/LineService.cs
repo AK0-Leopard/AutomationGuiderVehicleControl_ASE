@@ -71,7 +71,57 @@ namespace com.mirle.ibg3k0.sc.Service
             var commonInfo = scApp.getEQObjCacheManager().CommonInfo;
             commonInfo.addEventHandler(nameof(LineService), BCFUtility.getPropertyName(() => commonInfo.MPCTipMsgList),
              PublishTipMessageInfo);
+
+            var nodes = scApp.NodeBLL.OperateCatch.loadLCSNodes();
+            foreach (var node in nodes)
+            {
+                node.RedisConnectionStatusChange += Node_RedisConnectionStatusChange;
+            }
         }
+
+        private void Node_RedisConnectionStatusChange(object sender, bool isConnectionFail)
+        {
+            try
+            {
+                ANODE node = sender as ANODE;
+                if (node == null)
+                {
+                    return;
+                }
+                string alarm_code = getWithLCSRedisConnectionCode(node);
+                ProcessAlarmReport("AGVC", alarm_code, 
+                                   isConnectionFail ? ErrorStatus.ErrSet : ErrorStatus.ErrReset,
+                                  $"LCS:[{node.NODE_ID} redis connection fail]");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
+        private string getWithLCSRedisConnectionCode(ANODE node)
+        {
+            string node_id = node.NODE_ID;
+            switch (node_id)
+            {
+                case "OHBC_LINE1_NODE":
+                    return AlarmBLL.AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_OHBC_LINE1;
+                case "OHBC_LINE2_NODE":
+                    return AlarmBLL.AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_OHBC_LINE2;
+                case "OHBC_LINE3_NODE":
+                    return AlarmBLL.AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_OHBC_LINE3;
+                case "OHBC_LOOP_NODE":
+                    return AlarmBLL.AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_OHBC_LOOP;
+                case "STK01_NODE":
+                    return AlarmBLL.AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_STK01;
+                case "STK02_NODE":
+                    return AlarmBLL.AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_STK02;
+                case "STK03_NODE":
+                    return AlarmBLL.AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_STK03;
+                default:
+                    return "";
+            }
+        }
+
         private void Line_LineStatusChange(object sender, EventArgs e)
         {
             PublishLineInfo(sender, null);

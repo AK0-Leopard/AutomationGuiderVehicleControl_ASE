@@ -864,7 +864,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         public class ConnectionSetting
         {
-            public const string REDIS_SERVER_CONFIGURATION = "redis.ohxc.mirle.com.tw:6379";
+            public const string REDIS_SERVER_CONFIGURATION = "redis.agvc.mirle.com.tw:6379";
             //public const string REDIS_SERVER_CONFIGURATION = "redis.ohxc.mirle.com.tw:6379,syncTimeout =3000";
             //public const string REDIS_SERVER_CONFIGURATION = "localhost:6379,syncTimeout =3000";
         }

@@ -144,6 +144,18 @@ namespace com.mirle.ibg3k0.sc
             PortInfo.IsCSTPresence = false;
             PortInfo.CassetteID = "";
         }
+        const int PORT_INFO_DATA_TIME_OUT_SECOND = 10;
+        public bool IsDirtyData
+        {
+            get
+            {
+                DateTime now_date_time = DateTime.Now;
+
+                return now_date_time > Timestamp.AddSeconds(PORT_INFO_DATA_TIME_OUT_SECOND);
+                //12:00:05 > 12:00:00 + 10s -> F (V)
+                //12:00:11 > 12:00:00 + 10s -> T (V)
+            }
+        }
     }
 
 

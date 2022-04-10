@@ -37,7 +37,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         public static bool IsReportByControl(string alarmCode)
         {
             bool is_success = int.TryParse(alarmCode, out int i_alarm_code);
-            if(!is_success)
+            if (!is_success)
             {
                 return false;
             }
@@ -80,6 +80,15 @@ namespace com.mirle.ibg3k0.sc.BLL
         public const string AGVC_OUT_OF_STOCK_TIME_OUT_LINE3_ST03 = "10120";
 
         public const string AGVC_TRAN_COMMAND_IN_QUEUE_TIME_OUT = "10121";
+
+        public const string AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_OHBC_LINE1 = "10131";
+        public const string AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_OHBC_LINE2 = "10132";
+        public const string AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_OHBC_LINE3 = "10133";
+        public const string AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_OHBC_LOOP = "10134";
+        public const string AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_STK01 = "10135";
+        public const string AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_STK02 = "10136";
+        public const string AGVC_WITH_LCS_REDIS_CONNECTION_FAIL_STK03 = "10137";
+
 
         public const string AGVC_CHARGER_HP_NOT_SAFETY = "10201";
 
