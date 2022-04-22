@@ -21,6 +21,7 @@ namespace com.mirle.ibg3k0.sc
 
         private AlarmHisList alarmHisList = new AlarmHisList();
         public bool RedisConnectionValid = true;
+        public long syncPortStatusUpdate = 0;
 
         public override void doShareMemoryInit(BCFAppConstants.RUN_LEVEL runLevel)
         {

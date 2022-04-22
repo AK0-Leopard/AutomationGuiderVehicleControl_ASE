@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.BLL
@@ -72,45 +73,59 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
         public void updatePortStatusByEachNodeRedis(List<ANODE> nodes)
         {
-            foreach (var node in nodes)
+            try
             {
-                updatePortStatusByNodeRedisAsync(node);
+                foreach (var node in nodes)
+                {
+                    updatePortStatusByNodeRedisAsync(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
             }
         }
 
         private async void updatePortStatusByNodeRedisAsync(ANODE node)
         {
-            try
+            if (System.Threading.Interlocked.Exchange(ref node.syncPortStatusUpdate, 1) == 0)
             {
-                var ports_plc_info = await Task.Run(() => redis.getCurrentPortsInfo(node));
-                if (ports_plc_info == null || ports_plc_info.Count == 0)
+                try
                 {
-                    return;
-                }
-                var sb = new StringBuilder();
-                ports_plc_info.ForEach(info => sb.AppendLine(info.ToString()));
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(PortStationBLL), Device: "AGVC",
-                   Data: $"node:{node.NODE_ID},port infos:{sb}");
-                foreach (var port_plc_info in ports_plc_info)
-                {
-                    var port_st = OperateCatch.getPortStation(port_plc_info.PortID);
-                    if (port_st == null)
+                    var ports_plc_info = await Task.Run(() => redis.getCurrentPortsInfo(node));
+                    if (ports_plc_info == null || ports_plc_info.Count == 0)
                     {
-                        logger.Warn($"Ask node:{node.ZONE_ID} of port:{port_plc_info.PortID} not exist in agvc");
-                        continue;
+                        return;
                     }
-                    port_st.SetPortInfo(port_plc_info);
+                    var sb = new StringBuilder();
+                    ports_plc_info.ForEach(info => sb.AppendLine(info.ToString()));
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(PortStationBLL), Device: "AGVC",
+                       Data: $"node:{node.NODE_ID},port infos:{sb}");
+                    foreach (var port_plc_info in ports_plc_info)
+                    {
+                        var port_st = OperateCatch.getPortStation(port_plc_info.PortID);
+                        if (port_st == null)
+                        {
+                            logger.Warn($"Ask node:{node.ZONE_ID} of port:{port_plc_info.PortID} not exist in agvc");
+                            continue;
+                        }
+                        port_st.SetPortInfo(port_plc_info);
+                    }
+                    node.IsRedisConnectionFail = false;
                 }
-                node.IsRedisConnectionFail = false;
-            }
-            catch (StackExchange.Redis.RedisConnectionException ex)
-            {
-                logger.Error(ex, "Exception");
-                node.IsRedisConnectionFail = true;
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Exception");
+                catch (StackExchange.Redis.RedisConnectionException ex)
+                {
+                    logger.Error(ex, "Exception");
+                    node.IsRedisConnectionFail = true;
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    System.Threading.Interlocked.Exchange(ref node.syncPortStatusUpdate, 0);
+                }
             }
         }
 

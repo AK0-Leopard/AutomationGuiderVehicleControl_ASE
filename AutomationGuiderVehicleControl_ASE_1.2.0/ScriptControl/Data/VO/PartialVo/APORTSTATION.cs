@@ -109,6 +109,13 @@ namespace com.mirle.ibg3k0.sc
                 return dateTime;
             }
         }
+        public string sTimestamp
+        {
+            get
+            {
+                return Timestamp.ToString(SCAppConstants.DateTimeFormat_22);
+            }
+        }
         //public bool IsInPutMode { get { return PortInfo.IsInputMode; } }
         public bool IsAutoMode { set { PortInfo.IsAutoMode = value; } get { return PortInfo.IsAutoMode; } }
         public bool IsInPutMode { set { PortInfo.IsInputMode = value; } get { return PortInfo.IsInputMode; } }
