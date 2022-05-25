@@ -15,10 +15,13 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc
 {
-    public partial class ANODE: BaseEQObject, IAlarmHisList
+    public partial class ANODE : BaseEQObject, IAlarmHisList
     {
+        public event EventHandler<bool> RedisConnectionStatusChange;
+
         private AlarmHisList alarmHisList = new AlarmHisList();
-      
+        public bool RedisConnectionValid = true;
+        public long syncPortStatusUpdate = 0;
 
         public override void doShareMemoryInit(BCFAppConstants.RUN_LEVEL runLevel)
         {
@@ -42,6 +45,30 @@ namespace com.mirle.ibg3k0.sc
                 {
                     vh.doShareMemoryInit(runLevel);
                 }
+            }
+        }
+
+        private bool isredisconnectionfail;
+        public bool IsRedisConnectionFail
+        {
+            set
+            {
+                if (isredisconnectionfail != value)
+                {
+                    isredisconnectionfail = value;
+                    onRedisConnectionStatusChange();
+                }
+            }
+        }
+        private void onRedisConnectionStatusChange()
+        {
+            try
+            {
+                RedisConnectionStatusChange?.Invoke(this, isredisconnectionfail);
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex);
             }
         }
 

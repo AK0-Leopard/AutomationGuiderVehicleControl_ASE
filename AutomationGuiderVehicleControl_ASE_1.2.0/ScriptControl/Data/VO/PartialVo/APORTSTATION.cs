@@ -109,6 +109,13 @@ namespace com.mirle.ibg3k0.sc
                 return dateTime;
             }
         }
+        public string sTimestamp
+        {
+            get
+            {
+                return Timestamp.ToString(SCAppConstants.DateTimeFormat_22);
+            }
+        }
         //public bool IsInPutMode { get { return PortInfo.IsInputMode; } }
         public bool IsAutoMode { set { PortInfo.IsAutoMode = value; } get { return PortInfo.IsAutoMode; } }
         public bool IsInPutMode { set { PortInfo.IsInputMode = value; } get { return PortInfo.IsInputMode; } }
@@ -143,6 +150,18 @@ namespace com.mirle.ibg3k0.sc
             PortInfo.PortWaitIn = false;
             PortInfo.IsCSTPresence = false;
             PortInfo.CassetteID = "";
+        }
+        const int PORT_INFO_DATA_TIME_OUT_SECOND = 10;
+        public bool IsDirtyData
+        {
+            get
+            {
+                DateTime now_date_time = DateTime.Now;
+
+                return now_date_time > Timestamp.AddSeconds(PORT_INFO_DATA_TIME_OUT_SECOND);
+                //12:00:05 > 12:00:00 + 10s -> F (V)
+                //12:00:11 > 12:00:00 + 10s -> T (V)
+            }
         }
     }
 

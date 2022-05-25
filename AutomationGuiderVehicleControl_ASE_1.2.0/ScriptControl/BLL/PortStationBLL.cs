@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.BLL
@@ -35,6 +36,10 @@ namespace com.mirle.ibg3k0.sc.BLL
         public void updatePortStatusByRedis()
         {
             var ports_plc_info = redis.getCurrentPortsInfo();
+            if (ports_plc_info == null || ports_plc_info.Count == 0)
+            {
+                return;
+            }
             var sb = new StringBuilder();
             ports_plc_info.ForEach(info => sb.AppendLine(info.ToString()));
             LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(PortStationBLL), Device: "AGVC",
@@ -66,6 +71,64 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             }
         }
+        public void updatePortStatusByEachNodeRedis(List<ANODE> nodes)
+        {
+            try
+            {
+                foreach (var node in nodes)
+                {
+                    updatePortStatusByNodeRedisAsync(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
+
+        private async void updatePortStatusByNodeRedisAsync(ANODE node)
+        {
+            if (System.Threading.Interlocked.Exchange(ref node.syncPortStatusUpdate, 1) == 0)
+            {
+                try
+                {
+                    var ports_plc_info = await Task.Run(() => redis.getCurrentPortsInfo(node));
+                    if (ports_plc_info == null || ports_plc_info.Count == 0)
+                    {
+                        return;
+                    }
+                    var sb = new StringBuilder();
+                    ports_plc_info.ForEach(info => sb.AppendLine(info.ToString()));
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(PortStationBLL), Device: "AGVC",
+                       Data: $"node:{node.NODE_ID},port infos:{sb}");
+                    foreach (var port_plc_info in ports_plc_info)
+                    {
+                        var port_st = OperateCatch.getPortStation(port_plc_info.PortID);
+                        if (port_st == null)
+                        {
+                            logger.Warn($"Ask node:{node.ZONE_ID} of port:{port_plc_info.PortID} not exist in agvc");
+                            continue;
+                        }
+                        port_st.SetPortInfo(port_plc_info);
+                    }
+                    node.IsRedisConnectionFail = false;
+                }
+                catch (StackExchange.Redis.RedisConnectionException ex)
+                {
+                    logger.Error(ex, "Exception");
+                    node.IsRedisConnectionFail = true;
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    System.Threading.Interlocked.Exchange(ref node.syncPortStatusUpdate, 0);
+                }
+            }
+        }
+
         public class DB
         {
             PortStationDao portStationDao = null;
@@ -404,6 +467,18 @@ namespace com.mirle.ibg3k0.sc.BLL
             public List<PORT_INFO> getCurrentPortsInfo()
             {
                 var redis_values_ports = redisCacheManager.HashValuesAsync(SCAppConstants.REDIS_KEY_CURRENT_PORTS_INFO).Result;
+                var ports_info = redis_values_ports.Select(info_raw_data => Convert2Object_PortInfo(info_raw_data)).ToList();
+                return ports_info;
+            }
+            public List<PORT_INFO> getCurrentPortsInfo(ANODE node)
+            {
+                var conn = redisCacheManager.GetConnection(node);
+                if (conn == null)
+                {
+                    logger.Warn($"node:{node.NODE_ID} no redis connection.");
+                    return null;
+                }
+                var redis_values_ports = redisCacheManager.HashValues(conn, SCAppConstants.REDIS_KEY_CURRENT_PORTS_INFO);
                 var ports_info = redis_values_ports.Select(info_raw_data => Convert2Object_PortInfo(info_raw_data)).ToList();
                 return ports_info;
             }

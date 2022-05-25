@@ -603,6 +603,8 @@ namespace com.mirle.ibg3k0.sc.App
         {
             avoidVehicleModule.start(this);
             VehicleChargerModule.start(this);
+            redisCacheManager.start();
+
         }
 
         private void initModule()
