@@ -433,14 +433,14 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 if (is_walkable)
                 {
 
-                    //確認身上沒有無命令的CST
-                    if (hasNotCmdCstInVh(v_trans, vh.CST_ID_L))
+                    //確認身上沒有無命令的CST，若有命令此筆命令也需要是前往該
+                    if (hasNotCmdCstOrCmdTargetNotStCSTInVh(v_trans, vh.CST_ID_L, agv_station))
                     {
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: string.Empty,
                                       Data: $"Has no transfer command of cst in vh:[{vh.VEHICLE_ID}] cst id:{vh.CST_ID_L},pass this one to service st.:{agv_station.getAGVStationID()}.");
                         continue;
                     }
-                    if (hasNotCmdCstInVh(v_trans, vh.CST_ID_R))
+                    if (hasNotCmdCstOrCmdTargetNotStCSTInVh(v_trans, vh.CST_ID_R, agv_station))
                     {
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(CMDBLL), Device: string.Empty,
                                       Data: $"Has no transfer command of cst in vh:[{vh.VEHICLE_ID}] cst id:{vh.CST_ID_R},pass this one to service st.:{agv_station.getAGVStationID()}.");
@@ -472,16 +472,29 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             return (false, null);
         }
         /// <summary>
-        /// 用來確認是否有無命令的CST停留在車子上
+        /// 1.確認是否有無命令的CST停留在車子上
+        /// 2.
         /// </summary>
         /// <param name="v_trans"></param>
         /// <param name="cstID"></param>
         /// <returns></returns>
-        private bool hasNotCmdCstInVh(List<VTRANSFER> v_trans, string cstID)
+        private bool hasNotCmdCstOrCmdTargetNotStCSTInVh(List<VTRANSFER> v_trans, string cstID, AGVStation agv_station)
         {
-            if (SCUtility.isEmpty(cstID)) return false;
-            var tran_cmd_count = v_trans.Where(tran => SCUtility.isMatche(tran.CARRIER_ID, cstID)).Count();
-            return tran_cmd_count == 0;
+            if (SCUtility.isEmpty(cstID))
+            {
+                return false;
+            }
+            var v_tran_temp = v_trans.Where(tran => SCUtility.isMatche(tran.CARRIER_ID, cstID)).FirstOrDefault();
+            if (v_tran_temp == null) //確認該CST是否有搬送命令，若為0 則代表該CST沒有命令
+            {
+                return true;
+            }
+            //如果有命令，要確認該CST的目的地是否為該St，不是的話也要當作車子的CST尚未有命令，避免他去詢問St的通行。
+            if (!SCUtility.isMatche(v_tran_temp.HOSTDESTINATION, agv_station.getAGVStationID()))
+            {
+                return true;
+            }
+            return false;
         }
         private void agvStationCheckNew(List<VTRANSFER> v_trans, AGVStation agv_station)
         {
