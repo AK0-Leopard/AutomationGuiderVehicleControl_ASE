@@ -38,7 +38,7 @@
         <EntityTypeShape EntityType="OHTC_DevModel.SCALE_BASE_DATA" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.AHIDZONEDETAIL" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.ALARMRPTCOND" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OHTC_DevModel.ALARM" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OHTC_DevModel.ALARM" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.UASUSR" Width="1.5" PointX="6.75" PointY="14.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OHTC_DevModel.ACASSETTE" Width="1.5" PointX="0.75" PointY="12.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.ACMD" Width="1.5" PointX="3.375" PointY="14.75" />
