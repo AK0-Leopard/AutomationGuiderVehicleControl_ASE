@@ -52,6 +52,7 @@
         <EntityTypeShape EntityType="OHTC_DevModel.HVTRANSFER" Width="1.5" PointX="17.375" PointY="2.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.VTRANSFER" Width="1.5" PointX="0.75" PointY="17.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.APORTICON" Width="1.5" PointX="17.375" PointY="8.75" />
+        <EntityTypeShape EntityType="OHTC_DevModel.VHCMD_OHTC_MCS" Width="1.5" PointX="17.375" PointY="12.75" />
         </Diagram>
       <Diagram DiagramId="21b451beae304df4acbd996a333e2fa5" Name="TransporterDataBase" >
         <EntityTypeShape EntityType="OHTC_DevModel.AGROUPRAILS" Width="1.5" PointX="0.75" PointY="0.75" />
