@@ -364,6 +364,16 @@ namespace com.mirle.ibg3k0.sc.BLL
             return (tran_cmd_1, tran_cmd_2, tran_cmd_3, tran_cmd_4);
         }
 
+        //(string cst1ID, string cst2ID, string adrID, string portID) tryGetVhCSTIDAndPositionInfo(string vhID)
+        //{
+        //    AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+        //    if (vh == null) return ("", "", "", "");
+        //    string adr_id = vh.CUR_ADR_ID;
+        //    var positions = scApp.PortStationBLL.OperateCatch.getPortStationByAdrID(adr_id);
+
+
+        //}
+
 
         public void setAlarmReport2Redis(ALARM alarm)
         {
