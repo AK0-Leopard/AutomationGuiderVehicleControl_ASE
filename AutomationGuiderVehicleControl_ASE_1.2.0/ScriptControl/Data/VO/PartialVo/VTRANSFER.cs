@@ -8,7 +8,9 @@ using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.Data.VO.Interface;
 using com.mirle.ibg3k0.sc.ObjectRelay;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,8 @@ namespace com.mirle.ibg3k0.sc
 {
     public partial class VTRANSFER
     {
+        public static ConcurrentDictionary<string, VTRANSFER> VTransferInfoList { get; private set; } = new ConcurrentDictionary<string, VTRANSFER>();
+        public Stopwatch COUNTERDOWN_KEEP_TIME { get; private set; } = new Stopwatch();
         public string ServiceVhID { get; private set; }
         public ACMD ConvertToCmd(BLL.PortStationBLL portStationBLL, BLL.SequenceBLL sequenceBLL, AVEHICLE assignVehicle)
         {
@@ -162,6 +166,34 @@ namespace com.mirle.ibg3k0.sc
             }
         }
 
+        internal void put(VTRANSFER current_cmd)
+        {
+            ID = current_cmd.ID;
+            LOT_ID = current_cmd.LOT_ID;
+            CARRIER_ID = current_cmd.CARRIER_ID;
+            TRANSFERSTATE = current_cmd.TRANSFERSTATE;
+            COMMANDSTATE = current_cmd.COMMANDSTATE;
+            HOSTSOURCE = current_cmd.HOSTSOURCE;
+            HOSTDESTINATION = current_cmd.HOSTDESTINATION;
+            PRIORITY = current_cmd.PRIORITY;
+            CHECKCODE = current_cmd.CHECKCODE;
+            CMD_INSER_TIME = current_cmd.CMD_INSER_TIME;
+            CMD_START_TIME = current_cmd.CMD_START_TIME;
+            CMD_FINISH_TIME = current_cmd.CMD_FINISH_TIME;
+            TIME_PRIORITY = current_cmd.TIME_PRIORITY;
+            PORT_PRIORITY = current_cmd.PORT_PRIORITY;
+            REPLACE = current_cmd.REPLACE;
+            PRIORITY_SUM = current_cmd.PRIORITY_SUM;
+            RESULT_CODE = current_cmd.RESULT_CODE;
+            EXCUTE_CMD_ID = current_cmd.EXCUTE_CMD_ID;
+            CARRIER_INSER_TIME = current_cmd.CARRIER_INSER_TIME;
+            CARRIER_LOCATION = current_cmd.CARRIER_LOCATION;
+            CARRIER_INSTALLED_TIME = current_cmd.CARRIER_INSTALLED_TIME;
+            CARRIER_READ_STATUS = current_cmd.CARRIER_READ_STATUS;
+            VH_ID = current_cmd.VH_ID;
+            COMPLETE_STATUS = current_cmd.COMPLETE_STATUS;
+            PAUSEFLAG = current_cmd.PAUSEFLAG;
+        }
     }
 
 }

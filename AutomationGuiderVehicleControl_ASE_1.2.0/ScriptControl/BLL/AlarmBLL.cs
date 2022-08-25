@@ -299,6 +299,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 else
                     alarmMap = alarmMapDao.getAlarmMap(eq_id, error_code);
 
+                var vh_info = tryGetVhCSTIDAndPositionInfo(eq_id, effectTranIDs);
                 var effect_tran_ids = tryGetTransferCommandIDs(effectTranIDs);
 
                 string strNow = BCFUtility.formatDateTime(DateTime.Now, SCAppConstants.TimestampFormat_19);
@@ -313,7 +314,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                     CMD_ID_1 = effect_tran_ids.TranCmdId1,
                     CMD_ID_2 = effect_tran_ids.TranCmdId2,
                     CMD_ID_3 = effect_tran_ids.TranCmdId3,
-                    CMD_ID_4 = effect_tran_ids.TranCmdId4
+                    CMD_ID_4 = effect_tran_ids.TranCmdId4,
+                    CARRIER_ID = vh_info.cstID,
+                    ADDRESS_ID = vh_info.adrID,
+                    PORT_ID = vh_info.portID
                 };
                 if (SCUtility.isEmpty(alarm.ALAM_DESC))
                 {
@@ -363,6 +367,47 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return (tran_cmd_1, tran_cmd_2, tran_cmd_3, tran_cmd_4);
         }
+
+        private (string cstID, string adrID, string portID) tryGetVhCSTIDAndPositionInfo(string vhID, List<string> excutingTransferID)
+        {
+            try
+            {
+                AVEHICLE vh = scApp.VehicleBLL.cache.getVehicle(vhID);
+                if (vh == null)
+                    return ("", "", "");
+                if (excutingTransferID == null || excutingTransferID.Count == 0)
+                    return ("", "", "");
+                string current_adr = vh.CUR_ADR_ID;
+                foreach (var transfer_id in excutingTransferID)
+                {
+                    bool is_exist = VTRANSFER.VTransferInfoList.TryGetValue(transfer_id, out var v);
+                    if (is_exist)
+                    {
+                        if (SCUtility.isMatche(current_adr, v.getSourcePortAdrID(scApp.PortStationBLL)))
+                        {
+                            return (SCUtility.Trim(v.CARRIER_ID, true), SCUtility.Trim(current_adr, true), SCUtility.Trim(v.HOSTSOURCE, true));
+                        }
+                        if (SCUtility.isMatche(current_adr, v.getTragetPortAdrID(scApp.PortStationBLL)))
+                        {
+                            return (SCUtility.Trim(v.CARRIER_ID, true), SCUtility.Trim(current_adr, true), SCUtility.Trim(v.HOSTDESTINATION, true));
+                        }
+                    }
+                }
+                string on_vh_cst_id = "";
+                if (!SCUtility.isEmpty(vh.CST_ID_R))
+                    on_vh_cst_id = vh.CST_ID_R;
+                else if (!SCUtility.isEmpty(vh.CST_ID_L))
+                    on_vh_cst_id = vh.CST_ID_L;
+                return (SCUtility.Trim(on_vh_cst_id, true), SCUtility.Trim(current_adr, true), "");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+                return ("", "", "");
+            }
+        }
+
+
 
         //(string cst1ID, string cst2ID, string adrID, string portID) tryGetVhCSTIDAndPositionInfo(string vhID)
         //{

@@ -24,8 +24,11 @@ using System;
 using System.Dynamic;
 using System.Linq.Expressions;
 using System.Linq;
+using com.mirle.ibg3k0.sc.Common.AOP;
+
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 {
+    [TeaceMethodAspectAttribute]
     public class SubChargerValueDefMapAction : IValueDefMapAction
     {
         public const string DEVICE_NAME_CHARGER = "CHARGER";

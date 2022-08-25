@@ -17,6 +17,7 @@ using com.mirle.ibg3k0.bcf.Data.ValueDefMapAction;
 using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Common.AOP;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
 using KingAOP;
 using NLog;
@@ -27,6 +28,7 @@ using System.Linq.Expressions;
 
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 {
+    [TeaceMethodAspectAttribute]
     public class ChargerValueDefMapAction : IValueDefMapAction
     {
         public const string DEVICE_NAME_MC = "Master Charger";

@@ -2,6 +2,7 @@
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.BLL;
 using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Common.AOP;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
@@ -18,6 +19,7 @@ using static com.mirle.ibg3k0.sc.AVEHICLE;
 
 namespace com.mirle.ibg3k0.sc.Service
 {
+    [TeaceMethodAspectAttribute]
     public class LineService
     {
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();

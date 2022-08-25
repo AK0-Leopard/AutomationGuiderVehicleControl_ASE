@@ -15,6 +15,7 @@ using com.mirle.ibg3k0.bcf.Controller;
 using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Common.AOP;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
 using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
@@ -36,7 +37,8 @@ using static com.mirle.ibg3k0.sc.Data.PLC_Functions.ChargerInterface;
 
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 {
-    public class EQTcpIpMapAction : ValueDefMapActionBase, IDynamicMetaObjectProvider
+    [TeaceMethodAspectAttribute]
+    public class EQTcpIpMapAction : ValueDefMapActionBase
     {
 
         string tcpipAgentName = string.Empty;
@@ -46,10 +48,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             : base()
         {
 
-        }
-        public DynamicMetaObject GetMetaObject(Expression parameter)
-        {
-            return new AspectWeaver(parameter, this);
         }
 
         public override string getIdentityKey()
@@ -181,8 +179,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         protected void str132_Process(object sender, TcpIpEventArgs e)
         {
             ID_132_TRANS_COMPLETE_REPORT recive_str = (ID_132_TRANS_COMPLETE_REPORT)e.objPacket;
-            dynamic receive_process = scApp.VehicleService.Receive;
-            receive_process.CommandCompleteReport(tcpipAgentName, bcfApp, eqpt, recive_str, e.iSeqNum);
+            //dynamic receive_process = scApp.VehicleService.Receive;
+            scApp.VehicleService.Receive.CommandCompleteReport(tcpipAgentName, bcfApp, eqpt, recive_str, e.iSeqNum);
         }
         protected void str134_Receive(object sender, TcpIpEventArgs e)
         {
@@ -192,8 +190,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 ID_134_TRANS_EVENT_REP recive_str = (ID_134_TRANS_EVENT_REP)e.objPacket;
                 SCUtility.RecodeReportInfo(eqpt.VEHICLE_ID, 0, recive_str);
-                dynamic receive_process = scApp.VehicleService.Receive;
-                receive_process.PositionReport(bcfApp, eqpt, recive_str, e.iSeqNum);
+                //dynamic receive_process = scApp.VehicleService.Receive;
+                scApp.VehicleService.Receive.PositionReport(bcfApp, eqpt, recive_str, e.iSeqNum);
             }
             catch (Exception ex)
             {
@@ -237,15 +235,15 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         protected void str136_Process(object sender, TcpIpEventArgs e)
         {
             ID_136_TRANS_EVENT_REP recive_str = (ID_136_TRANS_EVENT_REP)e.objPacket;
-            dynamic receive_process = scApp.VehicleService.Receive;
-            receive_process.TranEventReport(bcfApp, eqpt, recive_str, e.iSeqNum);
+            //dynamic receive_process = scApp.VehicleService.Receive;
+            scApp.VehicleService.Receive.TranEventReport(bcfApp, eqpt, recive_str, e.iSeqNum);
         }
 
         protected void str138_Receive(object sender, TcpIpEventArgs e)
         {
             ID_138_GUIDE_INFO_REQUEST recive_str = (ID_138_GUIDE_INFO_REQUEST)e.objPacket;
-            dynamic receive_process = scApp.VehicleService.Receive;
-            receive_process.GuideInfoRequest(bcfApp, eqpt, recive_str, e.iSeqNum);
+            //dynamic receive_process = scApp.VehicleService.Receive;
+            scApp.VehicleService.Receive.GuideInfoRequest(bcfApp, eqpt, recive_str, e.iSeqNum);
         }
 
         object str144_lockObj = new object();
@@ -285,14 +283,14 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         protected void str144_Process(object sender, TcpIpEventArgs e)
         {
             ID_144_STATUS_CHANGE_REP recive_str = (ID_144_STATUS_CHANGE_REP)e.objPacket;
-            dynamic receive_process = scApp.VehicleService.Receive;
-            receive_process.StatusReport(bcfApp, eqpt, recive_str, e.iSeqNum);
+            //dynamic receive_process = scApp.VehicleService.Receive;
+            scApp.VehicleService.Receive.StatusReport(bcfApp, eqpt, recive_str, e.iSeqNum);
         }
         protected void str152_Receive(object sender, TcpIpEventArgs e)
         {
-            dynamic receive_process = scApp.VehicleService.Receive;
+            //dynamic receive_process = scApp.VehicleService.Receive;
             ID_152_AVOID_COMPLETE_REPORT recive_str = (ID_152_AVOID_COMPLETE_REPORT)e.objPacket;
-            receive_process.AvoidCompleteReport(bcfApp, eqpt, recive_str, e.iSeqNum);
+            scApp.VehicleService.Receive.AvoidCompleteReport(bcfApp, eqpt, recive_str, e.iSeqNum);
         }
         protected void str162_Receive(object sender, TcpIpEventArgs e)
         {
@@ -319,21 +317,21 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         protected void str172_Receive(object sender, TcpIpEventArgs e)
         {
             ID_172_RANGE_TEACHING_COMPLETE_REPORT recive_gpp = (ID_172_RANGE_TEACHING_COMPLETE_REPORT)e.objPacket;
-            dynamic receive_process = scApp.VehicleService.Receive;
-            receive_process.RangeTeachingCompleteReport("", bcfApp, eqpt, recive_gpp, e.iSeqNum);
+            //dynamic receive_process = scApp.VehicleService.Receive;
+            scApp.VehicleService.Receive.RangeTeachingCompleteReport("", bcfApp, eqpt, recive_gpp, e.iSeqNum);
         }
         protected void str174_Receive(object sender, TcpIpEventArgs e)
         {
-            ID_174_ADDRESS_TEACH_REPORT recive_gpp = (ID_174_ADDRESS_TEACH_REPORT)e.objPacket;
-            dynamic receive_process = scApp.VehicleService.Receive;
-            receive_process.AddressTeachReport(bcfApp, eqpt, recive_gpp, e.iSeqNum);
+            //ID_174_ADDRESS_TEACH_REPORT recive_gpp = (ID_174_ADDRESS_TEACH_REPORT)e.objPacket;
+            ////dynamic receive_process = scApp.VehicleService.Receive;
+            //scApp.VehicleService.Receive.AddressTeachReport(bcfApp, eqpt, recive_gpp, e.iSeqNum);
         }
         protected void str194_Receive(object sender, TcpIpEventArgs e)
         {
             ID_194_ALARM_REPORT recive_gpp = (ID_194_ALARM_REPORT)e.objPacket;
 
-            dynamic receive_process = scApp.VehicleService.Receive;
-            receive_process.AlarmReport(bcfApp, eqpt, recive_gpp, e.iSeqNum);
+            //dynamic receive_process = scApp.VehicleService.Receive;
+            scApp.VehicleService.Receive.AlarmReport(bcfApp, eqpt, recive_gpp, e.iSeqNum);
 
             //STR_VHMSG_ALARM_REP recive_str = TCPUtility._Packet2Str<STR_VHMSG_ALARM_REP>((byte[])e.objPacket, eqpt.TcpIpAgentName);
 

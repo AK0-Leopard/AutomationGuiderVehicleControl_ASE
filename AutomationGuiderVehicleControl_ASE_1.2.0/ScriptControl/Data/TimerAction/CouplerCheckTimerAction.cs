@@ -14,6 +14,7 @@ using com.mirle.ibg3k0.bcf.Controller;
 using com.mirle.ibg3k0.bcf.Data.TimerAction;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Common.AOP;
 using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 using NLog;
@@ -29,6 +30,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
     /// Class ZoneBlockCheck.
     /// </summary>
     /// <seealso cref="com.mirle.ibg3k0.bcf.Data.TimerAction.ITimerAction" />
+    [TeaceMethodAspectAttribute]
     class CouplerCheckTimerAction : ITimerAction
     {
         /// <summary>

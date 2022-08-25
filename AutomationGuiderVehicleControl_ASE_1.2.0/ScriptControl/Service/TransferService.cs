@@ -2,6 +2,7 @@
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.BLL;
 using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Common.AOP;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 using DocumentFormat.OpenXml.Bibliography;
@@ -17,6 +18,7 @@ using static com.mirle.ibg3k0.sc.AVEHICLE;
 
 namespace com.mirle.ibg3k0.sc.Service
 {
+    [TeaceMethodAspectAttribute]
     public class TransferService
     {
         protected NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -1886,6 +1888,8 @@ namespace com.mirle.ibg3k0.sc.Service
                             }
                         }
                     }
+                    refreshVTransferCmdInfoList(un_finish_trnasfer);
+
                 }
                 catch (Exception ex)
                 {
@@ -1895,6 +1899,67 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     System.Threading.Interlocked.Exchange(ref syncTranCmdPoint, 0);
                 }
+            }
+        }
+
+        const int TRANSFER_CMD_KEEP_TIME_ms = 10_000;
+        private void refreshVTransferCmdInfoList(List<VTRANSFER> currentExcuteMCSCmd)
+        {
+            try
+            {
+                bool has_change = false;
+                List<string> new_current_excute_mcs_cmd = currentExcuteMCSCmd.Select(cmd => SCUtility.Trim(cmd.ID, true)).ToList();
+                List<string> old_current_excute_mcs_cmd = VTRANSFER.VTransferInfoList.Keys.ToList();
+
+                List<string> new_add_mcs_cmds = new_current_excute_mcs_cmd.Except(old_current_excute_mcs_cmd).ToList();
+                //1.新增多出來的命令
+                foreach (string new_cmd in new_add_mcs_cmds)
+                {
+                    var current_cmd = currentExcuteMCSCmd.Where(cmd => SCUtility.isMatche(cmd.ID, new_cmd)).FirstOrDefault();
+                    if (current_cmd == null) continue;
+                    VTRANSFER new_cmd_obj = new VTRANSFER();
+                    new_cmd_obj.put(current_cmd);
+                    VTRANSFER.VTransferInfoList.TryAdd(new_cmd, new_cmd_obj);
+                    has_change = true;
+                }
+                //2.刪除以結束的命令
+                List<string> will_del_mcs_cmds = old_current_excute_mcs_cmd.Except(new_current_excute_mcs_cmd).ToList();
+                foreach (string old_cmd in will_del_mcs_cmds)
+                {
+
+                    bool is_exist = VTRANSFER.VTransferInfoList.TryGetValue(old_cmd, out VTRANSFER cmd_mcs);
+                    if (is_exist)
+                    {
+                        //13:01:10 + 10 = 13:01:20 > 13:01:21
+                        if (!cmd_mcs.COUNTERDOWN_KEEP_TIME.IsRunning || cmd_mcs.COUNTERDOWN_KEEP_TIME.ElapsedMilliseconds < TRANSFER_CMD_KEEP_TIME_ms)
+                        {
+                            //幫忙保留結束的命令，車子發生Alarm的時候，可以查詢到對應的紀錄
+                            if (!cmd_mcs.COUNTERDOWN_KEEP_TIME.IsRunning)
+                                cmd_mcs.COUNTERDOWN_KEEP_TIME.Restart();
+                        }
+                        else
+                        {
+                            VTRANSFER.VTransferInfoList.TryRemove(old_cmd, out var _);
+                            has_change = true;
+                        }
+                    }
+
+                }
+                //3.更新現有命令
+                foreach (var mcs_cmd_item in VTRANSFER.VTransferInfoList)
+                {
+                    string cmd_mcs_id = mcs_cmd_item.Key;
+                    VTRANSFER cmd_mcs = currentExcuteMCSCmd.Where(cmd => SCUtility.isMatche(cmd.ID, cmd_mcs_id)).FirstOrDefault();
+                    if (cmd_mcs == null)
+                    {
+                        continue;
+                    }
+                    mcs_cmd_item.Value.put(cmd_mcs);
+                }
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
             }
         }
         public bool updateTranTimePriority(VTRANSFER tran, int timePriority)
@@ -2062,7 +2127,7 @@ namespace com.mirle.ibg3k0.sc.Service
     {
         bool AssignTransferToVehicle(VTRANSFER waittingExcuteMcsCmd, AVEHICLE bestSuitableVh);
     }
-
+    [TeaceMethodAspectAttribute]
     public class TranAssignerNormal : ITranAssigner
     {
         SCApplication scApp = null;
@@ -2126,7 +2191,7 @@ namespace com.mirle.ibg3k0.sc.Service
             return is_success;
         }
     }
-
+    [TeaceMethodAspectAttribute]
     public class TransferAssignerSwap : ITranAssigner
     {
         SCApplication scApp = null;
