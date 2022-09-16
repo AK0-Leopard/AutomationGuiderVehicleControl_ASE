@@ -325,10 +325,10 @@ namespace com.mirle.ibg3k0.sc.Common
             string msg = string.Format("{0}{1}", sb.ToString(), sxfy.GetType().Name);
             //            SECSMsgLogger.Info(sb.ToString());
             SECSMsgLogger.Info(msg);
-            Task.Run(() =>
-            {
-                setLogInfo_SECS(scApp, isReceive, sxfy, sDateTime);
-            });
+            //Task.Run(() =>
+            //{
+            //    setLogInfo_SECS(scApp, isReceive, sxfy, sDateTime);
+            //});
         }
 
         public const String FUNCTION_TRANSDFERTYPE_SEND = "Send";
@@ -361,7 +361,7 @@ namespace com.mirle.ibg3k0.sc.Common
                 logTitleTemp.Time = sDateTime;
                 logUtility.addLogInfo(logTitleTemp);
 
-                System.Threading.ThreadPool.QueueUserWorkItem(new WaitCallback(SCApplication.getInstance().LineService.PublishHostMsgInfo), logTitleTemp);
+                //System.Threading.ThreadPool.QueueUserWorkItem(new WaitCallback(SCApplication.getInstance().LineService.PublishHostMsgInfo), logTitleTemp);
             }
             catch (Exception ex)
             {

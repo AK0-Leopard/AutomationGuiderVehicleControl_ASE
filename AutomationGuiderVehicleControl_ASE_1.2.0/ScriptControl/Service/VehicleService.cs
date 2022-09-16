@@ -741,7 +741,7 @@ namespace com.mirle.ibg3k0.sc.Service
             public void doPositionUpdate(AVEHICLE vh, ID_134_TRANS_EVENT_REP receiveStr)
             {
                 scApp.VehicleBLL.setAndPublishPositionReportInfo2Redis(vh.VEHICLE_ID, receiveStr);
-                scApp.ReportBLL.newReportRunTimetatus(vh.VEHICLE_ID);
+                //scApp.ReportBLL.newReportRunTimetatus(vh.VEHICLE_ID);
             }
             const int TOLERANCE_SCOPE = 50;
             private const ushort SEQNUM_MAX = 999;
