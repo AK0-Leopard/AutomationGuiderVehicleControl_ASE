@@ -979,6 +979,7 @@
     </Content>
     <Content Include="DLL\BlockControlFramework.dll" />
     <Content Include="DLL\BlockControlFramework.pdb" />
+    <Content Include="DLL\Cowboy.Sockets.pdb" />
     <Content Include="DLL\Mirle.Hlts.ReserveSection.Map.dll" />
     <Content Include="DLL\Mirle.Hlts.ReserveSection.Vision.dll" />
     <Content Include="DLL\Mirle.Hlts.Utils.dll" />

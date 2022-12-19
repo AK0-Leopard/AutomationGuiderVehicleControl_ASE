@@ -2283,6 +2283,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                 hTransferDao.AddByBatch(con, HCMD_MCS);
             }
         }
+        public void DeleteHTransferBefore6Month()
+        {
+            DateTime date_teime_before_6_month = DateTime.Now.AddMonths(-6);
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                hTransferDao.DeleteByBatch(con, date_teime_before_6_month);
+            }
+        }
         public List<ObjectRelay.HCMD_MCSObjToShow> loadHCMD_MCSs()
         {
             List<ObjectRelay.HCMD_MCSObjToShow> hcmds = null;
@@ -2319,6 +2327,14 @@ namespace com.mirle.ibg3k0.sc.BLL
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
             {
                 hcmdDao.AddByBatch(con, HCMD);
+            }
+        }
+        public void DeleteHCMDBefore6Month()
+        {
+            DateTime date_teime_before_6_month = DateTime.Now.AddMonths(-6);
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                hcmdDao.DeleteByBatch(con, date_teime_before_6_month);
             }
         }
         #endregion HCMD
