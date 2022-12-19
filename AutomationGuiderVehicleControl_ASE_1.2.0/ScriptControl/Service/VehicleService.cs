@@ -3440,8 +3440,8 @@ namespace com.mirle.ibg3k0.sc.Service
                    CST_ID_R: vh.CST_ID_R);
 
                 //要再上報Alamr Rerport給MCS
-                if (vh.IS_INSTALLED)
-                    scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrSet, $"vehicle cannot service");
+                //if (vh.IS_INSTALLED)
+                scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrSet, $"vehicle cannot service");
             }
             catch (Exception ex)
             {
@@ -4591,6 +4591,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     (vh.VEHICLE_ID,
                     SCAppConstants.RecodeConnectionInfo_Type.Disconnection.ToString(),
                     vh.getConnectionIntervalTime(bcfApp));
+                scApp.LineService.ProcessAlarmReport(vh, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrSet, $"vehicle cannot service");
             }
             Task.Run(() => scApp.VehicleBLL.web.vehicleDisconnection());
         }
@@ -4659,7 +4660,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 //4.上報給MCS
                 AVEHICLE vh_vo = scApp.VehicleBLL.cache.getVehicle(vhID);
 
-                //測試期間，暫時不看是否已經連線中
                 //因為會讓車子在連線狀態下跑CycleRun
                 //此時車子會是連線狀態但要把它Remove
                 if (vh_vo.isTcpIpConnect)
@@ -4670,13 +4670,13 @@ namespace com.mirle.ibg3k0.sc.Service
                        VehicleID: vhID);
                     return (false, message);
                 }
+                scApp.LineService.ProcessAlarmReport(vh_vo, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrReset, $"vehicle cannot service");
                 scApp.VehicleBLL.updataVehicleRemove(vhID);
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                    Data: $"vh id:{vhID} remove success. start release reserved control...",
                    VehicleID: vhID);
                 scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh_vo.VEHICLE_ID);
                 scApp.ReserveBLL.RemoveVehicle(vh_vo.VEHICLE_ID);
-                scApp.LineService.ProcessAlarmReport(vh_vo, AlarmBLL.VEHICLE_CAN_NOT_SERVICE, ErrorStatus.ErrReset, $"vehicle cannot service");
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                    Data: $"vh id:{vhID} remove success. end release reserved control.",
                    VehicleID: vhID);

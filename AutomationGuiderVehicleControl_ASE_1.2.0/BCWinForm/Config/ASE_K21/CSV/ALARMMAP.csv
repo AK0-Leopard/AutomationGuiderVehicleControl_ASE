@@ -32,6 +32,10 @@ Charger1,61,2,
 Charger1,62,2,
 Charger1,63,2,
 Charger1,10201,1,Coupler position not safety
+Charger1,532,2,Charging pile Charging command is abnormal
+Charger1,533,2,Charging pile not used
+Charger1,534,2,Charging pile not in use AGVC switching warning
+Charger1,535,1,Charging pile Charging head After confirmation check Not positioned
 Charger2,64,2,Charging pile. no abnormalities in receiving and sending out
 Charger2,65,2,Charging pile motor forward inspection abnormal
 Charger2,66,2,Charging pile motor back check abnormal
@@ -65,6 +69,10 @@ Charger2,93,2,
 Charger2,94,2,
 Charger2,95,2,
 Charger2,10201,1,Coupler position not safety
+Charger2,564,2,Charging pile Charging command is abnormal
+Charger2,565,2,Charging pile not used
+Charger2,566,2,Charging pile not in use AGVC switching warning
+Charger2,567,1,Charging pile Charging head After confirmation check Not positioned
 Charger3,96,2,Charging pile. no abnormalities in receiving and sending out
 Charger3,97,2,Charging pile motor forward inspection abnormal
 Charger3,98,2,Charging pile motor back check abnormal
@@ -98,6 +106,10 @@ Charger3,125,2,
 Charger3,126,2,
 Charger3,127,2,
 Charger3,10201,1,Coupler position not safety
+Charger3,596,2,Charging pile Charging command is abnormal
+Charger3,597,2,Charging pile not used
+Charger3,598,2,Charging pile not in use AGVC switching warning
+Charger3,599,1,Charging pile Charging head After confirmation check Not positioned
 Charger4,128,2,Charging pile. no abnormalities in receiving and sending out
 Charger4,129,2,Charging pile motor forward inspection abnormal
 Charger4,130,2,Charging pile motor back check abnormal
@@ -131,6 +143,10 @@ Charger4,157,2,
 Charger4,158,2,
 Charger4,159,2,
 Charger4,10201,1,Coupler position not safety
+Charger4,628,2,Charging pile Charging command is abnormal
+Charger4,629,2,Charging pile not used
+Charger4,630,2,Charging pile not in use AGVC switching warning
+Charger4,631,1,Charging pile Charging head After confirmation check Not positioned
 Charger5,160,2,Charging pile. no abnormalities in receiving and sending out
 Charger5,161,2,Charging pile motor forward inspection abnormal
 Charger5,162,2,Charging pile motor back check abnormal
@@ -164,6 +180,10 @@ Charger5,189,2,
 Charger5,190,2,
 Charger5,191,2,
 Charger5,10201,1,Coupler position not safety
+Charger5,660,2,Charging pile Charging command is abnormal
+Charger5,661,2,Charging pile not used
+Charger5,662,2,Charging pile not in use AGVC switching warning
+Charger5,663,1,Charging pile Charging head After confirmation check Not positioned
 Charger6,192,2,Charging pile. no abnormalities in receiving and sending out
 Charger6,193,2,Charging pile motor forward inspection abnormal
 Charger6,194,2,Charging pile motor back check abnormal
@@ -197,6 +217,10 @@ Charger6,221,2,
 Charger6,222,2,
 Charger6,223,2,
 Charger6,10201,1,Coupler position not safety
+Charger6,692,2,Charging pile Charging command is abnormal
+Charger6,693,2,Charging pile not used
+Charger6,694,2,Charging pile not in use AGVC switching warning
+Charger6,695,1,Charging pile Charging head After confirmation check Not positioned
 Charger7,224,2,Charging pile. no abnormalities in receiving and sending out
 Charger7,225,2,Charging pile motor forward inspection abnormal
 Charger7,226,2,Charging pile motor back check abnormal
@@ -230,6 +254,10 @@ Charger7,253,2,
 Charger7,254,2,
 Charger7,255,2,
 Charger7,10201,1,Coupler position not safety
+Charger7,724,2,Charging pile Charging command is abnormal
+Charger7,725,2,Charging pile not used
+Charger7,726,2,Charging pile not in use AGVC switching warning
+Charger7,727,1,Charging pile Charging head After confirmation check Not positioned
 Charger8,256,2,Charging pile. no abnormalities in receiving and sending out
 Charger8,257,2,Charging pile motor forward inspection abnormal
 Charger8,258,2,Charging pile motor back check abnormal
@@ -263,6 +291,10 @@ Charger8,285,2,
 Charger8,286,2,
 Charger8,287,2,
 Charger8,10201,1,Coupler position not safety
+Charger8,756,2,Charging pile Charging command is abnormal
+Charger8,757,2,Charging pile not used
+Charger8,758,2,Charging pile not in use AGVC switching warning
+Charger8,759,1,Charging pile Charging head After confirmation check Not positioned
 Charger9,288,2,Charging pile. no abnormalities in receiving and sending out
 Charger9,289,2,Charging pile motor forward inspection abnormal
 Charger9,290,2,Charging pile motor back check abnormal
@@ -296,6 +328,10 @@ Charger9,317,2,
 Charger9,318,2,
 Charger9,319,2,
 Charger9,10201,1,Coupler position not safety
+Charger9,788,2,Charging pile Charging command is abnormal
+Charger9,789,2,Charging pile not used
+Charger9,790,2,Charging pile not in use AGVC switching warning
+Charger9,791,1,Charging pile Charging head After confirmation check Not positioned
 Charger10,320,2,Charging pile. no abnormalities in receiving and sending out
 Charger10,321,2,Charging pile motor forward inspection abnormal
 Charger10,322,2,Charging pile motor back check abnormal
@@ -329,6 +365,47 @@ Charger10,349,2,
 Charger10,350,2,
 Charger10,351,2,
 Charger10,10201,1,Coupler position not safety
+Charger10,820,2,Charging pile Charging command is abnormal
+Charger10,821,2,Charging pile not used
+Charger10,822,2,Charging pile not in use AGVC switching warning
+Charger10,823,1,Charging pile Charging head After confirmation check Not positioned
+Charger11,352,2,Charging pile. no abnormalities in receiving and sending out
+Charger11,353,2,Charging pile motor forward inspection abnormal
+Charger11,354,2,Charging pile motor back check abnormal
+Charger11,355,2,Charging pile motor abnormal
+Charger11,356,2,Charging pile charging control abnormal
+Charger11,357,2,Charging pile distance perception abnormal
+Charger11,358,2,Charging pile temperature perception abnormal
+Charger11,359,1,Charging pile measuring voltage at the front end
+Charger11,360,2,Charging pile The charging head is not positioned
+Charger11,361,2,Charger execution command timeout
+Charger11,362,2,
+Charger11,363,2,
+Charger11,364,2,
+Charger11,365,2,
+Charger11,366,2,
+Charger11,367,2,
+Charger11,368,2,Charger abnormal
+Charger11,369,2,Charger communication is abnormal
+Charger11,370,2,Abnormal power supply of the charger
+Charger11,371,2,Charger output current
+Charger11,372,2,Charger Non-power transmission process No load power transmission abnormal
+Charger11,373,2,
+Charger11,374,2,
+Charger11,375,2,
+Charger11,376,2,
+Charger11,377,2,
+Charger11,378,2,
+Charger11,379,2,
+Charger11,380,2,
+Charger11,381,2,
+Charger11,382,2,
+Charger11,383,2,
+Charger11,10201,1,Coupler position not safety
+Charger11,852,2,Charging pile Charging command is abnormal
+Charger11,853,2,Charging pile not used
+Charger11,854,2,Charging pile not in use AGVC switching warning
+Charger11,855,1,Charging pile Charging head After confirmation check Not positioned
 AGV_NODE,14024494,2,Overcurrent in DCBUS
 AGV_NODE,14004409,2,Failed to turn into Safe OP Mode in the EtherCAT Loop.
 AGV_NODE,14006882,2,Calculating the generalized Cartesian force acting on robot's TCP failed
@@ -1768,5 +1845,10 @@ AGV_NODE,56,1,Agvc disconnect when sending command.
 AGV_NODE,57,1,Local disconnect when sending command.
 AGV_NODE,58,1,ChargeWhenMove.
 AGV_NODE,59,1,Manual.
+AGV_NODE,10000,2,vehicle long time inaction finish
+AGV_NODE,10001,2,vehicle cannot service
+AGV_NODE,10002,2,vehicle is in low battery will stop excute command
+AGV_NODE,10003,2,vehicle can't find coupler to charging
+AGV_NODE,10005,2,vehicle is in warning battery status pay your attention
 AGVC,10121,1,AGVC has trnasfer commmand in queue over time
 CHARGE_NODE,10201,2,Coupler position not safety

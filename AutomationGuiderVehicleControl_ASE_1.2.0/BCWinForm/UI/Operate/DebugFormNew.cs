@@ -1078,11 +1078,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             try
             {
-                if (!noticeCar.IS_INSTALLED)
-                {
-                    MessageBox.Show($"{vh_id} is removed ready!");
-                    return;
-                }
+                //if (!noticeCar.IS_INSTALLED)
+                //{
+                //    MessageBox.Show($"{vh_id} is removed ready!");
+                //    return;
+                //}
                 btn_changeToRemove.Enabled = false;
                 (bool isSuccess, string result) check_result = default((bool isSuccess, string result));
                 await Task.Run(() => check_result = bcApp.SCApplication.VehicleService.Remove(vh_id));
