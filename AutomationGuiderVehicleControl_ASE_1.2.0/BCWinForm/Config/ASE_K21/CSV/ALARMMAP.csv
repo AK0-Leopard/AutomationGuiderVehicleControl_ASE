@@ -4,7 +4,7 @@ Charger1,33,2,Charging pile motor forward inspection abnormal
 Charger1,34,2,Charging pile motor back check abnormal
 Charger1,35,2,Charging pile motor abnormal
 Charger1,36,2,Charging pile charging control abnormal
-Charger1,37,2,Charging pile distance perception abnormal
+Charger1,37,1,Charging pile distance perception abnormal
 Charger1,38,2,Charging pile temperature perception abnormal
 Charger1,39,1,Charging pile measuring voltage at the front end
 Charger1,40,2,Charging pile The charging head is not positioned
@@ -41,7 +41,7 @@ Charger2,65,2,Charging pile motor forward inspection abnormal
 Charger2,66,2,Charging pile motor back check abnormal
 Charger2,67,2,Charging pile motor abnormal
 Charger2,68,2,Charging pile charging control abnormal
-Charger2,69,2,Charging pile distance perception abnormal
+Charger2,69,1,Charging pile distance perception abnormal
 Charger2,70,2,Charging pile temperature perception abnormal
 Charger2,71,1,Charging pile measuring voltage at the front end
 Charger2,72,2,Charging pile The charging head is not positioned
@@ -78,7 +78,7 @@ Charger3,97,2,Charging pile motor forward inspection abnormal
 Charger3,98,2,Charging pile motor back check abnormal
 Charger3,99,2,Charging pile motor abnormal
 Charger3,100,2,Charging pile charging control abnormal
-Charger3,101,2,Charging pile distance perception abnormal
+Charger3,101,1,Charging pile distance perception abnormal
 Charger3,102,2,Charging pile temperature perception abnormal
 Charger3,103,1,Charging pile measuring voltage at the front end
 Charger3,104,2,Charging pile The charging head is not positioned
@@ -115,7 +115,7 @@ Charger4,129,2,Charging pile motor forward inspection abnormal
 Charger4,130,2,Charging pile motor back check abnormal
 Charger4,131,2,Charging pile motor abnormal
 Charger4,132,2,Charging pile charging control abnormal
-Charger4,133,2,Charging pile distance perception abnormal
+Charger4,133,1,Charging pile distance perception abnormal
 Charger4,134,2,Charging pile temperature perception abnormal
 Charger4,135,1,Charging pile measuring voltage at the front end
 Charger4,136,2,Charging pile The charging head is not positioned
@@ -152,7 +152,7 @@ Charger5,161,2,Charging pile motor forward inspection abnormal
 Charger5,162,2,Charging pile motor back check abnormal
 Charger5,163,2,Charging pile motor abnormal
 Charger5,164,2,Charging pile charging control abnormal
-Charger5,165,2,Charging pile distance perception abnormal
+Charger5,165,1,Charging pile distance perception abnormal
 Charger5,166,2,Charging pile temperature perception abnormal
 Charger5,167,1,Charging pile measuring voltage at the front end
 Charger5,168,2,Charging pile The charging head is not positioned
@@ -163,7 +163,7 @@ Charger5,172,2,
 Charger5,173,2,
 Charger5,174,2,
 Charger5,175,2,
-Charger5,176,2,Charger abnormal
+Charger5,176,1,Charger abnormal
 Charger5,177,2,Charger communication is abnormal
 Charger5,178,2,Abnormal power supply of the charger
 Charger5,179,2,Charger output current
@@ -189,7 +189,7 @@ Charger6,193,2,Charging pile motor forward inspection abnormal
 Charger6,194,2,Charging pile motor back check abnormal
 Charger6,195,2,Charging pile motor abnormal
 Charger6,196,2,Charging pile charging control abnormal
-Charger6,197,2,Charging pile distance perception abnormal
+Charger6,197,1,Charging pile distance perception abnormal
 Charger6,198,2,Charging pile temperature perception abnormal
 Charger6,199,1,Charging pile measuring voltage at the front end
 Charger6,200,2,Charging pile The charging head is not positioned
@@ -226,7 +226,7 @@ Charger7,225,2,Charging pile motor forward inspection abnormal
 Charger7,226,2,Charging pile motor back check abnormal
 Charger7,227,2,Charging pile motor abnormal
 Charger7,228,2,Charging pile charging control abnormal
-Charger7,229,2,Charging pile distance perception abnormal
+Charger7,229,1,Charging pile distance perception abnormal
 Charger7,230,2,Charging pile temperature perception abnormal
 Charger7,231,1,Charging pile measuring voltage at the front end
 Charger7,232,2,Charging pile The charging head is not positioned
@@ -263,7 +263,7 @@ Charger8,257,2,Charging pile motor forward inspection abnormal
 Charger8,258,2,Charging pile motor back check abnormal
 Charger8,259,2,Charging pile motor abnormal
 Charger8,260,2,Charging pile charging control abnormal
-Charger8,261,2,Charging pile distance perception abnormal
+Charger8,261,1,Charging pile distance perception abnormal
 Charger8,262,2,Charging pile temperature perception abnormal
 Charger8,263,1,Charging pile measuring voltage at the front end
 Charger8,264,2,Charging pile The charging head is not positioned
@@ -300,7 +300,7 @@ Charger9,289,2,Charging pile motor forward inspection abnormal
 Charger9,290,2,Charging pile motor back check abnormal
 Charger9,291,2,Charging pile motor abnormal
 Charger9,292,2,Charging pile charging control abnormal
-Charger9,293,2,Charging pile distance perception abnormal
+Charger9,293,1,Charging pile distance perception abnormal
 Charger9,294,2,Charging pile temperature perception abnormal
 Charger9,295,1,Charging pile measuring voltage at the front end
 Charger9,296,2,Charging pile The charging head is not positioned
@@ -337,7 +337,7 @@ Charger10,321,2,Charging pile motor forward inspection abnormal
 Charger10,322,2,Charging pile motor back check abnormal
 Charger10,323,2,Charging pile motor abnormal
 Charger10,324,2,Charging pile charging control abnormal
-Charger10,325,2,Charging pile distance perception abnormal
+Charger10,325,1,Charging pile distance perception abnormal
 Charger10,326,2,Charging pile temperature perception abnormal
 Charger10,327,1,Charging pile measuring voltage at the front end
 Charger10,328,2,Charging pile The charging head is not positioned
@@ -374,7 +374,7 @@ Charger11,353,2,Charging pile motor forward inspection abnormal
 Charger11,354,2,Charging pile motor back check abnormal
 Charger11,355,2,Charging pile motor abnormal
 Charger11,356,2,Charging pile charging control abnormal
-Charger11,357,2,Charging pile distance perception abnormal
+Charger11,357,1,Charging pile distance perception abnormal
 Charger11,358,2,Charging pile temperature perception abnormal
 Charger11,359,1,Charging pile measuring voltage at the front end
 Charger11,360,2,Charging pile The charging head is not positioned

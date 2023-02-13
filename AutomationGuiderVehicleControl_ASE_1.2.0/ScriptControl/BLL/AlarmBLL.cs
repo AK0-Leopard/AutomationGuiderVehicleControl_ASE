@@ -91,6 +91,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
 
         public const string AGVC_CHARGER_HP_NOT_SAFETY = "10201";
+        public const string AGVC_PRIVATE_MEMORY_IS_ARRIVED_ALERT = "10999";
 
         /// <summary>
         /// The sc application

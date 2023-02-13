@@ -1090,6 +1090,10 @@ namespace com.mirle.ibg3k0.sc
         {
             return ITcpIpControl.StopWatch_DisconnectionTime(bcfApp, TcpIpAgentName).Elapsed.TotalSeconds;
         }
+        internal void StopTcpIpConnection(BCFApplication bcfApp)
+        {
+            bcfApp.getTcpIpAgent(TcpIpAgentName).stop();
+        }
 
         #endregion TcpIpAgentInfo
 
@@ -1680,9 +1684,9 @@ namespace com.mirle.ibg3k0.sc
             public bool HAS_CST { get; private set; }
             public string CST_ID { get; private set; }
             public string Mark_ID { get; private set; } = "";
-            public string DisplayID 
+            public string DisplayID
             {
-                get 
+                get
                 {
                     return $"{ID}({Mark_ID})";
                 }

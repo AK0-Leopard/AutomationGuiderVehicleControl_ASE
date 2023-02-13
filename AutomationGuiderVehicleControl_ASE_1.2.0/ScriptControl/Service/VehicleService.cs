@@ -4102,7 +4102,14 @@ namespace com.mirle.ibg3k0.sc.Service
                VehicleID: vh.VEHICLE_ID,
                CST_ID_L: vh.CST_ID_L,
                CST_ID_R: vh.CST_ID_R);
-            scApp.stopTcpIpServer(port_num);
+            if (DebugParameter.isRestartTcpIpServerWhenConnectionFail)
+            {
+                scApp.stopTcpIpServer(port_num);
+            }
+            else
+            {
+                vh.StopTcpIpConnection(scApp.getBCFApplication());
+            }
             LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                Data: $"Stop vh:{vh.VEHICLE_ID} of tcp/ip server finish, IsTcpIpListening:{vh.IsTcpIpListening(scApp.getBCFApplication())}",
                VehicleID: vh.VEHICLE_ID,
@@ -4140,7 +4147,16 @@ namespace com.mirle.ibg3k0.sc.Service
                VehicleID: vh.VEHICLE_ID,
                CST_ID_L: vh.CST_ID_L,
                CST_ID_R: vh.CST_ID_R);
-            scApp.startTcpIpServerListen(port_num);
+
+            if (DebugParameter.isRestartTcpIpServerWhenConnectionFail)
+            {
+                scApp.startTcpIpServerListen(port_num);
+            }
+            else
+            {
+                //not thing...
+            }
+
             LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_AGV,
                Data: $"Start vh:{vh.VEHICLE_ID} of tcp/ip server finish, IsTcpIpListening:{vh.IsTcpIpListening(scApp.getBCFApplication())}",
                VehicleID: vh.VEHICLE_ID,

@@ -73,6 +73,20 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dgv_cache_object_data_portstation = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.adrID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsAutoMode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.isinput_mode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.isOutPutMode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.portReady = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.waitOut = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.waitIn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.isCSTPresence = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.cSTPresenceMismatch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.cstID_PLC = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.T = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btn_refresf_portsation_info = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.num_timePriorityIncrement = new System.Windows.Forms.NumericUpDown();
@@ -301,20 +315,7 @@
             this.label38 = new System.Windows.Forms.Label();
             this.num_BatteryLowBoundaryValue = new System.Windows.Forms.NumericUpDown();
             this.lbl_batteryLowBoundaryValue = new System.Windows.Forms.Label();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.adrID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsAutoMode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.isinput_mode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.isOutPutMode = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.portReady = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.waitOut = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.waitIn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.isCSTPresence = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.cSTPresenceMismatch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.cstID_PLC = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.includeCycleTest = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.T = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cb_connectionFailUseRestartTcpipServer = new System.Windows.Forms.CheckBox();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -718,6 +719,7 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.cb_connectionFailUseRestartTcpipServer);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.cb_by_pass_shelf_status);
             this.tabPage1.Location = new System.Drawing.Point(4, 31);
@@ -731,7 +733,7 @@
             // cb_by_pass_shelf_status
             // 
             this.cb_by_pass_shelf_status.AutoSize = true;
-            this.cb_by_pass_shelf_status.Location = new System.Drawing.Point(6, 844);
+            this.cb_by_pass_shelf_status.Location = new System.Drawing.Point(6, 830);
             this.cb_by_pass_shelf_status.Name = "cb_by_pass_shelf_status";
             this.cb_by_pass_shelf_status.Size = new System.Drawing.Size(329, 26);
             this.cb_by_pass_shelf_status.TabIndex = 2;
@@ -810,7 +812,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 5);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(234, 10);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(164, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -890,6 +892,107 @@
             this.dgv_cache_object_data_portstation.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_cache_object_data_portstation.Size = new System.Drawing.Size(1379, 883);
             this.dgv_cache_object_data_portstation.TabIndex = 0;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "PORT_ID";
+            this.dataGridViewTextBoxColumn1.FillWeight = 500F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 250;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "CST_ID";
+            this.dataGridViewTextBoxColumn2.FillWeight = 200F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "CST ID";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 100;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // adrID
+            // 
+            this.adrID.DataPropertyName = "ADR_ID";
+            this.adrID.HeaderText = "Adr ID";
+            this.adrID.Name = "adrID";
+            this.adrID.ReadOnly = true;
+            // 
+            // IsAutoMode
+            // 
+            this.IsAutoMode.DataPropertyName = "IsAutoMode";
+            this.IsAutoMode.HeaderText = "Is Auto Mode";
+            this.IsAutoMode.Name = "IsAutoMode";
+            this.IsAutoMode.ReadOnly = true;
+            // 
+            // isinput_mode
+            // 
+            this.isinput_mode.DataPropertyName = "IsInPutMode";
+            this.isinput_mode.HeaderText = "In Put Mode";
+            this.isinput_mode.Name = "isinput_mode";
+            // 
+            // isOutPutMode
+            // 
+            this.isOutPutMode.DataPropertyName = "IsOutPutMode";
+            this.isOutPutMode.HeaderText = "Out Put Mode";
+            this.isOutPutMode.Name = "isOutPutMode";
+            this.isOutPutMode.ReadOnly = true;
+            // 
+            // portReady
+            // 
+            this.portReady.DataPropertyName = "PortReady";
+            this.portReady.HeaderText = "Port Ready";
+            this.portReady.Name = "portReady";
+            // 
+            // waitOut
+            // 
+            this.waitOut.DataPropertyName = "PortWaitOut";
+            this.waitOut.HeaderText = "Wait Out";
+            this.waitOut.Name = "waitOut";
+            this.waitOut.ReadOnly = true;
+            // 
+            // waitIn
+            // 
+            this.waitIn.DataPropertyName = "PortWaitIn";
+            this.waitIn.HeaderText = "Wait In";
+            this.waitIn.Name = "waitIn";
+            this.waitIn.ReadOnly = true;
+            // 
+            // isCSTPresence
+            // 
+            this.isCSTPresence.DataPropertyName = "IsCSTPresence";
+            this.isCSTPresence.HeaderText = "Is CST Presence";
+            this.isCSTPresence.Name = "isCSTPresence";
+            this.isCSTPresence.ReadOnly = true;
+            // 
+            // cSTPresenceMismatch
+            // 
+            this.cSTPresenceMismatch.DataPropertyName = "CSTPresenceMismatch";
+            this.cSTPresenceMismatch.HeaderText = "CST Presence Mismatch";
+            this.cSTPresenceMismatch.Name = "cSTPresenceMismatch";
+            this.cSTPresenceMismatch.ReadOnly = true;
+            // 
+            // cstID_PLC
+            // 
+            this.cstID_PLC.DataPropertyName = "CassetteID";
+            this.cstID_PLC.HeaderText = "CST ID(PLC)";
+            this.cstID_PLC.Name = "cstID_PLC";
+            this.cstID_PLC.ReadOnly = true;
+            // 
+            // includeCycleTest
+            // 
+            this.includeCycleTest.DataPropertyName = "IncludeCycleTest";
+            this.includeCycleTest.FalseValue = "False";
+            this.includeCycleTest.HeaderText = "Cycle Run";
+            this.includeCycleTest.Name = "includeCycleTest";
+            this.includeCycleTest.TrueValue = "True";
+            // 
+            // T
+            // 
+            this.T.DataPropertyName = "sTimestamp";
+            this.T.HeaderText = "Time";
+            this.T.Name = "T";
+            this.T.ReadOnly = true;
+            this.T.Width = 200;
             // 
             // btn_refresf_portsation_info
             // 
@@ -3193,106 +3296,17 @@
             this.lbl_batteryLowBoundaryValue.TabIndex = 26;
             this.lbl_batteryLowBoundaryValue.Text = "Vehicle-Battery Low Boundary Value";
             // 
-            // dataGridViewTextBoxColumn1
+            // cb_connectionFailUseRestartTcpipServer
             // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "PORT_ID";
-            this.dataGridViewTextBoxColumn1.FillWeight = 500F;
-            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Width = 250;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "CST_ID";
-            this.dataGridViewTextBoxColumn2.FillWeight = 200F;
-            this.dataGridViewTextBoxColumn2.HeaderText = "CST ID";
-            this.dataGridViewTextBoxColumn2.MinimumWidth = 100;
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
-            // adrID
-            // 
-            this.adrID.DataPropertyName = "ADR_ID";
-            this.adrID.HeaderText = "Adr ID";
-            this.adrID.Name = "adrID";
-            this.adrID.ReadOnly = true;
-            // 
-            // IsAutoMode
-            // 
-            this.IsAutoMode.DataPropertyName = "IsAutoMode";
-            this.IsAutoMode.HeaderText = "Is Auto Mode";
-            this.IsAutoMode.Name = "IsAutoMode";
-            this.IsAutoMode.ReadOnly = true;
-            // 
-            // isinput_mode
-            // 
-            this.isinput_mode.DataPropertyName = "IsInPutMode";
-            this.isinput_mode.HeaderText = "In Put Mode";
-            this.isinput_mode.Name = "isinput_mode";
-            // 
-            // isOutPutMode
-            // 
-            this.isOutPutMode.DataPropertyName = "IsOutPutMode";
-            this.isOutPutMode.HeaderText = "Out Put Mode";
-            this.isOutPutMode.Name = "isOutPutMode";
-            this.isOutPutMode.ReadOnly = true;
-            // 
-            // portReady
-            // 
-            this.portReady.DataPropertyName = "PortReady";
-            this.portReady.HeaderText = "Port Ready";
-            this.portReady.Name = "portReady";
-            // 
-            // waitOut
-            // 
-            this.waitOut.DataPropertyName = "PortWaitOut";
-            this.waitOut.HeaderText = "Wait Out";
-            this.waitOut.Name = "waitOut";
-            this.waitOut.ReadOnly = true;
-            // 
-            // waitIn
-            // 
-            this.waitIn.DataPropertyName = "PortWaitIn";
-            this.waitIn.HeaderText = "Wait In";
-            this.waitIn.Name = "waitIn";
-            this.waitIn.ReadOnly = true;
-            // 
-            // isCSTPresence
-            // 
-            this.isCSTPresence.DataPropertyName = "IsCSTPresence";
-            this.isCSTPresence.HeaderText = "Is CST Presence";
-            this.isCSTPresence.Name = "isCSTPresence";
-            this.isCSTPresence.ReadOnly = true;
-            // 
-            // cSTPresenceMismatch
-            // 
-            this.cSTPresenceMismatch.DataPropertyName = "CSTPresenceMismatch";
-            this.cSTPresenceMismatch.HeaderText = "CST Presence Mismatch";
-            this.cSTPresenceMismatch.Name = "cSTPresenceMismatch";
-            this.cSTPresenceMismatch.ReadOnly = true;
-            // 
-            // cstID_PLC
-            // 
-            this.cstID_PLC.DataPropertyName = "CassetteID";
-            this.cstID_PLC.HeaderText = "CST ID(PLC)";
-            this.cstID_PLC.Name = "cstID_PLC";
-            this.cstID_PLC.ReadOnly = true;
-            // 
-            // includeCycleTest
-            // 
-            this.includeCycleTest.DataPropertyName = "IncludeCycleTest";
-            this.includeCycleTest.FalseValue = "False";
-            this.includeCycleTest.HeaderText = "Cycle Run";
-            this.includeCycleTest.Name = "includeCycleTest";
-            this.includeCycleTest.TrueValue = "True";
-            // 
-            // T
-            // 
-            this.T.DataPropertyName = "sTimestamp";
-            this.T.HeaderText = "Time";
-            this.T.Name = "T";
-            this.T.ReadOnly = true;
-            this.T.Width = 200;
+            this.cb_connectionFailUseRestartTcpipServer.AutoSize = true;
+            this.cb_connectionFailUseRestartTcpipServer.Location = new System.Drawing.Point(6, 860);
+            this.cb_connectionFailUseRestartTcpipServer.Name = "cb_connectionFailUseRestartTcpipServer";
+            this.cb_connectionFailUseRestartTcpipServer.Size = new System.Drawing.Size(422, 26);
+            this.cb_connectionFailUseRestartTcpipServer.TabIndex = 22;
+            this.cb_connectionFailUseRestartTcpipServer.Text = "在連線異常時，使用重啟TCPIP Server方式";
+            this.cb_connectionFailUseRestartTcpipServer.UseVisualStyleBackColor = true;
+            this.cb_connectionFailUseRestartTcpipServer.Visible = false;
+            this.cb_connectionFailUseRestartTcpipServer.CheckedChanged += new System.EventHandler(this.cb_connectionFailUseRestartTcpipServer_CheckedChanged);
             // 
             // DebugFormNew
             // 
@@ -3651,5 +3665,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cstID_PLC;
         private System.Windows.Forms.DataGridViewCheckBoxColumn includeCycleTest;
         private System.Windows.Forms.DataGridViewTextBoxColumn T;
+        private System.Windows.Forms.CheckBox cb_connectionFailUseRestartTcpipServer;
     }
 }

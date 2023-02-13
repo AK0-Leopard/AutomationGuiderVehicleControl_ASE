@@ -51,6 +51,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_passCouplerStatus.Checked = DebugParameter.isPassCouplerStatus;
             cb_passCouplerHPSafetySingnal.Checked = DebugParameter.isPassCouplerHPSafetySignal;
             cb_needCheckPortUpdateTime.Checked = DebugParameter.isNeedCheckPortUpDateTime;
+            cb_connectionFailUseRestartTcpipServer.Checked = DebugParameter.isRestartTcpIpServerWhenConnectionFail;
 
 
             List<string> lstVh = new List<string>();
@@ -129,6 +130,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             {
                 cb_by_pass_shelf_status.Visible = true;
                 cb_PassSafetyCheckToPause.Enabled = true;
+                cb_connectionFailUseRestartTcpipServer.Visible = true;
             }
         }
 
@@ -1307,6 +1309,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             AUNIT charger = bcApp.SCApplication.UnitBLL.OperateCatch.getUnit(current_selected_charger_id);
             if (charger == null) return;
             charger.isPassSafetySignalToSendPause = cb_PassSafetyCheckToPause.Checked;
+        }
+
+        private void cb_connectionFailUseRestartTcpipServer_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.isRestartTcpIpServerWhenConnectionFail = cb_connectionFailUseRestartTcpipServer.Checked;
         }
     }
 }

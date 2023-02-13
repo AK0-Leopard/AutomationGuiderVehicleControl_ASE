@@ -18,6 +18,7 @@ using com.mirle.ibg3k0.sc.BLL;
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.stc.Common.SECS;
+using DocumentFormat.OpenXml.Packaging;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
         /// <param name="obj">The object.</param>
         public override void doProcess(object obj)
         {
+            MonitorProcessPrivateMemory();
             if (System.Threading.Interlocked.Exchange(ref syncPoint, 1) == 0)
             {
 
@@ -110,6 +112,29 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             //if (++excute_count % 2 == 0)
             //    Task.Run(() => doChcekPLCLinkStatus());
             //Task.Run(() => doReadPLCAlive());
+        }
+        bool IS_PRIVATE_MAMORY_ALARM_HAPPEND = false;
+        const int PRIVATE_MAMORY_ALARM_VALUE_BYTE = 1200_000_000;
+        private void MonitorProcessPrivateMemory()
+        {
+            try
+            {
+                var m = System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64;
+                Console.WriteLine(m);
+                if (m > PRIVATE_MAMORY_ALARM_VALUE_BYTE)
+                {
+                    if (!IS_PRIVATE_MAMORY_ALARM_HAPPEND)
+                    {
+                        IS_PRIVATE_MAMORY_ALARM_HAPPEND = true;
+                        scApp.LineService.ProcessAlarmReport("AGVC", AlarmBLL.AGVC_PRIVATE_MEMORY_IS_ARRIVED_ALERT, ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
+                                                             $"AGVC use memory arrived at abnormal alert:{m},please restart AGVC]");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
         }
 
         private void InlineEfficiencyMonitor()
